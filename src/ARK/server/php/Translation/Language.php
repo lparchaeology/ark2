@@ -29,8 +29,8 @@
 
 namespace ARK\Translation;
 
+use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use Doctrine\ORM\Mapping\ClassMetadata;
 
 class Language
 {

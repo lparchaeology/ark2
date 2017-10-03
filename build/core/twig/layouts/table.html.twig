@@ -2,109 +2,91 @@
 
 <div class='table-wrapper-div'>
 
-    {% set table_class = 'table bootstrap-table table-hover' %}
-    {% set items = data.items %}
-
     <table
-        id="{{layout.id}}"
-        class="{{table_class}}"
+        id="{{element.id}}"
+        class="{{ element.classes }}"
         data-toggle="table"
-        data-classes="{{table_class}}"
+        data-classes="{{ element.classes }}"
         data-sort-name="id"
-        {#data-show-refresh="true"#}
-        data-show-toggle="true"
-        data-show-columns="true"
+        data-show-refresh="{{ element.canRefresh }}"
+        data-show-toggle="{{ element.canToggleView }}"
+        data-show-columns="{{ element.canChooseColumns }}"
         data-mobile-responsive="true"
-        data-show-export="true"
-        data-switchcardview="true"
+        data-show-export="{{ element.canExportData }}"
+        data-switchcardview="{{ element.canToggleView }}"
         data-click-to-select="true"
+        {% if element.dataUrl %}
+            data-url="{{ element.dataUrl }}"
+        {% endif %}
         icons="{ columns: 'glyphicon-th-list icon-th-list' }">
 
-        <thead>
-            <tr>
-                <th class="checkedhead" data-field="checked" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
-                {% if items[0]is defined and items[0].hasAttribute(state.image) %}
-                    <th class="thumbimagehead" data-field="{{state.image}}" data-title="{{state.image}}" data-sortable="false"></th>
-                {% endif %}
-                {% for cell in layout.cells %}
-                    {% set field = cell.element %}
-                    {% if state.actor.hasPermission(field.attribute.readPermission) %}
-                        <th data-field="{{field.id}}" data-title="{{f ield.keyword | translate }}" data-sortable="true" data-sorter="alphanum" data-visible="{{ cell.visible }}" data-card-visible="false">
-                            {{ field.keyword|trans }}
-                        </th>
-                    {% endif %}
-                    {% do form[field.formName].setRendered %}
-                {% endfor %}
-                <th class="controlshead" data-field="controls" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
-            </tr>
-        </thead>
+        {% if element.showCaption %}
+            <caption>{{ element.keyword | translate('caption') }}</caption>
+        {% endif %}
 
-            <tbody>
-                {% for item in items %}
-                    <tr data-unique-id="{{ item.id }}">
+        {% if element.showHeader %}
+            <thead>
+                <tr>
+                    {% if element.selection %}
+                        <th class="checkedhead" data-field="checked" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
+                    {% endif %}
+                    {% if element.image %}
+                        <th class="thumbimagehead" data-field="{{element.image}}" data-title="{{element.image}}" data-sortable="false"></th>
+                    {% endif %}
+                    {% for child in children %}
+                        <th data-field="{{ child.element.id }}" data-title="{{ child.state.keyword | translate }}" data-sortable="true" data-sorter="alphanum" data-visible="{{ child.state.visible }}" data-card-visible="false">
+                            {{ child.state.keyword | translate }}
+                        </th>
+                    {% endfor %}
+                    <th class="controlshead" data-field="controls" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
+                </tr>
+            </thead>
+        {% endif %}
+
+        <tbody>
+            {% for item in data %}
+                <tr data-unique-id="{{ item.id }}">
+                    {% if element.selection %}
                         <td class="not-card-visible">
                             <span class="tablecheckbox glyphicon glyphicon-unchecked"></span>
                         </td>
-                        {% if item.hasAttribute(state.image) %}
-                            <td class="thumbimage">
-                                {% set image = item.property(state.image).value() %}
-                                {% if image is not empty %}
-                                    {% if item.property(state.image).attribute.hasMultipleOccurrences %}
-                                        {% set image = image[0] %}
-                                    {% endif %}
-                                    <img src="{{path('img', {'image': image.id}) ~ '?p=thumb'}}" alt=''/>
-                                {% else %}
-                                    <span class="glyphicon glyphicon-picture placeholder-img"></span>
+                    {% endif %}
+                    {% if element.image %}
+                        <td class="thumbimage">
+                            {% set image = item.property(element.image).value() %}
+                            {% if image is not empty %}
+                                {% if item.property(element.image).attribute.hasMultipleOccurrences %}
+                                    {% set image = image[0] %}
                                 {% endif %}
-                            </td>
-                        {% endif %}
-                        {% for cell in layout.cells %}
-                            {% set field = cell.element %}
-                            {% if state.actor.hasPermission(field.attribute.readPermission) %}
-                                <td>
-                                    <span class="cell-label">{{field.keyword|trans}}</span>
-                                    {{ field.renderView(item, state) }}
-                                </td>
+                                <img src="{{path('img', {'image': image.id}) ~ '?p=thumb'}}" alt=''/>
+                            {% else %}
+                                <span class="glyphicon glyphicon-picture placeholder-img"></span>
                             {% endif %}
-                        {% endfor %}
-                        <td class="controls">
-                            <span class="cell-label">{{ 'core.controls' | translate }}</span>
-                            {% if (state.name == 'actors') %}
-                                <a href="#" class="open-focus">
-                                    <span class="icon icon-user-focus small"></span>
-                                </a>
-                            {% endif %}
-                            <a href="{{ path(state.modules[item.schema.module.id].route, {'id': item.id}) }}">
-                                <span class="glyphicon glyphicon-file"></span>
-                            </a>
                         </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
+                    {% endif %}
+                    {% for child in children %}
+                        {% if item.property is defined %}
+                            {% set val = item.property(child.state.name) %}
+                        {% else %}
+                            {% set val = attribute(item, child.state.name) %}
+                        {% endif %}
+                        {% set child = child | merge({'data' : val }) %}
+                        <td>
+                            <span class="cell-label">{{ child.state.keyword | translate }}</span>
+                            {{ child.element.renderView(child, forms, form) | raw }}
+                        </td>
+                    {% endfor %}
+                    <td class="controls">
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
 
-        </table>
-
-    </div>
-
-    <script>
-        window.itemkey = {% if items[0] is defined %}
-            "{{ items[0].schema.module.id }}";
-        {% else %}
-            {{null}}
+        {% if element.showFooter %}
+            <tfoot>
+            </tfoot>
         {% endif %}
 
-        window.itemlist = [{% if items|length > 0 %}
-                {% for item in items %}
-                    "{{ item.id }}",
-                {% endfor %}
-            {% else %}
-                false
-            {% endif %},];
-        if (typeof window.translations == 'undefined') {
-            window.translations = [];
-        }
-        window.translations['core.user.update.success'] = "{{ 'core.user.update.success' | trans }}";
-        window.translations['core.user.update.failure'] = "{{ 'core.user.update.failure' | trans }}"
+    </table>
 
-        window.userApiUrl = "{{ path('api.internal.user.actor', {'id': 'dummyid'}) }}".split('dummyid')[0];
-    </script>
+</div>

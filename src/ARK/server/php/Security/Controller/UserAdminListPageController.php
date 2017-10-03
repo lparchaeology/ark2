@@ -29,12 +29,10 @@
 
 namespace ARK\Security\Controller;
 
-use ARK\Actor\Person;
 use ARK\Framework\PageController;
-use ARK\Model\Item;
 use ARK\ORM\ORM;
+use ARK\Security\User;
 use ARK\Service;
-use ARK\Vocabulary\Term;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -53,21 +51,13 @@ class UserAdminListPageController extends PageController
         $query = $request->query->all();
 
         if (isset($query['status'])) {
-            $status = ORM::findOneBy(Term::class, [
-                'concept' => 'core.security.status',
-                'term' => $query['status'],
-            ]);
-            $data['filter']['status'] = $status;
-            $items = Service::database()->userSearch($query);
-            $data['actors']['items'] = ORM::findBy(Person::class, ['id' => $items]);
+            $data['users'] = User::findByStatus($query['status']);
         } else {
-            $data['actors']['items'] = ORM::findAll(Person::class);
+            $data['users'] = ORM::findAll(User::class);
         }
 
-        $data['actor'] = null;
-        $data['user'] = null;
         $actor = Service::workflow()->actor();
-        $data['action'] = Service::workflow()->actions($actor, $actor);
+        $data['actions'] = Service::workflow()->actions($actor, $actor);
         return $data;
     }
 
@@ -93,10 +83,5 @@ class UserAdminListPageController extends PageController
             ORM::flush($actor);
             return;
         }
-    }
-
-    protected function item($data) : ?Item
-    {
-        return Service::workflow()->actor();
     }
 }

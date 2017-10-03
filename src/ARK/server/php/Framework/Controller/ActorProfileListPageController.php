@@ -34,19 +34,19 @@ use ARK\Framework\PageController;
 use ARK\ORM\ORM;
 use Symfony\Component\HttpFoundation\Request;
 
-class ProfileListPageController extends PageController
+class ActorProfileListPageController extends PageController
 {
-    public function buildState(Request $request, $data) : iterable
-    {
-        $state = parent::buildState($request, $data);
-        $state['image'] = 'avatar';
-        return $state;
-    }
-
     public function buildData(Request $request)
     {
         $actors = ORM::findAll(Actor::class);
         $data['actors']['items'] = $actors;
         return $data;
+    }
+
+    public function buildState(Request $request, $data) : iterable
+    {
+        $state = parent::buildState($request, $data);
+        $state['image'] = 'avatar';
+        return $state;
     }
 }

@@ -40,7 +40,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PageViewController extends DimeFormController
 {
-    public function __invoke(Request $request)
+    public function __invoke(Request $request) : Response
     {
         $page = $request->attributes->get('_route');
         if (!$item = ORM::find(Page::class, $page)) {

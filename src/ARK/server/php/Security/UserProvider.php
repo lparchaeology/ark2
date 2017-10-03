@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Security User Provider
+ * ARK Security User Provider.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -31,7 +31,6 @@
 namespace ARK\Security;
 
 use ARK\ORM\ORM;
-use ARK\Security\User;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;

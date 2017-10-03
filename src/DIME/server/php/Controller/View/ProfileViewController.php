@@ -35,10 +35,11 @@ use ARK\Service;
 use DIME\DIME;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProfileViewController extends DimeFormController
 {
-    public function __invoke(Request $request, $id = null)
+    public function __invoke(Request $request, $id = null) : Response
     {
         $request->attributes->set('actor', $id);
         return parent::__invoke($request);

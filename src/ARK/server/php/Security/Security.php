@@ -193,16 +193,22 @@ class Security
         }
     }
 
-    public function registerUser(User $user, Actor $actor = null) : void
+    public function registerUser(User $user, Actor $actor, \DateTime $expiry = null) : void
     {
+        if ($expiry) {
+            $user->expireAt($expiry);
+        }
+        $this->createActorUser($actor, $user, $expiry);
+        $registeredBy = (Service::security()->isLoggedIn() ? Service::workflow()->actor() : $actor);
+        Service::workflow()->apply($registeredBy, 'register', $actor);
         if ($this->options['verify_email']) {
             $user->setVerificationRequested();
         }
         if (!$this->options['verify_email_required'] && !$this->options['admin_confirm']) {
             $user->enable();
         }
-        ORM::flush($user);
         ORM::flush($actor);
+        ORM::flush($user);
         if ($this->options['verify_email']) {
             $this->sendVerificationMessage($user);
         }

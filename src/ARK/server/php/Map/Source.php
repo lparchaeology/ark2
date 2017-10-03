@@ -31,9 +31,9 @@
 namespace ARK\Map;
 
 use ARK\Model\KeywordTrait;
+use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use DateTime;
-use Doctrine\ORM\Mapping\ClassMetadata;
 
 class Source
 {

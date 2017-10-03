@@ -31,14 +31,16 @@
 namespace ARK\Security;
 
 use ARK\Actor\Actor;
+use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
 use ARK\Security\Validator\PasswordStrength;
 use ARK\Service;
+use ARK\Vocabulary\Term;
+use ARK\Vocabulary\Vocabulary;
 use ARK\Workflow\Security\ActorUser;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping\ClassMetadata;
 use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
@@ -58,6 +60,7 @@ class User implements AdvancedUserInterface, Serializable
     protected $level = 'ROLE_ANON';
     protected $levels;
     protected $enabled = false;
+    protected $activated = false;
     protected $verified = false;
     protected $locked = false;
     protected $expired = false;
@@ -162,6 +165,26 @@ class User implements AdvancedUserInterface, Serializable
         $this->verified = true;
     }
 
+    public function status() : Term
+    {
+        if ($this->isExpired()) {
+            return Vocabulary::findTerm('core.security.user.status', 'expired');
+        }
+        if ($this->isLocked()) {
+            return Vocabulary::findTerm('core.security.user.status', 'locked');
+        }
+        if ($this->isEnabled()) {
+            return Vocabulary::findTerm('core.security.user.status', 'enabled');
+        }
+        if ($this->isActivated()) {
+            return Vocabulary::findTerm('core.security.user.status', 'disabled');
+        }
+        if ($this->isVerified()) {
+            return Vocabulary::findTerm('core.security.user.status', 'verified');
+        }
+        return Vocabulary::findTerm('core.security.user.status', 'registered');
+    }
+
     // AdvancedUserInterface
     public function isEnabled() : bool
     {
@@ -172,12 +195,18 @@ class User implements AdvancedUserInterface, Serializable
     {
         $this->expired = false;
         $this->expiresAt = null;
+        $this->activated = true;
         $this->enabled = true;
     }
 
     public function disable() : void
     {
         $this->enabled = false;
+    }
+
+    public function isActivated() : bool
+    {
+        return $this->activated;
     }
 
     public function isLocked() : bool
@@ -399,7 +428,7 @@ class User implements AdvancedUserInterface, Serializable
         }
     }
 
-    public function actors() : ?iterable
+    public function actors() : iterable
     {
         $aus = ORM::findBy(ActorUser::class, ['user' => $this->id()]);
         $actors = new ArrayCollection();
@@ -414,6 +443,17 @@ class User implements AdvancedUserInterface, Serializable
     public function isActor(Actor $actor) : bool
     {
         return $this->actors()->contains($actor);
+    }
+
+    public function roles() : iterable
+    {
+        $roles = [];
+        foreach ($user->actors() as $actor) {
+            foreach ($actor->roles() as $role) {
+                $roles[$role->role()->id()] = $role->role();
+            }
+        }
+        return array_values($roles);
     }
 
     public function hasRole(Role $role) : bool
@@ -434,6 +474,38 @@ class User implements AdvancedUserInterface, Serializable
     public function unserialize($serialized) : void
     {
         list($this->id, $this->username, $this->email) = unserialize($serialized);
+    }
+
+    public static function findByStatus($status) : ?iterable
+    {
+        if (is_string($status)) {
+            $status = Vocabulary::findTerm('core.security.user.status', $status);
+        }
+        if (!$status instanceof Term) {
+            return new ArrayCollection();
+        }
+        $status = $status->name();
+        if ($status === 'disabled') {
+            return ORM::findBy(self::class, ['enabled' => false, 'activated' => true]);
+        }
+        if ($status === 'expired') {
+            // TODO What about past expiry but not expired???
+            return ORM::findBy(self::class, ['expired' => true]);
+        }
+        if ($status === 'locked') {
+            return ORM::findBy(self::class, ['locked' => true]);
+        }
+        if ($status === 'enabled') {
+            // TODO What about past expiry but not expired???
+            return ORM::findBy(self::class, ['enabled' => true, 'activated' => true]);
+        }
+        if ($status === 'verified') {
+            return ORM::findBy(self::class, ['verified' => true, 'activated' => false]);
+        }
+        if ($status === 'registered') {
+            return ORM::findBy(self::class, ['activated' => false, 'verified' => false]);
+        }
+        return new ArrayCollection();
     }
 
     public static function loadValidatorMetadata(ValidatorMetadata $metadata) : void
@@ -472,6 +544,7 @@ class User implements AdvancedUserInterface, Serializable
         $builder->addStringField('name', 100);
         $builder->addStringField('level', 30);
         $builder->addField('enabled', 'boolean');
+        $builder->addField('activated', 'boolean');
         $builder->addField('verified', 'boolean');
         $builder->addField('locked', 'boolean');
         $builder->addField('expired', 'boolean');

@@ -32,15 +32,13 @@ namespace ARK\View;
 use ARK\Actor\Actor;
 use ARK\Form\Type\StaticType;
 use ARK\Model\Item;
-use ARK\Model\LocalText;
+use ARK\Model\KeywordTrait;
 use ARK\Model\Property;
 use ARK\Model\Schema\SchemaAttribute;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\Vocabulary\Term;
-use ARK\Workflow\Event;
 use IntlDateFormatter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -83,7 +81,7 @@ class Field extends Element
         return $this->format ?: 'hidden';
     }
 
-    public function formName() : string
+    public function name() : string
     {
         return $this->attribute->name();
     }
@@ -129,12 +127,44 @@ class Field extends Element
         return $this->keyword ?? $this->attribute->keyword();
     }
 
-    public function buildState($data, iterable $state) : iterable
+    public static function loadMetadata(ClassMetadata $metadata) : void
+    {
+        // Joined Table Inheritance
+        $builder = new ClassMetadataBuilder($metadata, 'ark_view_field');
+
+        // Fields
+        $builder->addStringField('display', 30);
+        $builder->addStringField('value', 10);
+        $builder->addStringField('parameter', 10);
+        $builder->addStringField('format', 10);
+        KeywordTrait::buildKeywordMetadata($builder);
+        $builder->addStringField('template', 100);
+        $builder->addStringField('formType', 100, 'form_type');
+        $builder->addStringField('formOptions', 4000, 'form_options');
+
+        // Associations
+        $builder->addCompositeManyToOneField('attribute', 'ARK\Model\Schema\SchemaAttribute', [
+            [
+                'column' => 'schma',
+                'nullable' => true,
+            ],
+            [
+                'column' => 'class',
+                'nullable' => true,
+            ],
+            [
+                'column' => 'attribute',
+                'nullable' => true,
+            ],
+        ]);
+    }
+
+    protected function buildState($data, iterable $state) : iterable
     {
         $state['required'] = $this->attribute()->isRequired();
         $state['multiple'] = $this->attribute->hasMultipleOccurrences();
         if (!isset($state['name'])) {
-            $state['name'] = $this->formName();
+            $state['name'] = $this->name();
         }
         if (!isset($state['display']['property'])) {
             $state['display']['property'] = $this->display;
@@ -167,7 +197,7 @@ class Field extends Element
         return $state;
     }
 
-    public function buildData($data, iterable $state)
+    protected function buildData($data, iterable $state)
     {
         $name = $state['name'];
         if (is_array($data)) {
@@ -188,7 +218,7 @@ class Field extends Element
         return null;
     }
 
-    public function buildOptions($data, iterable $state, iterable $options = []) : iterable
+    protected function buildOptions($data, iterable $state, iterable $options = []) : iterable
     {
         $options['state'] = $state;
 
@@ -282,109 +312,6 @@ class Field extends Element
             unset($options['state']['display']);
         }
         return $options;
-    }
-
-    public function buildContext($data, iterable $state, FormView $form = null) : iterable
-    {
-        $context = parent::buildContext($data, $state, $form);
-        $context['field'] = $this;
-        return $context;
-    }
-
-    // FIXME Should probably have some way to use FormTypes here to render 'static' mode
-    public function renderView($data, iterable $state) : string
-    {
-        //dump('RENDER FIELD '.$this->id().' '.$this->keyword());
-        $state = $this->buildState($data, $state);
-        if ($state['mode'] === 'deny') {
-            return '';
-        }
-        $data = $this->buildData($data, $state);
-        $value = '';
-        if ($data instanceof Item) {
-            $data = $data->property($this->attribute()->name());
-        }
-        if ($data instanceof Property) {
-            $value = $data->value();
-            if (!$value || $value === $this->attribute()->emptyValue()) {
-                return '';
-            }
-            if ($this->attribute()->hasMultipleOccurrences() && is_array($value)) {
-                $value = $value[0];
-            }
-            if (is_array($value)) {
-                if ($this->display) {
-                    $value = $value[$this->display];
-                } elseif (isset($value[$this->attribute()->dataclass()->valueName()])) {
-                    $value = $value[$this->attribute()->dataclass()->valueName()];
-                } elseif (isset($value['subtype'])) {
-                    $value = $value['subtype'];
-                }
-            }
-            if ($value instanceof Actor) {
-                return $value->property('fullname')->value()->content();
-            }
-            if ($value instanceof Event) {
-                $class = $value->property('class')->value();
-                if ($class instanceof Term) {
-                    return Service::translate($class->keyword());
-                }
-                return $class;
-            }
-            if ($value instanceof Item) {
-                if (isset($this->display)) {
-                    return $value->property($this->display)->value()->content();
-                }
-                return $value->property('id')->serialize();
-            }
-            if ($value instanceof LocalText) {
-                return $value->content();
-            }
-            if ($value instanceof Term) {
-                return Service::translate($value->keyword());
-            }
-            if ($value instanceof \DateTime) {
-                return $value->format('Y-m-d');
-            }
-            if ($this->attribute()->hasVocabulary()) {
-                return Service::translate($value);
-            }
-        }
-        if (is_array($value)) {
-            return 'ERROR';
-        }
-        return $value ?? '';
-    }
-
-    public static function loadMetadata(ClassMetadata $metadata) : void
-    {
-        // Joined Table Inheritance
-        $builder = new ClassMetadataBuilder($metadata, 'ark_view_field');
-
-        // Fields
-        $builder->addStringField('formType', 100, 'form_type');
-        $builder->addStringField('formOptions', 4000, 'form_options');
-        $builder->addStringField('display', 30);
-        $builder->addStringField('value', 10);
-        $builder->addStringField('parameter', 10);
-        $builder->addStringField('format', 10);
-        $builder->addStringField('template', 100);
-
-        // Associations
-        $builder->addCompositeManyToOneField('attribute', 'ARK\Model\Schema\SchemaAttribute', [
-            [
-                'column' => 'schma',
-                'nullable' => true,
-            ],
-            [
-                'column' => 'class',
-                'nullable' => true,
-            ],
-            [
-                'column' => 'attribute',
-                'nullable' => true,
-            ],
-        ]);
     }
 
     protected function valueOptions(iterable $state) : iterable
@@ -525,6 +452,17 @@ class Field extends Element
             }
         }
         return $options;
+    }
+
+    protected function buildContext(iterable $view, iterable $forms = [], FormView $form = null) : iterable
+    {
+        $view = parent::buildContext($view, $forms, $form);
+        $view['field'] = $this;
+        if (!$view['form']) {
+            $builder = $this->formBuilder($view['state']['name'], $view['data'], $view['options']);
+            $view['form'] = $builder->getForm()->createView();
+        }
+        return $view;
     }
 
     protected function concat(iterable $options, string $option, string $value) : string

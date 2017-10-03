@@ -148,12 +148,10 @@ class AdminConnection extends Connection
                     $sql = 'SELECT User FROM mysql.user ORDER BY User';
                     $col = 'User';
                 }
-
                 return $this->fetchAllColumn($sql, $col);
                 break;
             case 'postgresql':
                 $sql = 'SELECT rolname FROM pg_roles';
-
                 return $this->fetchAllColumn($sql, 'rolname');
                 break;
             default:

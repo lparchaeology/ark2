@@ -7,6 +7,9 @@ var Router = (function () {
         parameters = parameters === undefined ? [] : parameters;
         this.base = this.base === undefined ? '' : this.base;
         var route = this.routes[name];
+        if (route === undefined) {
+            return undefined;
+        }
         var url = this.base + route.path;
 
         for (var id in parameters) {

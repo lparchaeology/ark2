@@ -788,7 +788,7 @@
         </field>
         <field name="page" type="string" size="30"/>
         <field name="redirect" type="string" size="30"/>
-        <field name="controller" type="string" size="50">
+        <field name="controller" type="string" size="100">
             <notnull/>
         </field>
         <index name="page_foreign">
@@ -803,6 +803,23 @@
         </references>
         <references name="route_redirect_constraint" table="ark_route" onupdate="cascade">
             <column local="redirect" foreign="route"/>
+        </references>
+    </table>
+    <table name="ark_route_parameter">
+        <field name="route" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="parameter" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <index name="IDX_7B0087752C42079">
+            <col>route</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="route_constraint" table="ark_route" onupdate="cascade" ondelete="cascade">
+            <column local="route" foreign="route"/>
         </references>
     </table>
     <table name="ark_schema">
@@ -827,6 +844,7 @@
             <notnull/>
         </field>
         <field name="sequence" type="string" size="30"/>
+        <field name="event" type="string" size="30"/>
         <field name="new" type="string" size="30"/>
         <field name="view" type="string" size="30"/>
         <field name="edit" type="string" size="30"/>
@@ -861,9 +879,15 @@
         <index name="view_foreign">
             <col>view</col>
         </index>
+        <index name="event_foreign">
+            <col>event</col>
+        </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
         <references name="schema_edit_constraint" table="ark_workflow_permission" onupdate="cascade">
             <column local="edit" foreign="permission"/>
+        </references>
+        <references name="schema_event_constraint" table="ark_vocabulary">
+            <column local="event" foreign="concept"/>
         </references>
         <references name="schema_keyword_constraint" table="ark_translation" onupdate="cascade">
             <column local="keyword" foreign="keyword"/>
@@ -991,6 +1015,7 @@
             <default value="0"/>
             <notnull/>
         </field>
+        <field name="event" type="string" size="30"/>
         <field name="visibility" type="string" size="30">
             <default value="public"/>
             <notnull/>
@@ -1317,7 +1342,7 @@
         <references name="view_cell_element_constraint" table="ark_view_element" onupdate="cascade" ondelete="cascade">
             <column local="element" foreign="element"/>
         </references>
-        <references name="view_cell_group_constraint" table="ark_view_group" onupdate="cascade" ondelete="cascade">
+        <references name="view_cell_group_constraint" table="ark_view_element" onupdate="cascade" ondelete="cascade">
             <column local="grp" foreign="element"/>
         </references>
         <references name="view_cell_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="set null">
@@ -1341,25 +1366,10 @@
         <field name="type" type="string" size="10">
             <notnull/>
         </field>
-        <field name="enabled" type="boolean">
-            <default value="1"/>
-            <notnull/>
-        </field>
-        <field name="deprecated" type="boolean">
-            <default value="0"/>
-            <notnull/>
-        </field>
-        <field name="keyword" type="string" size="100"/>
-        <index name="keyword_foreign">
-            <col>keyword</col>
-        </index>
         <index name="type_foreign">
             <col>type</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="view_element_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="set null">
-            <column local="keyword" foreign="keyword"/>
-        </references>
         <references name="view_element_type_constraint" table="ark_view_type" onupdate="cascade">
             <column local="type" foreign="type"/>
         </references>
@@ -1385,6 +1395,7 @@
         </field>
         <field name="parameter" type="string" size="10"/>
         <field name="format" type="string" size="10"/>
+        <field name="keyword" type="string" size="30"/>
         <field name="template" type="string" size="100"/>
         <field name="form_type" type="string" size="100"/>
         <field name="form_options" type="string" size="4000"/>
@@ -1392,6 +1403,9 @@
             <col>schma</col>
             <col>class</col>
             <col>attribute</col>
+        </index>
+        <index name="keyword_foreign">
+            <col>keyword</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
         <references name="view_field_attribute_constraint" table="ark_schema_attribute" onupdate="cascade" ondelete="cascade">
@@ -1402,29 +1416,58 @@
         <references name="view_field_element_constraint" table="ark_view_element" onupdate="cascade" ondelete="cascade">
             <column local="element" foreign="element"/>
         </references>
+        <references name="view_field_keyword" table="ark_translation" onupdate="cascade" ondelete="set null">
+            <column local="keyword" foreign="keyword"/>
+        </references>
+    </table>
+    <table name="ark_view_form">
+        <field name="element" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="name" type="string" size="30"/>
+        <field name="mode" type="string" size="10"/>
+        <field name="method" type="string" size="10"/>
+        <field name="action" type="string" size="30"/>
+        <field name="keyword" type="string" size="30"/>
+        <field name="template" type="string" size="100"/>
+        <field name="form_type" type="string" size="100"/>
+        <index name="keyword_foreign">
+            <col>keyword</col>
+        </index>
+        <index name="route_foreign">
+            <col>action</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="view_form_element_constraint" table="ark_view_element" onupdate="cascade" ondelete="cascade">
+            <column local="element" foreign="element"/>
+        </references>
+        <references name="view_form_keyword_contraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+            <column local="keyword" foreign="keyword"/>
+        </references>
+        <references name="view_form_route_constraint" table="ark_route" onupdate="cascade">
+            <column local="action" foreign="route"/>
+        </references>
     </table>
     <table name="ark_view_group">
         <field name="element" type="string" size="30">
             <key/>
             <notnull/>
         </field>
-        <field name="layout" type="string" size="10">
-            <default value="grid"/>
-            <notnull/>
-        </field>
-        <field name="mode" type="string" size="10"/>
-        <field name="form" type="boolean">
-            <default value="0"/>
-            <notnull/>
-        </field>
         <field name="name" type="string" size="30"/>
-        <field name="method" type="string" size="10"/>
-        <field name="action" type="string" size="30"/>
+        <field name="mode" type="string" size="10"/>
+        <field name="keyword" type="string" size="30"/>
         <field name="template" type="string" size="100"/>
         <field name="form_type" type="string" size="100"/>
+        <index name="keyword_foreign">
+            <col>keyword</col>
+        </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
         <references name="view_group_element_constraint" table="ark_view_element" onupdate="cascade" ondelete="cascade">
             <column local="element" foreign="element"/>
+        </references>
+        <references name="view_group_keyword_contraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+            <column local="keyword" foreign="keyword"/>
         </references>
     </table>
     <table name="ark_view_nav">
@@ -1438,14 +1481,15 @@
             <notnull/>
         </field>
         <field name="level" type="integer"/>
-        <field name="icon" type="string" size="50"/>
-        <field name="route" type="string" size="50"/>
-        <field name="uri" type="string" size="2038"/>
         <field name="seperator" type="boolean">
             <default value="0"/>
             <notnull/>
         </field>
+        <field name="icon" type="string" size="50"/>
+        <field name="route" type="string" size="50"/>
+        <field name="keyword" type="string" size="30"/>
         <field name="template" type="string" size="100"/>
+        <field name="uri" type="string" size="2038"/>
         <index name="sequence_unique">
             <unique/>
             <col>parent</col>
@@ -1454,9 +1498,15 @@
         <index name="parent_foreign">
             <col>parent</col>
         </index>
+        <index name="keyword_foreign">
+            <col>keyword</col>
+        </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
         <references name="view_nav_element_constraint" table="ark_view_element" onupdate="cascade" ondelete="cascade">
             <column local="element" foreign="element"/>
+        </references>
+        <references name="view_nav_keyword_contraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+            <column local="keyword" foreign="keyword"/>
         </references>
         <references name="view_nav_parent_constraint" table="ark_view_nav" onupdate="cascade" ondelete="cascade">
             <column local="parent" foreign="element"/>
@@ -1467,20 +1517,21 @@
             <key/>
             <notnull/>
         </field>
-        <field name="header" type="string" size="30"/>
-        <field name="sidebar" type="string" size="30"/>
-        <field name="content" type="string" size="30"/>
-        <field name="footer" type="string" size="30"/>
         <field name="mode" type="string" size="10">
             <default value="view"/>
             <notnull/>
         </field>
+        <field name="header" type="string" size="30"/>
+        <field name="sidebar" type="string" size="30"/>
+        <field name="content" type="string" size="30"/>
+        <field name="footer" type="string" size="30"/>
         <field name="visibility" type="string" size="30">
             <default value="restricted"/>
             <notnull/>
         </field>
         <field name="view" type="string" size="30"/>
         <field name="edit" type="string" size="30"/>
+        <field name="keyword" type="string" size="30"/>
         <field name="template" type="string" size="100"/>
         <index name="navbar_foreign">
             <col>header</col>
@@ -1500,8 +1551,11 @@
         <index name="edit_foreign">
             <col>edit</col>
         </index>
+        <index name="keyword_foreign">
+            <col>keyword</col>
+        </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="view_page_content_constraint" table="ark_view_group" onupdate="cascade">
+        <references name="view_page_content_constraint" table="ark_view_element" onupdate="cascade">
             <column local="content" foreign="element"/>
         </references>
         <references name="view_page_edit_constraint" table="ark_workflow_permission" onupdate="cascade">
@@ -1510,17 +1564,91 @@
         <references name="view_page_element_constraint" table="ark_view_element" onupdate="cascade" ondelete="cascade">
             <column local="element" foreign="element"/>
         </references>
-        <references name="view_page_footer_constraint" table="ark_view_group" onupdate="cascade">
+        <references name="view_page_footer_constraint" table="ark_view_element" onupdate="cascade">
             <column local="footer" foreign="element"/>
         </references>
-        <references name="view_page_header_constraint" table="ark_view_group" onupdate="cascade">
+        <references name="view_page_header_constraint" table="ark_view_element" onupdate="cascade">
             <column local="header" foreign="element"/>
         </references>
-        <references name="view_page_sidebar_constraint" table="ark_view_group" onupdate="cascade">
+        <references name="view_page_keyword_contraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+            <column local="keyword" foreign="keyword"/>
+        </references>
+        <references name="view_page_sidebar_constraint" table="ark_view_element" onupdate="cascade">
             <column local="sidebar" foreign="element"/>
         </references>
         <references name="view_page_view_constraint" table="ark_workflow_permission" onupdate="cascade">
             <column local="view" foreign="permission"/>
+        </references>
+    </table>
+    <table name="ark_view_table">
+        <field name="element" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="mode" type="string" size="10"/>
+        <field name="caption" type="boolean">
+            <default value="1"/>
+            <notnull/>
+        </field>
+        <field name="header" type="boolean">
+            <default value="1"/>
+            <notnull/>
+        </field>
+        <field name="footer" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="sortable" type="boolean">
+            <default value="1"/>
+            <notnull/>
+        </field>
+        <field name="searchable" type="boolean">
+            <default value="1"/>
+            <notnull/>
+        </field>
+        <field name="row" type="boolean">
+            <default value="1"/>
+            <notnull/>
+        </field>
+        <field name="list" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="card" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="thumbnail" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="view" type="string" size="10">
+            <default value="row"/>
+        </field>
+        <field name="image" type="string" size="30"/>
+        <field name="export" type="boolean">
+            <default value="1"/>
+            <notnull/>
+        </field>
+        <field name="columns" type="boolean">
+            <default value="1"/>
+            <notnull/>
+        </field>
+        <field name="pagination" type="integer"/>
+        <field name="selection" type="string" size="10"/>
+        <field name="keyword" type="string" size="30"/>
+        <field name="classes" type="string" size="100"/>
+        <field name="template" type="string" size="100"/>
+        <field name="url" type="string" size="2038"/>
+        <index name="keyword_foreign">
+            <col>keyword</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="view_table_element_constraint" table="ark_view_element" onupdate="cascade" ondelete="cascade">
+            <column local="element" foreign="element"/>
+        </references>
+        <references name="viewtable_keyword_contraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+            <column local="keyword" foreign="keyword"/>
         </references>
     </table>
     <table name="ark_view_tree">
@@ -1587,14 +1715,21 @@
         </field>
         <field name="name" type="string" size="30"/>
         <field name="choices" type="string" size="30"/>
+        <field name="keyword" type="string" size="30"/>
         <field name="template" type="string" size="100"/>
         <field name="form_type" type="string" size="100"/>
         <field name="form_options" type="string" size="4000">
             <notnull/>
         </field>
+        <index name="keyword_foreign">
+            <col>keyword</col>
+        </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
         <references name="view_widget_element_constraint" table="ark_view_element" onupdate="cascade" ondelete="cascade">
             <column local="element" foreign="element"/>
+        </references>
+        <references name="view_widget_keyword_contraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+            <column local="keyword" foreign="keyword"/>
         </references>
     </table>
     <table name="ark_vocabulary">
@@ -2113,6 +2248,9 @@
             <notnull/>
         </field>
         <field name="agent_for" type="string" size="30"/>
+        <field name="level" type="string" size="20">
+            <notnull/>
+        </field>
         <field name="enabled" type="boolean">
             <default value="1"/>
             <notnull/>

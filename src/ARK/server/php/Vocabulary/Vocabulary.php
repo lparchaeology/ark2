@@ -31,10 +31,11 @@ namespace ARK\Vocabulary;
 
 use ARK\Model\EnabledTrait;
 use ARK\Model\KeywordTrait;
+use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\ORM\ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping\ClassMetadata;
 use Symfony\Component\Workflow\Definition;
 use Symfony\Component\Workflow\DefinitionBuilder;
 use Symfony\Component\Workflow\Transition;
@@ -128,6 +129,16 @@ abstract class Vocabulary
             $this->definition = $builder->build();
         }
         return $this->definition;
+    }
+
+    public static function find(string $concept) : ?Vocabulary
+    {
+        return ORM::find(self::class, $concept);
+    }
+
+    public static function findTerm(string $concept, string $term) : ?Term
+    {
+        return ORM::findOneBy(Term::class, ['concept' => $concept, 'term' => $term]);
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void

@@ -75,7 +75,6 @@ class Cell implements ElementInterface
     protected $display;
     protected $template;
     protected $options;
-    protected $optionsArray;
 
     public function group() : Element
     {
@@ -117,7 +116,7 @@ class Cell implements ElementInterface
         return $this->vocabulary;
     }
 
-    public function formName() : ?string
+    public function name() : ?string
     {
         return $this->name;
     }
@@ -207,108 +206,40 @@ class Cell implements ElementInterface
         return $this->template ?? '';
     }
 
-    public function buildState($data, iterable $state) : iterable
+    public function options() : iterable
     {
-        $state['name'] = $this->name;
-        $state['label'] = $this->label;
-        $state['help'] = $this->help;
-        $state['placeholder'] = $this->placeholder;
-        $state['choices'] = $this->choices;
-        $state['map'] = $this->map;
-        $state['vocabulary'] = $this->vocabulary;
-        if ($this->required === false) {
-            $state['required'] = false;
-        }
-        if ($this->sanitise !== null) {
-            $state['sanitise'] = $this->sanitise;
-        }
-        $state['visible'] = $this->visible ?? true;
-        if ($this->pattern !== null) {
-            $state['pattern'] = $this->pattern;
-        }
-        if ($this->width !== null) {
-            $state['width'] = $this->width;
-        }
-        if ($this->display) {
-            $state['display']['name'] = $this->display;
-        }
-        $state['keyword'] = $this->keyword;
-        $actor = Service::workflow()->actor();
-        if (!$actor->hasPermission($this->editPermission)) {
-            $state['mode'] = 'view';
-        } elseif ($this->mode === 'view') {
-            $state['mode'] = 'view';
-        }
-        if (!$actor->hasPermission($this->viewPermission)) {
-            $state['mode'] = 'deny';
-        }
-        $state['action'] = $this->action;
-        if ($this->action && $data instanceof Item && !$actor->canAction($this->action, $data)) {
-            $state['mode'] = 'deny';
-        }
-        if ($this->valueModus() !== null) {
-            $state['value']['modus'] = $this->valueModus();
-        }
-        if ($this->parameterModus() !== null) {
-            $state['parameter']['modus'] = $this->parameterModus();
-        }
-        if ($this->formatModus() !== null) {
-            $state['format']['modus'] = $this->formatModus();
-        }
-        if (!isset($state['sanitise']) || $this->sanitise) {
-            $state['sanitise'] = $this->sanitise;
-        }
-        return $state;
+        return json_decode($this->options ?? '{}', true);
     }
 
-    public function buildData($data, iterable $state)
+    public function buildView(iterable $parent) : iterable
     {
-        return $data;
+        //dump('BUILD CELL VIEW : '.$this->element->name());
+        //dump($parent);
+        $view['element'] = $parent['element'];
+        $view['state'] = $this->buildState($parent['state'], $parent['data']);
+        $view['data'] = $parent['data'];
+        $view['options'] = array_replace_recursive($parent['options'], $this->options());
+        $view['children'] = [];
+        //dump($view);
+        return $this->element->buildView($view);
     }
 
-    public function buildOptions($data, iterable $state, iterable $options = []) : iterable
+    public function buildForms(iterable $view) : iterable
     {
-        if ($this->optionsArray === null) {
-            $this->optionsArray = json_decode($this->options, true);
-            if (!is_array($this->optionsArray)) {
-                $this->optionsArray = [];
-            }
-        }
-        $options = array_replace_recursive($options, $this->optionsArray);
-        return $options;
+        //dump('BUILD CELL : '.$this->element->name());
+        return $this->element->buildForms($view);
     }
 
-    public function buildForms($data, iterable $state, iterable $options) : iterable
+    public function buildForm(iterable $view, FormBuilderInterface $builder) : void
     {
-        //dump('BUILD CELL : '.$this->element->formName());
-        if ($this->element->type()->isLayout()) {
-            $state = $this->buildState($data, $state);
-            return $this->element->buildForms($data, $state, $options);
-        }
-        return [];
+        //dump('BUILD CELL FORM : '.$this->element->name());
+        $this->element->buildForm($view, $builder);
     }
 
-    public function buildForm(FormBuilderInterface $builder, $data, iterable $state, iterable $options = []) : void
+    public function renderView(iterable $view, iterable $forms = [], FormView $form = null) : string
     {
-        //dump('BUILD CELL FORM : '.$this->element->formName());
-        //dump($data);
-        //dump($state);
-        //dump($options);
-        $state = $this->buildState($data, $state);
-        //dump($state);
-        $data = $this->buildData($data, $state);
-        $options = $this->buildOptions($data, $state, $options);
-        //dump($options);
-        $this->element->buildForm($builder, $data, $state, $options);
-    }
-
-    public function renderForm($data, iterable $state, FormView $form = null) : string
-    {
-        //dump('RENDER CELL FORM : '.$this->element->id());
-        //dump($state);
-        //dump($data);
-        $state = $this->buildState($data, $state);
-        return $this->element->renderForm($data, $state, $form);
+        //dump('RENDER CELL VIEW : '.$this->element->id());
+        return $this->element->renderView($view, $forms, $form);
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void
@@ -362,5 +293,61 @@ class Cell implements ElementInterface
         ]);
         $builder->addManyToOneField('viewPermission', Permission::class, 'view', 'permission');
         $builder->addManyToOneField('editPermission', Permission::class, 'edit', 'permission');
+    }
+
+    protected function buildState(iterable $state, $data) : iterable
+    {
+        $state['name'] = $this->name;
+        if ($this->label !== null) {
+            $state['label'] = $this->label;
+        }
+        $state['help'] = $this->help;
+        $state['placeholder'] = $this->placeholder;
+        $state['choices'] = $this->choices;
+        $state['map'] = $this->map;
+        $state['vocabulary'] = $this->vocabulary;
+        if ($this->required === false) {
+            $state['required'] = false;
+        }
+        if ($this->sanitise !== null) {
+            $state['sanitise'] = $this->sanitise;
+        }
+        $state['visible'] = $this->visible ?? true;
+        if ($this->pattern !== null) {
+            $state['pattern'] = $this->pattern;
+        }
+        if ($this->width !== null) {
+            $state['width'] = $this->width;
+        }
+        if ($this->display) {
+            $state['display']['name'] = $this->display;
+        }
+        $state['keyword'] = $this->keyword;
+        $actor = Service::workflow()->actor();
+        if (!$actor->hasPermission($this->editPermission)) {
+            $state['mode'] = 'view';
+        } elseif ($this->mode === 'view') {
+            $state['mode'] = 'view';
+        }
+        if (!$actor->hasPermission($this->viewPermission)) {
+            $state['mode'] = 'deny';
+        }
+        $state['action'] = $this->action;
+        if ($this->action && $data instanceof Item && !$actor->canAction($this->action, $data)) {
+            $state['mode'] = 'deny';
+        }
+        if ($this->valueModus() !== null) {
+            $state['value']['modus'] = $this->valueModus();
+        }
+        if ($this->parameterModus() !== null) {
+            $state['parameter']['modus'] = $this->parameterModus();
+        }
+        if ($this->formatModus() !== null) {
+            $state['format']['modus'] = $this->formatModus();
+        }
+        if (!isset($state['sanitise']) || $this->sanitise) {
+            $state['sanitise'] = $this->sanitise;
+        }
+        return $state;
     }
 }

@@ -34,6 +34,7 @@ use ARK\Database\Console\DatabaseCommand;
 use ARK\Framework\Console\ProcessTrait;
 use Doctrine\DBAL\DBALException;
 use Exception;
+use Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder;
 
 class SiteCreateCommand extends DatabaseCommand
 {
@@ -57,12 +58,28 @@ class SiteCreateCommand extends DatabaseCommand
         $site = strtolower($site);
 
         $frontends = array_keys(ARK::frontends());
-        $frontend = $this->askChoice('Please choose the frontend to use', $frontends, 'core');
+        $frontend = $this->askChoice('Please choose the frontend to use', $frontends, 'ark2');
         $config['admin'] = $this->chooseServerConfig();
         $config['server'] = $config['admin'];
         unset($config['server']['wrapperClass']);
         $config['server']['user'] = $this->askQuestion('Please enter the site database user');
         $config['server']['password'] = $this->askPassword($config['server']['user']);
+
+        $strategy = [
+            'Separate databases for config, data, and users (recommended for large or multi-site installs)',
+            'Separate databases for config and data (recommended for smaller or single site installs)',
+            'Single database for config and data (not recommended, makes upgrades harder)',
+        ];
+        $strategy = $this->askChoice('Please choose a database strategy', $strategy, 0);
+
+        $spatial = [
+            'same' => 'Use the same database server',
+            'new' => 'Use a different database server',
+            'geos' => 'Use GEOS (processing only, no indexing)',
+            'none' => 'No geospatial processing',
+        ];
+        $spatial = $this->askChoice('Please choose a geospatial indexing/processing option', $spatial, 0);
+
         foreach (['core', 'data', 'spatial', 'user'] as $db) {
             $config['connections'][$db]['dbname'] = $site.'_ark_'.$db;
             $config['connections'][$db]['server'] = $config['server']['server'];
@@ -78,17 +95,8 @@ class SiteCreateCommand extends DatabaseCommand
             $config['site'] = $site;
             ARK::writeSiteConfig($site, $config);
             $this->write('Site created.');
-            $this->write('Please add an Admin User from the Site Admin Console.');
             $this->result = $site;
             return $this->successCode();
-
-            /* TODO Need new Application with full DB connection created to do this, use Command Bus?
-            $admin = $this->app['user.manager']->create($adminEmail, $adminPassword);
-            $admin->setEnabled(true);
-            $admin->addRole('ROLE_ADMIN');
-            $this->app['user.manager']->save($admin);
-            $this->output->writeln('ARK admin user created.');
-            */
         }
         $this->write("\nFAILED: ARK site database not created.");
         return $this->errorCode();
@@ -124,7 +132,7 @@ class SiteCreateCommand extends DatabaseCommand
                 $options = ['keep', 'drop', 'stop'];
                 $action = $this->askChoice(
                     "The $db database $dbname already exists on server, do you want to do with it?",
-                    ['keep', 'drop', 'stop'],
+                    $options,
                     'keep'
                 );
                 if ($action !== 'keep') {
@@ -176,7 +184,7 @@ class SiteCreateCommand extends DatabaseCommand
                 } catch (DBALException $e) {
                     $this->writeException("Load Schema to database $dbname failed", $e);
                     $admin->rollBack();
-                    $admin->executeQuery('SET FOREIGN_KEY_CHECKS=1');
+                    $admin->enableForeignKeyChecks();
                     $admin->close();
                     return false;
                 }
@@ -186,14 +194,48 @@ class SiteCreateCommand extends DatabaseCommand
                     $admin->commit();
                     $this->write(" * Loaded $db data...");
                 } catch (Exception $e) {
+                    $this->writeException("Load Data to database $dbname failed", $e);
                     $admin->rollBack();
+                    $admin->enableForeignKeyChecks();
+                    $admin->close();
+                    return false;
                 }
             }
         }
 
+        // Set up the Sysdmin user
+        $this->write("Setting up the 'sysadmin' user for the site.");
+        $password = $this->askPassword('sysadmin');
+        $encoder = new BCryptPasswordEncoder(13);
+        $password = $encoder->encodePassword($password, null);
+        $email = $this->askQuestion('Please enter the email for the site sysadmin user');
+        $admin->close();
+        $config['admin']['dbname'] = $config['connections']['user']['dbname'];
+        $admin = $this->getConnection($config['admin']);
+        $admin->connect();
+        $admin->beginTransaction();
+        try {
+            $sql = '
+                UPDATE ark_security_user
+                SET enabled = :enabled, password = :password, email = :email
+                WHERE user = :user
+            ';
+            $parms = [
+                ':enabled' => true,
+                ':email' => $email,
+                ':password' => $password,
+                ':user' => 'sysadmin',
+            ];
+            $admin->executeUpdate($sql, $parms);
+            $admin->commit();
+            $this->write('Site sysadmin user enabled');
+        } catch (Exception $e) {
+            $this->writeException('Enabling site sysadmin user failed, please enable manually', $e);
+            $admin->rollBack();
+        }
+
         // Termiate the admin connection
         $admin->close();
-        // TODO Write out config file?
         return true;
     }
 }

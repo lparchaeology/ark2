@@ -30,12 +30,11 @@
 namespace ARK\View;
 
 use ARK\Actor\Actor;
+use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use ARK\Service;
 use ARK\Vocabulary\Term;
 use ARK\Workflow\Permission;
-use Symfony\Component\Form\Form;
 
 class Page extends Element
 {
@@ -66,27 +65,78 @@ class Page extends Element
         return $this->update;
     }
 
-    public function header() : ?Group
+    public function header() : ?Element
     {
         return $this->header;
     }
 
-    public function sidebar() : ?Group
+    public function sidebar() : ?Element
     {
         return $this->sidebar;
     }
 
-    public function content() : ?Group
+    public function content() : ?Element
     {
         return $this->content;
     }
 
-    public function footer() : ?Group
+    public function footer() : ?Element
     {
         return $this->footer;
     }
 
-    public function buildState($data, iterable $state) : iterable
+    public function buildView(iterable $parent = []) : iterable
+    {
+        //dump('BUILD PAGE VIEW : '.get_class($this).' '.$this->id().' '.$this->name().' '.$this->keyword());
+        //dump($parent);
+        $view = parent::buildView($parent);
+        if ($this->content()) {
+            $view['children'][] = $this->content()->buildView($view);
+        }
+        //dump($view);
+        return $view;
+    }
+
+    public function buildForms(iterable $view) : iterable
+    {
+        //dump('PAGE FORMS : '.$this->id());
+        //dump($view);
+        $child = $view['children'][0] ?? [];
+        return isset($child['element']) ? $child['element']->buildForms($child) : [];
+    }
+
+    public function createFormViews(iterable $forms) : iterable
+    {
+        $views = [];
+        foreach ($forms as $name => $form) {
+            if ($form) {
+                $views[$name] = $form->createView();
+            }
+        }
+        return $views;
+    }
+
+    public static function loadMetadata(ClassMetadata $metadata) : void
+    {
+        // Joined Table Inheritance
+        $builder = new ClassMetadataBuilder($metadata, 'ark_view_page');
+
+        // Fields
+        $builder->addStringField('mode', 10);
+        $builder->addStringField('visibility', 30);
+        KeywordTrait::buildKeywordMetadata($builder);
+        $builder->addStringField('template', 100);
+
+        // Associations
+        $builder->addManyToOneField('header', Element::class, 'header', 'element');
+        $builder->addManyToOneField('sidebar', Element::class, 'sidebar', 'element');
+        $builder->addManyToOneField('content', Element::class, 'content', 'element');
+        $builder->addManyToOneField('footer', Element::class, 'footer', 'element');
+        $builder->addPermissionField('read', 'view');
+        $builder->addPermissionField('update', 'edit');
+    }
+
+    protected function buildState($data, iterable $state) : iterable
     {
         $state = array_replace_recursive($this->defaultState(), $state);
         $state = parent::buildState($data, $state);
@@ -105,52 +155,7 @@ class Page extends Element
             // TODO What?
         }
         $state['mode'] = $mode;
-
         $state['page'] = $this;
         return $state;
-    }
-
-    public function renderView($data, iterable $state, iterable $forms = null) : string
-    {
-        $context = $this->renderContext($data, $state, $forms);
-        return Service::view()->renderView($this->template(), $context);
-    }
-
-    public function pageContext($data, iterable $state, iterable $forms = null) : iterable
-    {
-        $context = $this->buildContext($data, $state);
-        $context['page'] = $this;
-        $context['layout'] = $this->content();
-        $views = null;
-        if ($forms) {
-            foreach ($forms as $name => $form) {
-                if ($form) {
-                    $views[$name] = $form->createView();
-                }
-            }
-        }
-        $context['state']['forms'] = $views;
-        $context['forms'] = $views;
-        $context['form'] = null;
-        return $context;
-    }
-
-    public static function loadMetadata(ClassMetadata $metadata) : void
-    {
-        // Joined Table Inheritance
-        $builder = new ClassMetadataBuilder($metadata, 'ark_view_page');
-
-        // Fields
-        $builder->addStringField('mode', 10);
-        $builder->addStringField('visibility', 30);
-        $builder->addStringField('template', 100);
-
-        // Associations
-        $builder->addPermissionField('read', 'view');
-        $builder->addPermissionField('update', 'edit');
-        $builder->addManyToOneField('header', Group::class, 'header', 'element');
-        $builder->addManyToOneField('sidebar', Group::class, 'sidebar', 'element');
-        $builder->addManyToOneField('content', Group::class, 'content', 'element');
-        $builder->addManyToOneField('footer', Group::class, 'footer', 'element');
     }
 }

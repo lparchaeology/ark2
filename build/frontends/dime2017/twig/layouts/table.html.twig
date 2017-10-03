@@ -6,7 +6,7 @@
     {% set items = data.items %}
 
     <table
-        id="{{layout.id}}"
+        id="{{element.id}}"
         class="{{table_class}}"
         data-toggle="table"
         data-classes="{{table_class}}"
@@ -25,16 +25,12 @@
             <tr>
                 <th class="checkedhead" data-field="checked" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
                 {% if items[0] is defined and items[0].hasAttribute(state.image) %}
-                    <th class="thumbimagehead" data-field="{{state.image}}" data-title="{{state.image}}" data-sortable="false"></th>
+                    <th class="thumbimagehead" data-field="{{ state.image }}" data-title="{{ state.image }}" data-sortable="false"></th>
                 {% endif %}
-                {% for cell in layout.cells %}
-                    {% set field = cell.element %}
-                    {% if state.actor.hasPermission(field.attribute.readPermission) %}
-                        <th data-field="{{field.id}}" data-title="{{field.keyword|trans}}" data-sortable="true" data-sorter="alphanum" data-visible="{{ cell.visible }}" data-card-visible="false">
-                            {{field.keyword|trans}}
-                        </th>
-                    {%  endif %}
-                    {% do form[field.formName].setRendered %}
+                {% for child in children %}
+                    <th data-field="{{ child.element.id }}" data-title="{{ child.state.keyword | translate }}" data-sortable="true" data-sorter="alphanum" data-visible="{{ child.state.visible }}" data-card-visible="false">
+                        {{ child.state.keyword | translate }}
+                    </th>
                 {% endfor %}
                 <th class="controlshead" data-field="controls" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
             </tr>
@@ -57,14 +53,12 @@
                             {% endif %}
                         </td>
                     {% endif %}
-                    {% for cell in layout.cells %}
-                        {% set field = cell.element %}
-                        {% if state.actor.hasPermission(field.attribute.readPermission) %}
-                            <td>
-                                <span class="cell-label">{{field.keyword|trans}}</span>
-                                {{ field.renderView(item, state) }}
-                            </td>
-                        {% endif %}
+                    {% for child in children %}
+                        {% set child = child | merge({'data' : item.property(child.state.name) }) %}
+                        <td>
+                            <span class="cell-label">{{ child.state.keyword | translate }}</span>
+                            {{ child.element.renderView(child, forms, form) | raw }}
+                        </td>
                     {% endfor %}
                     <td class="controls">
                         <span class="cell-label">{{ 'dime.controls'|trans }}</span>
@@ -109,41 +103,3 @@ window.translations['dime.user.update.success'] = "{{ 'dime.user.update.success'
 window.translations['dime.user.update.failure'] = "{{ 'dime.user.update.failure' | trans }}"
 
 </script>
-{#}
-<div id = "thumbModal"></div>
-
-<div id = "chooseAction" class="btn chooseAction">{{ 'dime.chooseaction'|trans }}</div>
-<div id = "chooseActionSelectHolder"></div>
-
-window.defaultAvailableActions = [
-    {% if items[0] is defined %}
-    {% for action in workflow.schemaActions(items[0].schema) %}
-        {
-            "keyword":"{{ action.keyword }}",
-            "translation":"{{ action.keyword | trans }}",
-            "available":true,
-            "visible":false,
-        },
-    {% endfor %}
-    {% endif %}
-    ];
-
-window.itemAvailableActions = {
-    {% for item in items %}
-        "{{item.id}}": {
-            {% for action in workflow.actions(workflow.actor, item) %}
-            "{{ action.keyword }}":{
-                    "keyword":"{{ action.keyword }}",
-                    "translation":"{{ action.keyword | trans }}",
-                    "available":true,
-                    "visible":true,
-                },
-            {% endfor %}
-        },
-    {% endfor %}
-};
-
-console.log({"itemAvailableAction":window.itemAvailableActions,"defaultAvailableActions":window.defaultAvailableActions});
-
-</script>
-#}

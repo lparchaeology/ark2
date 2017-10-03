@@ -80,8 +80,6 @@ class UserRegisterController extends DimeFormController
         $user->setLevel('ROLE_USER');
         ORM::persist($user);
 
-        $actorUser = Service::security()->createActorUser($actor, $user);
-
         if (isset($data['role'])) {
             $role = ORM::find(Role::class, $data['role']['role']->name());
             $museum = $data['role']['museum'];
@@ -92,29 +90,18 @@ class UserRegisterController extends DimeFormController
             $expiry = null;
         }
 
-        $actorRole = Service::security()->createActorRole($actor, $role, $museum, $expiry);
-
         if ($role->id() === 'detectorist') {
             $detectorist = DIME::generateDetectoristId();
             $actor->property('detectorist_id')->setValue($detectorist);
         }
 
-        if (Service::security()->isLoggedIn()) {
-            $registeredBy = Service::workflow()->actor();
-            $message = 'dime.admin.user.register';
-            $login = false;
-        } else {
-            $registeredBy = $actor;
-            $message = 'dime.user.register';
-            $login = true;
-        }
-        Service::workflow()->apply($registeredBy, 'register', $actor);
-
+        Service::security()->createActorRole($actor, $role, $museum, $expiry);
         Service::security()->registerUser($user, $actor);
 
-        if ($login && $user->isEnabled()) {
-            Service::security()->loginAsUser($user, 'default', $request);
+        if (Service::security()->isLoggedIn()) {
+            Service::view()->addSuccessFlash('dime.admin.user.register');
+        } else {
+            Service::view()->addSuccessFlash('dime.user.register');
         }
-        Service::view()->addSuccessFlash($message);
     }
 }

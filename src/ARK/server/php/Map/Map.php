@@ -31,12 +31,12 @@
 namespace ARK\Map;
 
 use ARK\Model\KeywordTrait;
+use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use Brick\Geo\MultiPoint;
 use Brick\Geo\Point;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping\ClassMetadata;
 
 class Map
 {

@@ -34,19 +34,15 @@ use Symfony\Component\Form\FormView;
 
 interface ElementInterface
 {
-    public function formName() : ?string;
-
-    public function template() : string;
+    public function name() : ?string;
 
     public function mode() : string;
 
-    public function buildState($data, iterable $state) : iterable;
+    public function template() : string;
 
-    public function buildData($data, iterable $state);
+    public function buildView(iterable $parent) : iterable;
 
-    public function buildOptions($data, iterable $state, iterable $options = []) : iterable;
+    public function buildForm(iterable $view, FormBuilderInterface $builder) : void;
 
-    public function buildForm(FormBuilderInterface $builder, $data, iterable $state, iterable $options = []) : void;
-
-    public function renderForm($data, iterable $state, FormView $form = null) : string;
+    public function renderView(iterable $view, iterable $forms = [], FormView $form = null) : string;
 }

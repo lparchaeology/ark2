@@ -29,32 +29,22 @@
 
 namespace ARK\Framework\Controller;
 
+use ARK\Error\ErrorException;
 use ARK\Framework\PageController;
+use ARK\Http\Error\NotFoundError;
 use ARK\Message\Message;
 use ARK\ORM\ORM;
-use ARK\Vocabulary\Vocabulary;
-use DIME\DIME;
 use Symfony\Component\HttpFoundation\Request;
 
 class MessagePageController extends PageController
 {
     public function buildData(Request $request)
     {
-        $data['messages'] = DIME::getNotifications();
-        $msg = $request->query->get('id');
-        if ($msg) {
-            $message = ORM::find(Message::class, $msg);
-            if ($messages->contains($message)) {
-                $data['message'] = $message;
-            }
+        if (!$data['message'] = ORM::find(Message::class, $request->attributes->get('message'))) {
+            throw new ErrorException(
+                new NotFoundError('MESSAGE_NOT_FOUND', 'Message not found', 'The message was not found')
+            );
         }
         return $data;
-    }
-
-    public function buildState(Request $request, $data) : iterable
-    {
-        $state = parent::buildState($request, $data);
-        $state['event_vocabulary'] = ORM::find(Vocabulary::class, 'core.event.class');
-        return $state;
     }
 }

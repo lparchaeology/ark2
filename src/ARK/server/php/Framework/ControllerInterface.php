@@ -31,10 +31,11 @@ namespace ARK\Framework;
 
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 interface ControllerInterface
 {
-    public function handleRequest(Request $request);
+    public function handleRequest(Request $request) : Response;
 
     public function buildData(Request $request);
 

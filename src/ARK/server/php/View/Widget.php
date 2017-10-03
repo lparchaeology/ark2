@@ -29,6 +29,7 @@
 
 namespace ARK\View;
 
+use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use Symfony\Component\Form\ButtonTypeInterface;
@@ -41,14 +42,24 @@ class Widget extends Element
     protected $formOptions = '';
     protected $formOptionsArray;
 
-    public function buildState($data, iterable $state) : iterable
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
-        if (!isset($state['label'])) {
-            $state['label'] = $this->showLabel();
-        }
-        if (!isset($state['name'])) {
-            $state['name'] = $this->formName();
-        }
+        // Joined Table Inheritance
+        $builder = new ClassMetadataBuilder($metadata, 'ark_view_widget');
+
+        // Fields
+        $builder->addStringField('name', 30);
+        $builder->addStringField('choices', 30);
+        KeywordTrait::buildKeywordMetadata($builder);
+        $builder->addStringField('template', 100);
+        $builder->addStringField('formType', 100, 'form_type');
+        $builder->addStringField('formOptions', 4000, 'form_options');
+    }
+
+    protected function buildState($data, iterable $state) : iterable
+    {
+        $state['label'] = $state['label'] ?? $this->showLabel();
+        $state['name'] = $state['name'] ?? $this->name();
         if (!isset($state['keyword'])) {
             if ($this->keyword()) {
                 $state['keyword'] = $this->keyword();
@@ -67,7 +78,7 @@ class Widget extends Element
         return $state;
     }
 
-    public function buildData($data, iterable $state)
+    protected function buildData($data, iterable $state)
     {
         if ($this->isButton() || $state['sanitise'] === 'redact') {
             return null;
@@ -85,7 +96,7 @@ class Widget extends Element
         return $data;
     }
 
-    public function buildOptions($data, iterable $state, iterable $options = []) : iterable
+    protected function buildOptions($data, iterable $state, iterable $options = []) : iterable
     {
         if ($this->formOptionsArray === null) {
             $this->formOptionsArray = ($this->formOptions ? json_decode($this->formOptions, true) : []);
@@ -131,24 +142,15 @@ class Widget extends Element
         return $options;
     }
 
-    public function buildContext($data, iterable $state, FormView $form = null) : iterable
+    protected function buildContext(iterable $view, iterable $forms = [], FormView $form = null) : iterable
     {
-        $context = parent::buildContext($data, $state, $form);
-        $context['widget'] = $this;
-        return $context;
-    }
-
-    public static function loadMetadata(ClassMetadata $metadata) : void
-    {
-        // Joined Table Inheritance
-        $builder = new ClassMetadataBuilder($metadata, 'ark_view_widget');
-
-        // Fields
-        $builder->addStringField('name', 30);
-        $builder->addStringField('choices', 30);
-        $builder->addStringField('template', 100);
-        $builder->addStringField('formType', 100, 'form_type');
-        $builder->addStringField('formOptions', 4000, 'form_options');
+        $view = parent::buildContext($view, $forms, $form);
+        $view['widget'] = $this;
+        if (!$view['form']) {
+            $builder = $this->formBuilder($view['state']['name'], $view['data'], $view['options']);
+            $view['form'] = $builder->getForm()->createView();
+        }
+        return $view;
     }
 
     private function isButton()

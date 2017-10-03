@@ -16,7 +16,11 @@ var setAdminUserId = function setAdminUserId(id) {
 var fetchAdminUserActor = function (id) {
     clearPageAlert();
     $('#actor').clearForm();
-    $.ajax(Router.generatePath('api.internal.actor', { id: id })).fail(function (response) {
+    var path = Router.generatePath('api.internal.actor', { id: id });
+    if (path === undefined) {
+        return;
+    }
+    $.ajax(path).fail(function (response) {
         $('#actor').clearForm();
         setPageAlert(response.status, response.message, 5000);
     }).done(function (response) {
