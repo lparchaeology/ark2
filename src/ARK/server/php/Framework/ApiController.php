@@ -31,9 +31,7 @@ namespace ARK\Framework;
 
 use ARK\Http\JsonResponse;
 use ARK\ORM\ORM;
-use ARK\Service;
-use ARK\View\Group;
-use Symfony\Component\Form\Form;
+use ARK\View\Form;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -45,18 +43,19 @@ abstract class ApiController extends Controller
         try {
             $content = json_decode($request->getContent());
 
-            $group = ORM::find(Group::class, $request->attributes->get('_form'));
+            $group = ORM::find(Form::class, $request->attributes->get('_form'));
 
-            $data = $this->buildData($request);
-            $state = $this->buildState($request, $data);
-            $state = array_replace_recursive($group->defaultState(), $state);
-            $state['actor'] = Service::workflow()->actor();
-            $options = $group->defaultOptions();
-            $forms = $group->buildForms($data, $state, $options);
-            // TODO verify this does block!!!
-            if ($state['mode'] === 'deny') {
+            $parent['data'] = $this->buildData($request);
+            $parent['state'] = $this->buildState($request, $parent['data']);
+            $parent['state'] = array_replace_recursive($group->defaultState(), $parent['state']);
+            $parent['options'] = [];
+            $view = $group->buildView($parent);
+            //dump($view);
+            if ($view['state']['mode'] === 'deny') {
                 throw new AccessDeniedException('core.error.access.denied');
             }
+            $forms = $group->buildForms($view);
+
             $json = [];
             if ($forms && $request->getMethod() === 'POST') {
                 $parms = $request->request->all();
@@ -86,9 +85,8 @@ abstract class ApiController extends Controller
                     $json['message'] = $e->getMessage();
                 }
             } else {
-                $form = $forms[$group->formName()];
-                $view = $form->createView();
-                $json = $this->jsonView($view, $json);
+                $form = $forms[$group->name()]->createView();
+                $json = $this->jsonView($form, $json);
             }
         } catch (Throwable $e) {
             $json['status'] = $e->getCode();

@@ -94,6 +94,31 @@ abstract class Element implements ElementInterface
         return $this->cells ?? [];
     }
 
+    public function defaultState($route = null) : iterable
+    {
+        $state['actor'] = null;
+        $state['page'] = null;
+        $state['element'] = null;
+        $state['layout'] = null;
+        $state['field'] = null;
+        $state['widget'] = null;
+        $state['map'] = null;
+        $state['vocabulary'] = null;
+        $state['name'] = null;
+        $state['mode'] = null;
+        $state['modus'] = null;
+        $state['sanitise'] = null;
+        $state['label'] = null;
+        $state['help'] = null;
+        $state['keyword'] = null;
+        $state['action'] = null;
+        $state['required'] = true;
+        $state['value']['modus'] = null;
+        $state['parameter']['modus'] = null;
+        $state['format']['modus'] = null;
+        return $state;
+    }
+
     public function buildView(iterable $parent = []) : iterable
     {
         //dump('BUILD VIEW : '.get_class($this).' '.$this->id().' '.$this->name().' '.$this->keyword());
@@ -182,31 +207,6 @@ abstract class Element implements ElementInterface
             return null;
         }
         return $data;
-    }
-
-    protected function defaultState($route = null) : iterable
-    {
-        $state['actor'] = null;
-        $state['page'] = null;
-        $state['element'] = null;
-        $state['layout'] = null;
-        $state['field'] = null;
-        $state['widget'] = null;
-        $state['map'] = null;
-        $state['vocabulary'] = null;
-        $state['name'] = null;
-        $state['mode'] = null;
-        $state['modus'] = null;
-        $state['sanitise'] = null;
-        $state['label'] = null;
-        $state['help'] = null;
-        $state['keyword'] = null;
-        $state['action'] = null;
-        $state['required'] = true;
-        $state['value']['modus'] = null;
-        $state['parameter']['modus'] = null;
-        $state['format']['modus'] = null;
-        return $state;
     }
 
     protected function buildState($data, iterable $state) : iterable
