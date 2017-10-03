@@ -3,7 +3,6 @@
 <div class='table-wrapper-div'>
 
     {% set table_class = 'table bootstrap-table table-hover dime-table' %}
-    {% set items = data.items %}
 
     <table
         id="{{element.id}}"
@@ -24,7 +23,7 @@
         <thead>
             <tr>
                 <th class="checkedhead" data-field="checked" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
-                {% if items[0] is defined and items[0].hasAttribute(state.image) %}
+                {% if data[0] is defined and data[0].hasAttribute(state.image) %}
                     <th class="thumbimagehead" data-field="{{ state.image }}" data-title="{{ state.image }}" data-sortable="false"></th>
                 {% endif %}
                 {% for child in children %}
@@ -37,7 +36,7 @@
         </thead>
 
         <tbody>
-            {% for item in items %}
+            {% for item in data %}
                 <tr data-unique-id = "{{ item.id }}" >
                     <td class="not-card-visible"><span class="tablecheckbox glyphicon glyphicon-unchecked"></span></td>
                     {% if item.hasAttribute(state.image) %}
@@ -81,15 +80,15 @@
 
 <script>
 window.itemkey =
-    {% if items[0] is defined %}
-        "{{ items[0].schema.module.id }}";
+    {% if data[0] is defined %}
+        "{{ data[0].schema.module.id }}";
     {% else %}
         {{null}}
     {% endif %}
 
 window.itemlist = [
-    {% if items|length > 0 %}
-        {% for item in items %}
+    {% if data|length > 0 %}
+        {% for item in data %}
             "{{ item.id }}",
         {% endfor %}
     {% else %}

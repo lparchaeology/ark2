@@ -14,7 +14,7 @@
         </div>
         <div class="row usertool">
             {% if state.notifications is defined %}
-                {% if state.notifications|length %}
+                {% if state.notifications | length %}
                     {%  set notificationicon = 'icon-new-notification small wide' %}
                 {% else %}
                     {%  set notificationicon = 'icon-notification small' %}

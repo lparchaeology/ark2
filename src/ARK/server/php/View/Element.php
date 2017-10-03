@@ -44,7 +44,7 @@ abstract class Element implements ElementInterface
 
     protected $element = '';
     protected $type;
-    protected $name = '';
+    protected $name;
     protected $mode = '';
     protected $template = '';
     protected $formType = '';
@@ -175,8 +175,11 @@ abstract class Element implements ElementInterface
     protected function buildData($data, iterable $state)
     {
         $name = $state['name'] ?? $this->name ?? null;
-        if ($name && is_array($data) && array_key_exists($name, $data)) {
-            return $data[$name];
+        if ($name) {
+            if (is_array($data) && array_key_exists($name, $data)) {
+                return $data[$name];
+            }
+            return null;
         }
         return $data;
     }

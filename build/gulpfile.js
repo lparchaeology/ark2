@@ -24,7 +24,7 @@ var assetTasks = [
     //'styles',
 ];
 
-var buildTasks = baseTasks.concat(assetTasks);
+var buildTasks = baseTasks.concat(assetTasks, ['scripts', 'styles']);
 
 /*
  * Return Frontend Source Path

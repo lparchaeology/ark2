@@ -234,12 +234,24 @@ class Field extends Element
             $options['state']['value']['modus'] = 'static';
             $options['state']['display']['name'] = 'static';
             $options['state']['display']['modus'] = 'static';
-            $options['state']['display']['type'] = $this->staticFormType();
-            $options['state']['display']['options'] = $this->valueOptions($options['state']);
+            if ($this->attribute()->hasMultipleOccurrences()) {
+                $options['state']['display']['type'] = CollectionType::class;
+                $options['state']['display']['options'] = $this->valueOptions($options['state']);
+                $options['state']['display']['options']['entry_type'] = $this->staticFormType();
+                $options['state']['display']['options']['entry_options']['label'] = false;
+            } else {
+                $options['state']['display']['type'] = $this->staticFormType();
+                $options['state']['display']['options'] = $this->valueOptions($options['state']);
+            }
             $options['state']['static']['name'] = '_static';
             $options['state']['static']['modus'] = 'hidden';
-            $options['state']['static']['type'] = HiddenType::class;
-            $options['state']['static']['options'] = [];
+            if ($this->attribute()->hasMultipleOccurrences()) {
+                $options['state']['static']['type'] = CollectionType::class;
+                $options['state']['static']['options']['entry_type'] = HiddenType::class;
+            } else {
+                $options['state']['static']['type'] = HiddenType::class;
+                $options['state']['static']['options'] = [];
+            }
             $valueModus = 'hidden';
         } elseif ($options['state']['choices']) {
             if (isset($options['state']['display']['property'])) {
@@ -270,7 +282,7 @@ class Field extends Element
         );
         $options['state']['value']['options'] = $this->valueOptions($options['state']);
         if ($this->attribute()->hasMultipleOccurrences()
-            && ($state['value']['modus'] === 'static' || $state['value']['modus'] === 'hidden')
+            && ($options['state']['value']['modus'] === 'static' || $options['state']['value']['modus'] === 'hidden')
             && $options['state']['value']['type'] = HiddenType::class
         ) {
             $options['state']['value']['type'] = CollectionType::class;
@@ -405,7 +417,6 @@ class Field extends Element
                 }
                 $options['attr']['data-date-format'] = $moment;
             }
-            $options['attr']['class'] = $this->concatAttr($options, 'class', 'datetimepicker-input');
         } else {
             unset($options['widget']);
         }

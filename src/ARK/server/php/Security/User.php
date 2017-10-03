@@ -92,8 +92,13 @@ class User implements AdvancedUserInterface, Serializable
         return $this->id;
     }
 
+    public function setId($id) : void
+    {
+        $this->id = $id;
+    }
+
     // UserInterface
-    public function getUsername() : string
+    public function getUsername() : ?string
     {
         return $this->username;
     }
@@ -108,7 +113,7 @@ class User implements AdvancedUserInterface, Serializable
         $this->username = $username;
     }
 
-    public function email() : string
+    public function email() : ?string
     {
         return $this->email;
     }

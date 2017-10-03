@@ -81,8 +81,9 @@ class StaticType extends AbstractType implements DataTransformerInterface
 
     private function transformValue($value)
     {
+        // TODO Convert these properly!
         if ($value instanceof DateTime) {
-            return $value->format('Y-m-d H:i:s');
+            return $value->format('Y-m-d');
         }
         if ($value instanceof Term) {
             return $value->keyword();

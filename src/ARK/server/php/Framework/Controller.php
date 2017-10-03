@@ -35,19 +35,19 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-abstract class Controller implements ControllerInterface
+abstract class Controller
 {
     public function __invoke(Request $request) : Response
     {
         return $this->handleRequest($request);
     }
 
-    public function buildData(Request $request)
+    protected function buildData(Request $request)
     {
         return null;
     }
 
-    public function buildState(Request $request, $data) : iterable
+    protected function buildState(Request $request, $data) : iterable
     {
         $actor = Service::workflow()->actor();
         $state['actor'] = $actor;
@@ -60,14 +60,19 @@ abstract class Controller implements ControllerInterface
         return $state;
     }
 
-    public function defaultOptions(string $route = null) : iterable
+    protected function defaultOptions(string $route = null) : iterable
     {
         $options['data'] = null;
         $options['forms'] = null;
         return $options;
     }
 
-    public function processForm(Request $request, Form $form) : void
+    protected function buildContext(Request $request, iterable $view) : iterable
+    {
+        return $view;
+    }
+
+    protected function processForm(Request $request, Form $form) : void
     {
     }
 

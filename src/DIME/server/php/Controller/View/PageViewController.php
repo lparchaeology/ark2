@@ -68,11 +68,10 @@ class PageViewController extends DimeFormController
             $content .= $value->content();
         }
 
-        $state = $this->buildState($request, $item);
+        $context['state'] = $this->buildState($request, $item);
+        $context = $this->buildContext($request, $context);
+        $context['content'][0] = $content;
 
-        $options['content'][0] = $content;
-        $options['state'] = $state;
-
-        return Service::view()->renderResponse('pages/page.html.twig', $options);
+        return Service::view()->renderResponse('pages/page.html.twig', $context);
     }
 }

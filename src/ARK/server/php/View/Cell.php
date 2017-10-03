@@ -54,7 +54,7 @@ class Cell implements ElementInterface
     protected $class = '';
     protected $element;
     protected $name = '';
-    protected $width = 0;
+    protected $width;
     protected $map;
     protected $vocabulary;
     protected $label = false;
@@ -316,9 +316,7 @@ class Cell implements ElementInterface
         if ($this->pattern !== null) {
             $state['pattern'] = $this->pattern;
         }
-        if ($this->width !== null) {
-            $state['width'] = $this->width;
-        }
+        $state['width'] = $this->width;
         if ($this->display) {
             $state['display']['name'] = $this->display;
         }

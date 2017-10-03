@@ -55,6 +55,7 @@ abstract class PageController extends Controller
         $parent['state'] = $this->buildState($request, $parent['data']);
         $parent['options'] = [];
         $view = $page->buildView($parent);
+        //dump($view);
         if ($view['state']['mode'] === 'deny') {
             throw new AccessDeniedException('core.error.access.denied');
         }
@@ -79,20 +80,30 @@ abstract class PageController extends Controller
                 Service::view()->addErrorFlash('core.error.form.invalid');
                 foreach ($posted->getErrors(true) as $error) {
                     $cause = $error->getCause();
-                    $msg = ($cause ? $cause->getPropertyPath().' '.(string) $cause->getCause()->getMessage() : '');
-                    Service::view()->addErrorFlash($error->getMessage().' '.$msg);
+                    $msg = $error->getMessage();
+                    if ($cause) {
+                        $msg = $msg.' '.$cause->getPropertyPath();
+                        $cause2 = $cause->getCause();
+                        if ($cause2) {
+                            $msg = $msg.' '.(string) $cause->getCause()->getMessage();
+                        }
+                    }
+                    Service::view()->addErrorFlash($msg);
                 }
             } catch (WorkflowException $e) {
                 Service::view()->addErrorFlash($e->getMessage());
             }
         }
+        $view = $this->buildContext($request, $view);
         $forms = $page->createFormViews($forms);
+        //dump($view);
+        //dump($forms);
         $response = new Response($page->renderView($view, $forms));
         //dump($response)
         return $response;
     }
 
-    public function buildState(Request $request, $data) : iterable
+    protected function buildState(Request $request, $data) : iterable
     {
         $state = parent::buildState($request, $data);
 
@@ -119,11 +130,24 @@ abstract class PageController extends Controller
             $state['select']['actors'] = $select;
         }
 
+        return $state;
+    }
+
+    protected function defaultOptions(string $route = null) : iterable
+    {
+        $options = parent::defaultOptions($route);
+        $options['forms'] = null;
+        return $options;
+    }
+
+    protected function buildContext(Request $request, iterable $view) : iterable
+    {
+        $view = parent::buildContext($request, $view);
         // Set up routing paths for JavaScript Router
-        $state['routing']['base_path'] = $request->getBasePath();
-        $state['routing']['routes'] = [];
+        $view['routing']['base_path'] = $request->getBasePath();
+        $view['routing']['routes'] = [];
         foreach (Service::routes() as $name => $route) {
-            $state['routing']['routes'][$name] = [
+            $view['routing']['routes'][$name] = [
                 'host' => $route->getHost(),
                 'path' => $route->getPath(),
                 'schemes' => $route->getSchemes(),
@@ -131,14 +155,6 @@ abstract class PageController extends Controller
                 'condition' => $route->getCondition(),
             ];
         }
-
-        return $state;
-    }
-
-    public function defaultOptions(string $route = null) : iterable
-    {
-        $options = parent::defaultOptions($route);
-        $options['forms'] = null;
-        return $options;
+        return $view;
     }
 }

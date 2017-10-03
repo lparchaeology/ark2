@@ -66,19 +66,19 @@ class UserRegisterController extends DimeFormController
 
     public function processForm(Request $request, Form $form) : void
     {
-        dump($form);
         $data = $form->getData();
-        dump($data);
+
         $user = $data['credentials'];
-        dump($user);
+        $user->setId($user->username());
+        $user->setLevel('ROLE_USER');
+        ORM::persist($user);
+
         $actor = $data['actor'];
         $actor->setId($user->username());
         $actor->property('email')->setValue($user->email());
         ORM::persist($actor);
 
         $user->setName($actor->fullname());
-        $user->setLevel('ROLE_USER');
-        ORM::persist($user);
 
         if (isset($data['role'])) {
             $role = ORM::find(Role::class, $data['role']['role']->name());

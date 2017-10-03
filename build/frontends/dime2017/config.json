@@ -73,7 +73,8 @@
                     "tableexport.jquery.plugin/tableExport.js",
                     "colresizable/colResizable-1.6.js",
                     "bootstrap-sass/assets/javascripts/bootstrap.js",
-                    "eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js",
+                    "bootstrap-datetime-picker/js/bootstrap-datetimepicker.js",
+                    "bootstrap-datetime-picker/js/locales/bootstrap-datetimepicker.da.js",
                     "bootstrap-fileinput/js/plugins/piexif.js",
                     "bootstrap-fileinput/js/plugins/purify.js",
                     "bootstrap-fileinput/js/plugins/sortable.js",
@@ -158,11 +159,11 @@
                     "format": "css",
                     "vendor": [
                         "select2-bootstrap-theme/dist/select2-bootstrap.css",
+                        "bootstrap-datetime-picker/css/bootstrap-datetimepicker.css",
                         "x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css",
                         "bootstrap-table/dist/bootstrap-table.css",
                         "bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.css",
                         "bootstrap-fileinput/css/fileinput.css",
-                        "eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css",
                         "vis/dist/vis-timeline-graph2d.min.css"
                     ],
                     "core": [],

@@ -21,7 +21,7 @@
         icons="{ columns: 'glyphicon-th-list icon-th-list' }">
 
         {% if element.showCaption %}
-            <caption>{% element.keyword | translate('caption') %}</caption>
+            <caption>{{ element.keyword | translate('caption') }}</caption>
         {% endif %}
 
         {% if element.showHeader %}
@@ -46,16 +46,16 @@
         <tbody>
             {% for item in data %}
                 <tr data-unique-id="{{ item.id }}">
-                    {% if table.selection %}
+                    {% if element.selection %}
                         <td class="not-card-visible">
                             <span class="tablecheckbox glyphicon glyphicon-unchecked"></span>
                         </td>
                     {% endif %}
-                    {% if table.image %}
+                    {% if element.image %}
                         <td class="thumbimage">
-                            {% set image = item.property(table.image).value() %}
+                            {% set image = item.property(element.image).value() %}
                             {% if image is not empty %}
-                                {% if item.property(table.image).attribute.hasMultipleOccurrences %}
+                                {% if item.property(element.image).attribute.hasMultipleOccurrences %}
                                     {% set image = image[0] %}
                                 {% endif %}
                                 <img src="{{path('img', {'image': image.id}) ~ '?p=thumb'}}" alt=''/>
@@ -65,7 +65,12 @@
                         </td>
                     {% endif %}
                     {% for child in children %}
-                        {% set child = child | merge({'data' : item.property(child.state.name) }) %}
+                        {% if item.property is defined %}
+                            {% set val = item.property(child.state.name) %}
+                        {% else %}
+                            {% set val = attribute(item, child.state.name) %}
+                        {% endif %}
+                        {% set child = child | merge({'data' : val }) %}
                         <td>
                             <span class="cell-label">{{ child.state.keyword | translate }}</span>
                             {{ child.element.renderView(child, forms, form) | raw }}
@@ -77,7 +82,7 @@
             {% endfor %}
         </tbody>
 
-        {% if table.showFooter %}
+        {% if element.showFooter %}
             <tfoot>
             </tfoot>
         {% endif %}

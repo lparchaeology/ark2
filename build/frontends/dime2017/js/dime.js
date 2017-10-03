@@ -1,5 +1,23 @@
 $(document).ready(function () {
 
+    $('.datetimepicker').datetimepicker({
+        language: lang,
+    });
+
+    $('.datepicker').datetimepicker({
+        language: lang,
+        minView: 2,
+        autoclose: true,
+        clearBtn: true,
+        todayBtn: true,
+        todayHighlight: true,
+    });
+
+    $('.timepicker').datetimepicker({
+        language: lang,
+        maxView: 0,
+    });
+
     // HACK To add columns of checkboxes
     $("#find_secondary_term").css("width", "100%");
     $(".checkbox").addClass("col-xs-4 col-sm-4 ");
@@ -140,13 +158,9 @@ $(document).ready(function () {
         $("body").append($div);
     });
 
-    
-
-    
-
     $('[data-toggle="tooltip"]').tooltip({
         'trigger': 'manual'
-    }).on('click', function(e) {
+    }).on('click', function (e) {
         // show this one
         $(this).tooltip('toggle');
         // if any other tooltip are visible, hide them

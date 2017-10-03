@@ -67,10 +67,9 @@ class ScalarPropertyType extends AbstractPropertyType
         $formatName = $dataclass->formatName();
         $parameter = null;
         $parameterName = $dataclass->parameterName();
-
         $value = $property->value();
         // TODO WEAK COMPARISON to empty value!
-        if ($value == null || $value == $attribute->emptyValue()) {
+        if ($value === null || $value === $attribute->emptyValue()) {
             $value = $options['default_data'];
         }
 
@@ -126,7 +125,6 @@ class ScalarPropertyType extends AbstractPropertyType
             $parameter = $value[$parameterName] ?? $parameter;
             $value = $value[$valueName] ?? $value;
         }
-
         $forms[$valueName]->setData($value);
 
         if ($displayName && isset($forms[$displayName])) {
@@ -134,11 +132,7 @@ class ScalarPropertyType extends AbstractPropertyType
         }
 
         if (isset($forms['_static'])) {
-            if (is_array($display)) {
-                $forms['_static']->setData(implode(',', $display));
-            } else {
-                $forms['_static']->setData($display);
-	    }
+            $forms['_static']->setData($display);
         }
 
         if ($formatName && isset($forms[$formatName])) {
@@ -230,7 +224,7 @@ class ScalarPropertyType extends AbstractPropertyType
         }
         if ($display instanceof DateTime) {
             // TODO LOCALISE!!!
-            return $display->format('Y-m-d H:i:s');
+            return $display->format('Y-m-d');
         }
         if (is_array($display) && isset($display[$valueName])) {
             return $display[$valueName];

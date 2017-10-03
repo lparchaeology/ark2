@@ -22,7 +22,7 @@
 
     {% for col in row %}
 
-        {% if col[0]['state']['width'] is defined %}
+        {% if col[0]['state']['width'] != null %}
             <div class="col-md-{{- col[0]['state']['width'] -}}" >
         {% elseif rowlength > 12 %}
             <div class="col-md-12">

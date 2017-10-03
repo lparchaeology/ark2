@@ -1,7 +1,7 @@
 {# Define the notifications block #}
 {% block notifications %}
 
-{% if state.notifications|length %}
+{% if state.notifications | length %}
     {%  set notificationicon = 'icon-new-notification small wide' %}
 {% else %}
     {%  set notificationicon = 'icon-notification small' %}
@@ -14,7 +14,7 @@
     <div class="dropdown-menu messages">
         <span class="notification-dropdown-header">
             <span class="count">
-                    {{ state.notifications|length }}
+                    {{ state.notifications | length }}
             </span>
             {{ "core.message.newmessages" | translate }}
         </span>
@@ -25,10 +25,10 @@
                 </li>
             {% endfor %}
         </ul>
-        {% if state.notifications|length > 5 %}
+        {% if state.notifications | length > 5 %}
             <div class="notification-dropdown-info">
                 <a href = " {{ path( 'dime.home.messages' ) }}">
-                    {{ state.notifications|length-5 }} {{ 'core.message.notshown' | translate }}
+                    {{ state.notifications | length - 5 }} {{ 'core.message.notshown' | translate }}
                 </a>
             </div>
         {% endif %}

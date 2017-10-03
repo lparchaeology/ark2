@@ -4,7 +4,7 @@
         {{ 'dime.home.welcome' | trans({ '%name%': global.user.displayName }) }}
     </div>
     <div class="col-md-3 dimehome dimehometool" >
-        {% include "blocks/notifications.html.twig" with { 'data':data } %}
+        {% include "blocks/notifications.html.twig" %}
     </div>
     <div class="col-md-3 dimehome dimehometool" >
         <a href="{{ path("dime.finds.add") }}">

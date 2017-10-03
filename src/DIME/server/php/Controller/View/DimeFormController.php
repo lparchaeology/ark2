@@ -40,10 +40,10 @@ abstract class DimeFormController extends PageController
     public function buildState(Request $request, $data) : iterable
     {
         $state = parent::buildState($request, $data);
-        $state['image'] = 'image';
+
         $state['notifications'] = DIME::getUnreadNotifications();
-        // FIXME temp hardcode for now, later replace with Nav table
-        $state['page_config'] = $this->pageConfig($request->attributes->get('_route'));
+        $state['image'] = 'image';
+
         // FIXME Routes to pass into JS, temp hardcode for now, do properly later!
         $state['modules']['find']['api'] = Service::url('api.finds.collection');
         $state['modules']['find']['view'] = Service::url('dime.finds.list');
@@ -65,10 +65,19 @@ abstract class DimeFormController extends PageController
         $state['modules']['file']['view'] = null;
         $state['modules']['file']['route'] = null;
         $state['modules']['file']['resource'] = Service::translate('core.file', 'resource');
+
         return $state;
     }
 
-    protected function pageConfig(string $route = null) : iterable
+    protected function buildContext(Request $request, iterable $view) : iterable
+    {
+        $view = parent::buildContext($request, $view);
+        // FIXME temp hardcode for now, later replace with Nav table
+        $view['menus'] = $this->menuConfig($request->attributes->get('_route'));
+        return $view;
+    }
+
+    protected function menuConfig(string $route = null) : iterable
     {
         // TODO Use visibility / permissions
         $homeTarget = (Service::security()->isGranted('ROLE_USER') ? 'dime.home' : 'dime.front');

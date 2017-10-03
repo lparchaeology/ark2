@@ -1,11 +1,11 @@
 <div class="row">
     <div class="col-sm-12">
-        <center><h2>{{ 'dime.user.dashboard.title' | translate }}</h2></center>
+        <center><h3>{{ 'dime.user.dashboard.title' | translate }}</h3></center>
         <p>{{ 'dime.user.dashboard.finds' | translate('default', {'%count%': data.dashboard.finds}) }}</p>
         <p>{{ 'dime.user.dashboard.notifications' | translate('default', {'%count%': state.notifications.count}) }}</p>
-        {{ 'dime.user.dashboard.text' | translate | escape('html') }}
+        {{ 'dime.user.dashboard.text' | translate | raw }}
     </div>
     <div class="col-md-12 redtext">
-        {{ 'dime.user.dashboard.faq' | translate | escape('html') }}
+        {{ 'dime.user.dashboard.faq' | translate | raw }}
     </div>
 </div>
