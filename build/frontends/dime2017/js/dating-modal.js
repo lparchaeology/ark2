@@ -5,41 +5,44 @@ var initTimeline = function () {
     //Create a DataSet (allows two way data-binding)
     var items = new vis.DataSet();
 
-    var all_items = JSON.parse(JSON.stringify(items));
-
-    var query = { "concept": "dime.period" };
-
+    // window.periodvocabulary contains the apiresponse for all the periods
+    // this script is initiated on the response from that
     for (period_id in window.periodvocabulary) {
         var period = window.periodvocabulary[period_id];
 
+        // get the end - or the current date
         try {
             if (isNaN(period.parameters.year_end.value)) {
                 throw 'year end is NaN';
             }
-            end = period.parameters.year_end.value;
+            end = Math.min(period.parameters.year_end.value, (new Date()).getFullYear());
         } catch (e) {
             end = new Date().getFullYear();
         }
-
+        
+        // get the start - or 10,000BC- the begining of archaeology ;-)
         try {
             if (isNaN(period.parameters.year_start.value)) {
-                throw 'year end is NaN';
+                throw 'year start is NaN';
             }
             start = Math.max(period.parameters.year_start.value, -10000);
         } catch (e) {
             start = -10000;
         }
 
+        //items is our vis dataset - load it up with period objects
         items.add({
             id: period_id,
+            // the content we get from the dropdown menu - so it is translated and marked up how we want it
             content: $("#find_dating_period").find("option[value=" + period.name + "]").html(),
             start: vis.moment(start, "Y"),
             end: vis.moment(end, "Y").endOf("year")
         });
     }
 
+
+    // order by length - so longer periods go at the top
     function customOrder(a, b) {
-        // order by length
         a.length = a.start - a.end;
         b.length = b.start - b.end;
         return b.length - a.length;
@@ -56,31 +59,33 @@ var initTimeline = function () {
                 vertical: 1
             }
         },
-        zoomMin: 157680000000, //1 years 1000*60*60*24*365*1 in milliseconds
-        zoomMax: 315700000000000, //75000 years 1000*60*60*24*365*75000 in milliseconds
+        zoomMin: 157680000000, //5 years (1000*60*60*24*365*5) in milliseconds
+        zoomMax: 315700000000000, //10000 years (1000*60*60*24*365*10000) in milliseconds
         showCurrentTime: false,
         horizontalScroll: true,
         zoomKey: 'ctrlKey',
-        start: vis.moment('1066','Y'),
-        end: vis.moment('2000','Y')
-      };
+        end: vis.moment(new Date().getFullYear(),'Y'),
+        start: vis.moment(-2000,'Y')
+    };
 
       // Create a Timeline
       var timeline = new vis.Timeline(container, items, options);
 
+      // this will hide pills which are either too small or too large to be comfortably shown
       $('.vis-range').each(function(i,e){
           var remove = [];
-          if( $(e).width() < 100 || $(e).width() > 1500 ){
+          if( $(e).width() < 100 || $(e).width() > 2000 ){
               $(e).hide();
           } else {
               $(e).show();
           }
       });
 
-
+      // Options for the dropdowns
       select2Options = {
               minimumResultsForSearch: 11,
               width: 'resolve',
+              // sort alphabetically be translation
               sorter: function(data) {
                   return data.sort(function (a, b) {
                       if (a.text > b.text) {
@@ -94,29 +99,47 @@ var initTimeline = function () {
               },
           };
 
+      // now that we have that all set up make the find classify trigger a modal
       $('#find_classify').attr('data-toggle','modal');
-
+      
+      // on launching the modal do the stuff to make it work
       $('#find_classify').on('click',function(){
+          
+          // clear out the classification holder
           $(".classification-holder").empty();
-          console.log($('#find_class_term').val());
-          $(".classification-holder").append($('#find_class_term').clone().attr('id','find_class_term_modal'));
-          $('#find_class_term_modal').attr('style','width:20%');
-          $('#find_class_term_modal').val($('#find_class_term').val());
 
+          // attach a clone of the type dropdown - fake up a label for now
+          var typediv = $("<div class=\"col-md-4\">");
+          // TODO Get this markup from somewhere
+          var typelabel = "Type";
+          typediv.append($('<label>'+typelabel+'</label>'));
+          typediv.append($('#find_class_term').clone().attr('id','find_class_term_modal'))
+           $(".classification-holder").append(typediv);
+          
+          // set the new width, and set to match teh dropdown on the main page
+          $('#find_class_term_modal').attr('style','width:100%');
+          $('#find_class_term_modal').val($('#find_class_term').val());
+          
+          // launch it as a select2 
           $('#find_class_term_modal').select2(select2Options);
 
-          var zoomout = function(){
-              $('.vis-tl-zoom-out').trigger('click');
-          }
-
-          window.setTimeout(zoomout, 3000);
-
-          var level1 = $('<select id="find_subtype_level1" style="width:20%">');
-          $(".classification-holder").append(level1);
+          // attach and launch two empty subtype levels with hacked in labels
+          var class1 = $("<div class=\"col-md-4\">");
+          // TODO Get this markup from somewhere
+          class1label = "Klassifikation 1";
+          class1.append($('<label>'+class1label+'</label>'));
+          var level1 = $('<select id="find_subtype_level1" style="width:100%">');
+          class1.append(level1);
+          $(".classification-holder").append(class1);
           level1.select2(select2Options);
-
-          var level2 = $('<select id="find_subtype_level2" style="width:20%">');
-          $(".classification-holder").append(level2);
+          
+          var class2 = $("<div class=\"col-md-4\">");
+          // TODO Get this markup from somewhere
+          class2label = "Klassifikation 2";
+          class2.append($('<label>'+class2label+'</label>'));
+          var level2 = $('<select id="find_subtype_level2" style="width:100%">');
+          class2.append(level2);
+          $(".classification-holder").append(class2);
           level2.select2(select2Options);
 
           $('#find_class_term_modal').on("select2:select select2:unselecting", function(){
@@ -253,6 +276,11 @@ var initTimeline = function () {
                   timeline.addCustomTime( vis.moment(end, 'Y').endOf("year"), 'end' );
               }
           }
+          
+          // after a short delay, zoomout, giving a nice span and forcing a redraw
+          window.setTimeout(function(){
+              $('.vis-tl-zoom-out').trigger('click');
+          }, 1000);
 
       });
 

@@ -28,6 +28,12 @@
 .classification-holder {
     text-align: left;
     margin: 0 0 20px 20px;
+    height: 3em;
+}
+
+.classification-holder label {
+    float:left;
+    width: 100%;
 }
 
 .vis-custom-time.start {
