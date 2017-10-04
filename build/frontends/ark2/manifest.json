@@ -9,9 +9,9 @@
             "outputStyle": "compressed",
             "precision": 8,
             "includePaths": [
-                "bootstrap-sass/assets/stylesheets",
-                "npm-font-open-sans",
-                "summernote/src/less"
+                "node_modules/bootstrap-sass/assets/stylesheets",
+                "node_modules/npm-font-open-sans",
+                "node_modules/summernote/src/less"
             ]
         },
         "sourcemaps": {
@@ -109,24 +109,31 @@
         },
         "styles": {
             "ark": [{
-                "stream": "build",
-                "format": "sass",
-                "src": [
-                    "scss/theme.scss"
-                ],
-                "vendor": [
-                    "select2/dist/css/select2.min.css",
-                    "openlayers/dist/ol.css",
-                    "select2-bootstrap-theme/dist/select2-bootstrap.css",
-                    "bootstrap-datetime-picker/css/bootstrap-datetimepicker.css",
-                    "x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css",
-                    "bootstrap-table/dist/bootstrap-table.css",
-                    "bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.css",
-                    "bootstrap-fileinput/css/fileinput.css"
-                ],
-                "core": [],
-                "custom": []
-            }]
+                    "stream": "bootstrap",
+                    "vendor": [],
+                    "core": [],
+                    "custom": [
+                        "scss/vendor.scss"
+                    ]
+                },
+                {
+                    "stream": "main",
+                    "vendor": [
+                        "select2/dist/css/select2.min.css",
+                        "select2-bootstrap-theme/dist/select2-bootstrap.min.css",
+                        "bootstrap-datetime-picker/css/bootstrap-datetimepicker.min.css",
+                        "x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css",
+                        "bootstrap-table/dist/bootstrap-table.min.css",
+                        "bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.css",
+                        "bootstrap-fileinput/css/fileinput.min.css",
+                        "openlayers/dist/ol.css"
+                    ],
+                    "core": [],
+                    "custom": [
+                        "scss/theme.scss"
+                    ]
+                }
+            ]
         }
     },
     "bin": {
