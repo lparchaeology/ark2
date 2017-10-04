@@ -1,6 +1,6 @@
 {
-    "frontend": "bootstrap3",
-    "namespace": "ARK",
+    "frontend": "",
+    "namespace": "",
     "options": {
         "uglify": {
             "compress": false
@@ -8,7 +8,10 @@
         "sass": {
             "outputStyle": "compressed",
             "precision": 8,
-            "includePaths": []
+            "includePaths": [
+                "node_modules/bootstrap-sass/assets/stylesheets",
+                "node_modules/summernote/src/less"
+            ]
         },
         "sourcemaps": {
             "loadMaps": true
@@ -104,42 +107,29 @@
         },
         "styles": {
             "ark": [{
-                    "stream": "prebuild",
-                    "format": "css",
+                    "stream": "bootstrap",
+                    "vendor": [],
+                    "core": [],
+                    "custom": [
+                        "scss/vendor.scss"
+                    ]
+                },
+                {
+                    "stream": "main",
                     "vendor": [
-                        "summernote/dist/summernote.css",
                         "select2/dist/css/select2.min.css",
+                        "select2-bootstrap-theme/dist/select2-bootstrap.min.css",
+                        "bootstrap-datetime-picker/css/bootstrap-datetimepicker.min.css",
+                        "x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css",
+                        "bootstrap-table/dist/bootstrap-table.min.css",
+                        "bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.css",
+                        "bootstrap-fileinput/css/fileinput.min.css",
                         "openlayers/dist/ol.css"
                     ],
                     "core": [],
-                    "custom": []
-                },
-                {
-                    "stream": "build",
-                    "format": "sass",
-                    "src": [
+                    "custom": [
                         "scss/theme.scss"
-                    ],
-                    "vendor": [
-                        "bootstrap-sass/assets/stylesheets",
-                        "summernote/src/less"
-                    ],
-                    "core": [],
-                    "custom": []
-                },
-                {
-                    "stream": "postbuild",
-                    "format": "css",
-                    "vendor": [
-                        "select2-bootstrap-theme/dist/select2-bootstrap.css",
-                        "bootstrap-datetime-picker/css/bootstrap-datetimepicker.css",
-                        "x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css",
-                        "bootstrap-table/dist/bootstrap-table.css",
-                        "bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.css",
-                        "bootstrap-fileinput/css/fileinput.css"
-                    ],
-                    "core": [],
-                    "custom": []
+                    ]
                 }
             ]
         }

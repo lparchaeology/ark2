@@ -1,14 +1,4 @@
 // Build the Theme CSS from Sass source
 
-// Import any custom Bootstrap variable overrides
-$FontPathOpenSans: "../fonts/open-sans";
-@import 'open-sans.scss';
-
-// Import Bootstrap (vendor or custom)
-@import 'custom/bootstrap';
-
-// Import other non-Bootstrap vendor styles
-@import 'summernote';
-
 // Import other non-Bootstrap custom styles
-//@import 'custom/custom';
+@import 'custom/custom';

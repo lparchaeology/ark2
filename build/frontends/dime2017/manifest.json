@@ -8,7 +8,10 @@
         "sass": {
             "outputStyle": "compressed",
             "precision": 8,
-            "includePaths": []
+            "includePaths": [
+                "node_modules/bootstrap-sass/assets/stylesheets",
+                "node_modules/summernote/src/less"
+            ]
         },
         "sourcemaps": {
             "loadMaps": true
@@ -132,55 +135,30 @@
         },
         "styles": {
             "ark": [{
-                    "stream": "prebuild",
-                    "format": "css",
+                    "stream": "bootstrap",
+                    "vendor": [],
+                    "core": [],
+                    "custom": [
+                        "scss/vendor.scss"
+                    ]
+                },
+                {
+                    "stream": "main",
                     "vendor": [
                         "select2/dist/css/select2.min.css",
-                        "openlayers/dist/ol.css"
-                    ],
-                    "core": [],
-                    "custom": []
-                },
-                {
-                    "stream": "build",
-                    "format": "sass",
-                    "src": [
-                        "scss/vendor.scss"
-                    ],
-                    "vendor": [
-                        "bootstrap-sass/assets/stylesheets",
-                        "summernote/src/less"
-                    ],
-                    "core": [],
-                    "custom": []
-                },
-                {
-                    "stream": "postbuild",
-                    "format": "css",
-                    "vendor": [
                         "select2-bootstrap-theme/dist/select2-bootstrap.css",
                         "bootstrap-datetime-picker/css/bootstrap-datetimepicker.css",
                         "x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css",
                         "bootstrap-table/dist/bootstrap-table.css",
                         "bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.css",
                         "bootstrap-fileinput/css/fileinput.css",
+                        "openlayers/dist/ol.css",
                         "vis/dist/vis-timeline-graph2d.min.css"
                     ],
                     "core": [],
-                    "custom": []
-                },
-                {
-                    "stream": "custombuild",
-                    "format": "sass",
-                    "src": [
+                    "custom": [
                         "scss/theme.scss"
-                    ],
-                    "vendor": [
-                        "bootstrap-sass/assets/stylesheets",
-                        "summernote/src/less"
-                    ],
-                    "core": [],
-                    "custom": []
+                    ]
                 }
             ]
         }

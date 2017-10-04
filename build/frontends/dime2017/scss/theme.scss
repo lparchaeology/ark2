@@ -1,18 +1,8 @@
 // Build the Theme CSS from Sass source
 
-// Import any custom Bootstrap variable overrides
-@import "custom/variables";
-
-// Import Vendor Bootstrap
-@import "bootstrap";
-
 // Import other custom styles
-@import "custom/core";
-@import "custom/form";
-@import "custom/map";
 @import "custom/carousel";
 @import "custom/table";
-@import "custom/frame";
 @import "custom/home";
 @import "custom/messages";
 @import "custom/search";
