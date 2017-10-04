@@ -6,7 +6,7 @@
             "compress": false
         },
         "sass": {
-            "outputStyle": "compact",
+            "outputStyle": "compressed",
             "precision": 8,
             "includePaths": [
                 "node_modules/bootstrap-sass/assets/stylesheets",
@@ -156,7 +156,9 @@
                         "vis/dist/vis-timeline-graph2d.min.css"
                     ],
                     "core": [],
-                    "custom": []
+                    "custom": [
+                        "scss/theme.scss"
+                    ]
                 }
             ]
         }
