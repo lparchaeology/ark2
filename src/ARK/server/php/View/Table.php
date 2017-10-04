@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Grid View.
+ * ARK Table View.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -36,8 +36,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class Table extends Element
 {
-    use GridTrait;
-
     protected $caption;
     protected $header;
     protected $footer;
@@ -139,6 +137,7 @@ class Table extends Element
         foreach ($view['children'] as $child) {
             $forms = array_merge($forms, $child['element']->buildForms($child));
         }
+        //dump($forms);
         return $forms;
     }
 

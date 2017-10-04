@@ -50,6 +50,7 @@ class StaticType extends AbstractType implements DataTransformerInterface
         $resolver->setDefaults([
             'widget' => null,
             'html5' => null,
+            'data_class' => null,
             'choices' => null,
             'choice_value' => 'name',
             'choice_name' => 'name',
