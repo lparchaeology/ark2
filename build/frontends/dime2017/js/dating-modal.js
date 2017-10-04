@@ -405,6 +405,14 @@ var initTimeline = function () {
              vis_year = vis.moment(year, "Y");
              timeline.setCustomTime(vis_year,timeid);
              drawLabel(timeid);
+             if(timeid=='start'){
+                 var formid = '#find_dating_year';
+             } else {
+                 var formid = '#find_dating_year_span';
+                 
+             }
+             $(formid).val(new Date(year).getFullYear(),'Y');
+             $(formid).trigger('keyup');
          }
          
          function drawLabel(timeid){
