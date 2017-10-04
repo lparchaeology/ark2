@@ -173,8 +173,6 @@ var initSubtype = function () {
 };
 
 window.getYearsFromTarget = function (target) {
-    var current_start_year = parseInt($('#' + date_start_id).val());
-    var current_end_year = parseInt($('#' + date_start_id + '_span').val());
 
     if (typeof subtypevocabulary[target].parameters.year_start != "undefined") {
 
@@ -183,8 +181,6 @@ window.getYearsFromTarget = function (target) {
         var target_end_year = parseInt(subtypevocabulary[target].parameters.year_end.value);
 
     } else if (typeof subtypevocabulary[target].parameters.period != "undefined") {
-        //console.log(window.periodvocabulary);
-        //console.log(window.periodvocabulary[subtypevocabulary[target].parameters.period.value]);
 
         var target_start_year = parseInt(window.periodvocabulary[subtypevocabulary[target].parameters.period.value].parameters.year_start.value);
 

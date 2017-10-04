@@ -145,7 +145,7 @@
                     "stream": "build",
                     "format": "sass",
                     "src": [
-                        "scss/theme.scss"
+                        "scss/vendor.scss"
                     ],
                     "vendor": [
                         "bootstrap-sass/assets/stylesheets",
@@ -165,6 +165,19 @@
                         "bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.css",
                         "bootstrap-fileinput/css/fileinput.css",
                         "vis/dist/vis-timeline-graph2d.min.css"
+                    ],
+                    "core": [],
+                    "custom": []
+                },
+                {
+                    "stream": "custombuild",
+                    "format": "sass",
+                    "src": [
+                        "scss/theme.scss"
+                    ],
+                    "vendor": [
+                        "bootstrap-sass/assets/stylesheets",
+                        "summernote/src/less"
                     ],
                     "core": [],
                     "custom": []
