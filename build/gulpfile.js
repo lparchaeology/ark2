@@ -34,24 +34,24 @@ function frontendSourcePath() {
 }
 
 /*
- * Return Frontend Config Path
+ * Return Frontend Manifest Path
  */
-function frontendConfigPath() {
-    return frontendSourcePath() + '/config.json';
+function frontendManifestPath() {
+    return frontendSourcePath() + '/manifest.json';
 }
 
 /*
- * Return Frontend Config
+ * Return Frontend Manifest
  */
-function frontendConfig() {
-    return JSON.parse(fs.readFileSync(frontendConfigPath()));
+function frontendManifest() {
+    return JSON.parse(fs.readFileSync(frontendManifestPath()));
 }
 
 /*
  * Return Frontend Destination Path
  */
-function frontendDestPath(config) {
-    return '../src/' + config.namespace + '/frontend/' + config.frontend;
+function frontendDestPath(manifest) {
+    return '../src/' + manifest.namespace + '/frontend/' + manifest.frontend;
 }
 
 /*
@@ -86,9 +86,9 @@ function mergePaths(frontend, paths) {
  * Task to install required files into the frontend
  */
 function installFiles(group) {
-    var config = frontendConfig();
-    var src = mergePaths(config.frontend, config[group]);
-    var dest = frontendDestPath(config) + '/' + group;
+    var manifest = frontendManifest();
+    var src = mergePaths(manifest.frontend, manifest[group]);
+    var dest = frontendDestPath(manifest) + '/' + group;
     fs.removeSync(dest);
     return copyFiles(src, dest);
 }
@@ -97,18 +97,18 @@ function installFiles(group) {
  * Task to install required files into the frontend
  */
 function installAssets(group) {
-    var config = frontendConfig();
-    var dest = frontendDestPath(config) + '/assets/' + group;
+    var manifest = frontendManifest();
+    var dest = frontendDestPath(manifest) + '/assets/' + group;
     fs.removeSync(dest);
     var sub = '';
-    for (sub in config.assets[group].vendor) {
-        copyFiles(prefixPaths('node_modules/', config.assets[group].vendor[sub]), dest + '/' + sub);
+    for (sub in manifest.assets[group].vendor) {
+        copyFiles(prefixPaths('node_modules/', manifest.assets[group].vendor[sub]), dest + '/' + sub);
     }
-    for (sub in config.assets[group].core) {
-        copyFiles(prefixPaths('core/', config.assets[group].core[sub]), dest + '/' + sub);
+    for (sub in manifest.assets[group].core) {
+        copyFiles(prefixPaths('core/', manifest.assets[group].core[sub]), dest + '/' + sub);
     }
-    for (sub in config.assets[group].custom) {
-        copyFiles(prefixPaths('frontends/' + config.frontend + '/', config.assets[group].custom[sub]), dest + '/' + sub);
+    for (sub in manifest.assets[group].custom) {
+        copyFiles(prefixPaths('frontends/' + manifest.frontend + '/', manifest.assets[group].custom[sub]), dest + '/' + sub);
     }
     return util.noop();
 }
@@ -137,7 +137,7 @@ gulp.task('core', function () {
  * Task to create new frontend
  */
 gulp.task('create', function () {
-    var config = {};
+    var manifest = {};
     var dest = frontendSourcePath();
 
     try {
@@ -161,10 +161,10 @@ gulp.task('create', function () {
     fs.mkdirSync(dest + '/twig/pages');
     fs.mkdirSync(dest + '/twig/user');
 
-    config = JSON.parse(fs.readFileSync('core/config.json'));
-    config.frontend = util.env.frontend;
-    config.namespace = util.env.namespace || 'ARK';
-    fs.writeFileSync(frontendConfigPath(), JSON.stringify(config, null, 4));
+    manifest = JSON.parse(fs.readFileSync('core/manifest.json'));
+    manifest.frontend = util.env.frontend;
+    manifest.namespace = util.env.namespace || 'ARK';
+    fs.writeFileSync(frontendManifestPath(), JSON.stringify(manifest, null, 4));
 
     return util.noop();
 });
@@ -225,17 +225,17 @@ gulp.task('scripts', function () {
     var sourcemaps = require('gulp-sourcemaps');
     var uglify = require('gulp-uglify');
 
-    var config = frontendConfig();
+    var manifest = frontendManifest();
     var src = [];
-    var dest = frontendDestPath(config) + '/assets/scripts';
+    var dest = frontendDestPath(manifest) + '/assets/scripts';
     var script = '';
 
-    for (script in config.assets.scripts) {
-        src = mergePaths(config.frontend, config.assets.scripts[script]);
+    for (script in manifest.assets.scripts) {
+        src = mergePaths(manifest.frontend, manifest.assets.scripts[script]);
         gulp.src(src)
             .pipe(concat(script + '.js'))
-            .pipe(sourcemaps.init(config.options.sourcemaps))
-            .pipe(uglify(config.options.uglify))
+            .pipe(sourcemaps.init(manifest.options.sourcemaps))
+            .pipe(uglify(manifest.options.uglify))
             .pipe(sourcemaps.write('.'))
             .pipe(rename(script + '.min.js'))
             .pipe(gulp.dest(dest));
@@ -252,35 +252,27 @@ gulp.task('styles', function () {
     var sourcemaps = require('gulp-sourcemaps');
     var streams = require('merge-stream')();
 
-    var config = frontendConfig();
+    var manifest = frontendManifest();
     var src = [];
-    var dest = frontendDestPath(config) + '/assets/styles';
+    var dest = frontendDestPath(manifest) + '/assets/styles';
     var style = '';
     var stream = {};
 
-    for (style in config.assets.styles) {
-        for (var i in config.assets.styles[style]) {
-            stream = config.assets.styles[style][i];
-            if (stream.format === 'sass') {
-                src = frontendSourcePath() + '/' + stream.src;
-                config.options.sass.includePaths = mergePaths(config.frontend, stream);
-                streams.add(
-                    gulp.src(src)
-                    .pipe(sourcemaps.init(config.options.sourcemaps))
-                    .pipe(sass(config.options.sass).on('error', sass.logError))
-                );
-            } else if (stream.format === 'css') {
-                src = mergePaths(config.frontend, stream);
-                streams.add(
-                    gulp.src(src)
-                    .pipe(concat(stream.stream + '.css'))
-                );
-            }
+    for (style in manifest.assets.styles) {
+        for (var i in manifest.assets.styles[style]) {
+            stream = manifest.assets.styles[style][i];
+            src = src.concat(mergePaths(manifest.frontend, stream));
         }
-        streams.pipe(concat(style + '.min.css'))
-            .pipe(autoprefixer(config.options.autoprefixer))
-            .pipe(sourcemaps.write('.'))
-            .pipe(gulp.dest(dest));
+        // FIXME Sourcemaps are broken, see https://github.com/sass/libsass/issues/2312
+        streams.add(
+            gulp.src(src)
+            //.pipe(sourcemaps.init(manifest.options.sourcemaps))
+            .pipe(sass(manifest.options.sass).on('error', sass.logError))
+            .pipe(concat(style + '.min.css'))
+            .pipe(autoprefixer(manifest.options.autoprefixer))
+            //.pipe(sourcemaps.write('.'))
+            .pipe(gulp.dest(dest))
+        );
     }
 
     return util.noop();

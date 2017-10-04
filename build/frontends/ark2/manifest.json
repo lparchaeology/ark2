@@ -1,6 +1,6 @@
 {
-    "frontend": "dime2017",
-    "namespace": "DIME",
+    "frontend": "ark2",
+    "namespace": "ARK",
     "options": {
         "uglify": {
             "compress": false
@@ -8,7 +8,11 @@
         "sass": {
             "outputStyle": "compressed",
             "precision": 8,
-            "includePaths": []
+            "includePaths": [
+                "bootstrap-sass/assets/stylesheets",
+                "npm-font-open-sans",
+                "summernote/src/less"
+            ]
         },
         "sourcemaps": {
             "loadMaps": true
@@ -29,8 +33,9 @@
     "assets": {
         "fonts": {
             "vendor": {
+                "": ["summernote/dist/font/**/*"],
                 "bootstrap": ["bootstrap-sass/assets/fonts/bootstrap/**/*"],
-                "": ["summernote/dist/font/**/*"]
+                "opensans": ["npm-font-open-sans/fonts/**/*"]
             },
             "core": {
                 "": ["fonts/**/*"]
@@ -58,32 +63,21 @@
                 "vendor": [
                     "jquery/dist/jquery.js",
                     "jquery-form/src/jquery.form.js",
-                    "moment/moment.js",
-                    "moment/locale/en-gb.js",
-                    "moment/locale/da.js",
-                    "summernote/dist/summernote.js",
-                    "summernote/dist/lang/summernote-da-DK.js",
-                    "select2/dist/js/select2.js",
-                    "select2/dist/js/i18n/da.js",
-                    "file-saver/FileSaver.js",
-                    "js-xlsx/xlsx.core.min.js",
-                    "jspdf/dist/jspdf.min.js",
-                    "jspdf-autotable/dist/jspdf.plugin.autotable.js",
-                    "html2canvas/dist/html2canvas.js",
-                    "tableexport.jquery.plugin/tableExport.js",
-                    "colresizable/colResizable-1.6.js",
                     "bootstrap-sass/assets/javascripts/bootstrap.js",
-                    "bootstrap-datetime-picker/js/bootstrap-datetimepicker.js",
-                    "bootstrap-datetime-picker/js/locales/bootstrap-datetimepicker.da.js",
-                    "bootstrap-fileinput/js/plugins/piexif.js",
+                    "summernote/dist/summernote.js",
+                    "select2/dist/js/select2.js",
+                    "file-saver.js/FileSaver.js",
+                    "tableexport.jquery.plugin/tableExport.min.js",
+                    "col-resizable/colResizable-1.6.js",
+                    "moment/moment.js",
+                    "bootstrap-fileinput/js/plugins/canvas-to-blob.js",
                     "bootstrap-fileinput/js/plugins/purify.js",
                     "bootstrap-fileinput/js/plugins/sortable.js",
                     "bootstrap-fileinput/js/fileinput.js",
-                    "bootstrap-fileinput/js/locales/da.js",
                     "bootstrap-fileinput/themes/gly/theme.js",
+                    "bootstrap-datetime-picker/js/bootstrap-datetimepicker.js",
                     "x-editable/dist/bootstrap3-editable/js/bootstrap-editable.js",
                     "bootstrap-table/dist/bootstrap-table.js",
-                    "bootstrap-table/dist/locales/bootstrap-table-da-DK.js",
                     "bootstrap-table/dist/extensions/accent-neutralise/bootstrap-table-accent-neutralise.js",
                     "bootstrap-table/dist/extensions/cookie/bootstrap-table-cookie.js",
                     "bootstrap-table/dist/extensions/copy-rows/bootstrap-table-copy-rows.js",
@@ -95,16 +89,10 @@
                     "bootstrap-table/dist/extensions/natural-sorting/bootstrap-table-natural-sorting.js",
                     "bootstrap-table/dist/extensions/resizeable/bootstrap-table-resizeable.js",
                     "bootstrap-table/dist/extensions/select2-filter/bootstrap-table-select2-filter.js",
-                    "bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.js",
-                    "vis/dist/vis.js"
+                    "bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.js"
                 ],
                 "core": [
-                    "js/core.js",
-                    "js/alert.js",
-                    "js/form.js",
-                    "js/pageedit.js",
-                    "js/routing.js",
-                    "js/utilities.js"
+                    "js/**/*"
                 ],
                 "custom": [
                     "js/**/*"
@@ -117,59 +105,28 @@
                 ],
                 "core": [],
                 "custom": []
-            },
-            "jquery": {
-                "vendor": [
-                    "jquery/dist/jquery.js",
-                    "jquery-form/src/jquery.form.js"
-                ],
-                "core": [
-                    "js/routing.js"
-                ],
-                "custom": []
-
             }
         },
         "styles": {
             "ark": [{
-                    "stream": "prebuild",
-                    "format": "css",
-                    "vendor": [
-                        "select2/dist/css/select2.min.css",
-                        "openlayers/dist/ol.css"
-                    ],
-                    "core": [],
-                    "custom": []
-                },
-                {
-                    "stream": "build",
-                    "format": "sass",
-                    "src": [
-                        "scss/theme.scss"
-                    ],
-                    "vendor": [
-                        "bootstrap-sass/assets/stylesheets",
-                        "summernote/src/less"
-                    ],
-                    "core": [],
-                    "custom": []
-                },
-                {
-                    "stream": "postbuild",
-                    "format": "css",
-                    "vendor": [
-                        "select2-bootstrap-theme/dist/select2-bootstrap.css",
-                        "bootstrap-datetime-picker/css/bootstrap-datetimepicker.css",
-                        "x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css",
-                        "bootstrap-table/dist/bootstrap-table.css",
-                        "bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.css",
-                        "bootstrap-fileinput/css/fileinput.css",
-                        "vis/dist/vis-timeline-graph2d.min.css"
-                    ],
-                    "core": [],
-                    "custom": []
-                }
-            ]
+                "stream": "build",
+                "format": "sass",
+                "src": [
+                    "scss/theme.scss"
+                ],
+                "vendor": [
+                    "select2/dist/css/select2.min.css",
+                    "openlayers/dist/ol.css",
+                    "select2-bootstrap-theme/dist/select2-bootstrap.css",
+                    "bootstrap-datetime-picker/css/bootstrap-datetimepicker.css",
+                    "x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css",
+                    "bootstrap-table/dist/bootstrap-table.css",
+                    "bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.css",
+                    "bootstrap-fileinput/css/fileinput.css"
+                ],
+                "core": [],
+                "custom": []
+            }]
         }
     },
     "bin": {
