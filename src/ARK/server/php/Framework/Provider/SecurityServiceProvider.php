@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Translation Service Provider.
+ * ARK Security Service Provider.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Framework\Provider;
@@ -44,6 +43,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $container) : void
     {
+        // Register the default Silex/Symfony security providers
         $container->register(new SilexSecurityServiceProvider());
         $container->register(new RememberMeServiceProvider());
         $container->register(new CsrfServiceProvider());
@@ -53,93 +53,122 @@ class SecurityServiceProvider implements ServiceProviderInterface
             return new Security($app);
         };
 
+        // Site specific settings
+        $settings = $container['ark']['security'];
+
+        // TODO Replace with Routes/Paths tables
         // Can't use translation here :-(
         $locale = $container['locale'];
-        $routes = $container['ark']['security']['user']['routes'];
-        $root = $routes['root']['paths'][$locale];
-        $login = $routes['login']['paths'][$locale];
-        $check = $routes['check']['paths'][$locale];
-        $target = $routes['target']['paths'][$locale];
-        $logout = $routes['logout']['paths'][$locale];
-        $register = $routes['register']['paths'][$locale];
-        $reset = $routes['reset']['paths'][$locale];
+        $admin = $settings['routes']['admin']['paths'][$locale];
+        $user = $settings['routes']['user']['paths'][$locale];
+        $login = $settings['routes']['login']['paths'][$locale];
+        $check = $settings['routes']['check']['paths'][$locale];
+        $target = $settings['routes']['target']['paths'][$locale];
+        $logout = $settings['routes']['logout']['paths'][$locale];
+        $register = $settings['routes']['register']['paths'][$locale];
+        $reset = $settings['routes']['reset']['paths'][$locale];
 
         // Configure Symfony Security Firewalls
-        $container['security.firewalls'] = [];
-        $container->extendArray('security.firewalls', 'login_area', [
-            'pattern' => "(^$login$)|(^$register$)|(^$reset$)",
-            'anonymous' => true,
-        ]);
-        $container->extendArray('security.firewalls', 'default', [
-            'pattern' => '^/.*$',
-            'anonymous' => true,
-            'remember_me' => [],
-            'form' => [
-                'login_path' => $login,
-                'check_path' => $check,
-                'default_target_path' => $target,
+        // See https://silex.symfony.com/doc/2.0/providers/security.html
+        $container['security.firewalls'] = [
+            // unsecured firewall: anyone can login/register/reset
+            'unsecured' => [
+                'pattern' => "(^$login$)|(^$register$)|(^$reset$)",
+                'anonymous' => true,
             ],
-            'logout' => [
-                'logout_path' => $logout,
-            ],
-            'users' => function ($app) {
-                return $app['user.provider'];
-            },
-        ]);
-        $container['security.access_rules'] = [
-            [
-                "(^$login$)|(^$register$)|(^$reset$)|(^$check$)",
-                'IS_AUTHENTICATED_ANONYMOUSLY',
-            ],
-            [
-                "(^$root)",
-                'ROLE_USER',
-            ],
-            [
-                '^/.+$',
-                'IS_AUTHENTICATED_ANONYMOUSLY',
+            // TODO API firewall: all api calls controlled by access_rules and tokens
+            // secured firewall: everything else is controlled by access_rules and a login form
+            'secured' => [
+                'pattern' => '^/.*$',
+                'anonymous' => $settings['anonymous'] ?? false,
+                'remember_me' => $settings['remember_me'] ?? [],
+                'form' => [
+                    'login_path' => $login,
+                    'check_path' => $check,
+                    'default_target_path' => $target,
+                ],
+                'logout' => [
+                    'logout_path' => $logout,
+                ],
+                'users' => function ($app) {
+                    return $app['user.provider'];
+                },
             ],
         ];
-        if (isset($container['ark']['security']['access_rules'])) {
-            $container['security.access_rules'] = array_merge(
-                $container['security.access_rules'],
-                $container['ark']['security']['access_rules']
-            );
-        }
 
+        // Access Rules to restrict access by user levels
+        // Rules are evaluated in defined order, first match wins
+        // If https is required then force redirect
+        $channel = $settings['https'] ? 'https' : null;
+        $container['security.access_rules'] = array_merge(
+            // First ensure anyone can access login area
+            [
+                [
+                    "(^$login$)|(^$register$)|(^$reset$)|(^$check$)",
+                    'IS_AUTHENTICATED_ANONYMOUSLY',
+                    $channel,
+                ],
+            ],
+            // Then evaluate the site specific rules if defined
+            $settings['access_rules'] ?? [],
+            // Then evaluate the default rules
+            [
+                // Only Admins can access admin area
+                [
+                    "(^$admin)",
+                    'ROLE_ADMIN',
+                    $channel,
+                ],
+                // Only Users can access users area
+                [
+                    "(^$user)",
+                    'ROLE_USER',
+                    $channel,
+                ],
+                [
+                    // Anyone can access all other areas
+                    '^/.+$',
+                    'IS_AUTHENTICATED_ANONYMOUSLY',
+                    $channel,
+                ],
+            ]
+        );
+
+        // Configure the UserProvider
         $container['user.defaults'] = [
-            'adminConfirm' => true,
-            'verifyEmail' => true,
-            'emailAddress' => 'noreply@example.com',
-            'emailName' => 'ARK User Admin (Do Not Reply)',
-            'passwordStrength' => 2,
-            'userReset' => true,
-            'resetTTL' => 86400,
+            'admin_confirm' => false,
+            'verify_email' => true,
+            'verify_email_required' => true,
+            'email' => 'noreply@example.com',
+            'sender' => 'ARK User Admin (Do Not Reply)',
+            'reset_email_template' => 'user/emails/reset.txt.twig',
+            'verify_email_template' => 'user/emails/verify.txt.twig',
+            'password_strength' => 2,
+            'password_expiry' => 0,
+            'user_reset' => true,
+            'user_register' => true,
+            'default_role' => 'anonymous',
+            'reset_ttl' => 86400,
         ];
-
-        $container['user.options'] = array_replace($container['user.defaults'], $container['ark']['security']['user']);
-
-        $container['user.options.init'] = $container->protect(function () use ($container) : void {
-        });
-
-        $container['password.validate'] = $container->protect(function ($plainPassword) use ($container) {
-            return $container['password.validator']->validate($plainPassword, $container['password.validator.constraint']);
-        });
-
-        $container['password.validator'] = function ($app) {
-            return new PasswordStrengthValidator();
-        };
-
-        $container['password.validator.constraint'] = function ($app) {
-            $app['user.options.init']();
-            $constraint = new PasswordStrength();
-            $constraint->minimumScore = $app['user.options']['passwordStrength'];
-            return $constraint;
-        };
-
+        $container['user.options'] = array_replace($container['user.defaults'], $settings['user']);
+        $container['user.options.init'] = $container->protect(function () use ($container) : void {});
         $container['user.provider'] = function ($app) {
             $app['user.options.init']();
             return new UserProvider();
+        };
+
+        // Configure the zxcvbn password strength validator (https://github.com/bjeavons/zxcvbn-php)
+        $container['password.validate'] = $container->protect(function ($plainPassword) use ($container) {
+            return $container['password.validator']->validate($plainPassword, $container['password.validator.constraint']);
+        });
+        $container['password.validator'] = function ($app) {
+            return new PasswordStrengthValidator();
+        };
+        $container['password.validator.constraint'] = function ($app) {
+            $app['user.options.init']();
+            $constraint = new PasswordStrength();
+            $constraint->minimumScore = $app['user.options']['password_strength'];
+            return $constraint;
         };
     }
 }

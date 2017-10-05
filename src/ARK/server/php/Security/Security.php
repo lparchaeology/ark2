@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Security;
@@ -255,7 +254,6 @@ class Security
     public function resetUser(User $user) : void
     {
         $user->setPasswordRequested();
-        ORM::persist($user);
         ORM::flush($user);
         $this->sendResetMessage($user);
     }

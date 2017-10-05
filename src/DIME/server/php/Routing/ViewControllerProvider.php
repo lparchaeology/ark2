@@ -99,7 +99,7 @@ class ViewControllerProvider implements ControllerProviderInterface
             ->bind('dime.admin');
 
         // User Routes
-        $routes = $app['ark']['security']['user']['routes'];
+        $routes = $app['ark']['security']['routes'];
         $locale = $app['locale'];
         $controllers->match($routes['register']['paths'][$locale], 'DIME\Controller\View\UserRegisterController')
             ->method('GET|POST')
