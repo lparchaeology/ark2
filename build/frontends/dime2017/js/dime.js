@@ -161,6 +161,7 @@ $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip({
         'trigger': 'manual'
     }).on('click', function (e) {
+        e.stopPropagation();
         // show this one
         $(this).tooltip('toggle');
         // if any other tooltip are visible, hide them
@@ -168,5 +169,13 @@ $(document).ready(function () {
         // set them unclicked
         $('[data-toggle="tooltip"]').not(this).data("bs.tooltip").inState.click = false;
     });
+    
+    $("body").on("click",function(e){
+        console.log("kill all tooltip");
+        // unless clicking a tooptip
+        if($(e.target).hasClass("tooltip") == false && $(e.target).hasClass("help") == false ){
+            $('[data-toggle="tooltip"]').tooltip('hide');
+        }
+    })
 
 });
