@@ -182,6 +182,25 @@
     display:none;
 }
 
+.thumbModal .field {
+    //text-align: left;
+}
+
+.thumbModal .field .placeholder-img {
+    text-align: center;
+}
+.thumbModal .field .form-group{
+    text-align: left;
+    display: inline-block;
+    width: 100%;
+}
+
+.thumbModal .field .cell-label {
+    display: block;
+    width: 100%;
+    text-align: left;
+}
+
 .bootstrap-table .table.dime-table.cardViewTable:not(.table-condensed) tbody td.thumbimage {
     border:none;
 }
