@@ -25,7 +25,13 @@ $break-tablet: 1199px;
 /*
  * Base structure
  */
-html {}
+html,body
+{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden; 
+}
 
 body {
     margin-bottom: 60px;
