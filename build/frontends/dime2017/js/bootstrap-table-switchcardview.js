@@ -94,7 +94,6 @@
                 html += '</button>';
                 html += '<div class="modal-body thumbModal">';
                 for (var field in fields) {
-                    console.log(fields[field]);
                     html += '<div class="field">';
                     if (fields[field].field !== 'checked') {
                         if (fields[field].field === 'image') {
@@ -108,14 +107,24 @@
                 }
                 html += '</div>';
                 html += '</div>'; // modalWindow
+
                 $("#thumbModal").html(html);
+                console.log($("#thumbModal").length);
                 $("#modalWindow").modal();
+                console.log("modallaunched");
                 $('#modalWindow').on('hidden.bs.modal', function () {
                     $('tbody tr').removeClass('selected');
                 });
+                console.log("modallistned");
+                /*
                 $('.modal-body img').load(function () {
+                    console.log("modalloading");
+                    console.log(this);
+                    console.log(this.naturalWidth);
                     $('.thumbmodal-container').width(this.naturalWidth + 70);
                 });
+                */
+                console.log("modalloaded");
             };
 
             var formclick = function (evt) {
@@ -209,8 +218,10 @@
                 window.tableclick = formclick;
             }
 
-            var thumbclick = function (evt) {
+            window.thumbclick = function (evt) {
                 var self = '';
+                
+                console.log("thumbclick");
 
                 if ($(evt.target).is('tr')) {
                     self = $(evt.target);
