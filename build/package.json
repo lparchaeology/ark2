@@ -61,7 +61,7 @@
         "prettydiff": "^99.0.1",
         "proj4": "^2.4.4",
         "remark-lint": "^6.0.1",
-        "sass-lint": "^1.11.1",
+        "sass-lint": "^1.12.0",
         "select2": "^4.0.4",
         "select2-bootstrap-theme": "^0.1.0-beta.10",
         "summernote": "^0.8.8",
