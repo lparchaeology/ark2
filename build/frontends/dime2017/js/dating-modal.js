@@ -391,12 +391,12 @@ var initTimeline = function () {
              var promise = new Promise(function(resolve, reject) {
                window.setTimeout(function() {
                    console.log("looping");
-                   if( $(".vis-custom-time."+timeid).length!=1){
+                   if( $(".vis-custom-time").filter("."+timeid).length!=1){
                        customTimeExists();
                    } else {
                        resolve();
                    }
-               },10);
+               },100);
              });
              return promise;
           }
@@ -445,7 +445,9 @@ var initTimeline = function () {
              }
              console.log($(".vis-custom-time."+timeid).css("left"));
              var leftNumber = parseInt($(".vis-custom-time."+timeid).css("left"), 10);
-             leftNumber += 65;
+             //var correction = window.width()/window.width();
+             //leftNumber += correction;
+             console.log(leftNumber);
              span.css("left",leftNumber.toString()+"px");
          }
         
@@ -466,12 +468,36 @@ var initTimeline = function () {
          
          customTimeExists('end').then(function(result) {
              drawLabel('end');
-           });
+         });
          
          timeline.on("rangechange",function(){
              customTimeExists('end').then(function(result) {
                  drawLabel('end');
              });
+         });
+         
+
+         timeline.on('timechanged',function(properties){
+             
+             if(properties.id == 'start'){
+                 if( properties.time > timeline.getCustomTime('end') ){
+                     timeline.removeCustomTime('start');
+                     timeline.addCustomTime(timeline.getCustomTime('end'),'start');
+                     return false;
+                 }
+                 customTimeExists('start').then(function(result) {
+                     drawLabel('start');
+                 });
+             } else {
+                 if( properties.time < timeline.getCustomTime('start') ){
+                     timeline.removeCustomTime('end');
+                     timeline.addCustomTime(timeline.getCustomTime('start'),'end');
+                     return false;
+                 }
+                 customTimeExists('end').then(function(result) {
+                     drawLabel('end');
+                 });
+             }
          });
       });
 
@@ -497,26 +523,6 @@ var initTimeline = function () {
               }
               timeline.redraw();
           });
-      });
-
-      timeline.on('timechanged',function(properties){
-          
-          console.log({'time':properties.time});
-          
-          if(properties.id == 'start'){
-              if( properties.time > timeline.getCustomTime('end') ){
-                  timeline.removeCustomTime('start');
-                  timeline.addCustomTime(timeline.getCustomTime('end'),'start');
-                  return false;
-              }
-          } else {
-              if( properties.time < timeline.getCustomTime('start') ){
-                  timeline.removeCustomTime('end');
-                  timeline.addCustomTime(timeline.getCustomTime('start'),'end');
-                  return false;
-              }
-
-          }
       });
 
 };
