@@ -1,0 +1,19 @@
+// SCSS For fram
+
+.btn-add {
+    margin:5px 20px;
+}
+
+.btn-add-narrow {
+    display:none;
+}
+
+@media (max-width: 400px) {
+    .btn-add-narrow {
+        width:100%;
+        display:block;
+    }
+    .btn-add-wide {
+        display:none;
+    }
+}

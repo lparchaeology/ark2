@@ -47,7 +47,6 @@ INSERT INTO `ark_dataclass` (`dataclass`, `datatype`, `format_vocabulary`, `para
 ('html', 'text', NULL, NULL, 'format.html', 1, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0),
 ('identifier', 'string', NULL, NULL, 'format.identifier', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0),
 ('image', 'item', NULL, NULL, 'format.image', 0, 0, 0, 0, NULL, NULL, NULL, 'ARK\\File\\Image', 'ARK\\Form\\Type\\FilePropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\FileType', NULL, 'ARK\\Form\\Type\\ImageCollectionType', NULL, NULL, 0, 0, 1, 0),
-('institution', 'item', NULL, NULL, 'core.actor.class.institution', 0, 0, 0, 0, NULL, NULL, NULL, 'ARK\\Actor\\Institution', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, NULL, NULL, NULL, 0, 0, 1, 0),
 ('integer', 'integer', NULL, NULL, 'format.integer', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0),
 ('item', 'item', NULL, NULL, 'format.item', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, 0),
 ('key', 'string', NULL, NULL, 'format.key', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0),
