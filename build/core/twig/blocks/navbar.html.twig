@@ -15,18 +15,16 @@
                     <span class="glyphicon glyphicon-menu-hamburger"></span>
                 </button>
                 <a class="navbar-brand" href="#"><img src="{{ asset('images/brand/logo.png', 'frontend') }}" alt="" width="50"></a>
-            </div>
-            <!-- .nav-collapse -->
-            <div id="navbar" class="navbar-collapse collapse">
-            
                 {# should be a proper check for edit rights#}
                 {% if global.user %}
-                    <button type="button" data-toggle="modal" data-target="#record-add-modal" class = "btn btn-primary btn-add-wide">
+                    <button type="button" data-toggle="modal" data-target="#record-add-modal" class = "btn btn-primary btn-add btn-add-wide">
                         <span class="glyphicon glyphicon-plus"></span>
                             {{ 'ark.newrecord' | translate }}
                     </button>
                 {% endif %}
-                
+            </div>
+            <!-- .nav-collapse -->
+            <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
                     {% for navlink in navlinks %}
                         <li 
