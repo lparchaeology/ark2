@@ -2,6 +2,10 @@
 
 {% block navbar %}
 
+{% set navlinks = [{'target':'home','name':'ark.dashboard'},{'target':'admin.user.list','name':'ark.users'}] %}
+
+{% set secondaries = [] %}
+
     <!-- Fixed navbar -->
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -14,25 +18,50 @@
             </div>
             <!-- .nav-collapse -->
             <div id="navbar" class="navbar-collapse collapse">
+            
+                {# should be a proper check for edit rights#}
+                {% if global.user %}
+                    <button type="button" data-toggle="modal" data-target="#record-add-modal" class = "btn btn-primary btn-add-wide">
+                        <span class="glyphicon glyphicon-plus"></span>
+                            {{ 'ark.newrecord' | translate }}
+                    </button>
+                {% endif %}
+                
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="active"><a href="#">Dashboard</a></li>
-                    <li><a href="#about">Records</a></li>
-                    <li><a href="#contact">Subgrouping</a></li>
-                    <li><a href="#contact">Map</a></li>
-                    <li><a href="#contact">Import</a></li>
+                    {% for navlink in navlinks %}
+                        <li 
+                        {% if global.request.getBaseUrl ~ global.request.pathInfo == path(navlink.target)%}
+                            class ="active">
+                        {% else %}
+                            >
+                        {% endif %}
+                        
+                        {% include "blocks/link.html.twig" with {'link':navlink} %}
+                        </li>
+                    
+                    {% endfor %}
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             <img src="{{ asset('images/icons/user.png', 'frontend') }}" alt="" width="15">
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
+                            {% for secondary in secondaries %}
+                                <li>
+                                    {% include "blocks/link.html.twig" with {'link':secondary} %}
+                                </li>
+                            {% endfor %}
                             <li role="separator" class="divider"></li>
-                            <li class="dropdown-header">Nav header</li>
-                            <li><a href="#">Separated link</a></li>
-                            <li><a href="#">One more separated link</a></li>
+                            {% if global.user %}
+                            <li class="dropdown-header">{{ global.user.username | translate }}</li>
+                                {% set userlink ={'target':'users_logout','name':'ark.logout'} %}
+                            {% else %}
+                                <li class="dropdown-header">{{ 'anon' | translate }}</li>
+                                {% set userlink ={'target':'user.login','name':'ark.login'} %}
+                            {% endif %}
+                            <li>
+                                {% include "blocks/link.html.twig" with {'link':userlink} %}
+                            </li>
                         </ul>
                     </li>
                 </ul>

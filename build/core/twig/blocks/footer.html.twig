@@ -2,9 +2,11 @@
 {% block footer %}
 
 <footer class="footer navbar-fixed-bottom">
-    <div class= "credits col-md-6 col-md-push-3">
-        {{ 'site.footer' | translate }}
-    </div>
+    
+    <button type="button" data-toggle="modal" data-target="#record-add-modal" class = "btn btn-primary btn-add btn-add-narrow">
+        <span class="glyphicon glyphicon-plus"></span>
+            {{ 'ark.newrecord' | translate }}
+    </button>
 </footer>
 
 {% endblock footer %}

@@ -1,10 +1,38 @@
 {% block addrecord %}
 
-	<button type="button" class = "btn btn-primary add-record">
-        <span class="glyphicon glyphicon-plus"></span>
-            {{ 'ark.newrecord' | translate }}
-    </button>
+{% set options = {'modules':[{"name":"ark.context","colour":"label-primary","forms":"context forms, for example"},{"name":"ark.photo","colour":"label-warning","forms":"this would be a photo form"}]} %}
 
+    <div class="modal fade" id="record-add-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="loginmodal-container">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h3 class="panel-title">{{ 'ark.newrecord' | translate }}</h3>
+                </div>
+                <br>
+                <div class="panel-body">
+                  <div class="col-md-4">
+                    <ul class="nav nav-pills nav-stacked nav-pills-stacked-example">
+                      {# make the options #}
+                      {% for module in options.modules %}
+                      
+                          <li role="presentation"><a href="#" data-module="{{ module.name|replace({'.': '-'}) }}" class="add-module-selector"><span class="label {{ module.colour }} circle  "></span> {{ module.name | translate }}</a></li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                  
+                  {% for module in options.modules %}
+                      <div class="col-md-8 record-add-form {{ module.name|replace({'.': '-'}) }}">
+                        <p>{{ module.forms }}</p>
+                      </div>
+                  {% endfor %}
+                  
+                </div>
+                <br>
+              </div>
+            </div>
+        </div>
+    </div>
 
 
 {% endblock addrecord %}

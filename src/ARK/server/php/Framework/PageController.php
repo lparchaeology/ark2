@@ -26,7 +26,6 @@
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
  */
-
 namespace ARK\Framework;
 
 use ARK\Framework\Routing\Route;
@@ -38,121 +37,117 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-abstract class PageController extends Controller
-{
-    public function handleRequest(Request $request) : Response
+abstract class PageController extends Controller {
+    public function handleRequest(Request $request): Response
     {
-        $route = ORM::find(Route::class, $request->attributes->get('_route'));
+        $route = ORM::find ( Route::class, $request->attributes->get ( '_route' ) );
         if ($route) {
-            $page = $route->page();
-            if ($route->redirect()) {
-                $request->attributes->set('redirect', $route->redirect()->id());
+            $page = $route->page ();
+            if ($route->redirect ()) {
+                $request->attributes->set ( 'redirect', $route->redirect ()->id () );
             }
         } else {
-            $page = ORM::find(Page::class, $request->attributes->get('page'));
+            $page = ORM::find ( Page::class, $request->attributes->get ( 'page' ) );
         }
-        $parent['data'] = $this->buildData($request);
-        $parent['state'] = $this->buildState($request, $parent['data']);
-        $parent['options'] = [];
-        $view = $page->buildView($parent);
-        //dump($view);
-        if ($view['state']['mode'] === 'deny') {
-            throw new AccessDeniedException('core.error.access.denied');
+        $parent ['data'] = $this->buildData ( $request );
+        $parent ['state'] = $this->buildState ( $request, $parent ['data'] );
+        $parent ['options'] = [ ];
+        $view = $page->buildView ( $parent );
+        // dump ( $view );
+        if ($view ['state'] ['mode'] === 'deny') {
+            throw new AccessDeniedException ( 'core.error.access.denied' );
         }
-        $forms = $page->buildForms($view);
-        //dump($forms);
-        if ($forms && $request->getMethod() === 'POST') {
-            $parms = $request->request->all();
-            $parms = $this->fixStaticFields($parms);
-            $request->request->replace($parms);
+        $forms = $page->buildForms ( $view );
+        // dump ( $forms );
+        if ($forms && $request->getMethod () === 'POST') {
+            $parms = $request->request->all ();
+            $parms = $this->fixStaticFields ( $parms );
+            $request->request->replace ( $parms );
             try {
-                $posted = $this->postedForm($request, $forms);
-                //dump($posted);
-                if ($posted !== null && $posted->isValid()) {
-                    $this->processForm($request, $posted);
-                    if ($file = $request->attributes->get('_file')) {
-                        return Service::view()->fileResponse($file);
+                $posted = $this->postedForm ( $request, $forms );
+                // dump($posted);
+                if ($posted !== null && $posted->isValid ()) {
+                    $this->processForm ( $request, $posted );
+                    if ($file = $request->attributes->get ( '_file' )) {
+                        return Service::view ()->fileResponse ( $file );
                     }
-                    $redirect = $request->attributes->get('redirect') ?? $request->attributes->get('_route');
-                    $parameters = $request->attributes->get('parameters') ?? [];
-                    return Service::redirectPath($redirect, $parameters);
+                    $redirect = $request->attributes->get ( 'redirect' ) ?? $request->attributes->get ( '_route' );
+                    $parameters = $request->attributes->get ( 'parameters' ) ?? [ ];
+                    return Service::redirectPath ( $redirect, $parameters );
                 }
-                Service::view()->addErrorFlash('core.error.form.invalid');
-                foreach ($posted->getErrors(true) as $error) {
-                    $cause = $error->getCause();
-                    $msg = $error->getMessage();
+                Service::view ()->addErrorFlash ( 'core.error.form.invalid' );
+                foreach ( $posted->getErrors ( true ) as $error ) {
+                    $cause = $error->getCause ();
+                    $msg = $error->getMessage ();
                     if ($cause) {
-                        $msg = $msg.' '.$cause->getPropertyPath();
-                        $cause2 = $cause->getCause();
+                        $msg = $msg . ' ' . $cause->getPropertyPath ();
+                        $cause2 = $cause->getCause ();
                         if ($cause2) {
-                            $msg = $msg.' '.(string) $cause->getCause()->getMessage();
+                            $msg = $msg . ' ' . ( string ) $cause->getCause ()->getMessage ();
                         }
                     }
-                    Service::view()->addErrorFlash($msg);
+                    Service::view ()->addErrorFlash ( $msg );
                 }
-            } catch (WorkflowException $e) {
-                Service::view()->addErrorFlash($e->getMessage());
+            } catch ( WorkflowException $e ) {
+                Service::view ()->addErrorFlash ( $e->getMessage () );
             }
         }
-        $view = $this->buildContext($request, $view);
-        $forms = $page->createFormViews($forms);
-        //dump($view);
-        //dump($forms);
-        $response = new Response($page->renderView($view, $forms));
-        //dump($response)
+        $view = $this->buildContext ( $request, $view );
+        $forms = $page->createFormViews ( $forms );
+        dump ( $view );
+        // dump($forms);
+        $response = new Response ( $page->renderView ( $view, $forms ) );
+        // dump($response)
         return $response;
     }
-
-    protected function buildState(Request $request, $data) : iterable
+    protected function buildState(Request $request, $data): iterable
     {
-        $state = parent::buildState($request, $data);
+        $state = parent::buildState ( $request, $data );
 
         // Check the Actor's workflow mode for this Item, i.e. edit or view
-        $item = $this->item($data);
-        $state['workflow']['mode'] = $item ? Service::workflow()->mode($state['actor'], $item) : 'view';
+        $item = $this->item ( $data );
+        $state ['workflow'] ['mode'] = $item ? Service::workflow ()->mode ( $state ['actor'], $item ) : 'view';
 
         // Set up the Select choices to show users
-        if ($item && $state['workflow']['mode'] === 'edit') {
-            $select['choice_value'] = 'name';
-            $select['choice_name'] = 'name';
-            $select['choice_label'] = 'keyword';
-            $select['choices'] = $state['actions'];
-            $select['multiple'] = false;
-            $select['placeholder'] = Service::translate('core.placeholder');
-            $state['select']['actions'] = $select;
+        if ($item && $state ['workflow'] ['mode'] === 'edit') {
+            $select ['choice_value'] = 'name';
+            $select ['choice_name'] = 'name';
+            $select ['choice_label'] = 'keyword';
+            $select ['choices'] = $state ['actions'];
+            $select ['multiple'] = false;
+            $select ['placeholder'] = Service::translate ( 'core.placeholder' );
+            $state ['select'] ['actions'] = $select;
 
-            $select['choice_value'] = 'id';
-            $select['choice_name'] = 'id';
-            $select['choice_label'] = 'fullname';
-            $select['choices'] = $state['actors'];
-            $select['multiple'] = false;
-            $select['placeholder'] = Service::translate('core.placeholder');
-            $state['select']['actors'] = $select;
+            $select ['choice_value'] = 'id';
+            $select ['choice_name'] = 'id';
+            $select ['choice_label'] = 'fullname';
+            $select ['choices'] = $state ['actors'];
+            $select ['multiple'] = false;
+            $select ['placeholder'] = Service::translate ( 'core.placeholder' );
+            $state ['select'] ['actors'] = $select;
         }
 
         return $state;
     }
-
-    protected function defaultOptions(string $route = null) : iterable
+    protected function defaultOptions(string $route = null): iterable
     {
-        $options = parent::defaultOptions($route);
-        $options['forms'] = null;
+        $options = parent::defaultOptions ( $route );
+        $options ['forms'] = null;
         return $options;
     }
-
-    protected function buildContext(Request $request, iterable $view) : iterable
+    protected function buildContext(Request $request, iterable $view): iterable
     {
-        $view = parent::buildContext($request, $view);
+        $view = parent::buildContext ( $request, $view );
         // Set up routing paths for JavaScript Router
-        $view['routing']['base_path'] = $request->getBasePath();
-        $view['routing']['routes'] = [];
-        foreach (Service::routes() as $name => $route) {
-            $view['routing']['routes'][$name] = [
-                'host' => $route->getHost(),
-                'path' => $route->getPath(),
-                'schemes' => $route->getSchemes(),
-                'requirements' => $route->getRequirements(),
-                'condition' => $route->getCondition(),
+        $view ['routing'] ['base_path'] = $request->getBasePath ();
+        $view ['routing'] ['routes'] = [ ];
+        foreach ( Service::routes () as $name => $route ) {
+            $view ['routing'] ['routes'] [$name] = [
+                    'host' => $route->getHost (),
+                    'path' => $route->getPath (),
+                    'schemes' => $route->getSchemes (),
+                    'requirements' => $route->getRequirements (),
+                    'condition' => $route->getCondition ()
             ];
         }
         return $view;
