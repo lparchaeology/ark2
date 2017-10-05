@@ -82,7 +82,7 @@ function initialiseMapView() {
             style: new ol.style.Style({
                 image: new ol.style.Circle({
                     radius: 8,
-                    fill: new ol.style.Fill({ color: '#f00' }),
+                    fill: new ol.style.Fill({ color: '#00f' }),
                     stroke: new ol.style.Stroke({ color: '#000', width: 1 })
                 })
             }),
