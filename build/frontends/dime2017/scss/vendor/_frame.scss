@@ -156,6 +156,8 @@ a.loginbutton {
     border-radius: 5px;
     margin: 15px 0;
     white-space: nowrap;
+    min-width: 80px;
+    text-transform: uppercase;
 }
 
 a.loginbutton span.text{
@@ -327,3 +329,12 @@ a.loginbutton:hover{
     color: #000;
 }
 
+.mobile-options {
+    display: none;
+}
+
+@media (max-width: 1200px) {
+    .mobile-options {
+        display: block;
+    }
+}
