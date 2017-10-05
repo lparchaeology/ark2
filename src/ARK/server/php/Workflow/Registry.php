@@ -126,7 +126,7 @@ class Registry extends SymfonyRegistry
         }
         try {
             $action = $this->action($item->schema()->name(), 'view');
-            if ($action && $action->isAllowed($actor)) {
+            if ($action && ($item->visibility()->name() === 'public' || $action->isAllowed($actor))) {
                 return 'view';
             }
         } catch (WorkflowException $e) {

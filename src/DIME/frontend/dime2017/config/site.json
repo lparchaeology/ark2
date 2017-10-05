@@ -1,6 +1,6 @@
 {
     "site": "dime",
-    "debug": true,
+    "debug": false,
     "locale": {
         "default": "da",
         "locales": ["da", "en"],
@@ -10,7 +10,7 @@
         "driver": "mysql"
     },
     "mailer": {
-        "enabled": false,
+        "enabled": true,
         "email": "noreply@danefae.dk",
         "sender": "DIME (Do Not Reply)"
     },
@@ -64,20 +64,27 @@
         "/": "DIME\\Routing\\ViewControllerProvider"
     },
     "security": {
+        "anonymous": true,
+        "https": false,
         "access_rules": [
-            [
-                "(^/home)|(^/users)|(^/fund/add$)|(^/lokalitet/add$)",
-                "ROLE_USER"
-            ],
-            [
-                "^/.+$",
-                "IS_AUTHENTICATED_ANONYMOUSLY"
-            ]
+            ["(^/home)|(^/hjem)|(^/users)|(^/brugere)|(^/finds/add$)|(^/fund/add)", "ROLE_USER"],
+            ["^/.+$", "IS_AUTHENTICATED_ANONYMOUSLY"]
         ],
+        "remember_me": {
+            "always_remember_me": false,
+            "key": null,
+            "name": "REMEMBERME",
+            "lifetime": 31536000,
+            "path": "/",
+            "domain": null,
+            "secure": false,
+            "httponly": true,
+            "remember_me_parameter": "_remember_me"
+        },
         "user": {
             "admin_confirm": false,
             "verify_email": true,
-            "verify_email_required": false,
+            "verify_email_required": true,
             "email": "noreply@danefae.org",
             "sender": "DIME User Admin (Do Not Reply)",
             "reset_email_template": "user/emails/reset.txt.twig",
@@ -86,68 +93,77 @@
             "password_expiry": 0,
             "user_reset": true,
             "user_register": true,
-            "reset_ttl": 86400,
-            "routes": {
-                "root": {
-                    "paths": {
-                        "da": "/brugere",
-                        "en": "/users"
-                    }
-                },
-                "target": {
-                    "paths": {
-                        "da": "/hjem",
-                        "en": "/home"
-                    }
-                },
-                "check": {
-                    "route": "user.check",
-                    "paths": {
-                        "da": "/brugere/check",
-                        "en": "/users/check"
-                    }
-                },
-                "confirm": {
-                    "route": "dime.user.confirm",
-                    "paths": {
-                        "da": "/brugere/confirm",
-                        "en": "/users/confirm"
-                    }
-                },
-                "login": {
-                    "route": "dime.user.login",
-                    "paths": {
-                        "da": "/brugere/login",
-                        "en": "/users/login"
-                    }
-                },
-                "logout": {
-                    "route": "user.logout",
-                    "paths": {
-                        "da": "/brugere/logout",
-                        "en": "/users/logout"
-                    }
-                },
-                "register": {
-                    "route": "dime.user.register",
-                    "paths": {
-                        "da": "/brugere/register",
-                        "en": "/users/register"
-                    }
-                },
-                "reset": {
-                    "route": "dime.user.reset",
-                    "paths": {
-                        "da": "/brugere/reset",
-                        "en": "/users/reset"
-                    }
-                },
-                "verify": {
-                    "route": "dime.user.verify",
-                    "paths": {
-                        "da": "/brugere/verify",
-                        "en": "/users/verify"
-                    }
+            "default_role": "detectorist",
+            "reset_ttl": 86400
+        },
+        "routes": {
+            "admin": {
+                "route": "dime.admin",
+                "paths": {
+                    "da": "/admin",
+                    "en": "/admin"
+                }
+            },
+            "user": {
+                "paths": {
+                    "da": "/brugere",
+                    "en": "/users"
+                }
+            },
+            "target": {
+                "route": "dime.home",
+                "paths": {
+                    "da": "/hjem",
+                    "en": "/home"
+                }
+            },
+            "check": {
+                "route": "user.check",
+                "paths": {
+                    "da": "/brugere/check",
+                    "en": "/users/check"
+                }
+            },
+            "confirm": {
+                "route": "dime.user.confirm",
+                "paths": {
+                    "da": "/brugere/confirm",
+                    "en": "/users/confirm"
+                }
+            },
+            "login": {
+                "route": "dime.user.login",
+                "paths": {
+                    "da": "/brugere/login",
+                    "en": "/users/login"
+                }
+            },
+            "logout": {
+                "route": "user.logout",
+                "paths": {
+                    "da": "/brugere/logout",
+                    "en": "/users/logout"
+                }
+            },
+            "register": {
+                "route": "dime.user.register",
+                "paths": {
+                    "da": "/brugere/register",
+                    "en": "/users/register"
+                }
+            },
+            "reset": {
+                "route": "dime.user.reset",
+                "paths": {
+                    "da": "/brugere/reset",
+                    "en": "/users/reset"
+                }
+            },
+            "verify": {
+                "route": "dime.user.verify",
+                "paths": {
+                    "da": "/brugere/verify",
+                    "en": "/users/verify"
                 }
             }
         }
