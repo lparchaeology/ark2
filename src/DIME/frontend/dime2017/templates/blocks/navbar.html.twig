@@ -7,10 +7,16 @@
     <div id="navbar" class="navbar row">
         <div class="col-md-12 dime-banner">
             <div class="row">
-                <div class="col-xs-1 col-xs-push-0 col-sm-1 col-sm-push-0 col-md-1 col-md-push-0">
+                <div class="col-xs-1 col-xs-push-0 col-sm-1 col-sm-push-0 col-md-1 col-md-push-0 mobile-options">
                     <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".sidebar">
                         <span class="glyphicon glyphicon-menu-hamburger"></span>
                     </button>
+                    {% if not global.user %}
+                        <a href="#" data-toggle="modal" data-target="#login-modal" class="loginbutton">
+                            <span class=" dime-icon glyphicon glyphicon-log-in login"></span>
+                            <span class="text">login</span>
+                        </a>
+                    {% endif %}
                 </div>
                 <div class="col-xs-1 col-xs-push-0 col-sm-1 col-sm-push-2 col-md-1 col-md-push-3">
                     <span class="dime-title">
