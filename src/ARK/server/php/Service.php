@@ -41,7 +41,7 @@ use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Seld\JsonLint\JsonParser;
 use SimpleBus\Message\Bus\MessageBus;
-use Swift;
+use Swift_Mailer;
 use Swift_Message;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Response;
@@ -147,7 +147,7 @@ class Service
         return self::$app['flysystems'][$mount];
     }
 
-    public static function mailer() : Swift
+    public static function mailer() : Swift_Mailer
     {
         return self::$app['mailer'];
     }
