@@ -327,12 +327,12 @@ var initTimeline = function () {
               try {
                   var item_start = vis.moment(window.periodvocabulary[event.item].parameters.year_start.value, 'Y');
               } catch (e){
-                  var item_start = vis.moment('10000', 'Y');
+                  var item_start = vis.moment('-10000', 'Y');
               }
               try {
                   var item_end = vis.moment(window.periodvocabulary[event.item].parameters.year_end.value, 'Y');
               }catch (e){
-                  var item_end = vis.moment(date.now(), 'Y');
+                  var item_end = vis.moment(new Date(), 'Y');
               }
 
               if( event.event.shiftKey ){
