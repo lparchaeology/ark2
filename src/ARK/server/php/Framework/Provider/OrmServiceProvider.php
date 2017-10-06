@@ -237,6 +237,10 @@ class OrmServiceProvider implements ServiceProviderInterface
                             'type' => 'item',
                             'namespace' => 'DIME\Entity',
                         ],
+                        [
+                            'type' => 'item',
+                            'namespace' => 'Entity',
+                        ],
                     ],
                 ]
             );
