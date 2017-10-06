@@ -93,6 +93,7 @@ class SiteCreateCommand extends DatabaseCommand
             ARK::jsonEncodeWrite($database, ARK::siteDir($site).'/config/database.json');
             $config = ARK::siteConfig($site);
             $config['site'] = $site;
+            $config['web']['frontend'] = $frontend;
             ARK::writeSiteConfig($site, $config);
             $this->write('Site created.');
             $this->result = $site;

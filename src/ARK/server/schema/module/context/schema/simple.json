@@ -1,16 +1,32 @@
 {
     "module": "context",
-    "schema": "simple",
-    "classes": {
-        "cut": "Cut",
-        "fill": "Fill",
-        "masonry": "Masonry",
-        "skeleton": "Skeleton",
-        "timber": "Timber"
+    "schema": "arch.simple",
+    "class": {
+        "concept": "arch.context.class",
+        "terms": {
+            "cut": "arch.context.class.cut",
+            "fill": "arch.context.class.fill",
+            "masonry": "arch.context.class.masonry",
+            "skeleton": "arch.context.class.skeleton",
+            "timber": "arch.context.class.timber",
+        }
     },
     "attributes": {
         "context": {
-            "id": "Context",
+            "id": {
+                "dataclass": "identifier",
+                "span": false,
+                "minimum": 1,
+                "maximum": 1,
+                "vocabulary": "arch.context.class",
+                "unique_values": true,
+                "additional_values": false,
+                "event": null,
+                "visibility": "public",
+                "edit_permission": null,
+                "view_permission": null,
+                "keyword": "arch.context.id"
+            },
             "class": "Class",
             "status": "Status",
             "visibility": "Visibility",
@@ -40,6 +56,18 @@
             "drawing": "Drawings",
             "timber": "Timbers",
             "find": "Registered Finds"
+        }
+    },
+    "translations": {
+        "arch.context.class.cut": {
+            "en": "Cut"
+        },
+        "fill": "Fill",
+        "masonry": "Masonry",
+        "skeleton": "Skeleton",
+        "timber": "Timber"
+        "arch.context.id": {
+            "en": "Context"
         }
     }
 }
