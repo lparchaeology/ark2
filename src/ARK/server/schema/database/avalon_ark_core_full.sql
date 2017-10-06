@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 06, 2017 at 07:19 PM
+-- Generation Time: Oct 06, 2017 at 08:08 PM
 -- Server version: 10.1.26-MariaDB-0+deb9u1
 -- PHP Version: 7.1.10-1+0~20170929170818.9+stretch~1.gbp501135
 
@@ -4743,7 +4743,7 @@ CREATE TABLE `ark_view_page` (
 --
 
 INSERT INTO `ark_view_page` (`element`, `header`, `sidebar`, `content`, `footer`, `view`, `edit`, `keyword`, `mode`, `visibility`, `template`) VALUES
-('arch_page_context_add', 'core_site_header', 'core_site_sidebar', 'arch_form_context_register', 'core_site_footer', 'arch.item.read', 'arch.item.create', NULL, 'edit', 'restricted', NULL),
+('arch_page_context_add', 'core_site_header', 'core_site_sidebar', 'arch_form_context_register', 'core_site_footer', 'arch.item.create', 'arch.item.create', NULL, 'edit', 'restricted', NULL),
 ('arch_page_context_item', 'core_site_header', 'core_site_sidebar', 'arch_form_context_item', 'core_site_footer', 'arch.item.read', 'arch.item.update', NULL, 'edit', 'restricted', NULL),
 ('arch_page_context_list', 'core_site_header', 'core_site_sidebar', 'arch_table_context', 'core_site_footer', 'arch.item.read', 'arch.item.update', NULL, 'edit', 'restricted', NULL),
 ('core_page_admin', 'core_site_header', 'core_site_sidebar', 'core_admin', 'core_site_footer', 'core.admin', 'core.admin', NULL, 'edit', 'restricted', NULL),
@@ -6160,6 +6160,30 @@ CREATE TABLE `ark_workflow_allow` (
 --
 
 INSERT INTO `ark_workflow_allow` (`schma`, `action`, `role`, `operator`) VALUES
+('arch.context', 'edit', 'archaeologist', 'is'),
+('arch.context', 'view', 'archaeologist', 'is'),
+('arch.find', 'edit', 'archaeologist', 'is'),
+('arch.find', 'view', 'archaeologist', 'is'),
+('arch.group', 'edit', 'supervisor', 'is'),
+('arch.group', 'view', 'archaeologist', 'is'),
+('arch.landuse', 'edit', 'supervisor', 'is'),
+('arch.landuse', 'view', 'archaeologist', 'is'),
+('arch.photo', 'edit', 'archaeologist', 'is'),
+('arch.photo', 'view', 'archaeologist', 'is'),
+('arch.plan', 'edit', 'archaeologist', 'is'),
+('arch.plan', 'view', 'archaeologist', 'is'),
+('arch.project', 'edit', 'manager', 'is'),
+('arch.project', 'view', 'archaeologist', 'is'),
+('arch.sample', 'edit', 'archaeologist', 'is'),
+('arch.sample', 'view', 'archaeologist', 'is'),
+('arch.section', 'edit', 'archaeologist', 'is'),
+('arch.section', 'view', 'archaeologist', 'is'),
+('arch.site', 'edit', 'manager', 'is'),
+('arch.site', 'view', 'archaeologist', 'is'),
+('arch.subgroup', 'edit', 'supervisor', 'is'),
+('arch.subgroup', 'view', 'archaeologist', 'is'),
+('arch.timber', 'edit', 'archaeologist', 'is'),
+('arch.timber', 'view', 'archaeologist', 'is'),
 ('core.actor', 'activate', 'admin', 'is'),
 ('core.actor', 'activate', 'sysadmin', 'is'),
 ('core.actor', 'approve', 'admin', 'is'),
