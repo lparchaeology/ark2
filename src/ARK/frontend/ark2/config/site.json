@@ -65,17 +65,30 @@
     },
     "web": {
         "enable": true,
-        "frontend": "core"
+        "frontend": "ark2"
     },
     "routes": {
         "/api/v2": "ARK\\Framework\\Routing\\ApiControllerProvider",
         "/": "ARK\\Framework\\Routing\\ViewControllerProvider"
     },
     "security": {
+        "anonymous": true,
+        "https": false,
         "access_rules": [
             ["(^/users)", "ROLE_USER"],
             ["^/.+$", "IS_AUTHENTICATED_ANONYMOUSLY"]
         ],
+        "remember_me": {
+            "always_remember_me": false,
+            "key": null,
+            "name": "REMEMBERME",
+            "lifetime": 31536000,
+            "path": "/",
+            "domain": null,
+            "secure": false,
+            "httponly": true,
+            "remember_me_parameter": "_remember_me"
+        },
         "user": {
             "admin_confirm": false,
             "verify_email": true,
@@ -89,59 +102,65 @@
             "user_reset": true,
             "user_register": true,
             "default_role": "anonymous",
-            "reset_ttl": 86400,
-            "routes": {
-                "root": {
-                    "paths": {
-                        "en": "/users"
-                    }
-                },
-                "target": {
-                    "paths": {
-                        "en": "/"
-                    }
-                },
-                "check": {
-                    "route": "user.check",
-                    "paths": {
-                        "en": "/users/check"
-                    }
-                },
-                "confirm": {
-                    "route": "user.confirm",
-                    "paths": {
-                        "en": "/users/confirm"
-                    }
-                },
-                "login": {
-                    "route": "user.login",
-                    "paths": {
-                        "en": "/users/login"
-                    }
-                },
-                "logout": {
-                    "route": "user.logout",
-                    "paths": {
-                        "en": "/users/logout"
-                    }
-                },
-                "register": {
-                    "route": "user.register",
-                    "paths": {
-                        "en": "/users/register"
-                    }
-                },
-                "reset": {
-                    "route": "user.reset",
-                    "paths": {
-                        "en": "/users/reset"
-                    }
-                },
-                "verify": {
-                    "route": "user.verify",
-                    "paths": {
-                        "en": "/users/verify"
-                    }
+            "reset_ttl": 86400
+        },
+        "routes": {
+            "admin": {
+                "route": "admin",
+                "paths": {
+                    "en": "/admin"
+                }
+            },
+            "user": {
+                "paths": {
+                    "en": "/users"
+                }
+            },
+            "target": {
+                "paths": {
+                    "en": "/"
+                }
+            },
+            "check": {
+                "route": "user.check",
+                "paths": {
+                    "en": "/users/check"
+                }
+            },
+            "confirm": {
+                "route": "user.confirm",
+                "paths": {
+                    "en": "/users/confirm"
+                }
+            },
+            "login": {
+                "route": "user.login",
+                "paths": {
+                    "en": "/users/login"
+                }
+            },
+            "logout": {
+                "route": "user.logout",
+                "paths": {
+                    "en": "/users/logout"
+                }
+            },
+            "register": {
+                "route": "user.register",
+                "paths": {
+                    "en": "/users/register"
+                }
+            },
+            "reset": {
+                "route": "user.reset",
+                "paths": {
+                    "en": "/users/reset"
+                }
+            },
+            "verify": {
+                "route": "user.verify",
+                "paths": {
+                    "en": "/users/verify"
                 }
             }
         }

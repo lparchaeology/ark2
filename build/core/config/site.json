@@ -65,7 +65,7 @@
     },
     "web": {
         "enable": true,
-        "frontend": "core"
+        "frontend": "ark2"
     },
     "routes": {
         "/api/v2": "ARK\\Framework\\Routing\\ApiControllerProvider",
