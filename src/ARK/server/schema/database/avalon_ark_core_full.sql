@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 06, 2017 at 06:34 PM
+-- Generation Time: Oct 06, 2017 at 07:19 PM
 -- Server version: 10.1.26-MariaDB-0+deb9u1
 -- PHP Version: 7.1.10-1+0~20170929170818.9+stretch~1.gbp501135
 
@@ -692,22 +692,22 @@ CREATE TABLE `ark_module` (
 
 INSERT INTO `ark_module` (`module`, `superclass`, `resource`, `project`, `entity`, `namespace`, `classname`, `tbl`, `core`, `enabled`, `deprecated`, `keyword`) VALUES
 ('actor', 'actor', 'actors', 'ARK', 'Actor', 'ARK\\Actor', 'ARK\\Actor\\Actor', 'ark_item_actor', 1, 1, 0, 'core.actor'),
-('context', 'context', 'contexts', 'ARK', 'Context', 'ARK\\Context', 'ARK\\Entity\\Context', 'ark_item_context', 0, 1, 0, NULL),
+('context', 'context', 'contexts', 'Entity', 'Context', 'Entity', 'Entity\\Context', 'ark_item_context', 0, 1, 0, NULL),
 ('event', 'event', 'events', 'ARK', 'Event', 'ARK\\Workflow', 'ARK\\Workflow\\Event', 'ark_item_event', 1, 1, 0, 'core.event'),
 ('file', 'file', 'files', 'ARK', 'File', 'ARK\\File', 'ARK\\File\\File', 'ark_item_file', 1, 1, 0, 'core.file'),
-('find', 'find', 'finds', 'ARK', 'Find', 'ARK\\Find', 'ARK\\Entity\\Find', 'ark_item_find', 0, 1, 0, NULL),
-('group', 'group', 'groups', 'ARK', 'Group', 'ARK\\Group', 'ARK\\Entity\\Group', 'ark_item_group', 0, 1, 0, NULL),
-('landuse', 'landuse', 'landuses', 'ARK', 'Landuse', 'ARK\\Landuse', 'ARK\\Entity\\Landuse', 'ark_item_landuse', 0, 1, 0, NULL),
+('find', 'find', 'finds', 'Entity', 'Find', 'Entity', 'Entity\\Find', 'ark_item_find', 0, 1, 0, NULL),
+('group', 'group', 'groups', 'Entity', 'Group', 'Entity', 'Entity\\Group', 'ark_item_group', 0, 1, 0, NULL),
+('landuse', 'landuse', 'landuses', 'Entity', 'Landuse', 'Entity', 'Entity\\Landuse', 'ark_item_landuse', 0, 1, 0, NULL),
 ('message', 'message', 'messages', 'ARK', 'Message', 'ARK\\Message', 'ARK\\Message\\Message', 'ark_item_message', 1, 1, 0, 'core.message'),
 ('page', 'page', 'page', 'ARK', 'Page', 'ARK\\Entity', 'ARK\\Entity\\Page', 'ark_item_page', 1, 1, 0, 'core.page'),
-('photo', 'photo', 'photos', 'ARK', 'Photo', 'ARK\\Photo', 'ARK\\Entity\\Photo', 'ark_item_photo', 0, 1, 0, NULL),
-('plan', 'plan', 'plans', 'ARK', 'Plan', 'ARK\\Plan', 'ARK\\Entity\\Plan', 'ark_item_plan', 0, 1, 0, NULL),
-('project', 'project', 'projects', 'ARK', 'Project', 'ARK\\Project', 'ARK\\Entity\\Project', 'ark_item_project', 0, 1, 0, NULL),
-('sample', 'sample', 'samples', 'ARK', 'Sample', 'ARK\\Sample', 'ARK\\Entity\\Sample', 'ark_item_sample', 0, 1, 0, NULL),
-('section', 'section', 'sections', 'ARK', 'Section', 'ARK\\Section', 'ARK\\Entity\\Section', 'ark_item_section', 0, 1, 0, NULL),
-('site', 'site', 'sites', 'ARK', 'Site', 'ARK\\Site', 'ARK\\Entity\\Site', 'ark_item_site', 0, 1, 0, NULL),
-('subgroup', 'subgroup', 'subgroups', 'ARK', 'Subgroup', 'ARK\\Subgroup', 'ARK\\Entity\\Subgroup', 'ark_item_subgroup', 0, 1, 0, NULL),
-('timber', 'timber', 'timbers', 'ARK', 'Timber', 'ARK\\Timber', 'ARK\\Entity\\Timber', 'ark_item_timber', 0, 1, 0, NULL);
+('photo', 'photo', 'photos', 'Entity', 'Photo', 'Entity', 'Entity\\Photo', 'ark_item_photo', 0, 1, 0, NULL),
+('plan', 'plan', 'plans', 'Entity', 'Plan', 'Entity', 'Entity\\Plan', 'ark_item_plan', 0, 1, 0, NULL),
+('project', 'project', 'projects', 'Entity', 'Project', 'Entity', 'Entity\\Project', 'ark_item_project', 0, 1, 0, NULL),
+('sample', 'sample', 'samples', 'Entity', 'Sample', 'Entity', 'Entity\\Sample', 'ark_item_sample', 0, 1, 0, NULL),
+('section', 'section', 'sections', 'Entity', 'Section', 'Entity', 'Entity\\Section', 'ark_item_section', 0, 1, 0, NULL),
+('site', 'site', 'sites', 'Entity', 'Site', 'Entity', 'Entity\\Site', 'ark_item_site', 0, 1, 0, NULL),
+('subgroup', 'subgroup', 'subgroups', 'Entity', 'Subgroup', 'Entity', 'Entity\\Subgroup', 'ark_item_subgroup', 0, 1, 0, NULL),
+('timber', 'timber', 'timbers', 'Entity', 'Timber', 'Entity', 'Entity\\Timber', 'ark_item_timber', 0, 1, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -747,7 +747,7 @@ INSERT INTO `ark_route` (`route`, `page`, `redirect`, `path`, `can_get`, `can_po
 ('admin.vocabulary.term.list', NULL, NULL, '/admin/vocabularies/{vocabulary}/terms', 1, 0, 'ARK\\Framework\\Controller\\VocabularyTermListPageController'),
 ('admin.vocabulary.term.view', NULL, NULL, '/admin/vocabularies/{vocabulary}/terms/{term}', 1, 0, 'ARK\\Framework\\Controller\\VocabularyTermPageController'),
 ('admin.vocabulary.view', NULL, NULL, '/admin/vocabularies/{vocabulary}', 1, 0, 'ARK\\Framework\\Controller\\VocabularyPageController'),
-('arch.context.add', NULL, NULL, '/contexts/add', 1, 0, 'ARK\\Framework\\Controller\\ItemAddPageController'),
+('arch.context.add', 'arch_page_context_add', NULL, '/contexts/add', 1, 0, 'ARK\\Framework\\Controller\\ItemAddPageController'),
 ('arch.context.item', 'arch_page_context_item', NULL, '/contexts/{id}', 1, 0, 'ARK\\Framework\\Controller\\ItemPageController'),
 ('arch.context.list', 'arch_page_context_list', NULL, '/contexts', 1, 0, 'ARK\\Framework\\Controller\\ItemListPageController'),
 ('home', 'core_page_home', NULL, '/', 1, 0, 'ARK\\Framework\\Controller\\HomePageController'),
@@ -4743,7 +4743,7 @@ CREATE TABLE `ark_view_page` (
 --
 
 INSERT INTO `ark_view_page` (`element`, `header`, `sidebar`, `content`, `footer`, `view`, `edit`, `keyword`, `mode`, `visibility`, `template`) VALUES
-('arch_page_context_add', 'core_site_header', 'core_site_sidebar', 'arch_form_context_register', 'core_site_footer', 'arch.item.read', 'arch.item.update', NULL, 'edit', 'restricted', NULL),
+('arch_page_context_add', 'core_site_header', 'core_site_sidebar', 'arch_form_context_register', 'core_site_footer', 'arch.item.read', 'arch.item.create', NULL, 'edit', 'restricted', NULL),
 ('arch_page_context_item', 'core_site_header', 'core_site_sidebar', 'arch_form_context_item', 'core_site_footer', 'arch.item.read', 'arch.item.update', NULL, 'edit', 'restricted', NULL),
 ('arch_page_context_list', 'core_site_header', 'core_site_sidebar', 'arch_table_context', 'core_site_footer', 'arch.item.read', 'arch.item.update', NULL, 'edit', 'restricted', NULL),
 ('core_page_admin', 'core_site_header', 'core_site_sidebar', 'core_admin', 'core_site_footer', 'core.admin', 'core.admin', NULL, 'edit', 'restricted', NULL),

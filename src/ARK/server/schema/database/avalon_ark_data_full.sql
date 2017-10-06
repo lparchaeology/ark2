@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 06, 2017 at 06:35 PM
+-- Generation Time: Oct 06, 2017 at 07:19 PM
 -- Server version: 10.1.26-MariaDB-0+deb9u1
 -- PHP Version: 7.1.10-1+0~20170929170818.9+stretch~1.gbp501135
 
@@ -1003,6 +1003,7 @@ CREATE TABLE `ark_workflow_actor_role` (
 
 INSERT INTO `ark_workflow_actor_role` (`actor`, `role`, `agent_for`, `enabled`, `expires_at`) VALUES
 ('anonymous', 'anonymous', NULL, 1, NULL),
+('sysadmin', 'archaeologist', NULL, 1, NULL),
 ('sysadmin', 'sysadmin', NULL, 1, NULL);
 
 -- --------------------------------------------------------

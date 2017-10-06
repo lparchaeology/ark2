@@ -32,8 +32,10 @@ namespace ARK\Framework\Controller;
 use ARK\Error\ErrorException;
 use ARK\Framework\PageController;
 use ARK\Http\Error\NotFoundError;
+use ARK\Model\Item;
 use ARK\ORM\ORM;
 use Entity\Context;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 
 class ItemPageController extends PageController
@@ -42,12 +44,12 @@ class ItemPageController extends PageController
     {
         $id = $request->attributes->get('id');
         $item = ORM::find(Context::class, $id);
-        if (!$context) {
+        if (!$item) {
             throw new ErrorException(
                 new NotFoundError('ITEM_NOT_FOUND', 'Item not found', "Item  $id not found")
             );
         }
-        $data['context'] = $context;
+        $data['context'] = $item;
         return $data;
     }
 
