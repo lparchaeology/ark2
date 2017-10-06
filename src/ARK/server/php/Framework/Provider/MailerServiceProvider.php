@@ -44,10 +44,11 @@ class MailerServiceProvider implements ServiceProviderInterface
         if ($container['ark']['mailer']['enabled']) {
             $container->register(new SwiftmailerServiceProvider());
             $settings = $container['ark']['mailer'];
-            $container['swiftmailer.options'] = $settings['options'];
+            $options = $settings['options'];
             $credentials = Security::credentials('smtp');
-            $container['swiftmailer.options']['username'] = $credentials['username'];
-            $container['swiftmailer.options']['password'] = $credentials['password'];
+            $options['username'] = $credentials['username'];
+            $options['password'] = $credentials['password'];
+            $container['swiftmailer.options'] = $options;
             $container['swiftmailer.use_spool'] = $settings['use_spool'];
             $container['swiftmailer.sender_address'] = $settings['sender']['address'];
             $container['swiftmailer.delivery_addresses'] = $settings['delivery']['addresses'];
