@@ -187,7 +187,7 @@ class ARK
         return self::siteDir($site).'/config/site.json';
     }
 
-    public static function siteConfig(string $site) : iterable
+    public static function siteConfig(string $site) : ?iterable
     {
         return json_decode(file_get_contents(self::siteConfigPath($site)), true);
     }

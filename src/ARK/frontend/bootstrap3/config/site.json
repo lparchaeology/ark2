@@ -14,11 +14,11 @@
         "use_spool": true,
         "sender": {
             "address": "noreply@example.com",
-            "name": "ARK (Do Not Reply)",
+            "name": "ARK (Do Not Reply)"
         },
         "delivery": {
             "addresses": ["dev@example.com"],
-            "whitelist": [],
+            "whitelist": []
         },
         "options": {
             "host": "localhost",
