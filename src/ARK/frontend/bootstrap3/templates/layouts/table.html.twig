@@ -34,7 +34,8 @@
                         <th class="thumbimagehead" data-field="{{element.image}}" data-title="{{element.image}}" data-sortable="false"></th>
                     {% endif %}
                     {% for child in children %}
-                        <th data-field="{{ child.element.id }}" data-title="{{ child.state.keyword | translate }}" data-sortable="true" data-sorter="alphanum" data-visible="{{ child.state.visible }}" data-card-visible="false">
+                        {% set childId = child.state.name ? child.element.id ~ '_' ~ child.state.name : child.element.id %}
+                        <th data-field="{{ childId }}" data-title="{{ child.state.keyword | translate }}" data-sortable="true" data-sorter="alphanum" data-visible="{{ child.state.visible }}" data-card-visible="false">
                             {{ child.state.keyword | translate }}
                         </th>
                     {% endfor %}
@@ -72,7 +73,6 @@
                         {% endif %}
                         {% set child = child | merge({'data' : val }) %}
                         <td>
-                            <span class="cell-label">{{ child.state.keyword | translate }}</span>
                             {{ child.element.renderView(child, forms, form) | raw }}
                         </td>
                     {% endfor %}

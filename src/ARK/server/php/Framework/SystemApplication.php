@@ -32,17 +32,14 @@ namespace ARK\Framework;
 use ARK\ARK;
 use ARK\Framework\Provider\BusServiceProvider;
 use ARK\Framework\Provider\LoggerServiceProvider;
-use ARK\Framework\Provider\MailerServiceProvider;
 use Silex\Application as SilexApplication;
 use Silex\Application\MonologTrait;
-use Silex\Application\SwiftmailerTrait;
 use Silex\Provider\VarDumperServiceProvider;
 use Symfony\Component\Debug\Debug;
 
 class SystemApplication extends SilexApplication
 {
     use MonologTrait;
-    use SwiftmailerTrait;
 
     public function __construct()
     {
@@ -53,7 +50,6 @@ class SystemApplication extends SilexApplication
         $this['debug'] = true;
         $this->register(new LoggerServiceProvider('system'));
         $this->register(new BusServiceProvider());
-        $this->register(new MailerServiceProvider());
         $this->register(new VarDumperServiceProvider());
     }
 }
