@@ -58,7 +58,7 @@ class Security
         $this->routes = $container['ark']['security']['routes'];
     }
 
-    public function credentials($key)
+    public static function credentials($key)
     {
         try {
             $path = Service::configDir().'/credentials.json';

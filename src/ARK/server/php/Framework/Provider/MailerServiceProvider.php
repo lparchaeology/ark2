@@ -30,6 +30,7 @@
 
 namespace ARK\Framework\Provider;
 
+use ARK\Security\Security;
 use ARK\Service;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -44,7 +45,7 @@ class MailerServiceProvider implements ServiceProviderInterface
             $container->register(new SwiftmailerServiceProvider());
             $settings = $container['ark']['mailer'];
             $container['swiftmailer.options'] = $settings['options'];
-            $credentials = Service::security()->credentials('smtp');
+            $credentials = Security::credentials('smtp');
             $container['swiftmailer.options']['username'] = $credentials['username'];
             $container['swiftmailer.options']['password'] = $credentials['password'];
             $container['swiftmailer.use_spool'] = $settings['use_spool'];
