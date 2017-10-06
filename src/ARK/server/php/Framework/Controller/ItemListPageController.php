@@ -39,7 +39,6 @@ class ItemListPageController extends PageController
     public function buildData(Request $request)
     {
         $items = ORM::findAll(Context::class);
-        $data['contexts'] = $items;
-        return $data;
+        return $items;
     }
 }
