@@ -92,7 +92,7 @@ class Connection extends DBALConnection {
             AND parent = :parent
             AND sequence = :sequence
             AND recycle = :recycle
-        ' . $this->platform ()->getWriteLockSQL ();
+            ' . $this->platform ()->getWriteLockSQL ();
         $params = [
                 'module' => $module,
                 'parent' => $parent,
@@ -129,7 +129,7 @@ class Connection extends DBALConnection {
             AND parent = :parent
             AND sequence = :sequence
         ' . $this->platform ()->getWriteLockSQL ();
-        unset ( $params ['recycle'] );
+
         $seq = $this->fetchAssoc ( $sql, $params );
         if (! $seq) {
             // No sequence exists, so try create one
