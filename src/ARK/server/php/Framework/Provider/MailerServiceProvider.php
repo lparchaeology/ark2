@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Debug Service Provider
+ * ARK Mailer Service Provider.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -32,15 +32,25 @@ namespace ARK\Framework\Provider;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use Psr\Log\LogLevel;
 use Silex\Provider\SwiftmailerServiceProvider;
 
 class MailerServiceProvider implements ServiceProviderInterface
 {
-    public function register(Container $container)
+    public function register(Container $container) : void
     {
-        $container->register(new SwiftmailerServiceProvider());
-        // TODO Configure mailer!
-        $container['swiftmailer.options'] = [];
+        dump($container);
+        // For SwiftMailer options see https://silex.symfony.com/doc/2.0/providers/swiftmailer.html
+        if ($container['ark']['mailer']['enabled']) {
+            $container->register(new SwiftmailerServiceProvider());
+            $settings = $container['ark']['mailer'];
+            $container['swiftmailer.options'] = $settings['options'];
+            $credentials = Service::security()->credentials('smtp');
+            $container['swiftmailer.options']['username'] = $credentials['username'];
+            $container['swiftmailer.options']['password'] = $credentials['password'];
+            $container['swiftmailer.use_spool'] = $settings['use_spool'];
+            $container['swiftmailer.sender_address'] = $settings['sender']['address'];
+            $container['swiftmailer.delivery_addresses'] = $settings['delivery']['addresses'];
+            $container['swiftmailer.delivery_whitelist'] = $settings['delivery']['whitelist'];
+        }
     }
 }

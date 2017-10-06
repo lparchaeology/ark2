@@ -11,8 +11,21 @@
     },
     "mailer": {
         "enabled": false,
-        "email": "noreply@example.com",
-        "sender": "ARK (Do Not Reply)"
+        "use_spool": true,
+        "sender": {
+            "address": "noreply@example.com",
+            "name": "ARK (Do Not Reply)",
+        },
+        "delivery": {
+            "addresses": ["dev@example.com"],
+            "whitelist": [],
+        },
+        "options": {
+            "host": "localhost",
+            "port": 25,
+            "encryption": null,
+            "auth_mode": null
+        }
     },
     "file": {
         "root": "/files",

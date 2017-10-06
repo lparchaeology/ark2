@@ -11,8 +11,23 @@
     },
     "mailer": {
         "enabled": true,
-        "email": "noreply@danefae.dk",
-        "sender": "DIME (Do Not Reply)"
+        "use_spool": true,
+        "sender": {
+            "address": "noreply@danefae.dk",
+            "name": "DIME (Do Not Reply)"
+        },
+        "delivery": {
+            "addresses": [],
+            "whitelist": []
+        },
+        "options": {
+            "host": "localhost",
+            "port": 25,
+            "username": "",
+            "password": "",
+            "encryption": null,
+            "auth_mode": null
+        }
     },
     "file": {
         "root": "/files",
