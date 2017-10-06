@@ -30,6 +30,7 @@
 
 namespace ARK\Framework\Provider;
 
+use ARK\Service;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Provider\SwiftmailerServiceProvider;
@@ -38,7 +39,6 @@ class MailerServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $container) : void
     {
-        dump($container);
         // For SwiftMailer options see https://silex.symfony.com/doc/2.0/providers/swiftmailer.html
         if ($container['ark']['mailer']['enabled']) {
             $container->register(new SwiftmailerServiceProvider());
