@@ -237,6 +237,11 @@ class OrmServiceProvider implements ServiceProviderInterface
                             'type' => 'item',
                             'namespace' => 'DIME\Entity',
                         ],
+                        [
+                            'type' => 'item',
+                            'namespace' => 'Entity',
+                            'path' => $container['dir.install'].'/src/Generated/php/Entity',
+                        ],
                     ],
                 ]
             );
