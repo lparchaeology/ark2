@@ -55,7 +55,7 @@ class Security
     {
         $this->app = $app;
         $this->options = $app['user.options'];
-        $this->routes = $container['ark']['security']['routes'];
+        $this->routes = $app['ark']['security']['routes'];
     }
 
     public static function credentials($key)
