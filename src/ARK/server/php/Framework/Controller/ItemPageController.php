@@ -74,6 +74,9 @@ class ItemPageController extends PageController
 
     protected function item($data) : ?Item
     {
-        return $data['context'] ?? $data;
+        if (is_array($data)) {
+            $data['context'] ?? $data;
+        }
+        return $data;
     }
 }
