@@ -63,8 +63,8 @@ class SecurityServiceProvider implements ServiceProviderInterface
         $user = $settings['routes']['user']['paths'][$locale];
         $login = $settings['routes']['login']['paths'][$locale];
         $check = $settings['routes']['check']['paths'][$locale];
-        $check = $settings['routes']['confirm']['paths'][$locale];
-        $check = $settings['routes']['verify']['paths'][$locale];
+        $confirm = $settings['routes']['confirm']['paths'][$locale];
+        $verify = $settings['routes']['verify']['paths'][$locale];
         $target = $settings['routes']['target']['paths'][$locale];
         $logout = $settings['routes']['logout']['paths'][$locale];
         $register = $settings['routes']['register']['paths'][$locale];
