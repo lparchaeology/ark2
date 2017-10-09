@@ -61,6 +61,6 @@ class ItemAddPageController extends PageController
 
     protected function item($data) : ?Item
     {
-        return $data['context'];
+        return $data['context'] ?? $data;
     }
 }
