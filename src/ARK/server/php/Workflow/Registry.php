@@ -153,10 +153,9 @@ class Registry extends SymfonyRegistry
 
     public function apply(Actor $actor, string $action, Item $item, Actor $subject = null) : void
     {
-        if ($action = $this->action($item->schema()->name(), $action)) {
+        $action = $this->action($item->schema()->name(), $action);
+        if ($action) {
             $action->apply($actor, $item, $subject);
-        } else {
-            throw new WorkflowException();
         }
     }
 
@@ -200,9 +199,6 @@ class Registry extends SymfonyRegistry
     private function action(string $schema, string $action) : ?Action
     {
         $this->init($schema);
-        if (isset($this->actions[$schema][$action])) {
-            return $this->actions[$schema][$action];
-        }
-        return null;
+        return $this->actions[$schema][$action] ?? null;
     }
 }
