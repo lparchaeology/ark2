@@ -193,60 +193,11 @@ var initPeriod = function () {
 
     $('.dating-button').removeClass('inactive');
 
-    $('#oldtid-dating-button').on('click', function (e) {
-        e.preventDefault();
-        $('#' + date_start_id).val('-9000');
-        $('#' + date_start_id).trigger('keyup');
-        $('#' + date_start_id + '_span').val('1066');
-        $('#' + date_start_id + '_span').trigger('keyup');
-        $('#historiktid-dating-button').removeClass('selected');
-        $('#oldtid-dating-button').addClass('selected');
-    });
-    $('#historiktid-dating-button').on('click', function (e) {
-        e.preventDefault();
-        $('#' + date_start_id).val('1067');
-        $('#' + date_start_id).trigger('keyup');
-        $('#' + date_start_id + '_span').val(new Date().getFullYear());
-        $('#' + date_start_id + '_span').trigger('keyup');
-        $('#oldtid-dating-button').removeClass('selected');
-        $('#historiktid-dating-button').addClass('selected');
-    });
+
 
 }
 
 $(document).ready(function () {
-    $('#advanced-dating-button').on('click', function (e) {
-        e.preventDefault();
-        $('#advanced-dating-button').hide();
-        $("#find_dating_period").select2({
-            minimumResultsForSearch: 11,
-            width: 'resolve'
-        });
-        $("#find_dating_period_span").select2({
-            minimumResultsForSearch: 11,
-            width: 'resolve'
-        });
-        $("#find_dating_period").trigger("select2:select");
-        $("#find_dating_period_span").trigger("select2:select");
-
-        $('.advanced-dating').show();
-        $('.simple-dating').hide();
-        $('.form-period').addClass("col-sm-6").removeClass("col-sm-11");
-    });
-    $('#simple-dating-button').on('click', function (e) {
-        e.preventDefault();
-        $('#advanced-dating-button').show();
-        $('.advanced-dating').hide();
-        $('.simple-dating').show();
-        initSimpleDating();
-        $('.form-period').removeClass("col-sm-6").addClass("col-sm-11");
-    });
-    $('#oldtid-dating-button').on('click', function (e) {
-        e.preventDefault();
-    });
-    $('#historiktid-dating-button').on('click', function (e) {
-        e.preventDefault();
-    });
     var setSimpleButtons = function () {
         //console.log($('#find_dating_year').val());
         if ($('#find_dating_year').val() < 1067) {

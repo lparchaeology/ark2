@@ -5,32 +5,28 @@
     {{ form_label(form) }}
 
     <div class="col-sm-8 col-lg-7">
-
+    
         {% if (state.mode is sameas("edit")) %}
-            <div class = "simple-dating">
-                <div class="col-sm-11 form-period">
-                    <select id="simple_dating_input"></select>
+            <div class="row">
+                <div class="col-sm-9">
+                    {{ form_widget(form.period) }}
                 </div>
-                <span id="advanced-dating-button" class="advanced-dating-button dating-button"><span class="glyphicon glyphicon-expand"></span></span>
+                <div class="col-sm-3 form-year">
+                    {{ form_widget(form.year) }}
+                </div>
             </div>
-            <div class = "advanced-dating">
-                <div class="row">
-                    <div class="col-sm-6">
-                        {{ form_widget(form.period) }}
-                    </div>
-                    <div class="col-sm-6">
-                        {{ form_widget(form.period_span) }}
-                    </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="dating-til">{{ "dime.dating.til"| trans }}</div>
                 </div>
-                <div class="row">
-                    <div class="col-sm-6 form-year">
-                        {{ form_widget(form.year) }}
-                    </div>
-                    <div class="col-sm-6">
-                        {{ form_widget(form.year_span) }}
-                    </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-9">
+                    {{ form_widget(form.period_span) }}
                 </div>
-                <span id="simple-dating-button" class="advanced-dating-button dating-button"><span class="glyphicon glyphicon-collapse-up"></span></span>
+                <div class="col-sm-3 form-year">
+                    {{ form_widget(form.year_span) }}
+                </div>
             </div>
         {% else %}
              <div class="row">
