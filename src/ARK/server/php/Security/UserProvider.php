@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Security;
@@ -62,19 +61,29 @@ class UserProvider implements UserProviderInterface
         return ($class === User::class) || is_subclass_of($class, User::class);
     }
 
-    public function findUser($id)
+    public function findUser($id) : ?User
     {
         return ORM::find(User::class, $id);
     }
 
-    public function findByUsername($username)
+    public function findByUsername($username) : ?User
     {
         return ORM::findOneBy(User::class, ['username' => $username]);
     }
 
-    public function findByEmail($email)
+    public function findByEmail($email) : ?User
     {
         return ORM::findOneBy(User::class, ['email' => $email]);
+    }
+
+    public function findByVerificationToken($token) : ?User
+    {
+        return ORM::findOneBy(User::class, ['verificationToken' => $token]);
+    }
+
+    public function findByResetToken($token) : ?User
+    {
+        return ORM::findOneBy(User::class, ['passwordRequestToken' => $token]);
     }
 
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)

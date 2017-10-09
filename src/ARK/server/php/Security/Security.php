@@ -215,6 +215,22 @@ class Security
         }
     }
 
+    public function verifyUser(User $user) : void
+    {
+        if ($user->isVerificationRequestExpired()) {
+            if ($this->options['verify_email']) {
+                $user->setVerificationRequested();
+                $this->sendVerificationMessage($user);
+            }
+        } else {
+            $user->verify();
+            if (!$this->options['admin_confirm']) {
+                $user->enable();
+            }
+        }
+        ORM::flush($user);
+    }
+
     public function createActorUser(Actor $actor, User $user, \DateTime $expiry = null) : ActorUser
     {
         $actorUser = new ActorUser($actor, $user);
