@@ -56,21 +56,14 @@ class ItemPageController extends PageController
 
     public function processForm(Request $request, Form $form) : void
     {
-        $clicked = $form->getClickedButton()->getName();
         $data = $form->getData();
         $item = $this->item($data);
         $parameters['id'] = $item->id();
         $request->attributes->set('parameters', $parameters);
         $actor = Service::workflow()->actor();
-        if ($clicked === 'save') {
-            Service::workflow()->apply($actor, 'edit', $item);
-            $message = 'dime.find.update.saved';
-        }
-        if (!isset($message)) {
-            return;
-        }
+        Service::workflow()->apply($actor, 'edit', $item);
         ORM::flush($item);
-        Service::view()->addSuccessFlash($message);
+        Service::view()->addSuccessFlash('dime.find.update.saved');
     }
 
     protected function item($data) : ?Item
