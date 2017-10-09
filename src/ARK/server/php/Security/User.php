@@ -160,16 +160,6 @@ class User implements AdvancedUserInterface, Serializable
         $this->name = $name;
     }
 
-    public function isVerified() : bool
-    {
-        return $this->verified;
-    }
-
-    public function verify() : void
-    {
-        $this->verified = true;
-    }
-
     public function status() : Term
     {
         if ($this->isExpired()) {
@@ -308,6 +298,18 @@ class User implements AdvancedUserInterface, Serializable
     // UserInterface
     public function eraseCredentials() : void
     {
+    }
+
+    public function isVerified() : bool
+    {
+        return $this->verified;
+    }
+
+    public function verify() : void
+    {
+        $this->verified = true;
+        $this->verificationToken = '';
+        $this->verificationRequestedAt = null;
     }
 
     public function verificationToken() : string

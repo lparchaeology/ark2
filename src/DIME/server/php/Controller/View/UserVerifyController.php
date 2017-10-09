@@ -29,8 +29,33 @@
 
 namespace DIME\Controller\View;
 
+use ARK\Security\User;
+use ARK\Service;
 use DIME\DIME;
 
 class UserVerifyController extends DimeFormController
 {
+    public function __invoke(Request $request, $token = null) : Response
+    {
+        $query = $request->query->all();
+        $token = $query['token'] ?? null;
+        if (!$token) {
+            Service::view()->addErrorFlash('dime.user.verify.invalid');
+            return Service::redirectPath('dime.user.login');
+        }
+        $user = ORM::findByVerificationToken(User::class, $token);
+        if (!$user) {
+            Service::view()->addErrorFlash('dime.user.verify.invalid');
+            return Service::redirectPath('dime.user.login');
+        }
+        Service::security()->verifyUser($user);
+        if ($user->isEnabled()) {
+            Service::view()->addSuccessFlash('dime.user.verify.enabled');
+        } elseif ($user->isVerified()) {
+            Service::view()->addSuccessFlash('dime.user.verify.verified');
+        } else {
+            Service::view()->addErrorFlash('dime.user.verify.expired');
+        }
+        return Service::redirectPath('dime.user.login');
+    }
 }
