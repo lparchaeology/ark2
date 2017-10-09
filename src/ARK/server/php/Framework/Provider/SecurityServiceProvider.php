@@ -63,6 +63,8 @@ class SecurityServiceProvider implements ServiceProviderInterface
         $user = $settings['routes']['user']['paths'][$locale];
         $login = $settings['routes']['login']['paths'][$locale];
         $check = $settings['routes']['check']['paths'][$locale];
+        $check = $settings['routes']['confirm']['paths'][$locale];
+        $check = $settings['routes']['verify']['paths'][$locale];
         $target = $settings['routes']['target']['paths'][$locale];
         $logout = $settings['routes']['logout']['paths'][$locale];
         $register = $settings['routes']['register']['paths'][$locale];
@@ -73,7 +75,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
         $container['security.firewalls'] = [
             // unsecured firewall: anyone can login/register/reset
             'unsecured' => [
-                'pattern' => "(^$login$)|(^$register$)|(^$reset$)",
+                'pattern' => "(^$login$)|(^$register$)|(^$reset$)|(^$confirm$)|(^$verify$)",
                 'anonymous' => true,
             ],
             // TODO API firewall: all api calls controlled by access_rules and tokens
