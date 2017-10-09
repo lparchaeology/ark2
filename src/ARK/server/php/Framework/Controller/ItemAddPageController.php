@@ -62,8 +62,11 @@ class ItemAddPageController extends PageController
     protected function item($data) : ?Item
     {
         if (is_array($data)) {
-            $data['context'] ?? $data;
+            $data['context'] ?? null;
         }
-        return $data;
+        if ($data instanceof Item) {
+            return $data;
+        }
+        return null;
     }
 }
