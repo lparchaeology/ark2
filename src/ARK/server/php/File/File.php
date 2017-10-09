@@ -138,7 +138,7 @@ abstract class File implements Item
         return $this->mediatype;
     }
 
-    public static function createFromUploadedFile(UploadedFile $upload) : File
+    public static function createFromUploadedFile(UploadedFile $upload) : ?File
     {
         if ($upload->isValid()) {
             $file = self::createForMediatype($upload->getMimetype());
