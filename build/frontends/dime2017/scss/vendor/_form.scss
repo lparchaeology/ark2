@@ -278,31 +278,17 @@ input[type=radio]:checked ~ label::before {
 }
 
 /* Dating */
-.advanced-dating {
-    display: none;
+.dating-til {
+    text-align:center;
+    width:100%;
 }
 
-.dating-button {
-    border-radius: 10px;
-    margin: 2px;
-    text-transform: capitalize;
+.form-year input{
+    padding: 0 0 0 10px;
+    height: 2em;
 }
-
-.dating-button.inactive {
-    cursor: not-allowed;
-}
-
-.dating-button.advanced-dating-button {
-    font-size: 1.4em;
-}
-
 .mappick-decimal-control {
     padding: 0 12px;
-}
-
-.dating-button.advanced-dating-button,
-.dating-button.selected {
-    background-color: white;
 }
 
 .help {
