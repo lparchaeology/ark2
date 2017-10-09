@@ -33,7 +33,7 @@ use ARK\Security\User;
 use ARK\Service;
 use DIME\DIME;
 
-class UserVerifyController extends DimeFormController
+class UserConfirmController extends DimeFormController
 {
     public function __invoke(Request $request, $token = null) : Response
     {
