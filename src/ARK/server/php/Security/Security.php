@@ -269,7 +269,7 @@ class Security
         return $user;
     }
 
-    public function resetUser(User $user) : void
+    public function requestPassword(User $user) : void
     {
         $user->setPasswordRequested();
         ORM::flush($user);

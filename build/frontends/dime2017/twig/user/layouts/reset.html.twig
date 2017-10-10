@@ -4,6 +4,45 @@
     <p>{{ 'core.user.login.loggedin' | trans({ '%name%': global.user.displayName }) }}</p>
     <p><a href="{{ path('user.logout') }}">{{ 'core.user.login.logout' | translate() }}</a></p>
 
+{% elseif user %}
+
+    <h2>{{ 'core.user.reset.heading' | translate }}</h2>
+
+    <p class="text-muted">
+        {{ 'core.user.reset.password' | translate }}
+    </p>
+
+    <form name="password_set" method="post" id="password_set" class="form-horizontal">
+
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-4 col-xs-12 col-sm-4 control-label required" for="password_first">
+                {{ 'core.user.password.set' | translate() }}
+            </label>
+            <div class="form-group-widget col-xs-11 col-sm-7 col-lg-7">
+                <input type="password" id="password_first" name="password_first" required="required" class="password-field form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-4 col-xs-12 col-sm-4 control-label required" for="password_second">
+                {{ 'core.user.password.repeat' | translate() }}
+            </label>
+            <div class="form-group-widget col-xs-11 col-sm-7 col-lg-7">
+                <input type="password" id="password_second" name="password_second" required="required" class="password-field form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-xs-12 col-sm-4"></div>
+            <div class="form-group-widget col-xs-11 col-sm-7 col-lg-7">
+                <button type="submit" id="password_set" name="password_set" class="btn-default btn">
+                    {{ 'core.button.save' | translate() }}
+                </button>
+            </div>
+        </div>
+
+    </form>
+
 {% else %}
 
     <h2>{{ 'core.user.reset.heading' | translate }}</h2>
@@ -17,6 +56,26 @@
         {{ 'core.user.reset.reset' | translate }}
     </p>
 
-    {% include "layouts/grid.html.twig" %}
+    <form name="reset" method="post" id="" class="form-horizontal">
+
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-4 col-xs-12 col-sm-4 control-label" for="_username">
+                {{ 'core.user.username' | translate }}
+            </label>
+            <div class="form-group-widget col-xs-11 col-sm-7 col-lg-7">
+                <input type="text" id="_username" name="_username" required="required" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-xs-12 col-sm-4"></div>
+            <div class="form-group-widget col-xs-11 col-sm-7 col-lg-7">
+                <button type="submit" id="reset" name="reset" class="btn-default btn">
+                    {{ 'core.user.reset' | translate }}
+                </button>
+            </div>
+        </div>
+
+    </form>
 
 {% endif %}
