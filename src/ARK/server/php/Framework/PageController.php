@@ -42,20 +42,9 @@ abstract class PageController extends Controller
 {
     public function handleRequest(Request $request) : Response
     {
-        $route = ORM::find(Route::class, $request->attributes->get('_route'));
-        if ($route) {
-            $page = $route->page();
-            if ($route->redirect()) {
-                $request->attributes->set('redirect', $route->redirect()->id());
-            }
-        } else {
-            $page = ORM::find(Page::class, $request->attributes->get('page'));
-        }
-        $parent['data'] = $this->buildData($request);
-        $parent['state'] = $this->buildState($request, $parent['data']);
-        $parent['options'] = [];
+        $page = $this->buildPage($request);
+        $parent = $this->buildView($request);
         $view = $page->buildView($parent);
-
         if ($view['state']['mode'] === 'deny') {
             throw new AccessDeniedException('core.error.access.denied');
         }
@@ -94,12 +83,34 @@ abstract class PageController extends Controller
                 Service::view()->addErrorFlash($e->getMessage());
             }
         }
-        $view = $this->buildContext($request, $view);
+
+        $context = $this->buildContext($request, $view);
         $forms = $page->createFormViews($forms);
-
-        $response = new Response($page->renderView($view, $forms));
-
+        $response = new Response($page->renderView($context, $forms));
+        //dump($response);
         return $response;
+    }
+
+    protected function buildPage(Request $request) : ?Page
+    {
+        $route = ORM::find(Route::class, $request->attributes->get('_route'));
+        if ($route) {
+            $page = $route->page();
+            if ($route->redirect()) {
+                $request->attributes->set('redirect', $route->redirect()->id());
+            }
+        } else {
+            $page = ORM::find(Page::class, $request->attributes->get('page'));
+        }
+        return $page;
+    }
+
+    protected function buildView(Request $request) : iterable
+    {
+        $view['data'] = $this->buildData($request);
+        $view['state'] = $this->buildState($request, $parent['data']);
+        $view['options'] = $this->defaultOptions();
+        return $view;
     }
 
     protected function buildState(Request $request, $data) : iterable
@@ -141,12 +152,12 @@ abstract class PageController extends Controller
 
     protected function buildContext(Request $request, iterable $view) : iterable
     {
-        $view = parent::buildContext($request, $view);
+        $context = parent::buildContext($request, $view);
         // Set up routing paths for JavaScript Router
-        $view['routing']['base_path'] = $request->getBasePath();
-        $view['routing']['routes'] = [];
+        $context['routing']['base_path'] = $request->getBasePath();
+        $context['routing']['routes'] = [];
         foreach (Service::routes() as $name => $route) {
-            $view['routing']['routes'][$name] = [
+            $context['routing']['routes'][$name] = [
                     'host' => $route->getHost(),
                     'path' => $route->getPath(),
                     'schemes' => $route->getSchemes(),
@@ -154,6 +165,6 @@ abstract class PageController extends Controller
                     'condition' => $route->getCondition(),
             ];
         }
-        return $view;
+        return $context;
     }
 }

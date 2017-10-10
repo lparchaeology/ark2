@@ -32,17 +32,21 @@ namespace DIME\Controller\View;
 use ARK\ORM\ORM;
 use ARK\Security\User;
 use ARK\Service;
-use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class UserResetController extends DimeFormController
 {
     public function __invoke(Request $request, $token = null) : Response
     {
-        $query = $request->query->all();
-        $token = $query['token'] ?? null;
-        $user = $token ? Service::security()->userProvider()->findByResetToken($token) : null;
+        $page = $this->buildPage($request);
+        $parent = $this->buildView($request);
+        $view = $page->buildView($parent);
+
+        if ($view['state']['mode'] === 'deny') {
+            throw new AccessDeniedException('core.error.access.denied');
+        }
 
         if ($request->getMethod() === 'POST') {
             if ($user) {
@@ -70,17 +74,15 @@ class UserResetController extends DimeFormController
             }
         }
 
-        $context['user'] = $user;
+        $view = $this->buildContext($request, $view);
         return Service::view()->renderResponse('user/layouts/reset.html.twig', $context);
     }
 
-    public function processForm(Request $request, Form $form) : void
+    protected function buildData(Request $request)
     {
-        $data = $form->getData();
-        $user = ORM::find(User::class, $data['_username']);
-        if ($user) {
-            Service::security()->resetUser($user);
-        }
-        Service::view()->addSuccessFlash('dime.user.reset.sent');
+        $query = $request->query->all();
+        $data['token'] = $query['token'] ?? null;
+        $data['user'] = $data['token'] ? Service::security()->userProvider()->findByResetToken($data['token']) : null;
+        return $data;
     }
 }

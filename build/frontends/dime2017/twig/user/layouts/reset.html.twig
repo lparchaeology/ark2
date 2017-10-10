@@ -4,7 +4,7 @@
     <p>{{ 'core.user.login.loggedin' | trans({ '%name%': global.user.displayName }) }}</p>
     <p><a href="{{ path('user.logout') }}">{{ 'core.user.login.logout' | translate() }}</a></p>
 
-{% elseif user %}
+{% elseif data.user %}
 
     <h2>{{ 'core.user.reset.heading' | translate }}</h2>
 
