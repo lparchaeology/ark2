@@ -1,4 +1,8 @@
 
+{% extends "pages/page.html.twig" %}
+
+{% block content %}
+
 {% if global.user %}
 
     <p>{{ 'core.user.login.loggedin' | trans({ '%name%': global.user.displayName }) }}</p>
@@ -79,3 +83,5 @@
     </form>
 
 {% endif %}
+
+{% endblock content %}
