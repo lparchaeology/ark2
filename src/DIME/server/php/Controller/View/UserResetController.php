@@ -56,7 +56,7 @@ class UserResetController extends DimeFormController
                     $user = $view['data']['user'];
                     Service::security()->resetPassword($user, $password);
                     if ($user->passwordRequestToken() === '') {
-                        Service::security()->loginAsUser($user, 'default', $request);
+                        Service::security()->loginAsUser($user, 'secured', $request);
                         Service::view()->addSuccessFlash('dime.user.reset.success');
                         return Service::redirectPath('dime.home');
                     }

@@ -179,7 +179,7 @@ class Security
         return $errors;
     }
 
-    public function loginAsUser(User $user, string $providerKey = 'default', Request $request = null) : void
+    public function loginAsUser(User $user, string $providerKey = 'secured', Request $request = null) : void
     {
         // TODO logout first?
         if (!$this->isLoggedIn()) {

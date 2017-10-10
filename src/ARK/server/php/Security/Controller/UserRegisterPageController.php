@@ -91,7 +91,7 @@ class UserRegisterPageController extends PageController
             Service::view()->addSuccessFlash('core.admin.user.register');
         } elseif ($user->isEnabled()) {
             Service::view()->addSuccessFlash('core.security.user.register.enabled');
-            Service::security()->loginAsUser($user, 'default', $request);
+            Service::security()->loginAsUser($user, 'secured', $request);
         } else {
             Service::view()->addSuccessFlash('core.security.user.register.confirm');
         }
