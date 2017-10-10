@@ -217,7 +217,7 @@ class Security
 
     public function verifyUser(User $user) : void
     {
-        if ($user->isVerificationRequestExpired()) {
+        if ($user->isVerificationRequestExpired($this->options['reset_ttl'])) {
             if ($this->options['verify_email']) {
                 $user->setVerificationRequested();
                 $this->sendVerificationMessage($user);
