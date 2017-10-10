@@ -360,9 +360,9 @@ class User implements AdvancedUserInterface, Serializable
 
     public function isPasswordRequestExpired(int $ttl) : bool
     {
-        if ($this->getPasswordRequestedAt instanceof DateTime && $this->getPasswordRequestedAt->getTimestamp() + $ttl < time()) {
+        if ($this->passwordRequestedAt instanceof DateTime && $this->passwordRequestedAt->getTimestamp() + $ttl < time()) {
             $this->passwordRequestToken = '';
-            $this->getPasswordRequestedAt = null;
+            $this->passwordRequestedAt = null;
         }
         return $this->passwordRequestToken === '';
     }
