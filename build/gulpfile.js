@@ -56,12 +56,7 @@ function frontendDestPath(manifest) {
  * Task to install required files into the frontend
  */
 function copyFiles(paths, dest) {
-    console.log(paths);
-    console.log(dest);
-    for (var path in paths) {
-        console.log(paths[path]);
-        fs.copySync(paths[path], dest);
-    }
+    return gulp.src(paths).pipe(gulp.dest(dest));
 }
 
 /*
@@ -96,6 +91,11 @@ function installFiles(group) {
     return copyFiles(src, dest);
 }
 
+function makeMap(prefix, paths, dest) {
+    var prefixed = prefixPaths(prefix, paths);
+    return { 'src': prefixed, 'dest': dest, };
+}
+
 /*
  * Task to install required files into the frontend
  */
@@ -104,14 +104,29 @@ function installAssets(group) {
     var dest = frontendDestPath(manifest) + '/assets/' + group;
     fs.emptyDirSync(dest);
     var sub = '';
+    var maps = [];
+    var map = {};
+    var ret = null;
+
     for (sub in manifest.assets[group].vendor) {
-        copyFiles(prefixPaths('node_modules/', manifest.assets[group].vendor[sub]), dest + '/' + sub);
+        map = makeMap('node_modules/', manifest.assets[group].vendor[sub], dest + '/' + sub);
+        maps = maps.concat(map);
     }
     for (sub in manifest.assets[group].core) {
-        copyFiles(prefixPaths('core/', manifest.assets[group].core[sub]), dest + '/' + sub);
+        map = makeMap('core/', manifest.assets[group].core[sub], dest + '/' + sub);
+        maps = maps.concat(map);
     }
     for (sub in manifest.assets[group].custom) {
-        copyFiles(prefixPaths('frontends/' + manifest.frontend + '/', manifest.assets[group].custom[sub]), dest + '/' + sub);
+        map = makeMap('frontends/' + manifest.frontend + '/', manifest.assets[group].custom[sub], dest + '/' + sub);
+        maps = maps.concat(map);
+    }
+    console.log('');
+    console.log(maps);
+    console.log('');
+    for (map in maps) {
+        console.log(maps[map].src);
+        console.log('');
+        ret = copyFiles(maps[map].src, maps[map].dest);
     }
     return util.noop();
 }
@@ -148,7 +163,7 @@ gulp.task('create', function () {
         util.log('Frontend already exists!');
         return util.noop();
     } catch (e) {
-        util.noop();
+        return util.noop();
     }
 
     fs.mkdirSync(dest);
