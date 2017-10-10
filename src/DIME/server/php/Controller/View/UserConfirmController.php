@@ -32,6 +32,8 @@ namespace DIME\Controller\View;
 use ARK\Security\User;
 use ARK\Service;
 use DIME\DIME;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserConfirmController extends DimeFormController
 {

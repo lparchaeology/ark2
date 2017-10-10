@@ -106,7 +106,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
             // First ensure anyone can access login area
             [
                 [
-                    "(^$login$)|(^$register$)|(^$reset$)|(^$check$)",
+                    "(^$login$)|(^$register$)|(^$reset$)|(^$check$)|(^$confirm$)|(^$verify$)",
                     'IS_AUTHENTICATED_ANONYMOUSLY',
                     $channel,
                 ],
