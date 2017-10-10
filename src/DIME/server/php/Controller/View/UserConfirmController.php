@@ -42,12 +42,12 @@ class UserConfirmController extends DimeFormController
         $query = $request->query->all();
         $token = $query['token'] ?? null;
         if (!$token) {
-            Service::view()->addErrorFlash('dime.user.verify.invalid');
+            Service::view()->addErrorFlash('dime.user.verify.missing');
             return Service::redirectPath('dime.user.login');
         }
-        $user = Service::security()->userProvider()->findByVerificationToken(User::class, $token);
+        $user = Service::security()->userProvider()->findByVerificationToken($token);
         if (!$user) {
-            Service::view()->addErrorFlash('dime.user.verify.invalid');
+            Service::view()->addErrorFlash('dime.user.verify.unknown');
             return Service::redirectPath('dime.user.login');
         }
         Service::security()->verifyUser($user);
