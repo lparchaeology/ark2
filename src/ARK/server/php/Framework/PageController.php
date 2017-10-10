@@ -109,7 +109,7 @@ abstract class PageController extends Controller
     {
         $view['data'] = $this->buildData($request);
         $view['state'] = $this->buildState($request, $view['data']);
-        $view['options'] = $this->defaultOptions();
+        $view['options'] = [];
         return $view;
     }
 
