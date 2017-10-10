@@ -45,7 +45,7 @@ class UserConfirmController extends DimeFormController
             Service::view()->addErrorFlash('dime.user.verify.invalid');
             return Service::redirectPath('dime.user.login');
         }
-        $user = ORM::findByVerificationToken(User::class, $token);
+        $user = Service::security()->userProvider()->findByVerificationToken(User::class, $token);
         if (!$user) {
             Service::view()->addErrorFlash('dime.user.verify.invalid');
             return Service::redirectPath('dime.user.login');
