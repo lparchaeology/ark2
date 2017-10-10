@@ -20,8 +20,6 @@ var baseTasks = [
 var assetTasks = [
     'fonts',
     'images',
-    //'scripts',
-    //'styles',
 ];
 
 var buildTasks = baseTasks.concat(assetTasks, ['scripts', 'styles']);
@@ -57,8 +55,13 @@ function frontendDestPath(manifest) {
 /*
  * Task to install required files into the frontend
  */
-function copyFiles(src, dest) {
-    return gulp.src(src).pipe(gulp.dest(dest));
+function copyFiles(paths, dest) {
+    console.log(paths);
+    console.log(dest);
+    for (var path in paths) {
+        console.log(paths[path]);
+        fs.copySync(paths[path], dest);
+    }
 }
 
 /*
@@ -89,7 +92,7 @@ function installFiles(group) {
     var manifest = frontendManifest();
     var src = mergePaths(manifest.frontend, manifest[group]);
     var dest = frontendDestPath(manifest) + '/' + group;
-    fs.removeSync(dest);
+    fs.emptyDirSync(dest);
     return copyFiles(src, dest);
 }
 
@@ -99,7 +102,7 @@ function installFiles(group) {
 function installAssets(group) {
     var manifest = frontendManifest();
     var dest = frontendDestPath(manifest) + '/assets/' + group;
-    fs.removeSync(dest);
+    fs.emptyDirSync(dest);
     var sub = '';
     for (sub in manifest.assets[group].vendor) {
         copyFiles(prefixPaths('node_modules/', manifest.assets[group].vendor[sub]), dest + '/' + sub);
