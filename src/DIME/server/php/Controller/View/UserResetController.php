@@ -74,7 +74,7 @@ class UserResetController extends DimeFormController
             }
         }
 
-        $view = $this->buildContext($request, $view);
+        $context = $this->buildContext($request, $view);
         return Service::view()->renderResponse('user/layouts/reset.html.twig', $context);
     }
 
