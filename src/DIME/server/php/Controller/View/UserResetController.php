@@ -34,6 +34,7 @@ use ARK\Security\User;
 use ARK\Service;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserResetController extends DimeFormController
 {
@@ -48,11 +49,15 @@ class UserResetController extends DimeFormController
                 $password = $request->request->get('password_first');
                 $repeat = $request->request->get('password_second');
                 if ($password === $repeat) {
-                    Service::security()->requestPassword($user);
-                    Service::view()->addSuccessFlash('dime.user.reset.success');
-                    return Service::redirectPath('dime.home');
+                    Service::security()->resetPassword($user, $password);
+                    if (!$user->passwordRequestToken()) {
+                        Service::view()->addSuccessFlash('dime.user.reset.success');
+                        return Service::redirectPath('dime.home');
+                    }
+                    Service::view()->addErrorFlash('dime.user.reset.expired');
+                } else {
+                    Service::view()->addErrorFlash('dime.user.reset.matching');
                 }
-                Service::view()->addErrorFlash('dime.user.reset.matching');
             } else {
                 $username = $request->request->get('_username');
                 $user = ORM::find(User::class, $username);

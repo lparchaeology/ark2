@@ -276,6 +276,16 @@ class Security
         $this->sendResetMessage($user);
     }
 
+    public function resetPassword(User $user, $password) : void
+    {
+        if ($user->isPasswordRequestExpired($this->options['reset_ttl'])) {
+            $this->requestPassword($user);
+        } else {
+            $user->setPassword($password);
+            ORM::flush($user);
+        }
+    }
+
     public function hasVisibility($user, $model) : bool
     {
         if ($model instanceof Item) {

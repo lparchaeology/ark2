@@ -137,6 +137,8 @@ class User implements AdvancedUserInterface, Serializable
     public function setPassword(string $plainPassword) : void
     {
         $this->password = Service::security()->encodePassword($plainPassword);
+        $this->passwordRequestToken = '';
+        $this->passwordRequestedAt = null;
     }
 
     // UserInterface
