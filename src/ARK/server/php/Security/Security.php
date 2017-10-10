@@ -294,7 +294,7 @@ class Security
 
     protected function sendVerificationMessage(User $user) : void
     {
-        $url = Service::url($this->routes['verify']['route'], ['token' => $user->verificationToken()]);
+        $url = Service::url($this->routes['confirm']['route'], ['token' => $user->verificationToken()]);
         $context = ['user' => $user, 'url' => $url];
         Service::sendEmail($this->options['email'], $user->email(), $this->options['verify_email_template'], $context);
     }
