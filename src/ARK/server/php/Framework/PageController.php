@@ -108,7 +108,7 @@ abstract class PageController extends Controller
     protected function buildView(Request $request) : iterable
     {
         $view['data'] = $this->buildData($request);
-        $view['state'] = $this->buildState($request, $parent['data']);
+        $view['state'] = $this->buildState($request, $view['data']);
         $view['options'] = $this->defaultOptions();
         return $view;
     }
