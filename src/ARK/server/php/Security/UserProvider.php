@@ -30,6 +30,7 @@
 namespace ARK\Security;
 
 use ARK\ORM\ORM;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -61,32 +62,32 @@ class UserProvider implements UserProviderInterface
         return ($class === User::class) || is_subclass_of($class, User::class);
     }
 
-    public function findUser($id) : ?User
+    public function findUser(string $id) : ?User
     {
         return ORM::find(User::class, $id);
     }
 
-    public function findByUsername($username) : ?User
+    public function findByUsername(string $username) : ?User
     {
         return ORM::findOneBy(User::class, ['username' => $username]);
     }
 
-    public function findByEmail($email) : ?User
+    public function findByEmail(string $email) : ?User
     {
         return ORM::findOneBy(User::class, ['email' => $email]);
     }
 
-    public function findByVerificationToken($token) : ?User
+    public function findByVerificationToken(string $token) : ?User
     {
         return ORM::findOneBy(User::class, ['verificationToken' => $token]);
     }
 
-    public function findByResetToken($token) : ?User
+    public function findByResetToken(string $token) : ?User
     {
         return ORM::findOneBy(User::class, ['passwordRequestToken' => $token]);
     }
 
-    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null) : Collection
     {
         return ORM::findBy(User::class, $criteria, $orderBy, $limit, $offset);
     }
