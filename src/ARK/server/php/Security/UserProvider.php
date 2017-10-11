@@ -79,12 +79,18 @@ class UserProvider implements UserProviderInterface
 
     public function findByVerificationToken(string $token) : ?User
     {
-        return ORM::findOneBy(User::class, ['verificationToken' => $token]);
+        if ($token) {
+            return ORM::findOneBy(User::class, ['verificationToken' => $token]);
+        }
+        return null;
     }
 
     public function findByResetToken(string $token) : ?User
     {
-        return ORM::findOneBy(User::class, ['passwordRequestToken' => $token]);
+        if ($token) {
+            return ORM::findOneBy(User::class, ['passwordRequestToken' => $token]);
+        }
+        return null;
     }
 
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null) : Collection

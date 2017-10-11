@@ -151,6 +151,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
             'user_register' => true,
             'default_role' => 'anonymous',
             'reset_ttl' => 86400,
+            'verify_ttl' => 86400,
         ];
         $container['user.options'] = array_replace($container['user.defaults'], $settings['user']);
         $container['user.options.init'] = $container->protect(function () use ($container) : void {});

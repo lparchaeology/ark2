@@ -30,7 +30,6 @@
 namespace ARK\Security\Controller;
 
 use ARK\Framework\PageController;
-use ARK\ORM;
 use ARK\Security\User;
 use ARK\Service;
 use Symfony\Component\Form\Form;
@@ -38,13 +37,39 @@ use Symfony\Component\HttpFoundation\Request;
 
 class UserResetPageController extends PageController
 {
-    public function processForm(Request $request, Form $form) : void
+    protected function buildData(Request $request)
     {
+        $query = $request->query->all();
+        $data['token'] = $query['token'] ?? null;
+        $data['user'] = Service::security()->userProvider()->findByResetToken($data['token']);
+        return $data;
+    }
+
+    protected function processForm(Request $request, Form $form) : void
+    {
+        $clicked = $form->getClickedButton()->getName();
         $data = $form->getData();
-        $user = ORM::find(User::class, $data['_username']);
-        if ($user) {
-            Service::security()->resetUser($user);
+
+        if ($clicked === 'set_password') {
+            $user = $data['user'];
+            Service::security()->resetPassword($user, $password);
+            if ($user->passwordRequestToken() === '') {
+                Service::security()->loginAsUser($user, 'secured', $request);
+                Service::view()->addSuccessFlash('core.user.reset.success');
+                $request->attributes->set('redirect', 'core.home');
+            } else {
+                Service::view()->addErrorFlash('core.user.reset.expired');
+            }
         }
-        Service::view()->addSuccessFlash('core.user.reset.sent');
+
+        if ($clicked === 'reset') {
+            $user = $data['user'];
+            if ($user) {
+                Service::security()->requestPassword($user);
+                Service::view()->addSuccessFlash('core.user.reset.sent');
+                return Service::redirectPath('core.front');
+            }
+            Service::view()->addErrorFlash('core.user.reset.unknown');
+        }
     }
 }
