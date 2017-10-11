@@ -82,7 +82,7 @@ class SchemaAttribute extends Attribute
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_schema_attribute');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_model_attribute');
         $builder->setReadOnly();
 
         // Key

@@ -31,6 +31,7 @@ namespace ARK\Model\Schema;
 
 use ARK\Model\EnabledTrait;
 use ARK\Model\KeywordTrait;
+use ARK\Model\Model;
 use ARK\Model\Schema;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
@@ -40,15 +41,15 @@ class SchemaAssociation
     use EnabledTrait;
     use KeywordTrait;
 
+    protected $model;
     protected $schma;
     protected $class = '';
-    protected $owningSchema;
     protected $association = '';
-    protected $inverseSchema;
-    protected $degree = 0;
-    protected $inverse;
-    protected $inverseDegree = 1;
-    protected $bidirectional = false;
+
+    public function model() : Model
+    {
+        return $this->schma;
+    }
 
     public function schema() : Schema
     {
@@ -65,47 +66,19 @@ class SchemaAssociation
         return $this->association;
     }
 
-    public function owningSchema() : Schema
-    {
-        return $this->owningSchema;
-    }
-
-    public function degree() : int
-    {
-        return $this->degree;
-    }
-
-    public function inverseSchema() : Schema
-    {
-        return $this->inverseSchma;
-    }
-
-    public function inverseDegree() : int
-    {
-        return $this->inverseDegree;
-    }
-
-    public function bidirectional() : bool
-    {
-        return $this->bidirectional;
-    }
-
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_schema_association');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_model_association');
         $builder->setReadOnly();
 
         // Key
+        $builder->addManyToOneKey('model', Model::class);
         $builder->addManyToOneKey('schma', Schema::class);
         $builder->addStringKey('class', 30);
         $builder->addStringKey('association', 30);
 
         // Fields
-        $builder->addField('degree', 'integer');
-        $builder->addStringField('inverse', 30);
-        $builder->addField('inverseDegree', 'integer', [], 'inverse_degree');
-        $builder->addField('bidirectional', 'boolean');
         EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);
 

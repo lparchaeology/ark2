@@ -107,7 +107,7 @@ class Module
 
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_module');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_model_module');
         $builder->addStringKey('module', 30);
         $builder->addStringField('superclass', 30);
         $builder->addStringField('resource', 30);
@@ -119,7 +119,7 @@ class Module
         $builder->addField('core', 'boolean');
         EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);
-        $builder->addOneToMany('schemas', 'ARK\Model\Schema', 'module');
+        $builder->addOneToMany('schemas', Schema::class, 'module');
         $builder->setReadOnly();
     }
 }
