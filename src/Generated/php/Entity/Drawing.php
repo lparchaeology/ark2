@@ -11,11 +11,11 @@ namespace Entity;
 use ARK\Model\Item;
 use ARK\Model\ItemTrait;
 
-class Plan implements Item
+class Drawing implements Item
 {
     use ItemTrait;
 
-    public function __construct(string $schema = 'arch.plan')
+    public function __construct(string $schema = 'arch.drawing')
     {
         $this->construct($schema);
     }

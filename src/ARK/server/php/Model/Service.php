@@ -29,25 +29,20 @@
 
 namespace ARK\Model;
 
-use ARK\ORM\ClassMetadata;
-use ARK\ORM\ClassMetadataBuilder;
+use ARK\Framework\Application;
+use ARK\ORM\ORM;
 
-class Model
+class Service
 {
-    public static function loadMetadata(ClassMetadata $metadata) : void
+    protected $app;
+
+    public function __construct(Application $app)
     {
-        // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_model');
-        $builder->setReadOnly();
+        $this->app = $app;
+    }
 
-        // Key
-        $builder->addStringKey('model', 30);
-
-        // Attributes
-        EnabledTrait::buildEnabledMetadata($builder);
-        KeywordTrait::buildKeywordMetadata($builder);
-
-        // Associations
-        $builder->addOneToMany('schemas', Schema::class, 'schma', 'schma', 'parent');
+    public function schema($schema) : ?Schema
+    {
+        return ORM::find(Schema::class, $schema);
     }
 }

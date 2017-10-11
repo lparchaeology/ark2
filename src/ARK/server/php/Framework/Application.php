@@ -47,7 +47,6 @@ use ARK\Framework\Provider\SpatialServiceProvider;
 use ARK\Framework\Provider\TranslationServiceProvider;
 use ARK\Framework\Provider\ViewServiceProvider;
 use ARK\Framework\Provider\WorkflowServiceProvider;
-use ARK\Model\Model;
 use ARK\Service;
 use Saxulum\DoctrineOrmManagerRegistry\Provider\DoctrineOrmManagerRegistryProvider;
 use Silex\Application as SilexApplication;
@@ -168,11 +167,6 @@ class Application extends SilexApplication
 
         // Define the routes
         $this->register(new RoutingServiceProvider());
-
-        // ARK Model Service
-        $container['model'] = function ($app) {
-            return new Model($app);
-        };
     }
 
     public function boot() : void

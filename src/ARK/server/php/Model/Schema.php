@@ -40,6 +40,7 @@ use ARK\ORM\ORM;
 use ARK\Vocabulary\Term;
 use ARK\Workflow\Permission;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 class Schema
 {
@@ -48,6 +49,7 @@ class Schema
 
     protected $schma = '';
     protected $module;
+    protected $parent;
     protected $generator = '';
     protected $sequence = '';
     protected $classProperty;
@@ -61,11 +63,13 @@ class Schema
     protected $entities = false;
     protected $model;
     protected $subclasses = [];
+    protected $children;
     protected $attributes;
     protected $associations;
 
     public function __construct()
     {
+        $this->children = new ArrayCollection();
         $this->attributes = new ArrayCollection();
         $this->associations = new ArrayCollection();
     }
@@ -78,6 +82,11 @@ class Schema
     public function module() : Module
     {
         return $this->module;
+    }
+
+    public function parent() : Module
+    {
+        return $this->parent;
     }
 
     public function generator() : string
@@ -137,6 +146,11 @@ class Schema
     public function deletePermission() : Permission
     {
         return $this->delete;
+    }
+
+    public function children() : Collection
+    {
+        return $this->children;
     }
 
     public function attributes(string $subclass = null, bool $all = true) : iterable
@@ -214,7 +228,6 @@ class Schema
         $builder->addStringKey('schma', 30);
 
         // Fields
-        $builder->addManyToOneField('module', Module::class, null, null, false);
         $builder->addStringField('generator', 30);
         $builder->addStringField('sequence', 30);
         $builder->addStringField('classProperty', 30, 'class_property');
@@ -224,11 +237,14 @@ class Schema
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Associations
+        $builder->addManyToOneField('module', Module::class, null, null, false);
+        $builder->addManyToOneField('parent', self::class);
         $builder->addVocabularyField('vocabulary');
         $builder->addPermissionField('create', 'new');
         $builder->addPermissionField('read', 'view');
         $builder->addPermissionField('update', 'edit');
         $builder->addPermissionField('delete', 'remove');
+        $builder->addOneToMany('children', self::class, 'schma', 'schma', 'parent');
         $builder->addOneToMany('attributes', SchemaAttribute::class, 'schma');
         $builder->addOneToMany('associations', SchemaAssociation::class, 'schma');
         $builder->setReadOnly();
