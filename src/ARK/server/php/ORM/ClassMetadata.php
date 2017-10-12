@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK ORM Class Metadata
+ * ARK ORM Class Metadata.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,13 +25,11 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\ORM;
 
 use ARK\ORM\Item\ItemPersister;
-use ARK\ORM\Item\ItemRepository;
 use ARK\ORM\Item\ItemSingleTablePersister;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata as DoctrineClassMetadata;
@@ -44,7 +42,7 @@ class ClassMetadata extends DoctrineClassMetadata
 {
     public $isItemEntity = false;
 
-    public function setItemEntity($status)
+    public function setItemEntity(bool $status) : void
     {
         $this->isItemEntity = $status;
     }

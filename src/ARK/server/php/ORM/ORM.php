@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\ORM;
@@ -34,11 +33,12 @@ use ARK\Error\Error;
 use ARK\Error\ErrorException;
 use ARK\Service;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 
 class ORM
 {
-    public static function manager($class)
+    public static function manager($class) : EntityManager
     {
         if ($class === 'data' || Service::entityManager('data')->manages($class)) {
             return Service::entityManager('data');
@@ -84,7 +84,7 @@ class ORM
         self::manager($entity)->remove($entity);
     }
 
-    public static function contains($entity)
+    public static function contains($entity) : bool
     {
         return self::manager($entity)->contains($entity);
     }
@@ -114,13 +114,18 @@ class ORM
         return self::repository($class)->find($id, $lockMode, $lockVersion);
     }
 
-    public static function findAll($class)
+    public static function findAll($class) : Collection
     {
         return new ArrayCollection(self::repository($class)->findAll());
     }
 
-    public static function findBy($class, iterable $criteria, iterable $orderBy = null, $limit = null, $offset = null)
-    {
+    public static function findBy(
+        $class,
+        iterable $criteria,
+        iterable $orderBy = null,
+        int $limit = null,
+        int $offset = null
+    ) : Collection {
         return new ArrayCollection(self::repository($class)->findBy($criteria, $orderBy, $limit, $offset));
     }
 
@@ -134,7 +139,7 @@ class ORM
         return self::repository($class)->matching($criteria);
     }
 
-    public static function count($class, iterable $criteria)
+    public static function count($class, iterable $criteria) : int
     {
         return self::findBy($class, $criteria)->count();
     }

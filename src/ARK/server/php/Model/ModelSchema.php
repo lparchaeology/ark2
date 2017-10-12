@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK ORM Entity Manager.
+ * ARK Model.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,30 +27,28 @@
  * @since      2.0
  */
 
-namespace ARK\ORM;
+namespace ARK\Model;
 
-use Doctrine\ORM\Decorator\EntityManagerDecorator;
-use Doctrine\ORM\EntityManagerInterface;
-use ReflectionClass;
+use ARK\ORM\ClassMetadata;
+use ARK\ORM\ClassMetadataBuilder;
 
-class EntityManager extends EntityManagerDecorator
+class Model
 {
-    public function __construct(EntityManagerInterface $em)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
-        parent::__construct($em);
-        $refl = new ReflectionClass($em);
-        $uow = $refl->getProperty('unitOfWork');
-        $uow->setAccessible(true);
-        $uow->setValue($em, new UnitOfWork($em));
-    }
+        // Table
+        $builder = new ClassMetadataBuilder($metadata, 'ark_model');
+        $builder->setReadOnly();
 
-    public function classNames() : iterable
-    {
-        return $this->getMetadataFactory()->classNames();
-    }
+        // Key
+        $builder->addManyToOneKey('model', self::class);
+        $builder->addManyToOneKey('schema', Schema::class, 'schma');
+        $builder->addStringKey('class', 30);
 
-    public function manages($class) : bool
-    {
-        return $this->getMetadataFactory()->hasClass($class);
+        // Attributes
+        EnabledTrait::buildEnabledMetadata($builder);
+        KeywordTrait::buildKeywordMetadata($builder);
+
+        // Associations
     }
 }

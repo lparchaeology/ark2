@@ -41,10 +41,11 @@ class SchemaAssociation
     use EnabledTrait;
     use KeywordTrait;
 
-    protected $model;
     protected $schma;
     protected $class = '';
     protected $association = '';
+    protected $owningSchema;
+    protected $inverseSchema;
 
     public function model() : Model
     {
@@ -64,6 +65,16 @@ class SchemaAssociation
     public function name() : string
     {
         return $this->association;
+    }
+
+    public function owningSchema() : Schema
+    {
+        return $this->owningSchema;
+    }
+
+    public function inverseSchema() : Schema
+    {
+        return $this->inverseSchma;
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void

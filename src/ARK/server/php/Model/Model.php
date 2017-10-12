@@ -48,6 +48,6 @@ class Model
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Associations
-        $builder->addOneToMany('schemas', Schema::class, 'schma', 'schma', 'parent');
+        $builder->addCompositeOneToMany('schemas', Schema::class, 'ark_model_root');
     }
 }

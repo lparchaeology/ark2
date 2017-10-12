@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK ORM Class Metadat Factory
+ * ARK ORM Class Metadat Factory.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,12 +25,10 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\ORM;
 
-use ARK\ORM\ClassMetadata;
 use Doctrine\ORM\Mapping\ClassMetadataFactory as DoctrineClassMetadataFactory;
 use ReflectionClass;
 
@@ -46,13 +44,7 @@ class ClassMetadataFactory extends DoctrineClassMetadataFactory
         $this->emRefl->setAccessible(true);
     }
 
-    protected function newClassMetadataInstance($className)
-    {
-        $em = $this->emRefl->getValue($this);
-        return new ClassMetadata($className, $em->getConfiguration()->getNamingStrategy());
-    }
-
-    public function classNames()
+    public function classNames() : iterable
     {
         if (!$this->initialized) {
             $this->initialize();
@@ -60,11 +52,17 @@ class ClassMetadataFactory extends DoctrineClassMetadataFactory
         return $this->getDriver()->getAllClassNames();
     }
 
-    public function hasClass($class)
+    public function hasClass($class) : bool
     {
         if (is_object($class)) {
             $class = get_class($class);
         }
-        return in_array($class, $this->classNames());
+        return in_array($class, $this->classNames(), true);
+    }
+
+    protected function newClassMetadataInstance(string $className) : ClassMetadata
+    {
+        $em = $this->emRefl->getValue($this);
+        return new ClassMetadata($className, $em->getConfiguration()->getNamingStrategy());
     }
 }

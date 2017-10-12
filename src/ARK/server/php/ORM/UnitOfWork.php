@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK ORM Unit of Work
+ * ARK ORM Unit of Work.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,20 +25,20 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\ORM;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Persisters\Entity\EntityPersister;
 use Doctrine\ORM\UnitOfWork as DoctrineUnitOfWork;
 use ReflectionClass;
 
 class UnitOfWork extends DoctrineUnitOfWork
 {
-    protected $em2 = null;
-    protected $refl = null;
-    protected $reflPersisters = null;
+    protected $em2;
+    protected $refl;
+    protected $reflPersisters;
 
     public function __construct(EntityManagerInterface $em)
     {
@@ -49,7 +49,7 @@ class UnitOfWork extends DoctrineUnitOfWork
         $this->reflPersisters->setAccessible(true);
     }
 
-    public function getEntityPersister($entityName)
+    public function getEntityPersister(string $entityName) : EntityPersister
     {
         $persisters = $this->reflPersisters->getValue($this);
         if (isset($persisters[$entityName])) {

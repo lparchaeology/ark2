@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Class Metadata Builder
+ * ARK Class Metadata Builder.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,23 +25,23 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\ORM;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\Builder\FieldBuilder;
-use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder as DoctrineClassMetadataBuilder;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use RuntimeException;
 use ARK\Vocabulary\Vocabulary;
 use ARK\Workflow\Permission;
+use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder as DoctrineClassMetadataBuilder;
+use Doctrine\ORM\Mapping\Builder\FieldBuilder;
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
 {
-    public function __construct($metadata, $table = '', $generator = ClassMetadataInfo::GENERATOR_TYPE_NONE)
-    {
+    public function __construct(
+        $metadata,
+        string $table = '',
+        int $generator = ClassMetadataInfo::GENERATOR_TYPE_NONE
+    ) {
         parent::__construct($metadata);
         $this->setIdGeneratorType($generator);
         if ($table) {
@@ -49,13 +49,18 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
         }
     }
 
-    public function setIdGeneratorType($type)
+    public function setIdGeneratorType(int $type) : void
     {
         $this->getClassMetadata()->setIdGeneratorType($type);
     }
 
-    public function addManyToMany($name, $targetEntity, $joinTable, $joinColumn = null, $inverseColumn = null)
-    {
+    public function addManyToMany(
+        string $name,
+        string $targetEntity,
+        string $joinTable,
+        string $joinColumn = null,
+        string $inverseColumn = null
+    ) : ClassMetadataBuilder {
         $builder = $this->createManyToMany($name, $targetEntity);
         $builder->setJoinTable($joinTable);
         $builder->addJoinColumn($joinColumn, $joinColumn);
@@ -63,8 +68,15 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
         return $builder->build();
     }
 
-    public function addOneToMany($name, $targetEntity, $mappedBy, $column = null, $reference = null, $nullable = true, $orderBy = [])
-    {
+    public function addOneToMany(
+        string $name,
+        string $targetEntity,
+        string $mappedBy,
+        string $column = null,
+        string $reference = null,
+        bool $nullable = true,
+        iterable $orderBy = []
+    ) : ClassMetadataBuilder {
         $builder = $this->createOneToMany($name, $targetEntity);
         $builder->mappedBy($mappedBy);
         if ($reference) {
@@ -76,22 +88,31 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
         return $builder->build();
     }
 
-    public function addCompositeOneToMany($name, $targetEntity, $mappedBy, $joins)
-    {
+    public function addCompositeOneToMany(
+        string $name,
+        string $targetEntity,
+        string $mappedBy,
+        iterable $joins
+    ) : ClassMetadataBuilder {
         $builder = $this->createOneToMany($name, $targetEntity);
         $builder->mappedBy($mappedBy);
         foreach ($joins as $join) {
             $builder->addJoinColumn(
                 $join['column'],
-                isset($join['reference']) ? $join['reference'] : $join['column'],
-                isset($join['nullable']) ? $join['nullable'] : true
+                $join['reference'] ?? $join['column'],
+                $join['nullable'] ?? true
             );
         }
         return $builder->build();
     }
 
-    public function addOneToManyCascade($name, $targetEntity, $mappedBy, $persist = true, $delete = false)
-    {
+    public function addOneToManyCascade(
+        string $name,
+        string $targetEntity,
+        string $mappedBy,
+        bool $persist = true,
+        bool $delete = false
+    ) : ClassMetadataBuilder {
         $builder = $this->createOneToMany($name, $targetEntity);
         $builder->mappedBy($mappedBy);
         if ($persist) {
@@ -103,8 +124,13 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
         return $builder->build();
     }
 
-    public function addManyToOneKey($name, $class, $column = null, $reference = null, $inverse = null)
-    {
+    public function addManyToOneKey(
+        string $name,
+        string $class,
+        string $column = null,
+        string $reference = null,
+        string $inverse = null
+    ) : ClassMetadataBuilder {
         if ($column === null) {
             $column = $name;
         }
@@ -115,98 +141,104 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
         if ($inverse) {
             $builder->inversedBy($inverse);
         }
-        $builder->build();
+        return $builder->build();
     }
 
-    public function addCompositeManyToOneKey($name, $class, $joins, $inverse = null)
-    {
+    public function addCompositeManyToOneKey(
+        string $name,
+        string $class,
+        string $joins,
+        string $inverse = null
+    ) : ClassMetadataBuilder {
         $builder = $this->createManyToOne($name, $class)->makePrimaryKey();
         foreach ($joins as $join) {
             $builder->addJoinColumn(
                 $join['column'],
-                isset($join['reference']) ? $join['reference'] : $join['column'],
-                isset($join['nullable']) ? $join['nullable'] : true
+                $join['reference'] ?? $join['column'],
+                $join['nullable'] ?? true
             );
         }
         if ($inverse) {
             $builder->inversedBy($inverse);
         }
-        $builder->build();
+        return $builder->build();
     }
 
-    public function addVocabularyField($name, $column = null, $nullable = true)
-    {
-        $this->addManyToOneField($name, Vocabulary::class, $column, 'concept', $nullable);
+    public function addVocabularyField(
+        string $name,
+        string $column = null,
+        bool $nullable = true
+    ) : ClassMetadataBuilder {
+        return $this->addManyToOneField($name, Vocabulary::class, $column, 'concept', $nullable);
     }
 
-    public function addPermissionField($name, $column = null, $nullable = true)
-    {
-        $this->addManyToOneField($name, Permission::class, $column, 'permission', $nullable);
+    public function addPermissionField(
+        string $name,
+        string $column = null,
+        bool $nullable = true
+    ) : ClassMetadataBuilder {
+        return $this->addManyToOneField($name, Permission::class, $column, 'permission', $nullable);
     }
 
-    public function addManyToOneField($name, $class, $column = null, $reference = null, $nullable = true, $inverse = null)
-    {
-        if ($column === null) {
-            $column = $name;
-        }
-        if ($reference === null) {
-            $reference = $column;
-        }
-        $builder = $this->createManyToOne($name, $class)->addJoinColumn($column, $reference, $nullable);
-        if ($inverse) {
-            $builder->inversedBy($inverse);
-        }
-        $builder->build();
-    }
-
-    public function addCompositeManyToOneField($name, $class, $joins, $inverse = null)
-    {
+    public function addCompositeManyToOneField(
+        string $name,
+        string $class,
+        iterable $joins,
+        string $inverse = null
+    ) : ClassMetadataBuilder {
         $builder = $this->createManyToOne($name, $class);
         foreach ($joins as $join) {
             $builder->addJoinColumn(
                 $join['column'],
-                isset($join['reference']) ? $join['reference'] : $join['column'],
-                isset($join['nullable']) ? $join['nullable'] : true
+                $join['reference'] ?? $join['column'],
+                $join['nullable'] ?? true
             );
         }
         if ($inverse) {
             $builder->inversedBy($inverse);
         }
-        $builder->build();
+        return $builder->build();
     }
 
-    public function addKey($name, $type, $column = '')
+    public function addKey(string $name, string $type, string $column = '') : ClassMetadataBuilder
     {
         $builder = $this->createField($name, $type)->makePrimaryKey();
         if ($column) {
             $builder->columnName($column);
         }
-        $builder->build();
+        return $builder->build();
     }
 
-    public function addGeneratedKey($name, $column = '')
+    public function addGeneratedKey(string $name, string $column = '') : ClassMetadataBuilder
     {
         $builder = $this->createField($name, 'integer')->makePrimaryKey()->generatedValue('IDENTITY');
         if ($column) {
             $builder->columnName($column);
         }
-        $builder->build();
+        return $builder->build();
     }
 
-    public function addField($name, $type, array $mapping = [], $column = '', $nullable = false)
+    public function addField(
+        string $name, $type, array $mapping = [], $column = '', $nullable = false) : ClassMetadataBuilder
     {
         if ($column) {
             $mapping['fieldName'] = $name;
             $mapping['type'] = $type;
             $builder = new FieldBuilder($this, $mapping);
-            $builder->columnName($column)->nullable($nullable)->build();
-            return;
+            return $builder->columnName($column)->nullable($nullable)->build();
         }
-        parent::addField($name, $type, $mapping);
+        return parent::addField($name, $type, $mapping);
     }
 
-    public function addTimestampableField($name, $type, $action, $column = '', $nullable = false, $trackedField = null, $trackedValue = null)
-    {
+    public function addTimestampableField(
+        string $name,
+        string $type,
+        string $action,
+        string $column = '',
+        bool $nullable = false,
+        string $trackedField = null,
+        string $trackedValue = null
+    ) : ClassMetadataBuilder {
         // $type = ['date','time', 'datetime', 'datetimetz', 'timestamp', 'zenddate', 'vardatetime', 'integer'];
         // $action = ['update', 'create', 'change'];
         $mapping['fieldName'] = $name;
@@ -216,17 +248,21 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
         if ($column) {
             $builder->columnName($column);
         }
-        $field = array(
+        $field = [
             'field' => $name,
             'trackedField' => $trackedField,
             'value' => $trackedValue,
-        );
+        ];
         $config[$action][] = $field;
-        $builder->build();
+        return $builder->build();
     }
 
-    public function addStringKey($name, $length, $column = '', $generator = null)
-    {
+    public function addStringKey(
+        string $name,
+        int $length,
+        string $column = '',
+        string $generator = null
+    ) : ClassMetadataBuilder {
         $builder = $this->createField($name, 'string')->length($length)->makePrimaryKey();
         if ($column) {
             $builder->columnName($column);
@@ -234,11 +270,16 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
         if ($generator) {
             $builder->setCustomIdGenerator($generator);
         }
-        $builder->build();
+        return $builder->build();
     }
 
-    public function addStringField($name, $length, $column = '', $nullable = false, $options = [])
-    {
+    public function addStringField(
+        string $name,
+        int $length,
+        string $column = '',
+        bool $nullable = false,
+        iterable $options = []
+    ) : bool {
         $builder = $this->createField($name, 'string')->length($length)->nullable($nullable);
         if ($column) {
             $builder->columnName($column);
@@ -246,6 +287,6 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
         foreach ($options as $name => $value) {
             $builder->option($name, $value);
         }
-        $builder->build();
+        return $builder->build();
     }
 }
