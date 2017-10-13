@@ -33,6 +33,7 @@ use ARK\Model\EnabledTrait;
 use ARK\Model\Model;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use Doctrine\Common\Collections\Collection;
 
 class SchemaClass
 {
@@ -43,27 +44,111 @@ class SchemaClass
     protected $vocabulary;
     protected $entity;
     protected $classname;
-    protected $base;
+    protected $superclass;
     protected $valid;
+
+    public function schema() : Schema
+    {
+        return $this->schema;
+    }
+
+    public function name() : string
+    {
+        return $this->name;
+    }
+
+    public function namespace() : string
+    {
+        return $this->namespace;
+    }
+
+    public function entity() : string
+    {
+        return $this->entity;
+    }
+
+    public function classname() : string
+    {
+        return $this->classname;
+    }
+
+    public function isSuperclass() : string
+    {
+        return $this->superclass;
+    }
+
+    public function isInstantiable() : string
+    {
+        return $this->instantiable;
+    }
+
+    public function attributes(bool $all = true) : Collection
+    {
+    }
+
+    public function attribute(string $name) : ?Attribute
+    {
+    }
+
+    public function associations(string $model, bool $all = true) : Collection
+    {
+    }
+
+    public function association(string $model, string $name) : ?SchemaAssociation
+    {
+    }
+
+    public function subschemas(string $model, bool $all = true) : Collection
+    {
+    }
+
+    public function subschema(string $model, string $name) : ?Schema
+    {
+    }
 
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_model_association');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_model_class');
         $builder->setReadOnly();
 
         // Key
         $builder->addManyToOneKey('schema', Schema::class, 'schma');
-        $builder->addStringKey('class', 30);
+        $builder->addMappedStringKey('class', 'name', 30);
 
         // Fields
         $builder->addRequiredVocabularyField('vocabulary');
+        $builder->addStringField('namespace', 50);
         $builder->addStringField('entity', 30);
-        $builder->addStringField('classname', 30);
-        $builder->addField('base', 'boolean');
-        $builder->addField('valid', 'boolean');
+        $builder->addStringField('classname', 100);
+        $builder->addField('superclass', 'boolean');
+        $builder->addField('instantiable', 'boolean');
         EnabledTrait::buildEnabledMetadata($builder);
 
         // Associations
+        $builder->addCompositeOneToManyField(
+            'attributes',
+            SchemaAttribute::class,
+            [
+                ['column' => 'schma', 'nullable' => false],
+                ['column' => 'class', 'nullable' => false],
+            ]
+        );
+        $builder->addCompositeOneToManyField(
+            'associations',
+            SchemaAssociation::class,
+            [
+                ['column' => 'schma', 'nullable' => false],
+                ['column' => 'class', 'nullable' => false],
+            ]
+        );
+        $builder->addCompositeOneToManyField(
+            'subschemas',
+            ModelSubschema::class,
+            [
+                ['column' => 'schma', 'nullable' => false],
+                ['column' => 'class', 'nullable' => false],
+            ]
+        );
     }
 }

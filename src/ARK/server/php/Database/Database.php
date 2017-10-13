@@ -136,11 +136,40 @@ class Database
         return $this->fragmentTables;
     }
 
-    public function getSubclassEntities(string $module = null) : ?iterable
+    public function getAllClassNames($namespace, $recurse = true) : ?iterable
     {
-        if ($module === null) {
-            return [];
+        if ($recurse) {
+            $sql = '
+                SELECT DISTINCT classname
+                FROM ark_model_class
+                WHERE namespace LIKE :namespace
+                AND enabled = true
+            ';
+            $params = [
+                ':namespace' => $namespace.'\\%',
+            ];
+        } else {
+            $sql = '
+                SELECT DISTINCT classname
+                FROM ark_model_class
+                WHERE namespace = :namespace
+                AND enabled = true
+            ';
+            $params = [
+                ':namespace' => $namespace,
+            ];
         }
+        return $this->core()->fetchAllColumn($sql, $params, 'classname');
+    }
+
+    public function getSubclassEntities(string $schema) : ?iterable
+    {
+        $sql = '
+            SELECT DISTINCT namespace, classname, entity
+            FROM ark_model_class
+            WHERE schma LIKE :schema
+            AND enabled = true
+        ';
         $sql = '
             SELECT ark_vocabulary_parameter.term as class, ark_vocabulary_parameter.value as entity
             FROM ark_model_schema, ark_vocabulary_parameter

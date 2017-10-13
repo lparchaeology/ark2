@@ -90,22 +90,15 @@ class ItemMappingDriver implements MappingDriver
         }
     }
 
-    public function getAllClassNames()
+    public function getAllClassNames() : iterable
     {
         if ($this->classNames === null) {
-            $module = Service::database()->getModuleForNamespace($this->namespace);
-            $this->classNames[] = $module['classname'];
-            $subclasses = Service::database()->getSubclassEntities($module['module']);
-            if ($subclasses) {
-                foreach ($subclasses as $subclass) {
-                    $this->classNames[] = $subclass['entity'];
-                }
-            }
+            $this->classNames = Service::database()->getAllClassNames($this->namespace);
         }
         return $this->classNames;
     }
 
-    public function isTransient($className)
+    public function isTransient($className) : bool
     {
         return Service::database()->getModuleForClassName($className) === null;
     }

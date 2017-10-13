@@ -77,21 +77,6 @@ class Module
         return $this->project;
     }
 
-    public function sourceNamespace() : string
-    {
-        return $this->namespace;
-    }
-
-    public function entity() : string
-    {
-        return $this->entity;
-    }
-
-    public function className() : string
-    {
-        return $this->classname;
-    }
-
     public function table() : string
     {
         return $this->table;
@@ -109,19 +94,21 @@ class Module
 
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
+        // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_model_module');
+        $builder->setReadOnly();
+
+        // Key
         $builder->addStringKey('module', 30);
-        $builder->addStringField('superclass', 30);
+
+        // Fields
         $builder->addStringField('resource', 30);
-        $builder->addStringField('project', 30);
-        $builder->addStringField('namespace', 100);
-        $builder->addStringField('entity', 30);
-        $builder->addStringField('classname', 100);
         $builder->addStringField('table', 30, 'tbl');
         $builder->addField('core', 'boolean');
         EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);
+
+        // Associations
         $builder->addOneToManyField('schemas', Schema::class, 'module');
-        $builder->setReadOnly();
     }
 }

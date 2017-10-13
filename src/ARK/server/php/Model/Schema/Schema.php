@@ -48,12 +48,14 @@ class Schema
     use EnabledTrait;
     use KeywordTrait;
 
-    protected $schma = '';
+    protected $name;
     protected $module;
-    protected $parent;
-    protected $generator = '';
-    protected $sequence = '';
-    protected $classProperty;
+    protected $hasSubclasses;
+    protected $hasEntities;
+    protected $attribute;
+    protected $entities;
+    protected $generator;
+    protected $sequence;
     protected $vocabulary;
     protected $visibility = 'private';
     protected $visibilityTerm;
@@ -61,23 +63,21 @@ class Schema
     protected $read;
     protected $update;
     protected $delete;
-    protected $entities = false;
     protected $model;
-    protected $subclasses = [];
-    protected $children;
+    protected $classes;
     protected $attributes;
     protected $associations;
 
     public function __construct()
     {
-        $this->children = new ArrayCollection();
+        $this->classes = new ArrayCollection();
         $this->attributes = new ArrayCollection();
         $this->associations = new ArrayCollection();
     }
 
     public function name() : string
     {
-        return $this->schma;
+        return $this->name;
     }
 
     public function module() : Module
@@ -85,9 +85,30 @@ class Schema
         return $this->module;
     }
 
-    public function parent() : Module
+    public function hasSubclasses() : bool
     {
-        return $this->parent;
+        return $this->hasSubclasses;
+    }
+
+    public function hasSubclassEntities() : bool
+    {
+        return $this->hasEntities;
+    }
+
+    public function classAttributeName() : string
+    {
+        return $this->attribute;
+    }
+
+    public function classVocabulary() : string
+    {
+        return $this->vocabulary;
+    }
+
+    public function subclassNames() : iterable
+    {
+        $this->init();
+        return $this->subclasses;
     }
 
     public function generator() : string
@@ -100,27 +121,6 @@ class Schema
         return $this->sequence;
     }
 
-    public function useSubclasses() : bool
-    {
-        return (bool) $this->classProperty;
-    }
-
-    public function useSubclassEntities() : bool
-    {
-        return $this->entities;
-    }
-
-    public function classProperty() : string
-    {
-        return $this->classProperty;
-    }
-
-    public function subclassNames() : iterable
-    {
-        $this->init();
-        return $this->subclasses;
-    }
-
     public function visibility() : Term
     {
         if ($this->visibilityTerm === null) {
@@ -129,22 +129,22 @@ class Schema
         return $this->visibilityTerm;
     }
 
-    public function createPermission() : Permission
+    public function createPermission() : ?Permission
     {
         return $this->create;
     }
 
-    public function readPermission() : Permission
+    public function readPermission() : ?Permission
     {
         return $this->read;
     }
 
-    public function updatePermission() : Permission
+    public function updatePermission() : ?Permission
     {
         return $this->update;
     }
 
-    public function deletePermission() : Permission
+    public function deletePermission() : ?Permission
     {
         return $this->delete;
     }
@@ -226,14 +226,15 @@ class Schema
         $builder = new ClassMetadataBuilder($metadata, 'ark_model_schema');
 
         // Key
-        $builder->addStringKey('schma', 30);
+        $builder->addMappedStringKey('schma', 'name', 30);
 
         // Fields
+        $builder->addMappedField('subclasses', 'hasSubclasses', 'boolean');
+        $builder->addMappedField('entities', 'hasEntities', 'boolean');
+        $builder->addStringField('attribute', 30);
         $builder->addStringField('generator', 30);
         $builder->addStringField('sequence', 30);
-        $builder->addMappedStringField('class_property', 'classProperty', 30);
         $builder->addStringField('visibility', 30);
-        $builder->addMappedField('entities', 'entities', 'boolean');
         EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);
 
@@ -244,7 +245,7 @@ class Schema
         $builder->addPermissionField('view', 'read');
         $builder->addPermissionField('edit', 'update');
         $builder->addPermissionField('remove', 'delete');
-        $builder->addOneToManyField('children', self::class, 'schma', 'parent');
+        $builder->addOneToManyField('classes', SchemaClass::class, 'schma');
         $builder->addOneToManyField('attributes', SchemaAttribute::class, 'schma');
         $builder->addOneToManyField('associations', SchemaAssociation::class, 'schma');
         $builder->setReadOnly();
@@ -257,7 +258,7 @@ class Schema
         if (!$class) {
             $class = $superclass;
         }
-        if ($this->useSubclasses()) {
+        if ($this->hasSubclasses()) {
             if ($class === $superclass) {
                 throw new SubclassRequiredException();
             }
