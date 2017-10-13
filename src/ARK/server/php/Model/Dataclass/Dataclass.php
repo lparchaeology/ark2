@@ -30,6 +30,8 @@
 namespace ARK\Model\Dataclass;
 
 use ARK\Actor\Actor;
+use ARK\Model\EnabledTrait;
+use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Service;

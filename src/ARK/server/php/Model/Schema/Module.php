@@ -27,8 +27,10 @@
  * @since      2.0
  */
 
-namespace ARK\Model;
+namespace ARK\Model\Schema;
 
+use ARK\Model\EnabledTrait;
+use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use Doctrine\Common\Collections\ArrayCollection;

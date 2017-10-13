@@ -29,9 +29,11 @@
 
 namespace ARK\Model\Schema;
 
+use ARK\Model\EnabledTrait;
 use ARK\Model\Exception\SubclassInvalidException;
 use ARK\Model\Exception\SubclassRequiredException;
 use ARK\Model\Exception\SuperclassInvalidException;
+use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;

@@ -29,6 +29,8 @@
 
 namespace ARK\Model\Dataclass;
 
+use ARK\Model\EnabledTrait;
+use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Vocabulary\Vocabulary;
