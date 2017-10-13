@@ -29,6 +29,8 @@
 
 namespace ARK\Model;
 
+use ARK\Model\Schema\Module;
+use ARK\Model\Schema\Schema;
 use ARK\ORM\ORM;
 use ARK\Vocabulary\Term;
 

@@ -32,7 +32,7 @@ namespace ARK\Model;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 
-class Model
+class ModelSchema
 {
     public static function loadMetadata(ClassMetadata $metadata) : void
     {

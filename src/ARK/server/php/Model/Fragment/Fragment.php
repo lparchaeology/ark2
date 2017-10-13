@@ -30,6 +30,7 @@
 namespace ARK\Model\Fragment;
 
 use ARK\Actor\Actor;
+use ARK\Model\Attribute;
 use ARK\Model\VersionTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
