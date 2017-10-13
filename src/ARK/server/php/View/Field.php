@@ -139,8 +139,8 @@ class Field extends Element
         $builder->addStringField('format', 10);
         KeywordTrait::buildKeywordMetadata($builder);
         $builder->addStringField('template', 100);
-        $builder->addStringField('formType', 100, 'form_type');
-        $builder->addStringField('formOptions', 4000, 'form_options');
+        $builder->addMappedStringField('form_type', 'formType', 100);
+        $builder->addMappedStringField('form_options', 'formOptions', 4000);
 
         // Associations
         $builder->addCompositeManyToOneField('attribute', 'ARK\Model\Schema\SchemaAttribute', [

@@ -105,9 +105,9 @@ class Source
         $builder->addStringField('type', 30);
         $builder->addStringField('subtype', 30);
         $builder->addStringField('format', 30);
-        $builder->addStringField('viewClass', 100, 'view_class');
+        $builder->addMappedStringField('view_class', 'viewClass', 100);
         $builder->addStringField('ticket', 100);
-        $builder->addField('ticketExpiry', 'datetime', [], 'ticket_expiry');
+        $builder->addMappedField('ticket_expiry', 'ticketExpiry', 'datetime');
         $builder->addStringField('options', 4000);
         KeywordTrait::buildKeywordMetadata($builder);
     }

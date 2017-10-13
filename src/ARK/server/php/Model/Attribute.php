@@ -282,8 +282,8 @@ abstract class Attribute
         $builder->addField('span', 'boolean');
         $builder->addField('minimum', 'integer');
         $builder->addField('maximum', 'integer');
-        $builder->addField('uniqueValues', 'boolean', [], 'unique_values');
-        $builder->addField('additionalValues', 'boolean', [], 'additional_values');
+        $builder->addMappedField('unique_values', 'uniqueValues', 'boolean');
+        $builder->addMappedField('additional_values', 'additionalValues', 'boolean');
         EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);
 

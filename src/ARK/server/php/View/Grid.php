@@ -48,7 +48,7 @@ class Grid extends Element
         $builder->addStringField('mode', 10);
         KeywordTrait::buildKeywordMetadata($builder);
         $builder->addStringField('template', 100);
-        $builder->addStringField('formType', 100, 'form_type');
+        $builder->addMappedStringField('form_type', 'formType', 100);
 
         // Associations
         $builder->addOneToMany('cells', Cell::class, 'group');

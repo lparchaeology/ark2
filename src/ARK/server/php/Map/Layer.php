@@ -100,7 +100,7 @@ class Layer implements LayerInterface
         $builder->addStringKey('layer', 30);
 
         // Attributes
-        $builder->addStringField('sourceName', 50, 'source_name');
+        $builder->addMappedStringField('source_name', 'sourceName', 50);
         $builder->addStringField('url', 2000);
         $builder->addStringField('options', 4000);
         $builder->addStringField('parameters', 4000);

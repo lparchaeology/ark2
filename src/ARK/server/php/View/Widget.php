@@ -52,8 +52,8 @@ class Widget extends Element
         $builder->addStringField('choices', 30);
         KeywordTrait::buildKeywordMetadata($builder);
         $builder->addStringField('template', 100);
-        $builder->addStringField('formType', 100, 'form_type');
-        $builder->addStringField('formOptions', 4000, 'form_options');
+        $builder->addMappedStringField('form_type', 'formType', 100);
+        $builder->addMappedStringField('form_options', 'formOptions', 4000);
     }
 
     protected function buildState($data, iterable $state) : iterable

@@ -77,10 +77,10 @@ class ItemMappingDriver implements MappingDriver
         } else {
             $builder->addStringField('class', 30);
         }
-        $builder->addStringField('status', 30, 'status', false, ['default' => 'allocated']);
-        $builder->addStringField('visibility', 30, 'visibility', false, ['default' => 'restricted']);
-        $builder->addStringField('parentModule', 30, 'parent_module', true);
-        $builder->addStringField('parentId', 30, 'parent_id', true);
+        $builder->addStringField('status', 30, false, ['default' => 'allocated']);
+        $builder->addStringField('visibility', 30, false, ['default' => 'restricted']);
+        $builder->addMappedStringField('parent_module', 'parentModule', 30, true);
+        $builder->addMappedStringField('parent_id', 'parentId', 30, true);
         $builder->addStringField('idx', 30);
         $builder->addStringField('label', 30);
         VersionTrait::buildVersionMetadata($builder);

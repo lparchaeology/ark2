@@ -129,8 +129,8 @@ class Translation
         $builder = new ClassMetadataBuilder($metadata, 'ark_translation');
         $builder->addStringKey('keyword', 100);
         $builder->addManyToOneField('domain', Domain::class);
-        $builder->addField('isPlural', 'boolean', [], 'is_plural');
-        $builder->addField('hasParameters', 'boolean', [], 'has_parameters');
+        $builder->addMappedField('is_plural', 'isPlural', 'boolean');
+        $builder->addMappedField('has_parameters', 'hasParameters', 'boolean');
         $builder->addOneToManyCascade('parameters', Parameter::class, 'key');
         $builder->addOneToManyCascade('messages', Message::class, 'key');
     }

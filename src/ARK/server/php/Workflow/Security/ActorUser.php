@@ -104,6 +104,6 @@ class ActorUser
 
         // Attributes
         $builder->addField('enabled', 'boolean');
-        $builder->addField('expiresAt', 'datetime', [], 'expires_at');
+        $builder->addMappedField('expires_at', 'expiresAt', 'datetime');
     }
 }

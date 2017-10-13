@@ -73,7 +73,7 @@ class Type
 
         // Attributes
         $builder->addField('layout', 'boolean');
-        $builder->addStringField('formType', 100, 'form_type');
+        $builder->addMappedStringField('form_type', 'formType', 100);
         $builder->addStringField('template', 100);
         KeywordTrait::buildKeywordMetadata($builder);
     }

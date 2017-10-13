@@ -135,9 +135,9 @@ class TextDataclass extends Dataclass
 
         // Attributes
         $builder->addStringField('mediatype', 30);
-        $builder->addField('minimumLength', 'integer', [], 'min_length');
-        $builder->addField('maximumLength', 'integer', [], 'max_length');
-        $builder->addField('defaultSize', 'integer', [], 'default_size');
+        $builder->addMappedField('min_length', 'minimumLength', 'integer');
+        $builder->addMappedField('max_length', 'maximumLength', 'integer');
+        $builder->addMappedField('default_size', 'defaultSize', 'integer');
         $builder->addStringField('preset', 1431655765);
     }
 

@@ -99,8 +99,8 @@ class Route
 
         // Fields
         $builder->addStringField('path', 10);
-        $builder->addField('get', 'boolean', [], 'can_get');
-        $builder->addField('post', 'boolean', [], 'can_post');
+        $builder->addMappedField('can_get', 'get', 'boolean');
+        $builder->addMappedField('can_post', 'post', 'boolean');
         $builder->addStringField('controller', 100);
 
         // Associations

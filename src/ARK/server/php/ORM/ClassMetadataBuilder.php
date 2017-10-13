@@ -38,7 +38,7 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
 {
     public function __construct(
-        $metadata,
+        ClassMetadataInfo $metadata,
         string $table = '',
         int $generator = ClassMetadataInfo::GENERATOR_TYPE_NONE
     ) {
@@ -200,34 +200,34 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
         return $builder->build();
     }
 
-    public function addKey(string $name, string $type, string $column = '') : ClassMetadataBuilder
+    public function addKey(string $name, string $type) : ClassMetadataBuilder
     {
         $builder = $this->createField($name, $type)->makePrimaryKey();
-        if ($column) {
-            $builder->columnName($column);
-        }
         return $builder->build();
     }
 
-    public function addGeneratedKey(string $name, string $column = '') : ClassMetadataBuilder
+    public function addMappedKey(string $column, string $name, string $type) : ClassMetadataBuilder
+    {
+        $builder = $this->createField($name, $type)->columnName($column)->makePrimaryKey();
+        return $builder->build();
+    }
+
+    public function addGeneratedKey(string $name) : ClassMetadataBuilder
     {
         $builder = $this->createField($name, 'integer')->makePrimaryKey()->generatedValue('IDENTITY');
-        if ($column) {
-            $builder->columnName($column);
-        }
         return $builder->build();
     }
 
-    public function addField(
-        string $name, $type, array $mapping = [], $column = '', $nullable = false) : ClassMetadataBuilder
-    {
-        if ($column) {
-            $mapping['fieldName'] = $name;
-            $mapping['type'] = $type;
-            $builder = new FieldBuilder($this, $mapping);
-            return $builder->columnName($column)->nullable($nullable)->build();
-        }
-        return parent::addField($name, $type, $mapping);
+    public function addMappedField(
+        string $column,
+        string $name,
+        string $type,
+        bool $nullable = false
+    ) : ClassMetadataBuilder {
+        $mapping['fieldName'] = $name;
+        $mapping['type'] = $type;
+        $builder = new FieldBuilder($this, $mapping);
+        return $builder->columnName($column)->nullable($nullable)->build();
     }
 
     public function addTimestampableField(
@@ -260,13 +260,22 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
     public function addStringKey(
         string $name,
         int $length,
-        string $column = '',
         string $generator = null
     ) : ClassMetadataBuilder {
         $builder = $this->createField($name, 'string')->length($length)->makePrimaryKey();
-        if ($column) {
-            $builder->columnName($column);
+        if ($generator) {
+            $builder->setCustomIdGenerator($generator);
         }
+        return $builder->build();
+    }
+
+    public function addMappedStringKey(
+        string $column,
+        string $name,
+        int $length,
+        string $generator = null
+    ) : ClassMetadataBuilder {
+        $builder = $this->createField($name, 'string')->length($length)->columnName($column)->makePrimaryKey();
         if ($generator) {
             $builder->setCustomIdGenerator($generator);
         }
@@ -276,14 +285,24 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
     public function addStringField(
         string $name,
         int $length,
-        string $column = '',
         bool $nullable = false,
         iterable $options = []
     ) : bool {
         $builder = $this->createField($name, 'string')->length($length)->nullable($nullable);
-        if ($column) {
-            $builder->columnName($column);
+        foreach ($options as $name => $value) {
+            $builder->option($name, $value);
         }
+        return $builder->build();
+    }
+
+    public function addMappedStringField(
+        string $column,
+        string $name,
+        int $length,
+        bool $nullable = false,
+        iterable $options = []
+    ) : ClassMetadataBuilder {
+        $builder = $this->createField($name, 'string')->length($length)->columnName($column)->nullable($nullable);
         foreach ($options as $name => $value) {
             $builder->option($name, $value);
         }

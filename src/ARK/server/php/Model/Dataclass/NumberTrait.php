@@ -70,7 +70,7 @@ trait NumberTrait
 
     public static function buildNumberMetadata(ClassMetadataBuilder $builder) : void
     {
-        $builder->addField('exclusiveMinimum', 'boolean', [], 'exclusive_minimum');
-        $builder->addField('exclusiveMaximum', 'boolean', [], 'exclusive_maximum');
+        $builder->addMappedField('exclusive_minimum', 'exclusiveMinimum', 'boolean');
+        $builder->addMappedField('exclusive_maximum', 'exclusiveMaximum', 'boolean');
     }
 }

@@ -230,9 +230,9 @@ class Schema
         // Fields
         $builder->addStringField('generator', 30);
         $builder->addStringField('sequence', 30);
-        $builder->addStringField('classProperty', 30, 'class_property');
+        $builder->addMappedStringField('class_property', 'classProperty', 30);
         $builder->addStringField('visibility', 30);
-        $builder->addField('entities', 'boolean', [], 'entities');
+        $builder->addMappedField('entities', 'entities', 'boolean');
         EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);
 

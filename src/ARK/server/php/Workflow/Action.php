@@ -232,9 +232,9 @@ class Action
         // Fields
         $builder->addStringField('agent', 30);
         $builder->addField('enabled', 'boolean');
-        $builder->addField('defaultAllowence', 'boolean', [], 'default_allowance');
-        $builder->addField('defaultAgency', 'boolean', [], 'default_agency');
-        $builder->addField('defaultPermission', 'boolean', [], 'default_permission');
+        $builder->addMappedField('default_allowance', 'defaultAllowence', 'boolean');
+        $builder->addMappedField('default_agency', 'defaultAgency', 'boolean');
+        $builder->addMappedField('default_permission', 'defaultPermission', 'boolean');
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Associations

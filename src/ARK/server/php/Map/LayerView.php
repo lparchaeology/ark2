@@ -133,7 +133,7 @@ class LayerView implements LayerInterface
             ]
         );
         $builder->addField('seq', 'integer');
-        $builder->addField('isDefault', 'boolean', [], 'is_default');
+        $builder->addMappedField('is_default', 'isDefault', 'boolean');
         $builder->addField('enabled', 'boolean');
         $builder->addField('visible', 'boolean');
         $builder->addStringField('options', 4000);

@@ -71,7 +71,7 @@ class ItemDataclass extends Dataclass
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_dataclass_item');
-        $builder->addStringField('module', 30, 'module', true);
+        $builder->addMappedStringField('module', 'module', 30, true);
         $builder->addStringField('preset', 30);
     }
 

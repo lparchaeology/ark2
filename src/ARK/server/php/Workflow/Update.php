@@ -78,9 +78,9 @@ class Update
 
         // Key
         $builder->addStringKey('schma', 30);
-        $builder->addStringKey('actionName', 30, 'action');
+        $builder->addMappedStringKey('action', 'actionName', 30);
         $builder->addStringKey('class', 30);
-        $builder->addStringKey('attributeName', 30, 'attribute');
+        $builder->addMappedStringKey('attribute', 'attributeName', 30);
 
         $builder->addStringField('actor', 'boolean');
         $builder->addStringField('subject', 'boolean');

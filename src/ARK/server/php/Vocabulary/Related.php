@@ -71,9 +71,9 @@ class Related
 
         // Key
         $builder->addManyToOneKey('fromConcept', 'ARK\Vocabulary\Vocabulary', 'from_concept', 'concept');
-        $builder->addStringKey('fromTermName', 30, 'from_term');
+        $builder->addMappedStringKey('from_term', 'fromTermName', 30);
         $builder->addManyToOneKey('toConcept', 'ARK\Vocabulary\Vocabulary', 'to_concept', 'concept');
-        $builder->addStringKey('toTermName', 30, 'to_term');
+        $builder->addMappedStringKey('to_term', 'toTermName', 30);
 
         // Attributes
         $builder->addManyToOneField('relation', Relation::class, 'relation');

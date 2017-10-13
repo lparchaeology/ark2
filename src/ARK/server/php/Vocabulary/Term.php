@@ -116,7 +116,7 @@ class Term
 
         // Attributes
         $builder->addStringField('alias', 10);
-        $builder->addField('default', 'boolean', [], 'is_default');
+        $builder->addMappedField('is_default', 'default', 'boolean');
         $builder->addField('root', 'boolean');
         EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);

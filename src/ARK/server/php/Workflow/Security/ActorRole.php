@@ -115,7 +115,7 @@ class ActorRole
 
         // Attributes
         $builder->addField('enabled', 'boolean');
-        $builder->addField('expiresAt', 'datetime', [], 'expires_at');
+        $builder->addMappedField('expires_at', 'expiresAt', 'datetime');
 
         // Relationships
         $builder->addManyToOneField('agentFor', Actor::class, 'agent_for', 'id');

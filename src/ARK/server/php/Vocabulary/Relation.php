@@ -89,7 +89,7 @@ class Relation
         // Attributes
         $builder->addStringField('notation', 30);
         $builder->addStringField('recipricol', 30);
-        $builder->addStringField('recipricolNotation', 30, 'recipricol_notation');
+        $builder->addMappedStringField('recipricol_notation', 'recipricolNotation', 30);
         $builder->addField('equivalence', 'boolean');
         $builder->addField('hierarchy', 'boolean');
         $builder->addField('associative', 'boolean');

@@ -103,8 +103,8 @@ class Account
         $builder->addStringField('protocol', 30);
         $builder->addStringField('provider', 30);
         $builder->addStringField('identifier', 30);
-        $builder->addStringField('accessToken', 30, 'access_token');
-        $builder->addStringField('refreshToken', 30, 'refresh_token');
+        $builder->addMappedStringField('access_token', 'accessToken', 30);
+        $builder->addMappedStringField('refresh_token', 'refreshToken', 30);
         $builder->addField('enabled', 'boolean');
     }
 }

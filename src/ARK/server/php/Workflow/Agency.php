@@ -87,14 +87,14 @@ class Agency
 
         // Key
         $builder->addStringKey('schma', 30);
-        $builder->addStringKey('actionName', 30, 'action');
+        $builder->addMappedStringKey('action', 'actionName', 30);
         $builder->addStringKey('class', 30);
-        $builder->addStringKey('attributeName', 30, 'attribute');
+        $builder->addMappedStringKey('attribute', 'attributeName', 30);
 
         // Fields
         $builder->addStringField('operator', 10);
-        $builder->addStringField('conditionOperator', 10, 'condition_operator');
-        $builder->addStringField('conditionValue', 4000, 'condition_value');
+        $builder->addMappedStringField('condition_operator', 'conditionOperator', 10);
+        $builder->addMappedStringField('condition_value', 'conditionValue', 4000);
 
         // Associations
         $builder->addCompositeManyToOneField(

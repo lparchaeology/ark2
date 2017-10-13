@@ -68,11 +68,11 @@ class DecimalDataclass extends Dataclass
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_dataclass_decimal');
-        $builder->addField('precision', 'integer', [], 'prec');
+        $builder->addMappedField('prec', 'precision', 'integer');
         $builder->addField('scale', 'integer');
         $builder->addStringField('minimum', 200);
         $builder->addStringField('maximum', 200);
-        $builder->addStringField('multipleOf', 200, 'multiple_of');
+        $builder->addMappedStringField('multiple_of', 'multipleOf', 200);
         $builder->addStringField('preset', 200);
         NumberTrait::buildNumberMetadata($builder);
     }

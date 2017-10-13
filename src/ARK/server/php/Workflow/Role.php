@@ -159,7 +159,7 @@ class Role
         $builder->addStringKey('role', 30);
 
         // Attributes
-        $builder->addStringField('agentFor', 30, 'agent_for');
+        $builder->addMappedStringField('agent_for', 'agentFor', 30);
         $builder->addStringField('level', 30);
         $builder->addField('enabled', 'boolean');
         KeywordTrait::buildKeywordMetadata($builder);

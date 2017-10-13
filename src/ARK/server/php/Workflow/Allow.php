@@ -70,7 +70,7 @@ class Allow
 
         // Key
         $builder->addStringKey('schma', 30);
-        $builder->addStringKey('actionName', 30, 'action');
+        $builder->addMappedStringKey('action', 'actionName', 30);
         $builder->addManyToOneKey('role', Role::class);
 
         // Fields

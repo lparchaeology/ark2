@@ -88,10 +88,10 @@ class Condition
         switch ($this->operator) {
             case 'eq':
                 // TODO weak comparison!!!
-                return $lhs == $rhs;
+                return $lhs === $rhs;
             case 'ne':
                 // TODO weak comparison!!!
-                return $lhs != $rhs;
+                return $lhs !== $rhs;
             case 'gt':
                 return $lhs > $rhs;
             case 'ge':
@@ -112,9 +112,9 @@ class Condition
 
         // Key
         $builder->addStringKey('schma', 30);
-        $builder->addStringKey('actionName', 30, 'action');
+        $builder->addMappedStringKey('action', 'actionName', 30);
         $builder->addStringKey('class', 30);
-        $builder->addStringKey('attributeName', 30, 'attribute');
+        $builder->addMappedStringKey('attribute', 'attributeName', 30);
         $builder->addKey('grp', 'integer');
 
         // Fields

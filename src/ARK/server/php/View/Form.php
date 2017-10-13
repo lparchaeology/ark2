@@ -102,7 +102,7 @@ class Form extends Element
         $builder->addStringField('action', 30);
         KeywordTrait::buildKeywordMetadata($builder);
         $builder->addStringField('template', 100);
-        $builder->addStringField('formType', 100, 'form_type');
+        $builder->addMappedStringField('form_type', 'formType', 100);
 
         // Associations
         $builder->addOneToMany('cells', Cell::class, 'group');

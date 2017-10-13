@@ -68,10 +68,10 @@ class Notify
 
         // Attributes
         $builder->addStringField('schma', 30);
-        $builder->addStringField('actionName', 30, 'action');
+        $builder->addMappedStringField('action', 'actionName', 30);
         $builder->addStringField('class', 30);
-        $builder->addStringField('attributeName', 30, 'attribute');
-        $builder->addStringField('roleName', 30, 'role');
+        $builder->addMappedStringField('attribute', 'attributeName', 30);
+        $builder->addMappedStringField('role', 'roleName', 30);
 
         // Associations
         $builder->addCompositeManyToOneField(

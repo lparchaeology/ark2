@@ -57,7 +57,7 @@ class IntegerDataclass extends Dataclass
         $builder = new ClassMetadataBuilder($metadata, 'ark_dataclass_integer');
         $builder->addField('minimum', 'integer');
         $builder->addField('maximum', 'integer');
-        $builder->addField('multipleOf', 'integer', [], 'multiple_of');
+        $builder->addMappedField('multiple_of', 'multipleOf', 'integer');
         $builder->addField('preset', 'integer');
         NumberTrait::buildNumberMetadata($builder);
     }

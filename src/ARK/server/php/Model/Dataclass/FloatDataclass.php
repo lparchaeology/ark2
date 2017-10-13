@@ -58,7 +58,7 @@ class FloatDataclass extends Dataclass
         $builder = new ClassMetadataBuilder($metadata, 'ark_dataclass_float');
         $builder->addField('minimum', 'float');
         $builder->addField('maximum', 'float');
-        $builder->addField('multipleOf', 'float', [], 'multiple_of');
+        $builder->addMappedField('multiple_of', 'multipleOf', 'float');
         $builder->addField('preset', 'float');
         NumberTrait::buildNumberMetadata($builder);
     }

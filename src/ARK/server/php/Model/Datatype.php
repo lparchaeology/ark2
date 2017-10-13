@@ -207,28 +207,28 @@ class Datatype
         $builder->addStringKey('datatype', 30);
 
         // Attributes
-        $builder->addField('numeric', 'boolean', [], 'number');
+        $builder->addMappedField('number', 'numeric', 'boolean');
         $builder->addField('temporal', 'boolean');
         $builder->addField('object', 'boolean');
         $builder->addField('compound', 'boolean');
-        $builder->addStringField('storageType', 30, 'storage_type');
-        $builder->addField('storageSize', 'integer', [], 'storage_size');
-        $builder->addStringField('valueName', 30, 'value_name');
-        $builder->addStringField('formatName', 30, 'format_name');
-        $builder->addStringField('formatVocabulary', 30, 'format_vocabulary');
-        $builder->addStringField('parameterName', 30, 'parameter_name');
-        $builder->addStringField('parameterVocabulary', 30, 'parameter_vocabulary');
+        $builder->addMappedStringField('storage_type', 'storageType', 30);
+        $builder->addMappedField('storage_size', 'storageSize', 'integer');
+        $builder->addMappedStringField('value_name', 'valueName', 30);
+        $builder->addMappedStringField('format_name', 'formatName', 30);
+        $builder->addMappedStringField('format_vocabulary', 'formatVocabulary', 30);
+        $builder->addMappedStringField('parameter_name', 'parameterName', 30);
+        $builder->addMappedStringField('parameter_vocabulary', 'parameterVocabulary', 30);
         $builder->addField('spanable', 'boolean');
-        $builder->addStringField('modelTable', 50, 'model_table');
-        $builder->addStringField('modelEntity', 100, 'model_entity');
-        $builder->addStringField('dataTable', 50, 'data_table');
-        $builder->addStringField('dataEntity', 100, 'data_entity');
-        $builder->addStringField('formType', 100, 'form_type');
-        $builder->addStringField('activeFormType', 100, 'active_form_type');
-        $builder->addStringField('readonlyFormType', 100, 'readonly_form_type');
-        $builder->addStringField('staticFormType', 100, 'static_form_type');
-        $builder->addStringField('formatFormType', 100, 'format_form_type');
-        $builder->addStringField('parameterFormType', 100, 'parameter_form_type');
+        $builder->addMappedStringField('model_table', 'modelTable', 50);
+        $builder->addMappedStringField('model_entity', 'modelEntity', 100);
+        $builder->addMappedStringField('data_table', 'dataTable', 50);
+        $builder->addMappedStringField('data_entity', 'dataEntity', 100);
+        $builder->addMappedStringField('form_type', 'formType', 100);
+        $builder->addMappedStringField('active_form_type', 'activeFormType', 100);
+        $builder->addMappedStringField('readonly_form_type', 'readonlyFormType', 100);
+        $builder->addMappedStringField('static_form_type', 'staticFormType', 100);
+        $builder->addMappedStringField('format_form_type', 'formatFormType', 100);
+        $builder->addMappedStringField('parameter_form_type', 'parameterFormType', 100);
         EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);
 

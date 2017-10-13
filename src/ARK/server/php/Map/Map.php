@@ -134,8 +134,8 @@ class Map
         $builder->addField('clickable', 'boolean');
         $builder->addField('zoomable', 'boolean');
         $builder->addField('zoom', 'integer');
-        $builder->addField('minZoom', 'integer', [], 'min_zoom');
-        $builder->addField('maxZoom', 'integer', [], 'max_zoom');
+        $builder->addMappedField('min_zoom', 'minZoom', 'integer');
+        $builder->addMappedField('max_zoom', 'maxZoom', 'integer');
         $builder->addField('srid', 'integer');
         $builder->addStringField('center', 50);
         $builder->addStringField('extent', 100);

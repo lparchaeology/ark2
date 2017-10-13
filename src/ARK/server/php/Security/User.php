@@ -544,7 +544,7 @@ class User implements AdvancedUserInterface, Serializable
         $builder = new ClassMetadataBuilder($metadata, 'ark_security_user');
 
         // Key
-        $builder->addStringKey('id', 30, 'user');
+        $builder->addMappedStringKey('user', 'id', 30);
 
         // Attributes
         $builder->addStringField('username', 30);
@@ -557,14 +557,14 @@ class User implements AdvancedUserInterface, Serializable
         $builder->addField('verified', 'boolean');
         $builder->addField('locked', 'boolean');
         $builder->addField('expired', 'boolean');
-        $builder->addField('expiresAt', 'datetime', [], 'expires_at');
-        $builder->addField('credentialsExpired', 'boolean', [], 'credentials_expired');
-        $builder->addField('credentialsExpireAt', 'datetime', [], 'credentials_expire_at');
-        $builder->addStringField('verificationToken', 100, 'verification_token');
-        $builder->addField('verificationRequestedAt', 'datetime', [], 'verification_requested_at');
-        $builder->addStringField('passwordRequestToken', 100, 'password_request_token');
-        $builder->addField('passwordRequestedAt', 'datetime', [], 'password_requested_at');
-        $builder->addField('lastLogin', 'datetime', [], 'last_login');
+        $builder->addMappedField('expires_at', 'expiresAt', 'datetime');
+        $builder->addMappedField('credentials_expired', 'credentialsExpired', 'boolean');
+        $builder->addMappedField('credentials_expire_at', 'credentialsExpireAt', 'datetime');
+        $builder->addMappedStringField('verification_token', 'verificationToken', 100);
+        $builder->addMappedField('verification_requested_at', 'verificationRequestedAt', 'datetime');
+        $builder->addMappedStringField('password_request_token', 'passwordRequestToken', 100);
+        $builder->addMappedField('password_requested_at', 'passwordRequestedAt', 'datetime');
+        $builder->addMappedField('last_login', 'lastLogin', 'datetime');
 
         // Relationships
         $builder->addManyToMany('accounts', Account::class, 'ark_auth_account');
