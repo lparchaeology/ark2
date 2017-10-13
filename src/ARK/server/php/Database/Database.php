@@ -143,11 +143,11 @@ class Database
         }
         $sql = '
             SELECT ark_vocabulary_parameter.term as class, ark_vocabulary_parameter.value as entity
-            FROM ark_schema, ark_vocabulary_parameter
-            WHERE ark_schema.module = :module
-            AND ark_schema.enabled = true
-            AND ark_schema.entities = true
-            AND ark_vocabulary_parameter.concept = ark_schema.vocabulary
+            FROM ark_model_schema, ark_vocabulary_parameter
+            WHERE ark_model_schema.module = :module
+            AND ark_model_schema.enabled = true
+            AND ark_model_schema.entities = true
+            AND ark_vocabulary_parameter.concept = ark_model_schema.vocabulary
             AND ark_vocabulary_parameter.name = :parameter
         ';
         $params = [
@@ -531,7 +531,7 @@ class Database
         }
         $sql = '
             SELECT *
-            FROM ark_module
+            FROM ark_model_module
         ';
         $modules = $this->core()->fetchAll($sql, []);
         foreach ($modules as $module) {

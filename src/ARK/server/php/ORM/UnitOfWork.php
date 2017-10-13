@@ -49,7 +49,7 @@ class UnitOfWork extends DoctrineUnitOfWork
         $this->reflPersisters->setAccessible(true);
     }
 
-    public function getEntityPersister(string $entityName) : EntityPersister
+    public function getEntityPersister($entityName) : EntityPersister
     {
         $persisters = $this->reflPersisters->getValue($this);
         if (isset($persisters[$entityName])) {

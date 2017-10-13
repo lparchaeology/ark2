@@ -60,7 +60,7 @@ class ClassMetadataFactory extends DoctrineClassMetadataFactory
         return in_array($class, $this->classNames(), true);
     }
 
-    protected function newClassMetadataInstance(string $className) : ClassMetadata
+    protected function newClassMetadataInstance($className) : ClassMetadata
     {
         $em = $this->emRefl->getValue($this);
         return new ClassMetadata($className, $em->getConfiguration()->getNamingStrategy());
