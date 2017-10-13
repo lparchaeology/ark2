@@ -288,7 +288,7 @@ abstract class Attribute
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Associations
-        $builder->addManyToOneField('dataclass', Dataclass::class, 'dataclass', 'dataclass', false);
+        $builder->addRequiredManyToOneField('dataclass', Dataclass::class);
         $builder->addVocabularyField('vocabulary');
     }
 

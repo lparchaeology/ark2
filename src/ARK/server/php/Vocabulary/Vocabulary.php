@@ -156,7 +156,7 @@ abstract class Vocabulary
         $builder->addStringKey('concept', 30);
 
         // Attributes
-        $builder->addManyToOneField('type', Type::class, 'type', 'type', false);
+        $builder->addRequiredManyToOneField('type', Type::class);
         $builder->addStringField('source', 30);
         $builder->addField('closed', 'boolean');
         $builder->addField('transitions', 'boolean');
@@ -164,6 +164,6 @@ abstract class Vocabulary
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Associations
-        $builder->addOneToMany('terms', Term::class, 'concept');
+        $builder->addOneToManyField('terms', Term::class, 'concept');
     }
 }

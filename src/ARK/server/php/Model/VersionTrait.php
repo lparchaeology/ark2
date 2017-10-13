@@ -84,9 +84,9 @@ trait VersionTrait
 
     public static function buildVersionMetadata(ClassMetadataBuilder $builder) : void
     {
-        $builder->addManyToOneField('modifier', Actor::class, 'modifier', 'id', true);
+        $builder->addManyToOneField('modifier', Actor::class, 'modifier', 'id');
         $builder->addField('modified', 'datetime');
-        $builder->addManyToOneField('creator', Actor::class, 'creator', 'id', true);
+        $builder->addManyToOneField('creator', Actor::class, 'creator', 'id');
         $builder->addField('created', 'datetime');
         $builder->addStringField('version', 128);
     }

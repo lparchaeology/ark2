@@ -119,7 +119,7 @@ class Module
         $builder->addField('core', 'boolean');
         EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);
-        $builder->addOneToMany('schemas', Schema::class, 'module');
+        $builder->addOneToManyField('schemas', Schema::class, 'module');
         $builder->setReadOnly();
     }
 }

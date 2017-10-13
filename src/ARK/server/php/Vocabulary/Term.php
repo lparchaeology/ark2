@@ -111,7 +111,7 @@ class Term
         $builder->setReadOnly();
 
         // Key
-        $builder->addManyToOneKey('concept', Vocabulary::class, 'concept', 'concept', 'terms');
+        $builder->addVocabularyKey('concept', 'concept', 'terms');
         $builder->addStringKey('term', 30);
 
         // Attributes
@@ -122,7 +122,7 @@ class Term
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Associations
-        $builder->addOneToMany('parameters', Parameter::class, 'term');
-        $builder->addOneToMany('related', Related::class, 'fromTerm');
+        $builder->addOneToManyField('parameters', Parameter::class, 'term');
+        $builder->addOneToManyField('related', Related::class, 'fromTerm');
     }
 }

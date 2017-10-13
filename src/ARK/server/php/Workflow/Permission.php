@@ -76,6 +76,6 @@ class Permission
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Relationships
-        $builder->addManyToMany('roles', Role::class, 'ark_workflow_grant', 'permission', 'role');
+        $builder->addManyToManyField('roles', Role::class, 'ark_workflow_grant', 'permission', 'role');
     }
 }

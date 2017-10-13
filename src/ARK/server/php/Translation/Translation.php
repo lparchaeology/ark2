@@ -131,8 +131,8 @@ class Translation
         $builder->addManyToOneField('domain', Domain::class);
         $builder->addMappedField('is_plural', 'isPlural', 'boolean');
         $builder->addMappedField('has_parameters', 'hasParameters', 'boolean');
-        $builder->addOneToManyCascade('parameters', Parameter::class, 'key');
-        $builder->addOneToManyCascade('messages', Message::class, 'key');
+        $builder->addOneToManyCascadeField('parameters', Parameter::class, 'key');
+        $builder->addOneToManyCascadeField('messages', Message::class, 'key');
     }
 
     private function getLanguage($language = null) : ?Language

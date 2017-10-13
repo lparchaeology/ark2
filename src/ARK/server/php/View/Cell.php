@@ -249,7 +249,7 @@ class Cell implements ElementInterface
         $builder->setReadOnly();
 
         // Key
-        $builder->addManyToOneKey('group', 'ARK\View\Element', 'grp', 'element');
+        $builder->addManyToOneKey('group', Element::class, 'grp', 'element');
         $builder->addKey('row', 'integer');
         $builder->addKey('col', 'integer');
         $builder->addKey('seq', 'integer');
@@ -277,9 +277,9 @@ class Cell implements ElementInterface
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Relationships
-        $builder->addManyToOneField('element', Element::class, 'element', 'element', false);
+        $builder->addRequiredManyToOneField('element', Element::class);
         $builder->addManyToOneField('map', Map::class);
-        $builder->addManyToOneField('vocabulary', Vocabulary::class, 'vocabulary', 'concept');
+        $builder->addVocabularyField('vocabulary');
         $builder->addCompositeManyToOneField('action', Action::class, [
             [
                 'column' => 'action_schema',
@@ -291,8 +291,8 @@ class Cell implements ElementInterface
                 'nullable' => true,
             ],
         ]);
-        $builder->addManyToOneField('viewPermission', Permission::class, 'view', 'permission');
-        $builder->addManyToOneField('editPermission', Permission::class, 'edit', 'permission');
+        $builder->addPermissionField('view', 'viewPermission');
+        $builder->addPermissionField('edit', 'editPermission');
     }
 
     protected function buildState(iterable $state, $data) : iterable

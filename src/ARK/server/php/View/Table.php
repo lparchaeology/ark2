@@ -182,7 +182,7 @@ class Table extends Element
         $builder->addStringField('url', 2038);
 
         // Associations
-        $builder->addOneToMany('cells', Cell::class, 'group');
+        $builder->addOneToManyField('cells', Cell::class, 'group');
     }
 
     protected function buildChildren(iterable $view) : iterable

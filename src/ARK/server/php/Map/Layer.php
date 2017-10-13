@@ -96,7 +96,7 @@ class Layer implements LayerInterface
         $builder->setReadOnly();
 
         // Key
-        $builder->addManyToOneKey('source', 'ARK\Map\Source');
+        $builder->addManyToOneKey('source', Source::class);
         $builder->addStringKey('layer', 30);
 
         // Attributes

@@ -246,7 +246,7 @@ class Action
                 ['column' => 'event_term', 'reference' => 'term'],
             ]
         );
-        $builder->addCompositeOneToMany(
+        $builder->addCompositeOneToManyField(
             'allowances',
             Allow::class,
             'action',
@@ -255,7 +255,7 @@ class Action
                 ['column' => 'action', 'nullable' => true],
             ]
         );
-        $builder->addCompositeOneToMany(
+        $builder->addCompositeOneToManyField(
             'agencies',
             Agency::class,
             'action',
@@ -264,7 +264,7 @@ class Action
                 ['column' => 'action', 'nullable' => true],
             ]
         );
-        $builder->addCompositeOneToMany(
+        $builder->addCompositeOneToManyField(
             'conditions',
             Condition::class,
             'action',
@@ -273,7 +273,7 @@ class Action
                 ['column' => 'action', 'nullable' => true],
             ]
         );
-        $builder->addCompositeOneToMany(
+        $builder->addCompositeOneToManyField(
             'notifications',
             Notify::class,
             'action',
@@ -282,7 +282,7 @@ class Action
                 ['column' => 'action', 'nullable' => true],
             ]
         );
-        $builder->addCompositeOneToMany(
+        $builder->addCompositeOneToManyField(
             'updates',
             Update::class,
             'action',

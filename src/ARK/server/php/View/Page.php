@@ -132,8 +132,8 @@ class Page extends Element
         $builder->addManyToOneField('sidebar', Element::class, 'sidebar', 'element');
         $builder->addManyToOneField('content', Element::class, 'content', 'element');
         $builder->addManyToOneField('footer', Element::class, 'footer', 'element');
-        $builder->addPermissionField('read', 'view');
-        $builder->addPermissionField('update', 'edit');
+        $builder->addPermissionField('view', 'read');
+        $builder->addPermissionField('edit', 'update');
     }
 
     protected function buildState($data, iterable $state) : iterable

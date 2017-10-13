@@ -237,16 +237,15 @@ class Schema
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Associations
-        $builder->addManyToOneField('module', Module::class, null, null, false);
-        $builder->addManyToOneField('parent', self::class);
+        $builder->addRequiredManyToOneField('module', Module::class);
         $builder->addVocabularyField('vocabulary');
-        $builder->addPermissionField('create', 'new');
-        $builder->addPermissionField('read', 'view');
-        $builder->addPermissionField('update', 'edit');
-        $builder->addPermissionField('delete', 'remove');
-        $builder->addOneToMany('children', self::class, 'schma', 'schma', 'parent');
-        $builder->addOneToMany('attributes', SchemaAttribute::class, 'schma');
-        $builder->addOneToMany('associations', SchemaAssociation::class, 'schma');
+        $builder->addPermissionField('new', 'create');
+        $builder->addPermissionField('view', 'read');
+        $builder->addPermissionField('edit', 'update');
+        $builder->addPermissionField('remove', 'delete');
+        $builder->addOneToManyField('children', self::class, 'schma', 'parent');
+        $builder->addOneToManyField('attributes', SchemaAttribute::class, 'schma');
+        $builder->addOneToManyField('associations', SchemaAssociation::class, 'schma');
         $builder->setReadOnly();
     }
 

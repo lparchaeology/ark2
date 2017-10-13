@@ -54,7 +54,7 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
         $this->getClassMetadata()->setIdGeneratorType($type);
     }
 
-    public function addManyToMany(
+    public function addManyToManyField(
         string $name,
         string $targetEntity,
         string $joinTable,
@@ -68,19 +68,17 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
         return $builder->build();
     }
 
-    public function addOneToMany(
+    public function addOneToManyField(
         string $name,
         string $targetEntity,
         string $mappedBy,
-        string $column = null,
         string $reference = null,
         bool $nullable = true,
         iterable $orderBy = []
     ) : ClassMetadataBuilder {
-        $builder = $this->createOneToMany($name, $targetEntity);
-        $builder->mappedBy($mappedBy);
+        $builder = $this->createOneToMany($name, $targetEntity)->mappedBy($mappedBy);
         if ($reference) {
-            $builder->addJoinColumn($column, $reference, $nullable);
+            $builder->addJoinColumn($mappedBy, $reference, $nullable);
         }
         if ($orderBy) {
             $builder->setOrderBy($orderBy);
@@ -88,7 +86,7 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
         return $builder->build();
     }
 
-    public function addCompositeOneToMany(
+    public function addCompositeOneToManyField(
         string $name,
         string $targetEntity,
         string $mappedBy,
@@ -106,7 +104,7 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
         return $builder->build();
     }
 
-    public function addOneToManyCascade(
+    public function addOneToManyCascadeField(
         string $name,
         string $targetEntity,
         string $mappedBy,
@@ -144,6 +142,46 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
         return $builder->build();
     }
 
+    public function addManyToOneField(
+        string $name,
+        string $class,
+        string $column = null,
+        string $reference = null,
+        string $inverse = null
+    ) : ClassMetadataBuilder {
+        if ($column === null) {
+            $column = $name;
+        }
+        if ($reference === null) {
+            $reference = $column;
+        }
+        $builder = $this->createManyToOne($name, $class)->addJoinColumn($column, $reference, true);
+        if ($inverse) {
+            $builder->inversedBy($inverse);
+        }
+        return $builder->build();
+    }
+
+    public function addRequiredManyToOneField(
+        string $name,
+        string $class,
+        string $column = null,
+        string $reference = null,
+        string $inverse = null
+    ) : ClassMetadataBuilder {
+        if ($column === null) {
+            $column = $name;
+        }
+        if ($reference === null) {
+            $reference = $column;
+        }
+        $builder = $this->createManyToOne($name, $class)->addJoinColumn($column, $reference, false);
+        if ($inverse) {
+            $builder->inversedBy($inverse);
+        }
+        return $builder->build();
+    }
+
     public function addCompositeManyToOneKey(
         string $name,
         string $class,
@@ -164,20 +202,44 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
         return $builder->build();
     }
 
-    public function addVocabularyField(
-        string $name,
-        string $column = null,
-        bool $nullable = true
+    public function addVocabularyKey(
+        string $column = 'concept',
+        string $name = null,
+        string $inverse = null
     ) : ClassMetadataBuilder {
-        return $this->addManyToOneField($name, Vocabulary::class, $column, 'concept', $nullable);
+        return $this->addManyToOneKey($name ?? $column, Vocabulary::class, $column, 'concept', $inverse);
+    }
+
+    public function addVocabularyField(
+        string $column = 'concept',
+        string $name = null,
+        string $inverse = null
+    ) : ClassMetadataBuilder {
+        return $this->addManyToOneField($name ?? $column, Vocabulary::class, $column, 'concept', $inverse);
+    }
+
+    public function addRequiredVocabularyField(
+        string $column = 'concept',
+        string $name = null,
+        string $inverse = null
+    ) : ClassMetadataBuilder {
+        return $this->addRequiredManyToOneField($name ?? $column, Vocabulary::class, $column, 'concept', $inverse);
     }
 
     public function addPermissionField(
-        string $name,
-        string $column = null,
-        bool $nullable = true
+        string $column = 'permission',
+        string $name = null,
+        string $inverse = null
     ) : ClassMetadataBuilder {
-        return $this->addManyToOneField($name, Permission::class, $column, 'permission', $nullable);
+        return $this->addManyToOneField($name ?? $column, Permission::class, $column, 'permission', $inverse);
+    }
+
+    public function addRequiredPermissionField(
+        string $column = 'permission',
+        string $name = null,
+        string $inverse = null
+    ) : ClassMetadataBuilder {
+        return $this->addManyToOneField($name ?? $column, Permission::class, $column, 'permission', $inverse);
     }
 
     public function addCompositeManyToOneField(

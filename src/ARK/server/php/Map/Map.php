@@ -143,6 +143,6 @@ class Map
         $builder->addStringField('options', 4000);
 
         // Relationships
-        $builder->addOneToMany('layers', LayerView::class, 'map');
+        $builder->addOneToManyField('layers', LayerView::class, 'map');
     }
 }

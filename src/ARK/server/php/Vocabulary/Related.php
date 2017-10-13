@@ -70,9 +70,9 @@ class Related
         $builder->setReadOnly();
 
         // Key
-        $builder->addManyToOneKey('fromConcept', 'ARK\Vocabulary\Vocabulary', 'from_concept', 'concept');
+        $builder->addVocabularyKey('from_concept', 'fromConcept');
         $builder->addMappedStringKey('from_term', 'fromTermName', 30);
-        $builder->addManyToOneKey('toConcept', 'ARK\Vocabulary\Vocabulary', 'to_concept', 'concept');
+        $builder->addVocabularyKey('to_concept', 'toConcept');
         $builder->addMappedStringKey('to_term', 'toTermName', 30);
 
         // Attributes
@@ -82,7 +82,7 @@ class Related
         // Associations
         $builder->addCompositeManyToOneField(
             'fromTerm',
-            'ARK\Vocabulary\Term',
+            Term::class,
             [
                 ['column' => 'from_concept', 'reference' => 'concept', 'nullable' => false],
                 ['column' => 'from_term', 'reference' => 'term', 'nullable' => false],
@@ -90,7 +90,7 @@ class Related
         );
         $builder->addCompositeManyToOneField(
             'toTerm',
-            'ARK\Vocabulary\Term',
+            Term::class,
             [
                 ['column' => 'to_concept', 'reference' => 'concept', 'nullable' => false],
                 ['column' => 'to_term', 'reference' => 'term', 'nullable' => false],

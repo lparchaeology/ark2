@@ -48,7 +48,7 @@ class Tree extends AbstractClosure
         $builder->addField('depth', 'integer');
 
         // Associations
-        $builder->addManyToOneField('ancestor', Nav::class, 'ancestor', 'element', false);
-        $builder->addManyToOneField('descendant', Nav::class, 'descendant', 'element', false);
+        $builder->addManyToOneField('ancestor', Nav::class, 'ancestor', 'element');
+        $builder->addManyToOneField('descendant', Nav::class, 'descendant', 'element');
     }
 }

@@ -233,7 +233,7 @@ class Datatype
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Associations
-        $builder->addManyToOneField('format', Vocabulary::class, 'format_vocabulary', 'concept');
-        $builder->addManyToOneField('parameter', Vocabulary::class, 'parameter_vocabulary', 'concept');
+        $builder->addVocabularyField('format_vocabulary', 'format');
+        $builder->addVocabularyField('parameter_vocabulary', 'parameter');
     }
 }

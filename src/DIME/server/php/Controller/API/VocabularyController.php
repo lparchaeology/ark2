@@ -30,7 +30,6 @@
 namespace DIME\Controller\API;
 
 use ARK\Http\JsonResponse;
-use ARK\ORM\ORM;
 use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,7 +54,7 @@ class VocabularyController
         $content = json_decode($request->getContent());
         $data = [];
         try {
-            $vocabulary = ORM::find(Vocabulary::class, $content->concept);
+            $vocabulary = Vocabulary::find($content->concept);
             if ($vocabulary) {
                 $data['concept'] = $vocabulary->concept();
                 $data['type'] = $vocabulary->type();

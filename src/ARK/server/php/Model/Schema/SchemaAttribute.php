@@ -94,7 +94,7 @@ class SchemaAttribute extends Attribute
         $builder->addStringField('visibility', 30);
 
         // Associations
-        $builder->addPermissionField('read', 'view');
-        $builder->addPermissionField('update', 'edit');
+        $builder->addPermissionField('view', 'read');
+        $builder->addPermissionField('edit', 'update');
     }
 }

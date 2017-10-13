@@ -165,6 +165,6 @@ class Role
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Relationships
-        $builder->addManyToMany('permissions', Permission::class, 'ark_workflow_grant', 'role', 'permission');
+        $builder->addManyToManyField('permissions', Permission::class, 'ark_workflow_grant', 'role', 'permission');
     }
 }

@@ -61,7 +61,7 @@ class DataclassAttribute extends Attribute
         $builder = new ClassMetadataBuilder($metadata, 'ark_dataclass_attribute');
 
         // Key
-        $builder->addManyToOneKey('parent', 'ARK\Model\Dataclass', 'parent', 'dataclass', false);
+        $builder->addManyToOneKey('parent', Dataclass::class, 'parent', 'dataclass');
         $builder->addStringKey('attribute', 30);
 
         // Attributes

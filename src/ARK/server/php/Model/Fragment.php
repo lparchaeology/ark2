@@ -185,7 +185,7 @@ abstract class Fragment
         VersionTrait::buildVersionMetadata($builder);
 
         // Attributes
-        $builder->addManyToOneField('object', ObjectFragment::class, 'object', 'fid', true);
+        $builder->addManyToOneField('object', ObjectFragment::class, 'object', 'fid');
     }
 
     public static function buildSubclassMetadata(ClassMetadata $metadata, string $class) : void

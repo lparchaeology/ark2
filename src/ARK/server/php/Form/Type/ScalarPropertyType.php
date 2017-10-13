@@ -139,8 +139,7 @@ class ScalarPropertyType extends AbstractPropertyType
             if ($format === null) {
                 $vocab = $property->attribute()->dataclass()->formatVocabulary();
                 if ($vocab) {
-                    $vocab = ORM::find(Vocabulary::class, $vocab);
-                    $format = $vocab->defaultTerm()->name();
+                    $format = Vocabulary::find($vocab)->defaultTerm()->name();
                 }
             }
             $forms[$formatName]->setData($format);
@@ -150,8 +149,7 @@ class ScalarPropertyType extends AbstractPropertyType
             if ($parameter === null) {
                 $vocab = $property->attribute()->dataclass()->parameterVocabulary();
                 if ($vocab) {
-                    $vocab = ORM::find(Vocabulary::class, $vocab);
-                    $parameter = $vocab->defaultTerm()->name();
+                    $parameter = Vocabulary::find($vocab)->defaultTerm()->name();
                 }
             }
             $forms[$parameterName]->setData($parameter);

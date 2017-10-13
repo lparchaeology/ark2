@@ -68,7 +68,7 @@ class Parameter
         $builder->setReadOnly();
 
         // Key
-        $builder->addManyToOneKey('concept', Vocabulary::class, 'concept', 'concept', 'terms');
+        $builder->addVocabularyKey('concept', 'concept', 'terms');
         $builder->addMappedStringKey('term', 'termName', 30);
         $builder->addStringKey('name', 30);
 

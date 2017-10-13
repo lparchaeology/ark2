@@ -151,7 +151,7 @@ class Nav extends Element
         $builder->addStringField('uri', 2038);
 
         $builder->addManyToOneField('parent', self::class, 'parent', 'element', true, 'children');
-        $builder->addOneToMany('children', self::class, 'parent');
+        $builder->addOneToManyField('children', self::class, 'parent');
     }
 
     public static function readExtendedMetadata(iterable &$config) : void

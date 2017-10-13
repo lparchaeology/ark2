@@ -51,6 +51,6 @@ class Grid extends Element
         $builder->addMappedStringField('form_type', 'formType', 100);
 
         // Associations
-        $builder->addOneToMany('cells', Cell::class, 'group');
+        $builder->addOneToManyField('cells', Cell::class, 'group');
     }
 }
