@@ -40,6 +40,11 @@ class SchemaClass
 
     protected $schema;
     protected $class;
+    protected $vocabulary;
+    protected $entity;
+    protected $classname;
+    protected $base;
+    protected $valid;
 
     public static function loadMetadata(ClassMetadata $metadata) : void
     {

@@ -34,6 +34,13 @@ use ARK\ORM\ClassMetadataBuilder;
 
 class ModelSchema
 {
+    use EnabledTrait;
+    use KeywordTrait;
+
+    protected $model;
+    protected $schema;
+    protected $class;
+
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
@@ -41,7 +48,7 @@ class ModelSchema
         $builder->setReadOnly();
 
         // Key
-        $builder->addManyToOneKey('model', self::class);
+        $builder->addManyToOneKey('model', Model::class);
         $builder->addManyToOneKey('schema', Schema::class, 'schma');
         $builder->addStringKey('class', 30);
 

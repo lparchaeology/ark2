@@ -35,6 +35,11 @@ use ARK\ORM\ClassMetadataBuilder;
 
 class Model
 {
+    use EnabledTrait;
+    use KeywordTrait;
+
+    protected $model;
+
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
