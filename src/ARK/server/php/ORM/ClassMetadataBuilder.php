@@ -349,7 +349,7 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
         int $length,
         bool $nullable = false,
         iterable $options = []
-    ) : bool {
+    ) : ClassMetadataBuilder {
         $builder = $this->createField($name, 'string')->length($length)->nullable($nullable);
         foreach ($options as $name => $value) {
             $builder->option($name, $value);

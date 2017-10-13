@@ -67,9 +67,10 @@ class UserResetPageController extends PageController
             if ($user) {
                 Service::security()->requestPassword($user);
                 Service::view()->addSuccessFlash('core.user.reset.sent');
-                return Service::redirectPath('core.front');
+                $request->attributes->set('redirect', 'core.front');
+            } else {
+                Service::view()->addErrorFlash('core.user.reset.unknown');
             }
-            Service::view()->addErrorFlash('core.user.reset.unknown');
         }
     }
 }

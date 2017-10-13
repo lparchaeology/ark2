@@ -44,7 +44,7 @@ class ViewControllerProvider implements ControllerProviderInterface
         //$pages = ORM::findAll(Page::class);
 
         $model = $app['ark']['site'];
-        $instances = ORM::find(Model::class);
+        $instances = ORM::find(Model::class, $model);
 
         foreach ($routes as $route) {
             $this->addRoute($controllers, $route);
