@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model.
+ * ARK Model Schema Association.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,28 +27,38 @@
  * @since      2.0
  */
 
-namespace ARK\Model;
+namespace ARK\Model\Schema;
 
-use ARK\Model\Schema\SchemaClass;
+use ARK\Model\EnabledTrait;
+use ARK\Model\Model;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 
-class Model
+class SchemaClass
 {
+    use EnabledTrait;
+
+    protected $schema;
+    protected $class;
+
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_model');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_model_association');
         $builder->setReadOnly();
 
         // Key
-        $builder->addStringKey('model', 30);
+        $builder->addManyToOneKey('schema', Schema::class, 'schma');
+        $builder->addStringKey('class', 30);
 
-        // Attributes
+        // Fields
+        $builder->addRequiredVocabularyField('vocabulary');
+        $builder->addStringField('entity', 30);
+        $builder->addStringField('classname', 30);
+        $builder->addField('base', 'boolean');
+        $builder->addField('valid', 'boolean');
         EnabledTrait::buildEnabledMetadata($builder);
-        KeywordTrait::buildKeywordMetadata($builder);
 
         // Associations
-        //$builder->addOneToManyField('classes', SchemaClass::class);
     }
 }
