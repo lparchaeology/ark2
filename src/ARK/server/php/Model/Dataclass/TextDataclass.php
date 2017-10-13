@@ -31,8 +31,7 @@ namespace ARK\Model\Dataclass;
 
 use ARK\Actor\Actor;
 use ARK\Model\Attribute;
-use ARK\Model\Dataclass;
-use ARK\Model\Fragment;
+use ARK\Model\Fragment\Fragment;
 use ARK\Model\LocalText;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;

@@ -31,7 +31,6 @@
 namespace ARK\Model\Fragment;
 
 use ARK\Model\Attribute;
-use ARK\Model\Fragment;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Service;

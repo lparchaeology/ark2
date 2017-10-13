@@ -27,10 +27,9 @@
  * @since      2.0
  */
 
-namespace ARK\Model;
+namespace ARK\Model\Fragment;
 
 use ARK\Actor\Actor;
-use ARK\Model\Fragment\ObjectFragment;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Service;

@@ -32,7 +32,6 @@ namespace ARK\Model\Schema;
 use ARK\Model\EnabledTrait;
 use ARK\Model\KeywordTrait;
 use ARK\Model\Model;
-use ARK\Model\Schema;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 

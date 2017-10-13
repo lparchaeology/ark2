@@ -30,7 +30,7 @@
 namespace ARK\Model\Fragment;
 
 use ARK\Model\Attribute;
-use ARK\Model\Schema;
+use ARK\Model\Schema\Schema;
 use ARK\Service;
 
 trait ItemFragmentTrait

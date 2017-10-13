@@ -29,7 +29,7 @@
 
 namespace ARK\Model\Dataclass;
 
-use ARK\Model\Fragment;
+use ARK\Model\Fragment\Fragment;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Vocabulary\Vocabulary;
 use Doctrine\Common\Collections\Collection;

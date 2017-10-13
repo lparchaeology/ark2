@@ -27,7 +27,7 @@
  * @since      2.0
  */
 
-namespace ARK\Model;
+namespace ARK\Model\Dataclass;
 
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;

@@ -29,6 +29,7 @@
 
 namespace ARK\Framework\Routing;
 
+use ARK\Model\Model;
 use ARK\ORM\ORM;
 use ARK\View\Page;
 use Silex\API\ControllerProviderInterface;

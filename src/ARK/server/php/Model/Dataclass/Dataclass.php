@@ -27,7 +27,7 @@
  * @since      2.0
  */
 
-namespace ARK\Model;
+namespace ARK\Model\Dataclass;
 
 use ARK\Actor\Actor;
 use ARK\ORM\ClassMetadata;

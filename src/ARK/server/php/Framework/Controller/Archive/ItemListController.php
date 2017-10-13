@@ -32,7 +32,7 @@ namespace ARK\Framework\Controller;
 use ARK\Database\Database;
 use ARK\Model\Item\Collection;
 use ARK\Model\Item\Item;
-use ARK\Model\Module;
+use ARK\Model\Schema\Module;
 use ARK\View\Element;
 use Doctrine\DBAL\Connection;
 use Silex\Application;

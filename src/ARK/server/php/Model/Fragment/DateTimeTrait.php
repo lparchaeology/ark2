@@ -29,7 +29,6 @@
 
 namespace ARK\Model\Fragment;
 
-use ARK\Model\Fragment;
 use DateTime;
 
 trait DateTimeTrait

@@ -30,7 +30,6 @@
 namespace ARK\Model\Schema;
 
 use ARK\Model\Attribute;
-use ARK\Model\Schema;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Vocabulary\Term;

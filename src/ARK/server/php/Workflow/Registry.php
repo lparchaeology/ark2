@@ -34,7 +34,7 @@ use ARK\Actor\Person;
 use ARK\Model\Attribute;
 use ARK\Model\Item;
 use ARK\Model\ItemPropertyMarkingStore;
-use ARK\Model\Schema;
+use ARK\Model\Schema\Schema;
 use ARK\ORM\ORM;
 use ARK\Security\User;
 use ARK\Service;

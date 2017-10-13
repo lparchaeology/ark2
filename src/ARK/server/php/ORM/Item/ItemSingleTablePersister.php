@@ -31,7 +31,7 @@
 namespace ARK\ORM\Item;
 
 use ARK\Model\Fragment\ItemFragmentTrait;
-use ARK\Model\Schema;
+use ARK\Model\Schema\Schema;
 use ARK\Service;
 use Doctrine\ORM\Persisters\Entity\SingleTablePersister;
 

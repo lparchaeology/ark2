@@ -144,10 +144,8 @@ class OrmServiceProvider implements ServiceProviderInterface
                             'namespace' => 'ARK\Model',
                             'path' => [
                                 $srcDir.'/Model/Attribute.php',
-                                $srcDir.'/Model/Datatype.php',
-                                $srcDir.'/Model/Dataclass.php',
-                                $srcDir.'/Model/Module.php',
-                                $srcDir.'/Model/Schema.php',
+                                $srcDir.'/Model/Model.php',
+                                $srcDir.'/Model/ModelSchema.php',
                             ],
                         ],
                         [
@@ -203,11 +201,6 @@ class OrmServiceProvider implements ServiceProviderInterface
                             'type' => 'item',
                             'namespace' => 'ARK\Message',
                             'path' => $srcDir.'/Message',
-                        ],
-                        [
-                            'type' => 'php',
-                            'namespace' => 'ARK\Model',
-                            'path' => $srcDir.'/Model/Fragment.php',
                         ],
                         [
                             'type' => 'php',

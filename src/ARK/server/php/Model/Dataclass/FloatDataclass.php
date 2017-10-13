@@ -30,7 +30,6 @@
 
 namespace ARK\Model\Dataclass;
 
-use ARK\Model\Dataclass;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 

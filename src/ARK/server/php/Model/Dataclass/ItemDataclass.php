@@ -29,10 +29,9 @@
 
 namespace ARK\Model\Dataclass;
 
-use ARK\Model\Dataclass;
-use ARK\Model\Fragment;
+use ARK\Model\Fragment\Fragment;
 use ARK\Model\Item;
-use ARK\Model\Module;
+use ARK\Model\Schema\Module;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;

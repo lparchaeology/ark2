@@ -30,7 +30,7 @@
 
 namespace ARK\ORM\Item;
 
-use ARK\Model\Schema;
+use ARK\Model\Schema\Schema;
 use Doctrine\ORM\EntityRepository;
 
 class ItemRepository extends EntityRepository

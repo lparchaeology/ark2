@@ -30,7 +30,7 @@
 namespace ARK\Form\Type;
 
 use ARK\Model\Item;
-use ARK\Model\Module;
+use ARK\Model\Schema\Module;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

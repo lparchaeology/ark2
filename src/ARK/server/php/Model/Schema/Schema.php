@@ -27,13 +27,11 @@
  * @since      2.0
  */
 
-namespace ARK\Model;
+namespace ARK\Model\Schema;
 
 use ARK\Model\Exception\SubclassInvalidException;
 use ARK\Model\Exception\SubclassRequiredException;
 use ARK\Model\Exception\SuperclassInvalidException;
-use ARK\Model\Schema\SchemaAssociation;
-use ARK\Model\Schema\SchemaAttribute;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;

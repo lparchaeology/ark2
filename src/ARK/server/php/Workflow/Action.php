@@ -33,7 +33,7 @@ use ARK\Actor\Actor;
 use ARK\Message\Notification;
 use ARK\Model\Item;
 use ARK\Model\KeywordTrait;
-use ARK\Model\Schema;
+use ARK\Model\Schema\Schema;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;

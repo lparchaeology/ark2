@@ -29,7 +29,6 @@
 
 namespace ARK\Model\Fragment;
 
-use ARK\Model\Fragment;
 use ARK\ORM\ClassMetadata;
 
 class TimeFragment extends Fragment

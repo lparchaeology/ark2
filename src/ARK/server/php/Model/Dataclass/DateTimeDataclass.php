@@ -29,7 +29,6 @@
 
 namespace ARK\Model\Dataclass;
 
-use ARK\Model\Dataclass;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use Symfony\Component\Validator\Constraints\DateTime;
