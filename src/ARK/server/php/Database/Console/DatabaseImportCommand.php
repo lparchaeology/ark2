@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Debug Route Command.
+ * Ark Database Console Command.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,37 +27,36 @@
  * @since      2.0
  */
 
-namespace ARK\Framework\Console\Command;
+namespace ARK\Database\Console;
 
 use ARK\ARK;
-use Symfony\Component\Filesystem\Filesystem;
+use Doctrine\DBAL\DBALException;
 
-class CacheClearCommand extends AbstractCommand
+class DatabaseImportCommand extends DatabaseCommand
 {
     protected function configure() : void
     {
-        $this->setName('cache:clear')
-             ->setDescription('Clear the system cache')
-             ->addOptionalArgument('cache', 'The specific cache to clear, e.g. twig or doctrine');
+        $this->setName('database:import')
+             ->setDescription('Import an SQL file into a database');
     }
 
     protected function doExecute() : void
     {
-        $fs = new Filesystem();
-        $cacheDir = $this->app()->cacheDir();
-        $caches = ARK::dirList($cacheDir);
-        $cache = $this->input->getArgument('cache');
-        if ($cache) {
-            if (!in_array($cache, $caches, true)) {
-                $this->write("FAILURE: Cache $cache does not exist");
-                return;
-            }
-            $caches = [$cache];
+        $conn = $this->chooseSiteConnection('root');
+        $path = $this->askFilePath('Please choose the SQL file to import');
+        if (!$this->confirmCommand($conn, 'Importing SQL may damage your data!')) {
+            return;
         }
-        foreach ($caches as $cache) {
-            $paths = ARK::pathList($cacheDir.'/'.$cache, true);
-            $fs->remove($paths);
+        $conn->disableForeignKeyChecks();
+        try {
+            $conn->beginTransaction();
+            $conn->import($path);
+            $conn->commit();
+            $this->write('SUCCESS: SQL imported.');
+        } catch (DBALException $e) {
+            $conn->rollBack();
+            $this->writeException('SQL import failed', $e);
         }
-        $this->write('SUCCESS: Cache cleared');
+        $conn->enableForeignKeyChecks();
     }
 }

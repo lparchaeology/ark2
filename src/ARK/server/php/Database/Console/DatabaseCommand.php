@@ -39,6 +39,38 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 
 abstract class DatabaseCommand extends AbstractCommand
 {
+    protected function confirmCommand(Connection $conn, string $text) : bool
+    {
+        $db = $conn->getDatabase();
+        $regex = "/$db/i";
+        $this->write("WARNING: $text");
+        $confirm = $this->askConfirmation("To confirm, please type in the database name ($db)", false, false, $regex);
+        if (!$confirm) {
+            $this->write('FAILED: Database name does not match.');
+        }
+        return $confirm;
+    }
+
+    protected function chooseSiteConnection(string $user = null) : Connection
+    {
+        $app = $this->app();
+        $site = $app['ark']['site'] ?? $this->askChoice('Please choose the site:', ARK::sites());
+        $connections = ARK::siteDatabaseConfig($site, true);
+        $db = $this->askChoice('Please choose the site database:', array_keys($connections));
+        return $this->getSiteConnection($site, $db, $user);
+    }
+
+    protected function getSiteConnection(string $site, string $db, string $user = null) : Connection
+    {
+        $connections = ARK::siteDatabaseConfig($site, true);
+        $config = $connections[$db];
+        if ($user) {
+            $config['user'] = $user;
+            $config['password'] = null;
+        }
+        return $this->getConnection($config);
+    }
+
     protected function chooseServerConnection(string $text = null, string $user = null) : Connection
     {
         $server = $this->chooseServer($text);
@@ -53,9 +85,7 @@ abstract class DatabaseCommand extends AbstractCommand
 
     protected function getConnection(iterable $config) : Connection
     {
-        if (!isset($config['password'])) {
-            $config['password'] = $this->askPassword($config['user']);
-        }
+        $config['password'] = $config['password'] ?? $this->askPassword($config['user']);
         try {
             $connection = DriverManager::getConnection($config);
             $connection->connect();

@@ -73,10 +73,10 @@ class AdminConnection extends Connection
         return $this->getSchemaManager()->createSchema();
     }
 
-    public function loadSql(string $sqlPath) : void
+    public function import(string $path) : void
     {
         $this->disableForeignKeyChecks();
-        $this->executeUpdate(file_get_contents($sqlPath));
+        $this->executeUpdate(file_get_contents($path));
         $this->enableForeignKeyChecks();
     }
 
@@ -120,7 +120,36 @@ class AdminConnection extends Connection
 
     public function tableExists(string $table) : bool
     {
-        return in_array($table, $this->getSchemaManager()->listTableNames(), true);
+        return $this->getSchemaManager()->tablesExist([$table]);
+    }
+
+    public function truncateTable(string $table) : void
+    {
+        if ($this->tableExists($table)) {
+            $sql = $this->platform()->getTruncateTableSql($table);
+            $this->executeUpdate($sql);
+        }
+    }
+
+    public function truncateAllTables() : void
+    {
+        foreach ($this->listTableNames() as $table) {
+            $this->truncateTable($table);
+        }
+    }
+
+    public function dropTable(string $table) : void
+    {
+        if ($this->tableExists($table)) {
+            $sql = $this->getSchemaManager()->dropTable($table);
+        }
+    }
+
+    public function dropAllTables() : void
+    {
+        foreach ($this->listTableNames() as $table) {
+            $this->dropTable($table);
+        }
     }
 
     public function createItemTable(string $module) : void

@@ -26,64 +26,73 @@
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
  */
+
 namespace ARK\Database;
 
 use Doctrine\DBAL\Connection as DBALConnection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 
-class Connection extends DBALConnection {
-    public function platform(): AbstractPlatform
+class Connection extends DBALConnection
+{
+    public function platform() : AbstractPlatform
     {
-        return $this->getDriver ()->getDatabasePlatform ();
+        return $this->getDriver()->getDatabasePlatform();
     }
-    public function config(): iterable
+
+    public function config() : iterable
     {
-        return $this->getParams ();
+        return $this->getParams();
     }
-    public function generateGuid(): string
+
+    public function generateGuid() : string
     {
         $sql = 'SELECT ?';
         $params = [
-                $this->platform ()->getGuidExpression ()
+                $this->platform()->getGuidExpression(),
         ];
 
-        return $this->query ( $sql, $params )->fetchColumn ( 0 );
+        return $this->query($sql, $params)->fetchColumn(0);
     }
-    public function countRows(string $table): int
-    {
-        return $this->executeQuery ( "SELECT COUNT(*) FROM $table" )->fetch () ['COUNT(*)'];
-    }
-    public function fetchAllTable(string $table): iterable
-    {
-        return $this->fetchAll ( "SELECT * FROM $table" );
-    }
-    public function fetchAllColumn(string $sql, string $column, iterable $params = [], iterable $types = []): iterable
-    {
-        $rows = $this->executeQuery ( $sql, $params, $types )->fetchAll ();
 
-        return array_column ( $rows, $column );
-    }
-    public function insertRows(string $table, iterable $fields, iterable $rows): void
+    public function countRows(string $table) : int
     {
-        $cols = count ( $fields );
-        $fl = implode ( ', ', $fields );
-        $vl = str_repeat ( '?, ', $cols - 1 ) . '?';
+        return $this->executeQuery("SELECT COUNT(*) FROM $table")->fetch()['COUNT(*)'];
+    }
+
+    public function fetchAllTable(string $table) : iterable
+    {
+        return $this->fetchAll("SELECT * FROM $table");
+    }
+
+    public function fetchAllColumn(string $sql, string $column, iterable $params = [], iterable $types = []) : iterable
+    {
+        $rows = $this->executeQuery($sql, $params, $types)->fetchAll();
+
+        return array_column($rows, $column);
+    }
+
+    public function insertRows(string $table, iterable $fields, iterable $rows) : void
+    {
+        $cols = count($fields);
+        $fl = implode(', ', $fields);
+        $vl = str_repeat('?, ', $cols - 1).'?';
         $sql = "
             INSERT INTO $table ($fl)
             VALUES ($vl)
         ";
-        $values = array_values ( array_shift ( $rows ) );
-        foreach ( $rows as $row ) {
-            $values = array_merge ( $values, array_values ( $row ) );
+        $values = array_values(array_shift($rows));
+        foreach ($rows as $row) {
+            $values = array_merge($values, array_values($row));
             $sql .= "
                 , ($vl)
             ";
         }
-        $this->executeUpdate ( $sql, $values );
+        $this->executeUpdate($sql, $values);
     }
-    public function generateSequence(string $module, string $parent, string $sequence): int
+
+    public function generateSequence(string $module, string $parent, string $sequence) : int
     {
-        $this->beginTransaction ();
+        $this->beginTransaction();
         // Check if there are any IDs to recycle first
         $sql = '
             SELECT *
@@ -92,15 +101,15 @@ class Connection extends DBALConnection {
             AND parent = :parent
             AND sequence = :sequence
             AND recycle = :recycle
-            ' . $this->platform ()->getWriteLockSQL ();
+            '.$this->platform()->getWriteLockSQL();
         $params = [
                 'module' => $module,
                 'parent' => $parent,
                 'sequence' => $sequence,
-                'recycle' => true
+                'recycle' => true,
         ];
-        $recycle = $this->fetchAssoc ( $sql, $params );
-        if ($recycle && $recycle ['recycle']) {
+        $recycle = $this->fetchAssoc($sql, $params);
+        if ($recycle && $recycle['recycle']) {
             try {
                 // If there is one, try to recycle it
                 $sql = '
@@ -110,16 +119,16 @@ class Connection extends DBALConnection {
                 ';
                 $reparams = [
                         'recycle' => false,
-                        'id' => $recycle ['id']
+                        'id' => $recycle['id'],
                 ];
-                $this->executeUpdate ( $sql, $reparams );
-                $this->commit ();
+                $this->executeUpdate($sql, $reparams);
+                $this->commit();
 
-                return $recycle ['idx'];
-            } catch ( Exception $e ) {
+                return $recycle['idx'];
+            } catch (Exception $e) {
                 // If recycle fails, just try issue the next one
-                $this->rollback ();
-                $this->startTransaction ();
+                $this->rollback();
+                $this->startTransaction();
             }
         }
         $sql = '
@@ -128,38 +137,38 @@ class Connection extends DBALConnection {
             WHERE module = :module
             AND parent = :parent
             AND sequence = :sequence
-        ' . $this->platform ()->getWriteLockSQL ();
+        '.$this->platform()->getWriteLockSQL();
 
-        $seq = $this->fetchAssoc ( $sql, $params );
-        if (! $seq) {
+        $seq = $this->fetchAssoc($sql, $params);
+        if (!$seq) {
             // No sequence exists, so try create one
             try {
                 $fields = [
                         'module',
                         'parent',
                         'sequence',
-                        'idx'
+                        'idx',
                 ];
                 $rows = [
                         [
                                 $module,
                                 $parent,
                                 $sequence,
-                                1
-                        ]
+                                1,
+                        ],
                 ];
-                $this->insertRows ( 'ark_sequence', $fields, $rows );
-                $this->insertRows ( 'ark_sequence_lock', $fields, $rows );
-                $this->commit ();
+                $this->insertRows('ark_sequence', $fields, $rows);
+                $this->insertRows('ark_sequence_lock', $fields, $rows);
+                $this->commit();
 
                 return 1;
-            } catch ( Exception $e ) {
-                $this->rollback ();
-                throw new ErrorException ( new InternalServerError ( 'DB_SEQUENCE_CREATE', 'Creating index sequence failed', "Creating the index sequence for Module $module Parent $parent Sequence $sequence failed" ) );
+            } catch (Exception $e) {
+                $this->rollback();
+                throw new ErrorException(new InternalServerError('DB_SEQUENCE_CREATE', 'Creating index sequence failed', "Creating the index sequence for Module $module Parent $parent Sequence $sequence failed"));
             }
         }
-        if ($seq ['max'] && $seq ['idx'] >= $seq ['max']) {
-            throw new ErrorException ( new InternalServerError ( 'DB_SEQUENCE_EXHASTED', 'Index sequence exhausted', "The index sequence for Module $module Parent $parent Sequence $sequence has reached maximum" ) );
+        if ($seq['max'] && $seq['idx'] >= $seq['max']) {
+            throw new ErrorException(new InternalServerError('DB_SEQUENCE_EXHASTED', 'Index sequence exhausted', "The index sequence for Module $module Parent $parent Sequence $sequence has reached maximum"));
         }
         try {
             $sql = '
@@ -169,28 +178,28 @@ class Connection extends DBALConnection {
                 AND parent = :parent
                 AND sequence = :sequence
             ';
-            $this->executeUpdate ( $sql, $params );
+            $this->executeUpdate($sql, $params);
             $fields = [
                     'module',
                     'parent',
                     'sequence',
-                    'idx'
+                    'idx',
             ];
             $rows = [
                     [
                             $module,
                             $parent,
                             $sequence,
-                            1
-                    ]
+                            1,
+                    ],
             ];
-            $this->insertRows ( 'ark_sequence_lock', $fields, $rows );
-            $this->commit ();
+            $this->insertRows('ark_sequence_lock', $fields, $rows);
+            $this->commit();
 
-            return $seq ['idx'] + 1;
-        } catch ( Exception $e ) {
-            $this->data ()->rollback ();
-            throw new ErrorException ( new InternalServerError ( 'DB_SEQUENCE_INCREMENT', 'Increment index sequence failed', "Incrementing the index sequence failed for Module $module Parent $parent Sequence $sequence" ) );
+            return $seq['idx'] + 1;
+        } catch (Exception $e) {
+            $this->data()->rollback();
+            throw new ErrorException(new InternalServerError('DB_SEQUENCE_INCREMENT', 'Increment index sequence failed', "Incrementing the index sequence failed for Module $module Parent $parent Sequence $sequence"));
         }
     }
 }

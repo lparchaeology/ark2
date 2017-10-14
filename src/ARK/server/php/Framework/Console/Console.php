@@ -30,19 +30,21 @@
 namespace ARK\Framework\Console;
 
 use ARK\ARK;
+use ARK\Database\Console\DatabaseDropCommand;
+use ARK\Database\Console\DatabaseImportCommand;
+use ARK\Database\Console\DatabaseTruncateCommand;
 use ARK\Framework\Application;
+use ARK\Framework\Console\Command\CacheClearCommand;
 use ARK\Framework\Console\Command\NavAddCommand;
 use ARK\Framework\Console\Command\RouteDumpCommand;
+use ARK\Framework\Console\Command\SiteAboutCommand;
 use ARK\Framework\Console\Command\UserListCommand;
 use ARK\ORM\Console\GenerateItemEntityCommand;
 use ARK\Translation\Console\TranslationAddCommand;
-use ARK\Translation\Console\TranslationDimeCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\StatusCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand;
-use Doctrine\DBAL\Tools\Console\Command\ImportCommand;
-use Doctrine\DBAL\Tools\Console\Command\RunSqlCommand;
 use Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper;
 
 class Console extends AbstractConsole
@@ -51,12 +53,13 @@ class Console extends AbstractConsole
     {
         parent::__construct('ARK Site Admin Console', new Application($site));
 
-        // Route Commands
+        // System Commands
+        $this->add(new SiteAboutCommand());
+        $this->add(new CacheClearCommand());
         $this->add(new RouteDumpCommand());
 
         // Translation Commands
         $this->add(new TranslationAddCommand());
-        $this->add(new TranslationDimeCommand());
 
         // User Commands
         $this->add(new UserListCommand());
@@ -67,23 +70,21 @@ class Console extends AbstractConsole
         //$this->add(new UserRoleRemoveCommand($this->app));
 
         // View Commands
-        $this->add(new NavAddCommand());
+        //$this->add(new NavAddCommand());
 
-        // Doctrine DBAL Commands
-        $this->add(new ImportCommand());
-        $this->add(new RunSqlCommand());
-
-        // Doctrine DBAL Helper
-        // TODO Make configurable??? Move to commands?
-        $this->getHelperSet()->set(new ConnectionHelper($this->app['db']), 'db');
-
-        // Doctrine Migrations Commands, just the ones needed for production
-        $this->add(new ExecuteCommand());
-        $this->add(new MigrateCommand());
-        $this->add(new StatusCommand());
-        $this->add(new VersionCommand());
+        // Database Commands
+        $this->add(new DatabaseDropCommand());
+        $this->add(new DatabaseImportCommand());
+        $this->add(new DatabaseTruncateCommand());
 
         // ORM Commands
         $this->add(new GenerateItemEntityCommand());
+
+        // Doctrine Migrations Commands, just the ones needed for production
+        //$this->getHelperSet()->set(new ConnectionHelper($this->app['db']), 'db');
+        //$this->add(new ExecuteCommand());
+        //$this->add(new MigrateCommand());
+        //$this->add(new StatusCommand());
+        //$this->add(new VersionCommand());
     }
 }

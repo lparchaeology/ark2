@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Debug Route Command
+ * ARK Debug Route Command.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -30,90 +30,76 @@
 namespace ARK\Framework\Console\Command;
 
 use ARK\ARK;
-use ARK\Framework\Console\Command\AbstractCommand;
-use ARK\Service;
-use Silex\Application as SilexApplication;
-use Symfony\Component\Console\Helper\Helper;
+use DateTime;
+use Locale;
+use Silex\Application;
 use Symfony\Component\Console\Helper\TableSeparator;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
- * Adapted from Symfony\Bundle\FrameworkBundle\Command\AboutCommand
+ * Adapted from Symfony\Bundle\FrameworkBundle\Command\AboutCommand.
  *
  * @author Roland Franssen <franssen.roland@gmail.com>
+ * @license MIT
  */
 class SystemAboutCommand extends AbstractCommand
 {
-    protected function configure()
+    protected function configure() : void
     {
         $this->setName('system:about')
              ->setDescription('Display information about the system');
     }
 
-    protected function doExecute()
+    protected function doExecute() : void
     {
         $io = new SymfonyStyle($this->input, $this->output);
 
         $app = $this->app();
 
-        $io->table([], array(
-
-            array('<info>ARK</>'),
+        $this->write('');
+        $io->table([], [
+            ['<info>ARK</>'],
             new TableSeparator(),
-            array('Version', ARK::version()),
-            array('Installation directory', ARK::installDir()),
-
+            ['Version', ARK::version()],
+            ['Installation directory', ARK::installDir()],
+            [''],
             new TableSeparator(),
-            array('<info>Silex</>'),
+            ['<info>Silex</>'],
             new TableSeparator(),
-            array('Version', SilexApplication::VERSION),
-            array('Debug', $this->app('debug') ? 'true' : 'false'),
-            array('Charset', $this->app('charset')),
-            array('Cache directory', ARK::cacheDir().' (<comment>'.self::formatFileSize(ARK::cacheDir()).'</>)'),
-            array('Log directory', ARK::logDir().' (<comment>'.self::formatFileSize(ARK::logDir()).'</>)'),
-
+            ['Version', Application::VERSION],
+            ['Debug', $this->app('debug') ? 'true' : 'false'],
+            ['Charset', $this->app('charset')],
+            ['Cache directory', ARK::cacheDir().' (<comment>'.$this->formatFileSize(ARK::cacheDir()).'</>)'],
+            ['Log directory', ARK::logDir().' (<comment>'.$this->formatFileSize(ARK::logDir()).'</>)'],
+            [''],
             new TableSeparator(),
-            array('<info>Symfony</>'),
+            ['<info>Symfony</>'],
             new TableSeparator(),
-            array('Version', Kernel::VERSION),
-            array('End of maintenance', Kernel::END_OF_MAINTENANCE.(self::isExpired(Kernel::END_OF_MAINTENANCE) ? ' <error>Expired</>' : '')),
-            array('End of life', Kernel::END_OF_LIFE.(self::isExpired(Kernel::END_OF_LIFE) ? ' <error>Expired</>' : '')),
-
+            ['Version', Kernel::VERSION],
+            ['End of maintenance', Kernel::END_OF_MAINTENANCE.($this->isExpired(Kernel::END_OF_MAINTENANCE) ? ' <error>Expired</>' : '')],
+            ['End of life', Kernel::END_OF_LIFE.($this->isExpired(Kernel::END_OF_LIFE) ? ' <error>Expired</>' : '')],
+            [''],
             new TableSeparator(),
-            array('<info>PHP</>'),
+            ['<info>PHP</>'],
             new TableSeparator(),
-            array('Version', PHP_VERSION),
-            array('Architecture', (PHP_INT_SIZE * 8).' bits'),
-            array('Intl locale', \Locale::getDefault() ?: 'n/a'),
-            array('Timezone', date_default_timezone_get().' (<comment>'.(new \DateTime())->format(\DateTime::W3C).'</>)'),
-            array('OPcache', extension_loaded('Zend OPcache') && ini_get('opcache.enable') ? 'true' : 'false'),
-            array('APCu', extension_loaded('apcu') && ini_get('apc.enabled') ? 'true' : 'false'),
-            array('Xdebug', extension_loaded('xdebug') ? 'true' : 'false'),
-        ));
+            ['Version', PHP_VERSION],
+            ['Architecture', (PHP_INT_SIZE * 8).' bits'],
+            ['Locale', Locale::getDefault() ?: 'n/a'],
+            ['Timezone', date_default_timezone_get().' (<comment>'.(new \DateTime())->format(\DateTime::W3C).'</>)'],
+            ['OPcache', extension_loaded('Zend OPcache') && ini_get('opcache.enable') ? 'true' : 'false'],
+            ['APCu', extension_loaded('apcu') && ini_get('apc.enabled') ? 'true' : 'false'],
+            ['Xdebug', extension_loaded('xdebug') ? 'true' : 'false'],
+            ['Intl', extension_loaded('intl') ? 'true' : 'false'],
+            ['GD', extension_loaded('gd') ? 'true' : 'false'],
+            ['ImageMagick', extension_loaded('imagick') ? 'true' : 'false'],
+            [''],
+        ]);
     }
 
-    private static function formatFileSize($path)
+    private function isExpired($date)
     {
-        if (is_file($path)) {
-            $size = filesize($path) ?: 0;
-        } else {
-            $size = 0;
-            foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path, \RecursiveDirectoryIterator::SKIP_DOTS | \RecursiveDirectoryIterator::FOLLOW_SYMLINKS)) as $file) {
-                $size += $file->getSize();
-            }
-        }
-
-        return Helper::formatMemory($size);
-    }
-
-    private static function isExpired($date)
-    {
-        $date = \DateTime::createFromFormat('m/Y', $date);
-
-        return false !== $date && new \DateTime() > $date->modify('last day of this month 23:59:59');
+        $date = DateTime::createFromFormat('m/Y', $date);
+        return $date !== false && new DateTime() > $date->modify('last day of this month 23:59:59');
     }
 }

@@ -30,7 +30,10 @@
 namespace ARK\Framework\Console;
 
 use ARK\Database\Console\DatabaseCloneCommand;
+use ARK\Database\Console\DatabaseDropCommand;
+use ARK\Database\Console\DatabaseImportCommand;
 use ARK\Database\Console\DatabaseServerAddCommand;
+use ARK\Database\Console\DatabaseTruncateCommand;
 use ARK\Framework\Console\Command\CacheClearCommand;
 use ARK\Framework\Console\Command\SiteCreateCommand;
 use ARK\Framework\Console\Command\SiteFrontendCommand;
@@ -46,9 +49,16 @@ class SystemConsole extends AbstractConsole
     {
         parent::__construct('ARK System Admin Console', new SystemApplication());
 
+        // System Commands
+        $this->add(new SystemAboutCommand());
+        $this->add(new CacheClearCommand());
+
         // Database Commands
         $this->add(new DatabaseServerAddCommand());
         $this->add(new DatabaseCloneCommand());
+        $this->add(new DatabaseDropCommand());
+        $this->add(new DatabaseImportCommand());
+        $this->add(new DatabaseTruncateCommand());
 
         // Site Commands
         $this->add(new SiteCreateCommand());
@@ -56,9 +66,5 @@ class SystemConsole extends AbstractConsole
         $this->add(new SiteMigrateInfoCommand());
         $this->add(new SiteMigrateMapCommand());
         $this->add(new SiteMigrateLoadCommand());
-
-        // System Commands
-        $this->add(new SystemAboutCommand());
-        $this->add(new CacheClearCommand());
     }
 }

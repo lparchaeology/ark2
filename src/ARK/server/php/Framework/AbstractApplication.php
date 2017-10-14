@@ -30,34 +30,39 @@
 namespace ARK\Framework;
 
 use ARK\ARK;
-use ARK\Framework\Provider\BusServiceProvider;
-use ARK\Framework\Provider\LoggerServiceProvider;
 use Silex\Application;
-use Silex\Application\MonologTrait;
-use Silex\Provider\VarDumperServiceProvider;
+use Symfony\Component\Debug\Debug;
 
-class SystemApplication extends AbstractApplication
+abstract class AbstractApplication extends Application
 {
-    use MonologTrait;
+    protected static $dbg = false;
 
-    public function __construct()
+    abstract public function cacheDir() : string;
+
+    abstract public function logDir() : string;
+
+    public function extendArray(string $id, string $key, $value) : void
     {
-        parent::__construct();
-
-        $this->setDebugMode(true);
-
-        $this->register(new LoggerServiceProvider('system'));
-        $this->register(new BusServiceProvider());
-        $this->register(new VarDumperServiceProvider());
+        $array = $this[$id] ?? [];
+        $array[$key] = $value;
+        $this[$id] = $array;
     }
 
-    public function cacheDir() : string
+    public function setDebugMode(bool $debug) : void
     {
-        return ARK::cacheDir();
+        // Enable the debug mode
+        static::$dbg = $this['debug'] = $debug;
+
+        if ($debug) {
+            Debug::enable(E_ALL, true);
+        } else {
+            // TODO Check is production safe, also need a custom Exception Handler to log?
+            ErrorHandler::register();
+        }
     }
 
-    public function logDir() : string
+    public static function debug() : bool
     {
-        return ARK::logDir();
+        return static::$dbg;
     }
 }

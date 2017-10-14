@@ -49,7 +49,6 @@ use ARK\Framework\Provider\ViewServiceProvider;
 use ARK\Framework\Provider\WorkflowServiceProvider;
 use ARK\Service;
 use Saxulum\DoctrineOrmManagerRegistry\Provider\DoctrineOrmManagerRegistryProvider;
-use Silex\Application as SilexApplication;
 use Silex\Application\FormTrait;
 use Silex\Application\MonologTrait;
 use Silex\Application\SecurityTrait;
@@ -64,10 +63,9 @@ use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Symfony\Component\Debug\Debug;
-use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\HttpFoundation\Request;
 
-class Application extends SilexApplication
+class Application extends AbstractApplication
 {
     use TwigTrait;
     use MonologTrait;
@@ -77,8 +75,6 @@ class Application extends SilexApplication
     use SwiftmailerTrait;
     use UrlGeneratorTrait;
 
-    private static $debug = false;
-
     public function __construct(string $site)
     {
         parent::__construct();
@@ -86,20 +82,14 @@ class Application extends SilexApplication
         // Set up the Service Provider
         Service::init($this);
 
-        if (!$this['ark'] = ARK::siteConfig($site)) {
+        $this['ark'] = ARK::siteConfig($site);
+        if (!$this['ark']) {
             // TODO One day, run the first-run wizard!
             throw new \Exception('No valid site configuration found.');
         }
 
         // Enable the debug mode
-        static::$debug = $this['debug'] = $this['ark']['debug'];
-
-        if (static::$debug) {
-            Debug::enable(E_ALL, true);
-        } else {
-            // TODO Check is production safe, also need a custom Exception Handler to log?
-            ErrorHandler::register();
-        }
+        $this->setDebugMode($this['ark']['debug']);
 
         // Enable core providers
         // - No required on register
@@ -177,7 +167,7 @@ class Application extends SilexApplication
         parent::boot();
 
         // FIXME HACK Workaround the listener not firing for some reason
-        if (static::$debug) {
+        if ($this['debug']) {
             $this['var_dumper.dump_listener']->configure();
         }
     }
@@ -194,13 +184,6 @@ class Application extends SilexApplication
             }
         }
         parent::run($request);
-    }
-
-    public function extendArray(string $id, string $key, $value) : void
-    {
-        $array = $this[$id] ?? [];
-        $array[$key] = $value;
-        $this[$id] = $array;
     }
 
     public function translate(
@@ -238,8 +221,13 @@ class Application extends SilexApplication
         return $this->transChoice($id, $number, $parameters, $domain, $locale);
     }
 
-    public static function debug() : bool
+    public function cacheDir() : string
     {
-        return static::$debug;
+        return  ARK::siteCacheDir($this['ark']['site']);
+    }
+
+    public function logDir() : string
+    {
+        return  ARK::siteLogDir($this['ark']['site']);
     }
 }

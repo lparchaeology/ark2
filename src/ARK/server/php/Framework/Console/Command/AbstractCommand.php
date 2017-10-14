@@ -29,8 +29,12 @@
 
 namespace ARK\Framework\Console\Command;
 
+use ARK\Framework\Console\Helper\FileFilter;
 use Exception;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -71,7 +75,6 @@ abstract class AbstractCommand extends Command
         if ($returnCode === self::SUCCESS_CODE && $command->result() !== null) {
             return $command->result();
         }
-
         return $returnCode;
     }
 
@@ -90,7 +93,7 @@ abstract class AbstractCommand extends Command
         return self::ERROR_CODE;
     }
 
-    protected function result()
+    protected function result() : int
     {
         return $this->result;
     }
@@ -144,17 +147,23 @@ abstract class AbstractCommand extends Command
         if ($default !== null) {
             return $this->ask(new Question("$text (default: $default): ", $default));
         }
-
         return $this->ask(new Question("$text : "));
     }
 
-    protected function askConfirmation(string $text, bool $default = true)
-    {
-        if ($default) {
-            return $this->ask(new ConfirmationQuestion("$text (default: Yes): ", $default));
+    protected function askConfirmation(
+        string $text,
+        bool $default = true,
+        bool $defaultText = true,
+        string $trueAnswerRegex = '/^y/i'
+    ) : bool {
+        if (!$defaultText) {
+            $text = "$text: ";
+        } elseif ($default) {
+            $text = "$text (default: Yes): ";
+        } else {
+            $text = "$text (default: No): ";
         }
-
-        return $this->ask(new ConfirmationQuestion("$text (default: No): ", $default));
+        return $this->ask(new ConfirmationQuestion($text, $default, $trueAnswerRegex));
     }
 
     protected function askChoice(string $text, array $choices, $default = null, bool $auto = true)
@@ -168,25 +177,22 @@ abstract class AbstractCommand extends Command
         if ($auto) {
             $question->setAutocompleterValues($choices);
         }
-
         return $this->ask($question);
     }
 
-    protected function askFilePath(string $text, $default = null)
+    protected function askFilePath(string $text, string $default = null) : string
     {
         if ($default) {
             $text = "$text (default: $default): ";
         } else {
             $text = "$text : ";
         }
-
         $dialog = $this->getHelper('filechooser');
         $filter = new FileFilter($text, $default);
-
         return $dialog->ask($this->input, $this->output, $filter);
     }
 
-    protected function askPassword(string $user = 'root', string $text = null)
+    protected function askPassword(string $user = 'root', string $text = null) : string
     {
         if (!$text) {
             $text = "Please enter the password for the user '$user' : ";
@@ -196,7 +202,22 @@ abstract class AbstractCommand extends Command
         $question->setHiddenFallback(false);
         $question->setMaxAttempts(3);
         $password = $this->ask($question);
-
         return $password;
+    }
+
+    protected function formatFileSize(string $path) : string
+    {
+        if (is_file($path)) {
+            $size = filesize($path) ?: 0;
+        } else {
+            $size = 0;
+            $flags = RecursiveDirectoryIterator::SKIP_DOTS | RecursiveDirectoryIterator::FOLLOW_SYMLINKS;
+            $rdi = new RecursiveDirectoryIterator($path, $flags);
+            $rii = new RecursiveIteratorIterator($rdi);
+            foreach ($rii as $file) {
+                $size += $file->getSize();
+            }
+        }
+        return Helper::formatMemory($size);
     }
 }

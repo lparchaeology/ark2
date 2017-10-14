@@ -159,7 +159,7 @@ class Database
                 ':namespace' => $namespace,
             ];
         }
-        return $this->core()->fetchAllColumn($sql, $params, 'classname');
+        return $this->core()->fetchAllColumn($sql, 'classname', $params);
     }
 
     public function getSubclassEntities(string $schema) : ?iterable

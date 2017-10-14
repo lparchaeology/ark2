@@ -43,7 +43,6 @@ use ARK\Framework\Console\Command\BuildUpdateCommand;
 use ARK\Framework\SystemApplication;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\GenerateCommand;
-use Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper;
 
 class BuildConsole extends AbstractConsole
 {
@@ -67,11 +66,8 @@ class BuildConsole extends AbstractConsole
         // Database Commands
         $this->add(new DatabaseReverseCommand());
 
-        // Doctrine DBAL Helper
-        //$this->getHelperSet()->set(new ConnectionHelper($this->app['db']), 'db');
-
         // Doctrine Migrations Commands
-        $this->add(new DiffCommand());
-        $this->add(new GenerateCommand());
+        //$this->add(new DiffCommand());
+        //$this->add(new GenerateCommand());
     }
 }

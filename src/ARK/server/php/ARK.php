@@ -140,7 +140,6 @@ class ARK
                 $dirs[] = $fullPath ? $dir.'/'.$entry : $entry;
             }
         }
-
         return $dirs;
     }
 
@@ -152,8 +151,18 @@ class ARK
                 $files[] = $fullPath ? $dir.'/'.$entry : $entry;
             }
         }
-
         return $files;
+    }
+
+    public static function pathList(string $dir, bool $fullPath = false) : iterable
+    {
+        $paths = [];
+        foreach (scandir($dir) as $entry) {
+            if ($entry !== '.' && $entry !== '..') {
+                $paths[] = $fullPath ? $dir.'/'.$entry : $entry;
+            }
+        }
+        return $paths;
     }
 
     public static function namespaces() : iterable

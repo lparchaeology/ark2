@@ -122,7 +122,7 @@ class DatabaseCloneCommand extends DatabaseCommand
         // Copy the data
         $this->write('Copying data, please wait...');
         $source->beginTransaction();
-        $destination->executeQuery('SET FOREIGN_KEY_CHECKS=0');
+        $destination->disableForeignKeyChecks();
         $destination->beginTransaction();
         try {
             $tables = $schema->getTables();
@@ -137,7 +137,7 @@ class DatabaseCloneCommand extends DatabaseCommand
                 }
             }
             $destination->commit();
-            $destination->executeQuery('SET FOREIGN_KEY_CHECKS=1');
+            $destination->enableForeignKeyChecks();
         } catch (DBALException $e) {
             $destination->rollBack();
             $this->writeException('Copy database failed', $e);

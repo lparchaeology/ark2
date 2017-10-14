@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Debug Route Command.
+ * Ark Database Console Command.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,37 +27,35 @@
  * @since      2.0
  */
 
-namespace ARK\Framework\Console\Command;
+namespace ARK\Database\Console;
 
 use ARK\ARK;
-use Symfony\Component\Filesystem\Filesystem;
+use Doctrine\DBAL\DBALException;
 
-class CacheClearCommand extends AbstractCommand
+class DatabaseTruncateCommand extends DatabaseCommand
 {
     protected function configure() : void
     {
-        $this->setName('cache:clear')
-             ->setDescription('Clear the system cache')
-             ->addOptionalArgument('cache', 'The specific cache to clear, e.g. twig or doctrine');
+        $this->setName('database:truncate')
+             ->setDescription('Truncate all tables in a database');
     }
 
     protected function doExecute() : void
     {
-        $fs = new Filesystem();
-        $cacheDir = $this->app()->cacheDir();
-        $caches = ARK::dirList($cacheDir);
-        $cache = $this->input->getArgument('cache');
-        if ($cache) {
-            if (!in_array($cache, $caches, true)) {
-                $this->write("FAILURE: Cache $cache does not exist");
-                return;
-            }
-            $caches = [$cache];
+        $conn = $this->chooseSiteConnection('root');
+        if (!$this->confirmCommand($conn, 'All data in the database will be deleted!')) {
+            return;
         }
-        foreach ($caches as $cache) {
-            $paths = ARK::pathList($cacheDir.'/'.$cache, true);
-            $fs->remove($paths);
+        $conn->disableForeignKeyChecks();
+        try {
+            $conn->beginTransaction();
+            $conn->truncateAllTables();
+            $conn->commit();
+            $this->write('SUCCESS: All tables truncated.');
+        } catch (DBALException $e) {
+            $conn->rollBack();
+            $this->writeException('Truncate tables failed', $e);
         }
-        $this->write('SUCCESS: Cache cleared');
+        $conn->enableForeignKeyChecks();
     }
 }

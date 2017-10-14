@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Debug Route Command.
+ * ARK Site Command.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -30,34 +30,39 @@
 namespace ARK\Framework\Console\Command;
 
 use ARK\ARK;
-use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Console\Helper\TableSeparator;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
-class CacheClearCommand extends AbstractCommand
+class SiteAboutCommand extends AbstractCommand
 {
     protected function configure() : void
     {
-        $this->setName('cache:clear')
-             ->setDescription('Clear the system cache')
-             ->addOptionalArgument('cache', 'The specific cache to clear, e.g. twig or doctrine');
+        $this->setName('site:about')
+             ->setDescription('Display information about the site');
     }
 
     protected function doExecute() : void
     {
-        $fs = new Filesystem();
-        $cacheDir = $this->app()->cacheDir();
-        $caches = ARK::dirList($cacheDir);
-        $cache = $this->input->getArgument('cache');
-        if ($cache) {
-            if (!in_array($cache, $caches, true)) {
-                $this->write("FAILURE: Cache $cache does not exist");
-                return;
-            }
-            $caches = [$cache];
-        }
-        foreach ($caches as $cache) {
-            $paths = ARK::pathList($cacheDir.'/'.$cache, true);
-            $fs->remove($paths);
-        }
-        $this->write('SUCCESS: Cache cleared');
+        $io = new SymfonyStyle($this->input, $this->output);
+
+        $app = $this->app();
+        $site = $app['ark']['site'];
+
+        $this->write('');
+        $io->table([], [
+            ['<info>Site</>'],
+            new TableSeparator(),
+            ['Site name', $site],
+            ['Site directory', ARK::siteDir($site)],
+            [''],
+            new TableSeparator(),
+            ['<info>System</>'],
+            new TableSeparator(),
+            ['ARK Version', ARK::version()],
+            ['Debug', $this->app('debug') ? 'true' : 'false'],
+            ['Cache directory', $app->cacheDir().' (<comment>'.$this->formatFileSize($app->cacheDir()).'</>)'],
+            ['Log directory', $app->logDir().' (<comment>'.$this->formatFileSize($app->logDir()).'</>)'],
+            [''],
+        ]);
     }
 }
