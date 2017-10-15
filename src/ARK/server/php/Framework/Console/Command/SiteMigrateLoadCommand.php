@@ -32,7 +32,7 @@ namespace ARK\Framework\Console\Command;
 use ARK\Actor\Actor;
 use ARK\Actor\Person;
 use ARK\ARK;
-use ARK\Database\Console\DatabaseCommand;
+use ARK\Database\Console\Command\DatabaseCommand;
 use ARK\Framework\Application;
 use ARK\ORM\ORM;
 use ARK\Security\User;
@@ -66,7 +66,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
             ->setDescription('Migrate an ARK 1.2 site');
     }
 
-    protected function doExecute()
+    protected function doExecute() : void
     {
         // Ask for source
         $path = ARK::varDir().'/migration';
@@ -80,7 +80,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
 
         $this->site = strtolower($this->askChoice('Please choose the destination ARK instance', ARK::sites()));
         if ($this->site === $this->errorCode()) {
-            return $this->errorCode();
+            return;
         }
         $this->app = new Application($this->site);
 
@@ -129,7 +129,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
         unset($module);
         $this->writeTable($headers, $rows);
         if (!$this->askConfirmation('Please confirm you want to use this mapping', true)) {
-            return $this->errorCode();
+            return;
         }
         $this->write('');
 

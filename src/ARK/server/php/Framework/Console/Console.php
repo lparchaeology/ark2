@@ -30,17 +30,17 @@
 namespace ARK\Framework\Console;
 
 use ARK\ARK;
-use ARK\Database\Console\DatabaseDropCommand;
-use ARK\Database\Console\DatabaseImportCommand;
-use ARK\Database\Console\DatabaseTruncateCommand;
+use ARK\Database\Console\Command\DatabaseDropCommand;
+use ARK\Database\Console\Command\DatabaseImportCommand;
+use ARK\Database\Console\Command\DatabaseTruncateCommand;
 use ARK\Framework\Application;
 use ARK\Framework\Console\Command\CacheClearCommand;
 use ARK\Framework\Console\Command\NavAddCommand;
 use ARK\Framework\Console\Command\RouteDumpCommand;
 use ARK\Framework\Console\Command\SiteAboutCommand;
-use ARK\Framework\Console\Command\UserListCommand;
-use ARK\ORM\Console\GenerateItemEntityCommand;
-use ARK\Translation\Console\TranslationAddCommand;
+use ARK\ORM\Console\Command\GenerateItemEntityCommand;
+use ARK\Security\Console\Command\UserListCommand;
+use ARK\Translation\Console\Command\TranslationAddCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\StatusCommand;

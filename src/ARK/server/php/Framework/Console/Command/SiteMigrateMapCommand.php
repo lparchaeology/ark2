@@ -141,7 +141,7 @@ class SiteMigrateMapCommand extends SiteMigrateInfoCommand
             ->setDescription('Create the migration mapping for an ARK 1 site');
     }
 
-    protected function doExecute()
+    protected function doExecute() : void
     {
         // Ask for source
         $migrate = $this->askChoice(
@@ -162,7 +162,7 @@ class SiteMigrateMapCommand extends SiteMigrateInfoCommand
         } else {
             $sourceConfig = $this->chooseDatabaseConfig();
             if (!is_array($sourceConfig)) {
-                return $this->errorCode();
+                return;
             }
         }
         $this->source = $this->getConnection($sourceConfig);

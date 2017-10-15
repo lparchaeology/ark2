@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Console Command
+ * ARK Console Command.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,7 +28,7 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\ORM\Console;
+namespace ARK\ORM\Console\Command;
 
 use ARK\Framework\Console\Command\AbstractCommand;
 use ARK\ORM\Command\GenerateItemEntityMessage;
@@ -36,13 +36,13 @@ use ARK\Service;
 
 class GenerateItemEntityCommand extends AbstractCommand
 {
-    protected function configure()
+    protected function configure() : void
     {
         $this->setName('orm:entity:generate')
              ->setDescription('Generate ORM Entities for Custom ARK Modules');
     }
 
-    protected function doExecute()
+    protected function doExecute() : void
     {
         $modules = Service::database()->getModules();
         foreach ($modules as $module) {
@@ -61,7 +61,5 @@ class GenerateItemEntityCommand extends AbstractCommand
                 Service::bus()->handleCommand($msg);
             }
         }
-
-        return $this->successCode();
     }
 }

@@ -27,35 +27,34 @@
  * @since      2.0
  */
 
-namespace ARK\Database\Console;
+namespace ARK\Database\Console\Command;
 
 use ARK\ARK;
 use Doctrine\DBAL\DBALException;
 
-class DatabaseImportCommand extends DatabaseCommand
+class DatabaseTruncateCommand extends DatabaseCommand
 {
     protected function configure() : void
     {
-        $this->setName('database:import')
-             ->setDescription('Import an SQL file into a database');
+        $this->setName('database:truncate')
+             ->setDescription('Truncate all tables in a database');
     }
 
     protected function doExecute() : void
     {
         $conn = $this->chooseSiteConnection('root');
-        $path = $this->askFilePath('Please choose the SQL file to import');
-        if (!$this->confirmCommand($conn, 'Importing SQL may damage your data!')) {
+        if (!$this->confirmCommand($conn, 'All data in the database will be deleted!')) {
             return;
         }
         $conn->disableForeignKeyChecks();
         try {
             $conn->beginTransaction();
-            $conn->import($path);
+            $conn->truncateAllTables();
             $conn->commit();
-            $this->write('SUCCESS: SQL imported.');
+            $this->write('SUCCESS: All tables truncated.');
         } catch (DBALException $e) {
             $conn->rollBack();
-            $this->writeException('SQL import failed', $e);
+            $this->writeException('Truncate tables failed', $e);
         }
         $conn->enableForeignKeyChecks();
     }

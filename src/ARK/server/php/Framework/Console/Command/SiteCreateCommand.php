@@ -30,7 +30,7 @@
 namespace ARK\Framework\Console\Command;
 
 use ARK\ARK;
-use ARK\Database\Console\DatabaseCommand;
+use ARK\Database\Console\Command\DatabaseCommand;
 use ARK\Framework\Console\ProcessTrait;
 use Doctrine\DBAL\DBALException;
 use Exception;
@@ -49,7 +49,7 @@ class SiteCreateCommand extends DatabaseCommand
              ->addOptionalArgument('site', 'The site key');
     }
 
-    protected function doExecute()
+    protected function doExecute() : void
     {
         $site = $this->getArgument('site');
         if (!$site) {
@@ -97,10 +97,9 @@ class SiteCreateCommand extends DatabaseCommand
             ARK::writeSiteConfig($site, $config);
             $this->write('Site created.');
             $this->result = $site;
-            return $this->successCode();
+            return;
         }
         $this->write("\nFAILED: ARK site database not created.");
-        return $this->errorCode();
     }
 
     // TODO Make a Command via the Command Bus

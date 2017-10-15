@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Ark Database Console Command.
+ * ARK Console Command.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,35 +27,33 @@
  * @since      2.0
  */
 
-namespace ARK\Database\Console;
+namespace ARK\Security\Console\Command;
 
-use ARK\ARK;
-use Doctrine\DBAL\DBALException;
+use ARK\Framework\Console\Command\AbstractCommand;
+use ARK\ORM\ORM;
+use ARK\Security\User;
 
-class DatabaseDropCommand extends DatabaseCommand
+class UserListCommand extends AbstractCommand
 {
     protected function configure() : void
     {
-        $this->setName('database:drop')
-             ->setDescription('Drop all tables in a database');
+        $this->setName('user:list')
+            ->setDescription('List all users.');
     }
 
     protected function doExecute() : void
     {
-        $conn = $this->chooseSiteConnection('root');
-        if (!$this->confirmCommand($conn, 'All data in the database will be deleted!')) {
-            return;
+        $users = ORM::findAll(User::class);
+        $headers = ['ID', 'Name', 'Email', 'Status', 'Level', 'Roles'];
+        $rows = [];
+        foreach ($users as $user) {
+            $roles = [];
+            foreach ($user->roles() as $role) {
+                $roles[] = $role->id();
+            }
+            $roles = implode(', ', $roles);
+            $rows[] = [$user->id(), $user->name(), $user->email(), $user->status()->name(), $user->level(), $roles];
         }
-        $conn->disableForeignKeyChecks();
-        try {
-            $conn->beginTransaction();
-            $conn->dropAllTables();
-            $conn->commit();
-            $this->write('SUCCESS: All tables dropped.');
-        } catch (DBALException $e) {
-            $conn->rollBack();
-            $this->writeException('Drop tables failed', $e);
-        }
-        $conn->enableForeignKeyChecks();
+        $this->writeTable($headers, $rows);
     }
 }

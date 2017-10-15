@@ -30,7 +30,7 @@
 namespace ARK\Framework\Console\Command;
 
 use ARK\ARK;
-use ARK\Database\Console\DatabaseCommand;
+use ARK\Database\Console\Command\DatabaseCommand;
 
 class SiteMigrateInfoCommand extends DatabaseCommand
 {
@@ -50,11 +50,11 @@ class SiteMigrateInfoCommand extends DatabaseCommand
             ->setDescription('Analyse the migration mapping for an ARK 1 site');
     }
 
-    protected function doExecute()
+    protected function doExecute() : void
     {
         $sourceConfig = $this->chooseDatabaseConfig();
         if (!is_array($sourceConfig)) {
-            return $this->errorCode();
+            return;
         }
         $this->source = $this->getConnection($sourceConfig);
         $this->source->beginTransaction();

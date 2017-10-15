@@ -66,9 +66,9 @@ abstract class AbstractCommand extends Command
         $this->doExecute();
     }
 
-    abstract protected function doExecute();
+    abstract protected function doExecute() : void;
 
-    protected function runCommand(string $command, array $arguments = []) : int
+    protected function runCommand(string $command, iterable $arguments = []) : int
     {
         $command = $this->getApplication()->find($command);
         $returnCode = $command->run(new ArrayInput($arguments), $this->output);
@@ -98,12 +98,12 @@ abstract class AbstractCommand extends Command
         return $this->result;
     }
 
-    protected function addRequiredArgument(string $argument, string $description)
+    protected function addRequiredArgument(string $argument, string $description) : AbstractCommand
     {
         return $this->addArgument($argument, InputArgument::REQUIRED, $description);
     }
 
-    protected function addOptionalArgument(string $argument, string $description)
+    protected function addOptionalArgument(string $argument, string $description) : AbstractCommand
     {
         return $this->addArgument($argument, InputArgument::OPTIONAL, $description);
     }

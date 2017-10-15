@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Workflow Dump Command
+ * ARK Workflow Dump Command.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -29,29 +29,27 @@
 
 namespace ARK\Framework\Console\Command;
 
-use ARK\Framework\Console\Command\AbstractCommand;
 use ARK\Service;
 use Symfony\Component\Workflow\Dumper\GraphvizDumper;
 use Symfony\Component\Workflow\Dumper\StateMachineGraphvizDumper;
-use Symfony\Component\Workflow\Marking;
 
 class WorkflowDumpCommand extends AbstractCommand
 {
-    protected function configure()
+    protected function configure() : void
     {
         $this->setName('workflow:dump')
             ->setDescription('Dump a Workflow in GraphViz format')
             ->addOptionalArgument('name', 'The Workflow name');
     }
 
-    protected function doExecute()
+    protected function doExecute() : void
     {
         $workflow = Service::workflow();
 
         $name = $input->getArgument('name');
 
         if ($workflow = ORM::find(Workflow::class, $name)) {
-            if (get_class($workflow) == StateMachine::class) {
+            if (get_class($workflow) === StateMachine::class) {
                 $dumper = new StateMachineGraphvizDumper();
             } else {
                 $dumper = new GraphvizDumper();

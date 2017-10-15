@@ -27,7 +27,7 @@
  * @since      2.0
  */
 
-namespace ARK\Database\Console;
+namespace ARK\Database\Console\Command;
 
 use ARK\ARK;
 use Doctrine\DBAL\DBALException;

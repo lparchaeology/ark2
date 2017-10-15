@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Debug Route Command
+ * ARK Debug Route Command.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -29,21 +29,19 @@
 
 namespace ARK\Framework\Console\Command;
 
-use ARK\Framework\Console\Command\AbstractCommand;
-use ARK\Service;
 use Silex\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 class RouteDumpCommand extends AbstractCommand
 {
-    protected function configure()
+    protected function configure() : void
     {
         $this->setName('route:dump')
             ->setDescription('Dump configured route(s)')
             ->addOptionalArgument('name', 'A specific route name');
     }
 
-    protected function doExecute()
+    protected function doExecute() : void
     {
         $this->app()->flush();
         $routes = $this->app('routes');
@@ -64,7 +62,7 @@ class RouteDumpCommand extends AbstractCommand
         $this->writeRouteCollection($routes);
     }
 
-    protected function writeRouteCollection(RouteCollection $routes)
+    protected function writeRouteCollection(RouteCollection $routes) : void
     {
         foreach ($routes->all() as $name => $route) {
             $controller = $route->getDefault('_controller');
@@ -79,13 +77,13 @@ class RouteDumpCommand extends AbstractCommand
                 $route->getSchemes() ? implode('|', $route->getSchemes()) : 'ANY',
                 $route->getHost() !== '' ? $route->getHost() : 'ANY',
                 $route->getPath(),
-                $controller
+                $controller,
             ];
         }
         $this->writeTable(['Name', 'Method', 'Scheme', 'Host', 'Path', 'Controller'], $rows);
     }
 
-    protected function writeRoute($name, Route $route)
+    protected function writeRoute($name, Route $route) : void
     {
         $rows[] = ['Route Name', $name];
         $rows[] = ['Path', $route->getPath()];
@@ -101,6 +99,17 @@ class RouteDumpCommand extends AbstractCommand
         $this->writeTable(['Property', 'Value'], $rows);
     }
 
+    protected function formatValue($value)
+    {
+        if (is_object($value)) {
+            return sprintf('object(%s)', get_class($value));
+        }
+        if (is_string($value)) {
+            return $value;
+        }
+        return preg_replace("/\n\s*/s", '', var_export($value, true));
+    }
+
     private function formatRouterConfig(array $config)
     {
         if (empty($config)) {
@@ -112,16 +121,5 @@ class RouteDumpCommand extends AbstractCommand
             $configAsString .= sprintf("\n%s: %s", $key, $this->formatValue($value));
         }
         return trim($configAsString);
-    }
-
-    protected function formatValue($value)
-    {
-        if (is_object($value)) {
-            return sprintf('object(%s)', get_class($value));
-        }
-        if (is_string($value)) {
-            return $value;
-        }
-        return preg_replace("/\n\s*/s", '', var_export($value, true));
     }
 }

@@ -30,7 +30,7 @@
 namespace ARK\Framework\Console;
 
 use ARK\ARK;
-use ARK\Database\Console\DatabaseReverseCommand;
+use ARK\Database\Console\Command\DatabaseReverseCommand;
 use ARK\Framework\Console\Command\BuildFrontendAssetsCommand;
 use ARK\Framework\Console\Command\BuildFrontendBaseCommand;
 use ARK\Framework\Console\Command\BuildFrontendCommand;

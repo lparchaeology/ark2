@@ -27,7 +27,7 @@
  * @since      2.0
  */
 
-namespace ARK\Translation\Console;
+namespace ARK\Translation\Console\Command;
 
 use ARK\ORM\ORM;
 use ARK\Service;

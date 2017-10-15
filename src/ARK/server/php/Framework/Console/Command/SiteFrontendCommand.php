@@ -42,7 +42,7 @@ class SiteFrontendCommand extends AbstractCommand
              ->addOptionalArgument('frontend', 'The site frontend (default: core)', 'core');
     }
 
-    protected function doExecute()
+    protected function doExecute() : void
     {
         $site = $this->getArgument('site');
         $frontend = $this->getArgument('frontend');
@@ -52,7 +52,7 @@ class SiteFrontendCommand extends AbstractCommand
         if ($frontend) {
             if (!in_array($frontend, array_keys($frontends), true)) {
                 $this->write("\nFAILED: Frontend $frontend not found, are you sure you built it?");
-                return $this->errorCode();
+                return;
             }
         } else {
             $frontend = $this->askChoice('Please enter the frontend to use', array_keys($frontends), 'core');
@@ -119,7 +119,5 @@ class SiteFrontendCommand extends AbstractCommand
         $fs->mkdir($siteDir.'/var/cache/profiler');
         $fs->mkdir($siteDir.'/var/cache/twig');
         $fs->mkdir($siteDir.'/var/log');
-
-        return $this->successCode();
     }
 }

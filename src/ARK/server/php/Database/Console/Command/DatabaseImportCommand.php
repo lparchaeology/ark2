@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Console Command.
+ * Ark Database Console Command.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,32 +27,36 @@
  * @since      2.0
  */
 
-namespace ARK\Framework\Console\Command;
+namespace ARK\Database\Console\Command;
 
-use ARK\ORM\ORM;
-use ARK\Security\User;
+use ARK\ARK;
+use Doctrine\DBAL\DBALException;
 
-class UserListCommand extends AbstractCommand
+class DatabaseImportCommand extends DatabaseCommand
 {
     protected function configure() : void
     {
-        $this->setName('user:list')
-            ->setDescription('List all users.');
+        $this->setName('database:import')
+             ->setDescription('Import an SQL file into a database');
     }
 
     protected function doExecute() : void
     {
-        $users = ORM::findAll(User::class);
-        $headers = ['ID', 'Name', 'Email', 'Status', 'Level', 'Roles'];
-        $rows = [];
-        foreach ($users as $user) {
-            $roles = [];
-            foreach ($user->roles() as $role) {
-                $roles[] = $role->id();
-            }
-            $roles = implode(', ', $roles);
-            $rows[] = [$user->id(), $user->name(), $user->email(), $user->status()->name(), $user->level(), $roles];
+        $conn = $this->chooseSiteConnection('root');
+        $path = $this->askFilePath('Please choose the SQL file to import');
+        if (!$this->confirmCommand($conn, 'Importing SQL may damage your data!')) {
+            return;
         }
-        $this->writeTable($headers, $rows);
+        $conn->disableForeignKeyChecks();
+        try {
+            $conn->beginTransaction();
+            $conn->import($path);
+            $conn->commit();
+            $this->write('SUCCESS: SQL imported.');
+        } catch (DBALException $e) {
+            $conn->rollBack();
+            $this->writeException('SQL import failed', $e);
+        }
+        $conn->enableForeignKeyChecks();
     }
 }

@@ -29,11 +29,11 @@
 
 namespace ARK\Framework\Console;
 
-use ARK\Database\Console\DatabaseCloneCommand;
-use ARK\Database\Console\DatabaseDropCommand;
-use ARK\Database\Console\DatabaseImportCommand;
-use ARK\Database\Console\DatabaseServerAddCommand;
-use ARK\Database\Console\DatabaseTruncateCommand;
+use ARK\Database\Console\Command\DatabaseCloneCommand;
+use ARK\Database\Console\Command\DatabaseDropCommand;
+use ARK\Database\Console\Command\DatabaseImportCommand;
+use ARK\Database\Console\Command\DatabaseServerAddCommand;
+use ARK\Database\Console\Command\DatabaseTruncateCommand;
 use ARK\Framework\Console\Command\CacheClearCommand;
 use ARK\Framework\Console\Command\SiteCreateCommand;
 use ARK\Framework\Console\Command\SiteFrontendCommand;

@@ -27,17 +27,17 @@
  * @since      2.0
  */
 
-namespace ARK\Database\Console;
+namespace ARK\Database\Console\Command;
 
 use ARK\ARK;
 use Doctrine\DBAL\DBALException;
 
-class DatabaseTruncateCommand extends DatabaseCommand
+class DatabaseDropCommand extends DatabaseCommand
 {
     protected function configure() : void
     {
-        $this->setName('database:truncate')
-             ->setDescription('Truncate all tables in a database');
+        $this->setName('database:drop')
+             ->setDescription('Drop all tables in a database');
     }
 
     protected function doExecute() : void
@@ -49,12 +49,12 @@ class DatabaseTruncateCommand extends DatabaseCommand
         $conn->disableForeignKeyChecks();
         try {
             $conn->beginTransaction();
-            $conn->truncateAllTables();
+            $conn->dropAllTables();
             $conn->commit();
-            $this->write('SUCCESS: All tables truncated.');
+            $this->write('SUCCESS: All tables dropped.');
         } catch (DBALException $e) {
             $conn->rollBack();
-            $this->writeException('Truncate tables failed', $e);
+            $this->writeException('Drop tables failed', $e);
         }
         $conn->enableForeignKeyChecks();
     }
