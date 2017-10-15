@@ -231,6 +231,16 @@ class Security
         ORM::flush($user);
     }
 
+    public function enableUser(User $user) : bool
+    {
+        if ($this->options['verify_email_required'] && !$user->isVerified()) {
+            return false;
+        }
+        $user->enable();
+        ORM::flush($user);
+        return true;
+    }
+
     public function createActorUser(Actor $actor, User $user, \DateTime $expiry = null) : ActorUser
     {
         $actorUser = new ActorUser($actor, $user);
@@ -267,6 +277,14 @@ class Security
         $user->setLevel($level);
         ORM::persist($user);
         return $user;
+    }
+
+    public function deleteUser(User $user) : void
+    {
+        $aus = ORM::findBy(ActorUser::class, ['user' => $this->id()]);
+        ORM::flush($aus);
+        ORM::flush($user);
+        $this->sendResetMessage($user);
     }
 
     public function requestPassword(User $user) : void

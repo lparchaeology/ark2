@@ -27,48 +27,39 @@
  * @since      2.0
  */
 
-namespace ARK\Framework\Console\Command;
+namespace ARK\Security\Console\Command;
 
-use ARK\Actor\Person;
 use ARK\ARK;
+use ARK\Framework\Console\Command\AbstractCommand;
 use ARK\ORM\ORM;
 use ARK\Security\User;
 use ARK\Service;
 
-class UserCreateCommand extends AbstractCommand
+class UserPasswordSetCommand extends AbstractCommand
 {
     protected function configure() : void
     {
-        $this->setName('user:create')
-             ->setDescription('Create a new user')
-             ->addOptionalArgument('username', 'The username to create');
+        $this->setName('user:password:set')
+             ->setDescription('Set the password for a user')
+             ->addOptionalArgument('username', 'The username to set');
     }
 
     protected function doExecute() : void
     {
-        $actor = new Person();
-        $user = new User();
-        $user->setLevel('ROLE_USER');
+        $username = $this->input->getArgument('username');
+        $user = Service::security()->userProvider()->loadUserByUsername($username);
+        if ($user) {
+            $password = $this->askPassword('Please enter the new password');
+            $user->setPassword($password);
+            ORM::flush($user);
+            $this->write('SUCCESS: Password set');
+        } else {
+            $this->write('FAILURE: User does not exist!');
+        }
+    }
 
-        $actor->property('email')->setValue($credentials['email']);
-        ORM::persist($actor);
-
-        $user = Service::security()->createUser(
-            $credentials['_username'],
-            $credentials['email'],
-            $credentials['password'],
-            $actor->fullname()
-        );
-
-        Service::security()->createActorRole(
-            $actor,
-            $data['role']['role'],
-            $data['role']['agency'],
-            $data['role']['expiry']
-        );
-
-        Service::security()->registerUser($user, $actor);
-
-        $this->write('SUCCESS: Cache cleared');
+    protected function doInteract() : void
+    {
+        $this->askArgument('username', 'Please enter the username to set');
     }
 }

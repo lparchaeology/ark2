@@ -39,7 +39,14 @@ use ARK\Framework\Console\Command\NavAddCommand;
 use ARK\Framework\Console\Command\RouteDumpCommand;
 use ARK\Framework\Console\Command\SiteAboutCommand;
 use ARK\ORM\Console\Command\GenerateItemEntityCommand;
+use ARK\Security\Console\Command\UserCreateCommand;
+use ARK\Security\Console\Command\UserDeleteCommand;
+use ARK\Security\Console\Command\UserDisableCommand;
+use ARK\Security\Console\Command\UserEnableCommand;
 use ARK\Security\Console\Command\UserListCommand;
+use ARK\Security\Console\Command\UserPasswordResetCommand;
+use ARK\Security\Console\Command\UserPasswordSetCommand;
+use ARK\Security\Console\Command\UserVerifyCommand;
 use ARK\Translation\Console\Command\TranslationAddCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand;
@@ -62,12 +69,14 @@ class Console extends AbstractConsole
         $this->add(new TranslationAddCommand());
 
         // User Commands
+        $this->add(new UserCreateCommand());
+        $this->add(new UserDeleteCommand());
+        $this->add(new UserDisableCommand());
+        $this->add(new UserEnableCommand());
         $this->add(new UserListCommand());
-        //$this->add(new UserCreateCommand($this->app));
-        //$this->add(new UserDeleteCommand($this->app));
-        //$this->add(new UserRoleAddCommand($this->app));
-        //$this->add(new UserRoleListCommand($this->app));
-        //$this->add(new UserRoleRemoveCommand($this->app));
+        $this->add(new UserPasswordSetCommand());
+        $this->add(new UserPasswordResetCommand());
+        $this->add(new UserVerifyCommand());
 
         // View Commands
         //$this->add(new NavAddCommand());

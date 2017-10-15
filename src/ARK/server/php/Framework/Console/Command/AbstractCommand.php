@@ -56,17 +56,30 @@ abstract class AbstractCommand extends Command
     protected $input;
     protected $output;
 
-    protected function execute(InputInterface $input, OutputInterface $output) : void
+    protected function initialize(InputInterface $input, OutputInterface $output) : void
     {
         $this->query = $this->getHelper('question');
         $this->input = $input;
         $this->output = $output;
         $this->progress = new ProgressBar($this->output);
         $this->progress->setOverwrite(true);
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output) : void
+    {
         $this->doExecute();
     }
 
     abstract protected function doExecute() : void;
+
+    protected function interact(InputInterface $input, OutputInterface $output) : void
+    {
+        $this->doInteract();
+    }
+
+    protected function doInteract() : void
+    {
+    }
 
     protected function runCommand(string $command, iterable $arguments = []) : int
     {
@@ -98,12 +111,12 @@ abstract class AbstractCommand extends Command
         return $this->result;
     }
 
-    protected function addRequiredArgument(string $argument, string $description) : AbstractCommand
+    protected function addRequiredArgument(string $argument, string $description = '') : AbstractCommand
     {
         return $this->addArgument($argument, InputArgument::REQUIRED, $description);
     }
 
-    protected function addOptionalArgument(string $argument, string $description) : AbstractCommand
+    protected function addOptionalArgument(string $argument, string $description = '') : AbstractCommand
     {
         return $this->addArgument($argument, InputArgument::OPTIONAL, $description);
     }
@@ -166,6 +179,12 @@ abstract class AbstractCommand extends Command
         return $this->ask(new ConfirmationQuestion($text, $default, $trueAnswerRegex));
     }
 
+    protected function askConfirmName(string $text, string $name) : bool
+    {
+        $this->write($text);
+        return $this->askConfirmation("To confirm, please exactly retype the name ($name)", false, false, "/$name/i");
+    }
+
     protected function askChoice(string $text, array $choices, $default = null, bool $auto = true)
     {
         if ($default) {
@@ -203,6 +222,14 @@ abstract class AbstractCommand extends Command
         $question->setMaxAttempts(3);
         $password = $this->ask($question);
         return $password;
+    }
+
+    protected function askArgument($argument, $text) : void
+    {
+        if (!$this->input->getArgument($argument)) {
+            $value = $this->askQuestion($text);
+            $this->input->setArgument($argument, $value);
+        }
     }
 
     protected function formatFileSize(string $path) : string
