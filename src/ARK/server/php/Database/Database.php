@@ -36,9 +36,12 @@ use Silex\Application;
 class Database
 {
     private $app;
-    private $modules = [];
-    private $datatypes = [];
-    private $fragmentTables = [];
+    private $entities;
+    private $subclasses;
+    private $classnames;
+    private $modules;
+    private $datatypes;
+    private $fragmentTables;
 
     public function __construct(Application $app)
     {
@@ -70,47 +73,22 @@ class Database
         return $this->app['dbs']['user'];
     }
 
-    public function getModule(string $module) : ?iterable
+    public function getEntityForClassName(string $classname) : ?iterable
     {
-        $this->loadModules();
-        $module = strtolower($module);
-        if (isset($this->modules[$module])) {
-            return $this->modules[$module];
-        }
-        foreach ($this->modules as $mod) {
-            if ($mod['resource'] === $module) {
-                return $mod;
-            }
-        }
-        return null;
+        $this->loadEntities();
+        return $this->entities['classname'][$classname] ?? [];
     }
 
-    public function getModuleForClassName(string $className) : ?iterable
+    public function getSubclassEntities(string $schema) : ?iterable
     {
-        $this->loadModules();
-        foreach ($this->modules as $module) {
-            if ($module['classname'] === $className) {
-                return $module;
-            }
-        }
-        return null;
+        $this->loadEntities();
+        return $this->subclasses[$schema] ?? [];
     }
 
-    public function getModuleForNamespace(string $namespace) : ?iterable
+    public function getAllClassNames($namespace) : ?iterable
     {
-        $this->loadModules();
-        foreach ($this->modules as $module) {
-            if ($module['namespace'] === $namespace) {
-                return $module;
-            }
-        }
-        return null;
-    }
-
-    public function getModules() : ?iterable
-    {
-        $this->loadModules();
-        return $this->modules;
+        $this->loadEntities();
+        return $this->classnames[$namespace] ?? [];
     }
 
     public function getDatatypes() : ?iterable
@@ -134,57 +112,6 @@ class Database
     {
         $this->loadDatatypes();
         return $this->fragmentTables;
-    }
-
-    public function getAllClassNames($namespace, $recurse = true) : ?iterable
-    {
-        if ($recurse) {
-            $sql = '
-                SELECT DISTINCT classname
-                FROM ark_model_class
-                WHERE namespace LIKE :namespace
-                AND enabled = true
-            ';
-            $params = [
-                ':namespace' => $namespace.'\\%',
-            ];
-        } else {
-            $sql = '
-                SELECT DISTINCT classname
-                FROM ark_model_class
-                WHERE namespace = :namespace
-                AND enabled = true
-            ';
-            $params = [
-                ':namespace' => $namespace,
-            ];
-        }
-        return $this->core()->fetchAllColumn($sql, 'classname', $params);
-    }
-
-    public function getSubclassEntities(string $schema) : ?iterable
-    {
-        $sql = '
-            SELECT DISTINCT namespace, classname, entity
-            FROM ark_model_class
-            WHERE schma LIKE :schema
-            AND enabled = true
-        ';
-        $sql = '
-            SELECT ark_vocabulary_parameter.term as class, ark_vocabulary_parameter.value as entity
-            FROM ark_model_schema, ark_vocabulary_parameter
-            WHERE ark_model_schema.module = :module
-            AND ark_model_schema.enabled = true
-            AND ark_model_schema.entities = true
-            AND ark_vocabulary_parameter.concept = ark_model_schema.vocabulary
-            AND ark_vocabulary_parameter.name = :parameter
-        ';
-        $params = [
-            ':module' => $module,
-            ':parameter' => 'entity',
-        ];
-
-        return $this->core()->fetchAll($sql, $params);
     }
 
     public function getViewTypes() : ?iterable
@@ -553,18 +480,41 @@ class Database
         return $result;
     }
 
-    private function loadModules() : void
+    private function loadEntities() : void
     {
-        if ($this->modules) {
+        if ($this->entities !== null) {
             return;
         }
+        $this->entities['classname'] = [];
+        $this->entities['namespace'] = [];
+        $this->entities['entity'] = [];
+        $this->entities['schema'] = [];
+        $this->entities['module'] = [];
         $sql = '
-            SELECT *
-            FROM ark_model_module
+            SELECT class.classname, class.entity, class.namespace, class.class, class.superclass, class.instantiable,
+                schma.schma, schma.subclasses, schma.entities, schma.vocabulary, schma.generator, schma.sequence,
+                module.module, module.tbl, module.core
+            FROM ark_model_class AS class, ark_model_schema AS schma, ark_model_module AS module
+            WHERE class.classname IS NOT NULL
+            AND class.enabled = TRUE
+            AND schma.schma = class.schma
+            AND schma.enabled = true
+            AND module.module = schma.module
+            AND module.enabled = true
         ';
-        $modules = $this->core()->fetchAll($sql, []);
-        foreach ($modules as $module) {
-            $this->modules[$module['module']] = $module;
+        $entities = $this->core()->fetchAll($sql, []);
+        foreach ($entities as $entity) {
+            $this->entities['classname'][$entity['classname']] = $entity;
+            $this->entities['namespace'][$entity['namespace']][] = $entity;
+            $this->entities['entity'][$entity['entity']][] = $entity;
+            $this->entities['schema'][$entity['schma']][] = $entity;
+            $this->entities['module'][$entity['module']][] = $entity;
+            if ($entity['instantiable']) {
+                $this->classnames[$entity['namespace']][] = $entity['classname'];
+            }
+            if ($entity['entities'] && $entity['instantiable'] && !$entity['superclass']) {
+                $this->subclasses[$entity['schma']][] = $entity;
+            }
         }
     }
 

@@ -39,40 +39,42 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 class ItemMappingDriver implements MappingDriver
 {
-    private $namespace = '';
-    private $classNames;
+    private $namespace;
+    private $classnames;
 
     public function __construct(string $namespace)
     {
         $this->namespace = $namespace;
     }
 
-    public function loadMetadataForClass($className, ClassMetadata $metadata) : void
+    public function loadMetadataForClass($classname, ClassMetadata $metadata) : void
     {
         // Table
-        $module = Service::database()->getModuleForClassName($className);
-        if (!$module) {
+        $entity = Service::database()->getEntityForClassName($classname);
+        if (!$entity) {
             return;
         }
-        $classNames[] = $module['classname'];
-        $builder = new ClassMetadataBuilder($metadata, $module['tbl']);
+        $classnames[] = $entity['classname'];
+
+        $builder = new ClassMetadataBuilder($metadata, $entity['tbl']);
         $builder->setCustomRepositoryClass(ItemRepository::class);
 
         // Key
         $builder->addStringKey('id', 30);
         $metadata->setIdGeneratorType(ClassMetadataInfo::GENERATOR_TYPE_CUSTOM);
+        // TODO Get from $entity?
         $metadata->setCustomGeneratorDefinition(['class' => ItemIdGenerator::class]);
 
         // Fields
         $builder->addStringField('module', 30);
         $builder->addStringField('schma', 30);
-        $subclasses = Service::database()->getSubclassEntities($module['module']);
-        if ($subclasses) {
+        if ($entity['entities']) {
+            $subclasses = Service::database()->getSubclassEntities($entity['schma']);
             $builder->setSingleTableInheritance()->setDiscriminatorColumn('class', 'string', 30);
-            $metadata->addDiscriminatorMapClass('', $module['classname']);
+            $metadata->addDiscriminatorMapClass('', $entity['classname']);
             foreach ($subclasses as $subclass) {
-                $metadata->addDiscriminatorMapClass($subclass['class'], $subclass['entity']);
-                $classNames[] = $subclass['entity'];
+                $metadata->addDiscriminatorMapClass($subclass['class'], $subclass['classname']);
+                $classnames[] = $subclass['classname'];
             }
         } else {
             $builder->addStringField('class', 30);
@@ -85,28 +87,28 @@ class ItemMappingDriver implements MappingDriver
         $builder->addStringField('label', 30);
         VersionTrait::buildVersionMetadata($builder);
         $metadata->setItemEntity(true);
-        if ($this->classNames === null) {
-            $this->classNames = $classNames;
+        if ($this->classnames === null) {
+            $this->classnames = $classnames;
         }
     }
 
     public function getAllClassNames() : iterable
     {
-        if ($this->classNames === null) {
-            $this->classNames = Service::database()->getAllClassNames($this->namespace);
+        if ($this->classnames === null) {
+            $this->classnames = Service::database()->getAllClassNames($this->namespace);
         }
-        return $this->classNames;
+        return $this->classnames;
     }
 
-    public function isTransient($className) : bool
+    public function isTransient($classname) : bool
     {
-        return Service::database()->getModuleForClassName($className) === null;
+        return !in_array($classname, $this->getAllClassNames(), true);
     }
 
-    public function loadMetadataForGenerator($className, ClassMetadata $metadata) : void
+    public function loadMetadataForGenerator($classname, ClassMetadata $metadata) : void
     {
         // Table
-        $module = Service::database()->getModuleForClassName($className);
-        $builder = new ClassMetadataBuilder($metadata, $module['tbl']);
+        $entity = Service::database()->getEntityForClassName($classname);
+        $builder = new ClassMetadataBuilder($metadata, $entity['tbl']);
     }
 }

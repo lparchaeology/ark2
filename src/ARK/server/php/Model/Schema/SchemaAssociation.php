@@ -40,6 +40,7 @@ class SchemaAssociation
     use EnabledTrait;
     use KeywordTrait;
 
+    protected $model;
     protected $schma;
     protected $class = '';
     protected $association = '';
@@ -48,7 +49,7 @@ class SchemaAssociation
 
     public function model() : Model
     {
-        return $this->schma;
+        return $this->model;
     }
 
     public function schema() : Schema

@@ -105,7 +105,7 @@ trait ItemTrait
     {
         if ($this->class === null) {
             $this->class =
-                $this->schema()->useSubclassEntities()
+                $this->schema()->hasSubclassEntities()
                     ? $this->makeSubclass()
                     : $this->schema()->module()->superclass();
         }
@@ -245,7 +245,7 @@ trait ItemTrait
         $this->schma = $schema;
         $this->module = $this->schema()->module()->id();
         // TODO Is this really needed?
-        if ($this->schema()->useSubclassEntities()) {
+        if ($this->schema()->hasSubclassEntities()) {
             $this->class = ($class ?: $this->makeSubclass());
             $this->property('class')->setValue($this->class);
         }

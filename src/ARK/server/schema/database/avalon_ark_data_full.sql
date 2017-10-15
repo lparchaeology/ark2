@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 06, 2017 at 07:19 PM
+-- Generation Time: Oct 15, 2017 at 09:53 PM
 -- Server version: 10.1.26-MariaDB-0+deb9u1
 -- PHP Version: 7.1.10-1+0~20170929170818.9+stretch~1.gbp501135
 
@@ -101,7 +101,6 @@ CREATE TABLE `ark_fragment_boolean` (
 
 CREATE TABLE `ark_fragment_date` (
   `fid` int(11) NOT NULL,
-  `object` int(11) DEFAULT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -111,6 +110,7 @@ CREATE TABLE `ark_fragment_date` (
   `value` date NOT NULL,
   `span` tinyint(1) NOT NULL DEFAULT '0',
   `extent` date DEFAULT NULL,
+  `object` int(11) DEFAULT NULL,
   `modifier` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `modified` datetime NOT NULL,
   `creator` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -151,7 +151,21 @@ INSERT INTO `ark_fragment_datetime` (`fid`, `object`, `module`, `item`, `attribu
 (1, 8, 'file', '4', 'created', 'datetime', NULL, 'UTC', '2017-09-27 08:20:58', 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
 (2, 8, 'file', '4', 'modified', 'datetime', NULL, 'UTC', '2017-09-27 08:20:58', 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
 (3, NULL, 'event', '1', 'occurred', 'datetime', NULL, 'UTC', '2017-09-27 08:20:59', 0, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
-(4, NULL, 'message', '1', 'sent', 'datetime', NULL, 'UTC', '2017-09-27 08:20:59', 0, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', '');
+(4, NULL, 'message', '1', 'sent', 'datetime', NULL, 'UTC', '2017-09-27 08:20:59', 0, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
+(5, NULL, 'event', '3', 'occurred', 'datetime', NULL, 'UTC', '2017-10-09 19:54:35', 0, NULL, 'sysadmin', '2017-10-09 19:54:35', 'sysadmin', '2017-10-09 19:54:35', ''),
+(6, NULL, 'message', '3', 'sent', 'datetime', NULL, 'UTC', '2017-10-09 19:54:35', 0, NULL, 'sysadmin', '2017-10-09 19:54:35', 'sysadmin', '2017-10-09 19:54:35', ''),
+(7, NULL, 'event', '4', 'occurred', 'datetime', NULL, 'UTC', '2017-10-09 19:56:12', 0, NULL, 'sysadmin', '2017-10-09 19:56:12', 'sysadmin', '2017-10-09 19:56:12', ''),
+(8, NULL, 'message', '4', 'sent', 'datetime', NULL, 'UTC', '2017-10-09 19:56:12', 0, NULL, 'sysadmin', '2017-10-09 19:56:12', 'sysadmin', '2017-10-09 19:56:12', ''),
+(9, NULL, 'event', '5', 'occurred', 'datetime', NULL, 'UTC', '2017-10-09 19:56:24', 0, NULL, 'sysadmin', '2017-10-09 19:56:24', 'sysadmin', '2017-10-09 19:56:24', ''),
+(10, NULL, 'message', '5', 'sent', 'datetime', NULL, 'UTC', '2017-10-09 19:56:24', 0, NULL, 'sysadmin', '2017-10-09 19:56:24', 'sysadmin', '2017-10-09 19:56:24', ''),
+(11, 16, 'file', '7', 'created', 'datetime', NULL, 'UTC', '2017-10-09 20:01:37', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
+(12, 16, 'file', '7', 'modified', 'datetime', NULL, 'UTC', '2017-10-09 20:01:37', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
+(13, NULL, 'event', '6', 'occurred', 'datetime', NULL, 'UTC', '2017-10-09 20:01:37', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
+(14, NULL, 'message', '6', 'sent', 'datetime', NULL, 'UTC', '2017-10-09 20:01:37', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
+(15, NULL, 'event', '7', 'occurred', 'datetime', NULL, 'UTC', '2017-10-09 20:23:34', 0, NULL, 'sysadmin', '2017-10-09 20:23:34', 'sysadmin', '2017-10-09 20:23:34', ''),
+(16, NULL, 'message', '7', 'sent', 'datetime', NULL, 'UTC', '2017-10-09 20:23:34', 0, NULL, 'sysadmin', '2017-10-09 20:23:34', 'sysadmin', '2017-10-09 20:23:34', ''),
+(17, NULL, 'event', '8', 'occurred', 'datetime', NULL, 'UTC', '2017-10-09 20:23:56', 0, NULL, 'sysadmin', '2017-10-09 20:23:56', 'sysadmin', '2017-10-09 20:23:56', ''),
+(18, NULL, 'message', '8', 'sent', 'datetime', NULL, 'UTC', '2017-10-09 20:23:56', 0, NULL, 'sysadmin', '2017-10-09 20:23:56', 'sysadmin', '2017-10-09 20:23:56', '');
 
 -- --------------------------------------------------------
 
@@ -233,7 +247,8 @@ CREATE TABLE `ark_fragment_integer` (
 --
 
 INSERT INTO `ark_fragment_integer` (`fid`, `object`, `module`, `item`, `attribute`, `datatype`, `format`, `parameter`, `value`, `span`, `extent`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
-(1, 8, 'file', '4', 'sequence', 'integer', NULL, NULL, 20170927082058, 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', '');
+(1, 8, 'file', '4', 'sequence', 'integer', NULL, NULL, 20170927082058, 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(2, 16, 'file', '7', 'sequence', 'integer', NULL, NULL, 20171009200137, 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', '');
 
 -- --------------------------------------------------------
 
@@ -269,7 +284,31 @@ INSERT INTO `ark_fragment_item` (`fid`, `object`, `module`, `item`, `attribute`,
 (2, NULL, 'event', '1', 'agents', 'item', NULL, 'actor', 'anonymous', 0, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
 (3, NULL, 'event', '1', 'subject', 'item', NULL, 'actor', 'sysadmin', 0, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
 (4, NULL, 'message', '1', 'sender', 'item', NULL, 'actor', 'anonymous', 0, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
-(5, NULL, 'message', '1', 'event', 'item', NULL, 'event', '1', 0, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', '');
+(5, NULL, 'message', '1', 'event', 'item', NULL, 'event', '1', 0, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
+(6, NULL, 'event', '3', 'agents', 'item', NULL, 'actor', 'sysadmin', 0, NULL, 'sysadmin', '2017-10-09 19:54:35', 'sysadmin', '2017-10-09 19:54:35', ''),
+(7, NULL, 'event', '3', 'subject', 'item', NULL, 'context', '4', 0, NULL, 'sysadmin', '2017-10-09 19:54:35', 'sysadmin', '2017-10-09 19:54:35', ''),
+(8, NULL, 'message', '3', 'sender', 'item', NULL, 'actor', 'sysadmin', 0, NULL, 'sysadmin', '2017-10-09 19:54:35', 'sysadmin', '2017-10-09 19:54:35', ''),
+(9, NULL, 'message', '3', 'event', 'item', NULL, 'event', '3', 0, NULL, 'sysadmin', '2017-10-09 19:54:35', 'sysadmin', '2017-10-09 19:54:35', ''),
+(10, NULL, 'event', '4', 'agents', 'item', NULL, 'actor', 'sysadmin', 0, NULL, 'sysadmin', '2017-10-09 19:56:12', 'sysadmin', '2017-10-09 19:56:12', ''),
+(11, NULL, 'event', '4', 'subject', 'item', NULL, 'context', '4', 0, NULL, 'sysadmin', '2017-10-09 19:56:12', 'sysadmin', '2017-10-09 19:56:12', ''),
+(12, NULL, 'message', '4', 'sender', 'item', NULL, 'actor', 'sysadmin', 0, NULL, 'sysadmin', '2017-10-09 19:56:12', 'sysadmin', '2017-10-09 19:56:12', ''),
+(13, NULL, 'message', '4', 'event', 'item', NULL, 'event', '4', 0, NULL, 'sysadmin', '2017-10-09 19:56:12', 'sysadmin', '2017-10-09 19:56:12', ''),
+(14, NULL, 'event', '5', 'agents', 'item', NULL, 'actor', 'sysadmin', 0, NULL, 'sysadmin', '2017-10-09 19:56:24', 'sysadmin', '2017-10-09 19:56:24', ''),
+(15, NULL, 'event', '5', 'subject', 'item', NULL, 'context', '4', 0, NULL, 'sysadmin', '2017-10-09 19:56:24', 'sysadmin', '2017-10-09 19:56:24', ''),
+(16, NULL, 'message', '5', 'sender', 'item', NULL, 'actor', 'sysadmin', 0, NULL, 'sysadmin', '2017-10-09 19:56:24', 'sysadmin', '2017-10-09 19:56:24', ''),
+(17, NULL, 'message', '5', 'event', 'item', NULL, 'event', '5', 0, NULL, 'sysadmin', '2017-10-09 19:56:24', 'sysadmin', '2017-10-09 19:56:24', ''),
+(19, NULL, 'event', '6', 'agents', 'item', NULL, 'actor', 'sysadmin', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
+(20, NULL, 'event', '6', 'subject', 'item', NULL, 'context', '4', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
+(21, NULL, 'message', '6', 'sender', 'item', NULL, 'actor', 'sysadmin', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
+(22, NULL, 'message', '6', 'event', 'item', NULL, 'event', '6', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
+(23, NULL, 'event', '7', 'agents', 'item', NULL, 'actor', 'sysadmin', 0, NULL, 'sysadmin', '2017-10-09 20:23:34', 'sysadmin', '2017-10-09 20:23:34', ''),
+(24, NULL, 'event', '7', 'subject', 'item', NULL, 'context', '4', 0, NULL, 'sysadmin', '2017-10-09 20:23:34', 'sysadmin', '2017-10-09 20:23:34', ''),
+(25, NULL, 'message', '7', 'sender', 'item', NULL, 'actor', 'sysadmin', 0, NULL, 'sysadmin', '2017-10-09 20:23:34', 'sysadmin', '2017-10-09 20:23:34', ''),
+(26, NULL, 'message', '7', 'event', 'item', NULL, 'event', '7', 0, NULL, 'sysadmin', '2017-10-09 20:23:34', 'sysadmin', '2017-10-09 20:23:34', ''),
+(27, NULL, 'event', '8', 'agents', 'item', NULL, 'actor', 'sysadmin', 0, NULL, 'sysadmin', '2017-10-09 20:23:56', 'sysadmin', '2017-10-09 20:23:56', ''),
+(28, NULL, 'event', '8', 'subject', 'item', NULL, 'context', '4', 0, NULL, 'sysadmin', '2017-10-09 20:23:56', 'sysadmin', '2017-10-09 20:23:56', ''),
+(29, NULL, 'message', '8', 'sender', 'item', NULL, 'actor', 'sysadmin', 0, NULL, 'sysadmin', '2017-10-09 20:23:56', 'sysadmin', '2017-10-09 20:23:56', ''),
+(30, NULL, 'message', '8', 'event', 'item', NULL, 'event', '8', 0, NULL, 'sysadmin', '2017-10-09 20:23:56', 'sysadmin', '2017-10-09 20:23:56', '');
 
 -- --------------------------------------------------------
 
@@ -304,7 +343,8 @@ INSERT INTO `ark_fragment_object` (`fid`, `object`, `module`, `item`, `attribute
 (7, NULL, 'actor', 'sysadmin', 'address', 'object', NULL, NULL, '', 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
 (8, NULL, 'file', '4', 'versions', 'object', NULL, NULL, '', 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
 (9, NULL, 'message', '1', 'recipients', 'object', NULL, NULL, '', 0, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
-(10, NULL, 'message', '1', 'recipients', 'object', NULL, NULL, '', 0, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', '');
+(10, NULL, 'message', '1', 'recipients', 'object', NULL, NULL, '', 0, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
+(16, NULL, 'file', '7', 'versions', 'object', NULL, NULL, '', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', '');
 
 -- --------------------------------------------------------
 
@@ -386,7 +426,50 @@ INSERT INTO `ark_fragment_string` (`fid`, `object`, `module`, `item`, `attribute
 (23, NULL, 'message', '1', 'class', 'string', NULL, 'core.message.class', 'notification', 0, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
 (24, 9, 'message', '1', 'status', 'string', NULL, 'core.message.recipient.status', 'unread', 0, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
 (25, 10, 'message', '1', 'role', 'string', NULL, NULL, 'admin', 0, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
-(26, NULL, 'message', '1', 'id', 'string', NULL, NULL, '1', 0, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', '');
+(26, NULL, 'message', '1', 'id', 'string', NULL, NULL, '1', 0, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
+(27, NULL, 'context', '3', 'class', 'string', NULL, 'arch.context.class', 'cut', 0, NULL, 'sysadmin', '2017-10-09 19:43:25', 'sysadmin', '2017-10-09 19:43:25', ''),
+(28, NULL, 'context', '3', 'id', 'string', NULL, NULL, '3', 0, NULL, 'sysadmin', '2017-10-09 19:43:25', 'sysadmin', '2017-10-09 19:43:25', ''),
+(33, NULL, 'event', '3', 'class', 'string', NULL, 'core.event.class', 'edited', 0, NULL, 'sysadmin', '2017-10-09 19:54:35', 'sysadmin', '2017-10-09 19:54:35', ''),
+(34, NULL, 'event', '3', 'id', 'string', NULL, NULL, '3', 0, NULL, 'sysadmin', '2017-10-09 19:54:35', 'sysadmin', '2017-10-09 19:54:35', ''),
+(35, NULL, 'message', '3', 'class', 'string', NULL, 'core.message.class', 'notification', 0, NULL, 'sysadmin', '2017-10-09 19:54:35', 'sysadmin', '2017-10-09 19:54:35', ''),
+(36, NULL, 'message', '3', 'id', 'string', NULL, NULL, '3', 0, NULL, 'sysadmin', '2017-10-09 19:54:35', 'sysadmin', '2017-10-09 19:54:35', ''),
+(39, NULL, 'event', '4', 'class', 'string', NULL, 'core.event.class', 'edited', 0, NULL, 'sysadmin', '2017-10-09 19:56:12', 'sysadmin', '2017-10-09 19:56:12', ''),
+(40, NULL, 'event', '4', 'id', 'string', NULL, NULL, '4', 0, NULL, 'sysadmin', '2017-10-09 19:56:12', 'sysadmin', '2017-10-09 19:56:12', ''),
+(41, NULL, 'message', '4', 'class', 'string', NULL, 'core.message.class', 'notification', 0, NULL, 'sysadmin', '2017-10-09 19:56:12', 'sysadmin', '2017-10-09 19:56:12', ''),
+(42, NULL, 'message', '4', 'id', 'string', NULL, NULL, '4', 0, NULL, 'sysadmin', '2017-10-09 19:56:12', 'sysadmin', '2017-10-09 19:56:12', ''),
+(45, NULL, 'event', '5', 'class', 'string', NULL, 'core.event.class', 'edited', 0, NULL, 'sysadmin', '2017-10-09 19:56:24', 'sysadmin', '2017-10-09 19:56:24', ''),
+(46, NULL, 'event', '5', 'id', 'string', NULL, NULL, '5', 0, NULL, 'sysadmin', '2017-10-09 19:56:24', 'sysadmin', '2017-10-09 19:56:24', ''),
+(47, NULL, 'message', '5', 'class', 'string', NULL, 'core.message.class', 'notification', 0, NULL, 'sysadmin', '2017-10-09 19:56:24', 'sysadmin', '2017-10-09 19:56:24', ''),
+(48, NULL, 'message', '5', 'id', 'string', NULL, NULL, '5', 0, NULL, 'sysadmin', '2017-10-09 19:56:24', 'sysadmin', '2017-10-09 19:56:24', ''),
+(51, NULL, 'file', '7', 'class', 'string', NULL, 'core.file.class', 'image', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
+(52, NULL, 'file', '7', 'mediatype', 'string', NULL, 'mediatype', 'image/jpeg', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
+(53, NULL, 'file', '7', 'id', 'string', NULL, NULL, '7', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
+(54, 16, 'file', '7', 'path', 'string', NULL, NULL, 'image/0/7.20171009200137.JPG', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
+(55, 16, 'file', '7', 'name', 'string', NULL, NULL, 'IMG_0629.JPG', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
+(56, 16, 'file', '7', 'extension', 'string', NULL, NULL, 'JPG', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
+(57, 16, 'file', '7', 'version', 'string', NULL, NULL, '2017-10-09 20:01:37', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
+(58, 16, 'file', '7', 'creator', 'string', NULL, NULL, 'sysadmin', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
+(59, 16, 'file', '7', 'modifier', 'string', NULL, NULL, 'sysadmin', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
+(60, NULL, 'event', '6', 'class', 'string', NULL, 'core.event.class', 'edited', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
+(61, NULL, 'event', '6', 'id', 'string', NULL, NULL, '6', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
+(62, NULL, 'message', '6', 'class', 'string', NULL, 'core.message.class', 'notification', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
+(63, NULL, 'message', '6', 'id', 'string', NULL, NULL, '6', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
+(66, NULL, 'event', '7', 'class', 'string', NULL, 'core.event.class', 'edited', 0, NULL, 'sysadmin', '2017-10-09 20:23:34', 'sysadmin', '2017-10-09 20:23:34', ''),
+(67, NULL, 'event', '7', 'id', 'string', NULL, NULL, '7', 0, NULL, 'sysadmin', '2017-10-09 20:23:34', 'sysadmin', '2017-10-09 20:23:34', ''),
+(68, NULL, 'message', '7', 'class', 'string', NULL, 'core.message.class', 'notification', 0, NULL, 'sysadmin', '2017-10-09 20:23:34', 'sysadmin', '2017-10-09 20:23:34', ''),
+(69, NULL, 'message', '7', 'id', 'string', NULL, NULL, '7', 0, NULL, 'sysadmin', '2017-10-09 20:23:34', 'sysadmin', '2017-10-09 20:23:34', ''),
+(70, NULL, 'context', '4', 'id', 'string', NULL, NULL, '4', 0, NULL, 'sysadmin', '2017-10-09 20:23:56', 'sysadmin', '2017-10-09 19:50:01', ''),
+(71, NULL, 'context', '4', 'class', 'string', NULL, 'arch.context.class', 'masonry', 0, NULL, 'sysadmin', '2017-10-09 20:23:56', 'sysadmin', '2017-10-09 19:50:01', ''),
+(72, NULL, 'event', '8', 'class', 'string', NULL, 'core.event.class', 'edited', 0, NULL, 'sysadmin', '2017-10-09 20:23:56', 'sysadmin', '2017-10-09 20:23:56', ''),
+(73, NULL, 'event', '8', 'id', 'string', NULL, NULL, '8', 0, NULL, 'sysadmin', '2017-10-09 20:23:56', 'sysadmin', '2017-10-09 20:23:56', ''),
+(74, NULL, 'message', '8', 'class', 'string', NULL, 'core.message.class', 'notification', 0, NULL, 'sysadmin', '2017-10-09 20:23:56', 'sysadmin', '2017-10-09 20:23:56', ''),
+(75, NULL, 'message', '8', 'id', 'string', NULL, NULL, '8', 0, NULL, 'sysadmin', '2017-10-09 20:23:56', 'sysadmin', '2017-10-09 20:23:56', ''),
+(76, NULL, 'context', '5', 'class', 'string', NULL, 'arch.context.class', 'masonry', 0, NULL, 'sysadmin', '2017-10-09 21:34:10', 'sysadmin', '2017-10-09 21:34:10', ''),
+(77, NULL, 'context', '5', 'id', 'string', NULL, NULL, '5', 0, NULL, 'sysadmin', '2017-10-09 21:34:10', 'sysadmin', '2017-10-09 21:34:10', ''),
+(78, NULL, 'context', '6', 'class', 'string', NULL, 'arch.context.class', 'fill', 0, NULL, 'sysadmin', '2017-10-10 08:54:41', 'sysadmin', '2017-10-10 08:54:41', ''),
+(79, NULL, 'context', '6', 'id', 'string', NULL, NULL, '6', 0, NULL, 'sysadmin', '2017-10-10 08:54:41', 'sysadmin', '2017-10-10 08:54:41', ''),
+(80, NULL, 'context', '7', 'class', 'string', NULL, 'arch.context.class', 'masonry', 0, NULL, 'sysadmin', '2017-10-11 14:21:40', 'sysadmin', '2017-10-11 14:21:40', ''),
+(81, NULL, 'context', '7', 'id', 'string', NULL, NULL, '7', 0, NULL, 'sysadmin', '2017-10-11 14:21:40', 'sysadmin', '2017-10-11 14:21:40', '');
 
 -- --------------------------------------------------------
 
@@ -425,7 +508,13 @@ INSERT INTO `ark_fragment_text` (`fid`, `object`, `module`, `item`, `attribute`,
 (5, NULL, 'actor', 'sysadmin', 'fullname', 'text', 'text/plain', 'en', 'Sysadmin', 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
 (6, NULL, 'actor', 'sysadmin', 'shortname', 'text', 'text/plain', 'en', 'Sysadmin', 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
 (7, NULL, 'actor', 'sysadmin', 'initials', 'text', 'text/plain', 'en', 'LPA', 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
-(8, NULL, 'actor', 'sysadmin', 'biography', 'text', 'text/plain', 'en', 'Sysadmin', 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', '');
+(8, NULL, 'actor', 'sysadmin', 'biography', 'text', 'text/plain', 'en', 'Sysadmin', 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(9, NULL, 'context', '3', 'register', 'text', 'text/plain', 'en', 'A Test Cut', 0, NULL, 'sysadmin', '2017-10-09 19:43:25', 'sysadmin', '2017-10-09 19:43:25', ''),
+(21, NULL, 'context', '4', 'register', 'text', 'text/plain', 'en', 'A skelly mark 234', 0, NULL, 'sysadmin', '2017-10-09 20:23:56', 'sysadmin', '2017-10-09 19:50:01', ''),
+(22, NULL, 'context', '4', 'description', 'text', 'text/plain', 'en', 'fghfghfg', 0, NULL, 'sysadmin', '2017-10-09 20:23:56', 'sysadmin', '2017-10-09 19:54:35', ''),
+(23, NULL, 'context', '5', 'register', 'text', 'text/plain', 'en', 'a mason ry', 0, NULL, 'sysadmin', '2017-10-09 21:34:10', 'sysadmin', '2017-10-09 21:34:10', ''),
+(24, NULL, 'context', '6', 'register', 'text', 'text/plain', 'en', 'fff', 0, NULL, 'sysadmin', '2017-10-10 08:54:41', 'sysadmin', '2017-10-10 08:54:41', ''),
+(25, NULL, 'context', '7', 'register', 'text', 'text/plain', 'en', '123', 0, NULL, 'sysadmin', '2017-10-11 14:21:40', 'sysadmin', '2017-10-11 14:21:40', '');
 
 -- --------------------------------------------------------
 
@@ -487,10 +576,69 @@ INSERT INTO `ark_item_actor` (`id`, `module`, `schma`, `class`, `status`, `visib
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `ark_item_area`
+--
+
+CREATE TABLE `ark_item_area` (
+  `id` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'actor',
+  `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'core.actor',
+  `class` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'allocated',
+  `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'restricted',
+  `parent_module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `parent_id` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `idx` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `label` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `modifier` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `modified` datetime NOT NULL,
+  `creator` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created` datetime NOT NULL,
+  `version` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `ark_item_context`
 --
 
 CREATE TABLE `ark_item_context` (
+  `id` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'actor',
+  `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'core.actor',
+  `class` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'allocated',
+  `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'restricted',
+  `parent_module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `parent_id` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `idx` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `label` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `modifier` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `modified` datetime NOT NULL,
+  `creator` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created` datetime NOT NULL,
+  `version` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ark_item_context`
+--
+
+INSERT INTO `ark_item_context` (`id`, `module`, `schma`, `class`, `status`, `visibility`, `parent_module`, `parent_id`, `idx`, `label`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
+('3', 'context', 'arch.context', 'cut', 'allocated', 'private', NULL, NULL, '3', '3', 'sysadmin', '2017-10-09 19:43:25', 'sysadmin', '2017-10-09 19:43:25', ''),
+('4', 'context', 'arch.context', 'masonry', 'allocated', 'private', NULL, NULL, '4', '4', 'sysadmin', '2017-10-09 20:23:56', 'sysadmin', '2017-10-09 19:50:01', ''),
+('5', 'context', 'arch.context', 'masonry', 'allocated', 'private', NULL, NULL, '5', '5', 'sysadmin', '2017-10-09 21:34:10', 'sysadmin', '2017-10-09 21:34:10', ''),
+('6', 'context', 'arch.context', 'fill', 'allocated', 'private', NULL, NULL, '6', '6', 'sysadmin', '2017-10-10 08:54:41', 'sysadmin', '2017-10-10 08:54:41', ''),
+('7', 'context', 'arch.context', 'masonry', 'allocated', 'private', NULL, NULL, '7', '7', 'sysadmin', '2017-10-11 14:21:40', 'sysadmin', '2017-10-11 14:21:40', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_item_drawing`
+--
+
+CREATE TABLE `ark_item_drawing` (
   `id` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'actor',
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'core.actor',
@@ -537,7 +685,13 @@ CREATE TABLE `ark_item_event` (
 --
 
 INSERT INTO `ark_item_event` (`id`, `module`, `schma`, `class`, `status`, `visibility`, `parent_module`, `parent_id`, `idx`, `label`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
-('1', 'event', 'core.event', 'registered', 'allocated', 'private', 'actor', 'sysadmin', '1', '1', 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', '');
+('1', 'event', 'core.event', 'registered', 'allocated', 'private', 'actor', 'sysadmin', '1', '1', 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
+('3', 'event', 'core.event', 'edited', 'allocated', 'private', 'context', '4', '3', '3', 'sysadmin', '2017-10-09 19:54:35', 'sysadmin', '2017-10-09 19:54:35', ''),
+('4', 'event', 'core.event', 'edited', 'allocated', 'private', 'context', '4', '4', '4', 'sysadmin', '2017-10-09 19:56:12', 'sysadmin', '2017-10-09 19:56:12', ''),
+('5', 'event', 'core.event', 'edited', 'allocated', 'private', 'context', '4', '5', '5', 'sysadmin', '2017-10-09 19:56:24', 'sysadmin', '2017-10-09 19:56:24', ''),
+('6', 'event', 'core.event', 'edited', 'allocated', 'private', 'context', '4', '6', '6', 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
+('7', 'event', 'core.event', 'edited', 'allocated', 'private', 'context', '4', '7', '7', 'sysadmin', '2017-10-09 20:23:34', 'sysadmin', '2017-10-09 20:23:34', ''),
+('8', 'event', 'core.event', 'edited', 'allocated', 'private', 'context', '4', '8', '8', 'sysadmin', '2017-10-09 20:23:56', 'sysadmin', '2017-10-09 20:23:56', '');
 
 -- --------------------------------------------------------
 
@@ -568,7 +722,8 @@ CREATE TABLE `ark_item_file` (
 --
 
 INSERT INTO `ark_item_file` (`id`, `module`, `schma`, `class`, `status`, `visibility`, `parent_module`, `parent_id`, `idx`, `label`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
-('4', 'file', 'core.file', 'image', 'allocated', 'private', NULL, NULL, '4', '4', 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', '');
+('4', 'file', 'core.file', 'image', 'allocated', 'private', NULL, NULL, '4', '4', 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+('7', 'file', 'core.file', 'image', 'allocated', 'private', NULL, NULL, '7', '7', 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', '');
 
 -- --------------------------------------------------------
 
@@ -671,7 +826,13 @@ CREATE TABLE `ark_item_message` (
 --
 
 INSERT INTO `ark_item_message` (`id`, `module`, `schma`, `class`, `status`, `visibility`, `parent_module`, `parent_id`, `idx`, `label`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
-('1', 'message', 'core.message', 'notification', 'allocated', 'private', NULL, NULL, '1', '1', 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', '');
+('1', 'message', 'core.message', 'notification', 'allocated', 'private', NULL, NULL, '1', '1', 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
+('3', 'message', 'core.message', 'notification', 'allocated', 'private', NULL, NULL, '3', '3', 'sysadmin', '2017-10-09 19:54:35', 'sysadmin', '2017-10-09 19:54:35', ''),
+('4', 'message', 'core.message', 'notification', 'allocated', 'private', NULL, NULL, '4', '4', 'sysadmin', '2017-10-09 19:56:12', 'sysadmin', '2017-10-09 19:56:12', ''),
+('5', 'message', 'core.message', 'notification', 'allocated', 'private', NULL, NULL, '5', '5', 'sysadmin', '2017-10-09 19:56:24', 'sysadmin', '2017-10-09 19:56:24', ''),
+('6', 'message', 'core.message', 'notification', 'allocated', 'private', NULL, NULL, '6', '6', 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
+('7', 'message', 'core.message', 'notification', 'allocated', 'private', NULL, NULL, '7', '7', 'sysadmin', '2017-10-09 20:23:34', 'sysadmin', '2017-10-09 20:23:34', ''),
+('8', 'message', 'core.message', 'notification', 'allocated', 'private', NULL, NULL, '8', '8', 'sysadmin', '2017-10-09 20:23:56', 'sysadmin', '2017-10-09 20:23:56', '');
 
 -- --------------------------------------------------------
 
@@ -711,30 +872,6 @@ INSERT INTO `ark_item_page` (`id`, `module`, `schma`, `class`, `status`, `visibi
 --
 
 CREATE TABLE `ark_item_photo` (
-  `id` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'actor',
-  `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'core.actor',
-  `class` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'allocated',
-  `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'restricted',
-  `parent_module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `parent_id` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `idx` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `label` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `modifier` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `modified` datetime NOT NULL,
-  `creator` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created` datetime NOT NULL,
-  `version` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ark_item_plan`
---
-
-CREATE TABLE `ark_item_plan` (
   `id` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'actor',
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'core.actor',
@@ -827,30 +964,6 @@ CREATE TABLE `ark_item_section` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ark_item_site`
---
-
-CREATE TABLE `ark_item_site` (
-  `id` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'actor',
-  `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'core.actor',
-  `class` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'allocated',
-  `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'restricted',
-  `parent_module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `parent_id` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `idx` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `label` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `modifier` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `modified` datetime NOT NULL,
-  `creator` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created` datetime NOT NULL,
-  `version` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `ark_item_subgroup`
 --
 
@@ -916,10 +1029,11 @@ CREATE TABLE `ark_sequence` (
 --
 
 INSERT INTO `ark_sequence` (`module`, `parent`, `sequence`, `idx`, `min`, `max`) VALUES
-('event', '', 'id', 2, NULL, NULL),
-('file', '', 'id', 5, NULL, NULL),
-('message', '', 'id', 2, NULL, NULL),
-('object', '', 'fid', 14, NULL, NULL);
+('context', '', 'id', 7, NULL, NULL),
+('event', '', 'id', 8, NULL, NULL),
+('file', '', 'id', 7, NULL, NULL),
+('message', '', 'id', 8, NULL, NULL),
+('object', '', 'fid', 16, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -965,7 +1079,30 @@ INSERT INTO `ark_sequence_lock` (`id`, `module`, `parent`, `sequence`, `idx`, `r
 (20, 'event', '', 'id', 1, 0, NULL, '2017-09-27 09:21:59'),
 (21, 'object', '', 'fid', 1, 0, NULL, '2017-09-27 09:21:59'),
 (22, 'object', '', 'fid', 1, 0, NULL, '2017-09-27 09:21:59'),
-(23, 'message', '', 'id', 1, 0, NULL, '2017-09-27 09:21:59');
+(23, 'message', '', 'id', 1, 0, NULL, '2017-09-27 09:21:59'),
+(24, 'context', '', 'id', 1, 0, NULL, '2017-10-09 20:37:55'),
+(25, 'context', '', 'id', 1, 0, NULL, '2017-10-09 20:38:56'),
+(26, 'context', '', 'id', 1, 0, NULL, '2017-10-09 20:43:25'),
+(27, 'context', '', 'id', 1, 0, NULL, '2017-10-09 20:50:01'),
+(28, 'event', '', 'id', 1, 0, NULL, '2017-10-09 20:54:35'),
+(29, 'message', '', 'id', 1, 0, NULL, '2017-10-09 20:54:35'),
+(30, 'event', '', 'id', 1, 0, NULL, '2017-10-09 20:56:12'),
+(31, 'message', '', 'id', 1, 0, NULL, '2017-10-09 20:56:12'),
+(32, 'event', '', 'id', 1, 0, NULL, '2017-10-09 20:56:24'),
+(33, 'message', '', 'id', 1, 0, NULL, '2017-10-09 20:56:24'),
+(34, 'file', '', 'id', 1, 0, NULL, '2017-10-09 21:00:45'),
+(35, 'object', '', 'fid', 1, 0, NULL, '2017-10-09 21:00:45'),
+(36, 'file', '', 'id', 1, 0, NULL, '2017-10-09 21:01:37'),
+(37, 'object', '', 'fid', 1, 0, NULL, '2017-10-09 21:01:37'),
+(38, 'event', '', 'id', 1, 0, NULL, '2017-10-09 21:01:37'),
+(39, 'message', '', 'id', 1, 0, NULL, '2017-10-09 21:01:37'),
+(40, 'event', '', 'id', 1, 0, NULL, '2017-10-09 21:23:34'),
+(41, 'message', '', 'id', 1, 0, NULL, '2017-10-09 21:23:34'),
+(42, 'event', '', 'id', 1, 0, NULL, '2017-10-09 21:23:56'),
+(43, 'message', '', 'id', 1, 0, NULL, '2017-10-09 21:23:56'),
+(44, 'context', '', 'id', 1, 0, NULL, '2017-10-09 22:34:10'),
+(45, 'context', '', 'id', 1, 0, NULL, '2017-10-10 09:54:41'),
+(46, 'context', '', 'id', 1, 0, NULL, '2017-10-11 15:21:40');
 
 -- --------------------------------------------------------
 
@@ -1185,9 +1322,27 @@ ALTER TABLE `ark_item_actor`
   ADD KEY `label` (`label`);
 
 --
+-- Indexes for table `ark_item_area`
+--
+ALTER TABLE `ark_item_area`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `parent` (`parent_module`,`parent_id`),
+  ADD KEY `idx` (`idx`),
+  ADD KEY `label` (`label`);
+
+--
 -- Indexes for table `ark_item_context`
 --
 ALTER TABLE `ark_item_context`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `parent` (`parent_module`,`parent_id`),
+  ADD KEY `idx` (`idx`),
+  ADD KEY `label` (`label`);
+
+--
+-- Indexes for table `ark_item_drawing`
+--
+ALTER TABLE `ark_item_drawing`
   ADD PRIMARY KEY (`id`),
   ADD KEY `parent` (`parent_module`,`parent_id`),
   ADD KEY `idx` (`idx`),
@@ -1266,15 +1421,6 @@ ALTER TABLE `ark_item_photo`
   ADD KEY `label` (`label`);
 
 --
--- Indexes for table `ark_item_plan`
---
-ALTER TABLE `ark_item_plan`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `parent` (`parent_module`,`parent_id`),
-  ADD KEY `idx` (`idx`),
-  ADD KEY `label` (`label`);
-
---
 -- Indexes for table `ark_item_project`
 --
 ALTER TABLE `ark_item_project`
@@ -1296,15 +1442,6 @@ ALTER TABLE `ark_item_sample`
 -- Indexes for table `ark_item_section`
 --
 ALTER TABLE `ark_item_section`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `parent` (`parent_module`,`parent_id`),
-  ADD KEY `idx` (`idx`),
-  ADD KEY `label` (`label`);
-
---
--- Indexes for table `ark_item_site`
---
-ALTER TABLE `ark_item_site`
   ADD PRIMARY KEY (`id`),
   ADD KEY `parent` (`parent_module`,`parent_id`),
   ADD KEY `idx` (`idx`),
@@ -1391,7 +1528,7 @@ ALTER TABLE `ark_fragment_date`
 -- AUTO_INCREMENT for table `ark_fragment_datetime`
 --
 ALTER TABLE `ark_fragment_datetime`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT for table `ark_fragment_decimal`
 --
@@ -1406,12 +1543,12 @@ ALTER TABLE `ark_fragment_float`
 -- AUTO_INCREMENT for table `ark_fragment_integer`
 --
 ALTER TABLE `ark_fragment_integer`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `ark_fragment_item`
 --
 ALTER TABLE `ark_fragment_item`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 --
 -- AUTO_INCREMENT for table `ark_fragment_spatial`
 --
@@ -1421,12 +1558,12 @@ ALTER TABLE `ark_fragment_spatial`
 -- AUTO_INCREMENT for table `ark_fragment_string`
 --
 ALTER TABLE `ark_fragment_string`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 --
 -- AUTO_INCREMENT for table `ark_fragment_text`
 --
 ALTER TABLE `ark_fragment_text`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 --
 -- AUTO_INCREMENT for table `ark_fragment_time`
 --
@@ -1436,7 +1573,7 @@ ALTER TABLE `ark_fragment_time`
 -- AUTO_INCREMENT for table `ark_sequence_lock`
 --
 ALTER TABLE `ark_sequence_lock`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 --
 -- Constraints for dumped tables
 --

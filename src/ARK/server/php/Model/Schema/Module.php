@@ -103,7 +103,7 @@ class Module
 
         // Fields
         $builder->addStringField('resource', 30);
-        $builder->addStringField('table', 30, 'tbl');
+        $builder->addMappedStringField('tbl', 'table', 30);
         $builder->addField('core', 'boolean');
         EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);

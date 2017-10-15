@@ -40,12 +40,16 @@ class SchemaClass
     use EnabledTrait;
 
     protected $schema;
-    protected $class;
+    protected $name;
     protected $vocabulary;
+    protected $namespace;
     protected $entity;
     protected $classname;
     protected $superclass;
-    protected $valid;
+    protected $instantiable;
+    protected $attributes;
+    protected $associations;
+    protected $subschemas;
 
     public function schema() : Schema
     {
@@ -129,6 +133,7 @@ class SchemaClass
         $builder->addCompositeOneToManyField(
             'attributes',
             SchemaAttribute::class,
+            'schma',
             [
                 ['column' => 'schma', 'nullable' => false],
                 ['column' => 'class', 'nullable' => false],
@@ -137,18 +142,22 @@ class SchemaClass
         $builder->addCompositeOneToManyField(
             'associations',
             SchemaAssociation::class,
+            'schma',
             [
                 ['column' => 'schma', 'nullable' => false],
                 ['column' => 'class', 'nullable' => false],
             ]
         );
+        /*
         $builder->addCompositeOneToManyField(
             'subschemas',
             ModelSubschema::class,
+            'schma',
             [
                 ['column' => 'schma', 'nullable' => false],
                 ['column' => 'class', 'nullable' => false],
             ]
         );
+        */
     }
 }

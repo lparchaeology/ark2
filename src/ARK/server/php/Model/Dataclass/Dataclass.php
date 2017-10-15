@@ -295,7 +295,7 @@ abstract class Dataclass
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Associations
-        $builder->addRequirdManyToOneField('datatype', Datatype::class);
+        $builder->addRequiredManyToOneField('datatype', Datatype::class);
     }
 
     protected function fragmentValue($fragment, Collection $properties = null)
