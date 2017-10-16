@@ -408,6 +408,20 @@ class Database
         $this->data()->insert('ark_fragment_datetime', $read);
     }
 
+    public function getItem(string $table, string $id) : ?iterable
+    {
+        $sql = "
+            SELECT *
+            FROM $table
+            WHERE id = :id
+        ";
+        $params = [
+            ':id' => $id,
+        ];
+
+        return $this->data()->fetchAssoc($sql, $params);
+    }
+
     public function findSearch(iterable $query) : ?iterable
     {
         $pre = "
