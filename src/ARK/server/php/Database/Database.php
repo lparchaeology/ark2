@@ -91,10 +91,10 @@ class Database
         return $this->classnames[$namespace] ?? [];
     }
 
-    public function getEntitiesForSchema($schema) : ?string
+    public function getEntitiesForSchema($schema) : ?iterable
     {
         $this->loadEntities();
-        return $this->entities['schema'][$schema];
+        return $this->entities['schema'][$schema] ?? [];
     }
 
     public function getSuperclassForSchema($schema) : ?string
@@ -537,11 +537,11 @@ class Database
             if ($entity['superclass'] || $entity['entities']) {
                 $this->entities['classname'][$entity['classname']] = $entity;
                 $this->entities['namespace'][$entity['namespace']][] = $entity;
-                $this->entities['entity'][$entity['entity']][] = $entity;
-                $this->entities['schema'][$entity['schma']][] = $entity;
-                $this->entities['module'][$entity['module']][] = $entity;
-                $this->classnames[$entity['namespace']][] = $entity['classname'];
             }
+            $this->entities['entity'][$entity['entity']][] = $entity;
+            $this->entities['schema'][$entity['schma']][] = $entity;
+            $this->entities['module'][$entity['module']][] = $entity;
+            $this->classnames[$entity['namespace']][] = $entity['classname'];
             if ($entity['entities'] && !$entity['superclass']) {
                 $this->subclasses[$entity['schma']][] = $entity;
             }

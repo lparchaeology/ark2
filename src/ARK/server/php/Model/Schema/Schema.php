@@ -66,13 +66,14 @@ class Schema
     protected $delete;
     protected $model;
     protected $superclass;
-    protected $subclasses;
+    protected $classes;
+    protected $subclassNames;
     protected $attributes;
     protected $associations;
 
     public function __construct()
     {
-        $this->subclasses = new ArrayCollection();
+        $this->classes = new ArrayCollection();
         $this->attributes = new ArrayCollection();
         $this->associations = new ArrayCollection();
     }
@@ -115,7 +116,7 @@ class Schema
     public function subclassNames() : iterable
     {
         $this->init();
-        return $this->subclasses;
+        return $this->subclassNames;
     }
 
     public function generator() : string
@@ -268,7 +269,7 @@ class Schema
             if ($class === $this->superclass) {
                 throw new SubclassRequiredException();
             }
-            if (!in_array($class, $this->subclasses, true)) {
+            if (!in_array($class, $this->subclassNames, true)) {
                 throw new SubclassInvalidException();
             }
         } else {
@@ -285,8 +286,8 @@ class Schema
             return;
         }
         $this->model = [];
-        $this->subclasses = [];
-        $entities = Service::database()->getEntitiesForSchema($this->schma);
+        $this->subclassNames = [];
+        $entities = Service::database()->getEntitiesForSchema($this->name);
         foreach ($entities as $entity) {
             $class = $entity['class'];
             $this->model[$class]['attributes'] = [];
@@ -296,7 +297,7 @@ class Schema
                 $this->model[$this->superclass]['allattributes'] = [];
                 $this->model[$this->superclass]['allassociations'] = [];
             } else {
-                $this->subclasses[] = $class;
+                $this->subclassNames[] = $class;
             }
         }
         foreach ($this->attributes as $attribute) {
