@@ -286,7 +286,6 @@ class Security
         ORM::flush($aus);
         ORM::remove($user);
         ORM::flush($user);
-        $this->sendResetMessage($user);
     }
 
     public function requestPassword(User $user) : void
