@@ -281,8 +281,10 @@ class Security
 
     public function deleteUser(User $user) : void
     {
-        $aus = ORM::findBy(ActorUser::class, ['user' => $this->id()]);
+        $aus = ORM::findBy(ActorUser::class, ['user' => $user->id()]);
+        ORM::remove($aus);
         ORM::flush($aus);
+        ORM::remove($user);
         ORM::flush($user);
         $this->sendResetMessage($user);
     }

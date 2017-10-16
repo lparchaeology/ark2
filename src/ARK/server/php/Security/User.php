@@ -457,7 +457,7 @@ class User implements AdvancedUserInterface, Serializable
     public function roles() : iterable
     {
         $roles = [];
-        foreach ($user->actors() as $actor) {
+        foreach ($this->actors() as $actor) {
             foreach ($actor->roles() as $role) {
                 $roles[$role->role()->id()] = $role->role();
             }

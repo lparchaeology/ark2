@@ -92,8 +92,14 @@ class ORM
 
     public static function flush($entity) : void
     {
-        if (is_object($entity) || is_array($entity)) {
+        if (is_object($entity) && !self::contains($entity)) {
             self::persist($entity);
+        } elseif (is_array($entity)) {
+            foreach ($entity as $ent) {
+                if (is_object($ent) && !self::contains($ent)) {
+                    self::persist($ent);
+                }
+            }
         }
         self::manager($entity)->flush();
     }
