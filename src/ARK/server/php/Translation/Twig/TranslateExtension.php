@@ -78,7 +78,7 @@ class TranslateExtension extends Twig_Extension
     }
 
     public function translate(
-        string $message = null,
+        ?string $message,
         string $role = null,
         iterable $arguments = [],
         string $domain = null,
@@ -98,8 +98,8 @@ class TranslateExtension extends Twig_Extension
     }
 
     public function translatechoice(
-        string $message = null,
-        int $count = 0,
+        ?string $message,
+        int $count,
         string $role = null,
         iterable $arguments = [],
         string $domain = null,

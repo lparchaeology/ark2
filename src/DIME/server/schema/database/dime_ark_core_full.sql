@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
+-- version 4.6.6deb4
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Oct 03, 2017 at 07:27 PM
--- Server version: 10.2.8-MariaDB
--- PHP Version: 7.1.8
+-- Host: localhost:3306
+-- Generation Time: Oct 16, 2017 at 04:51 PM
+-- Server version: 10.1.26-MariaDB-0+deb9u1
+-- PHP Version: 7.1.10-1+0~20170929170818.9+stretch~1.gbp501135
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -32,10 +32,10 @@ SET time_zone = "+00:00";
 CREATE TABLE `ark_dataclass` (
   `dataclass` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `datatype` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `object` tinyint(1) NOT NULL DEFAULT 0,
-  `array` tinyint(1) NOT NULL DEFAULT 0,
-  `span` tinyint(1) NOT NULL DEFAULT 0,
-  `multiple` tinyint(1) NOT NULL DEFAULT 0,
+  `object` tinyint(1) NOT NULL DEFAULT '0',
+  `array` tinyint(1) NOT NULL DEFAULT '0',
+  `span` tinyint(1) NOT NULL DEFAULT '0',
+  `multiple` tinyint(1) NOT NULL DEFAULT '0',
   `value_name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `format_name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `format_vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -48,10 +48,10 @@ CREATE TABLE `ark_dataclass` (
   `static_form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parameter_form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `format_form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `sortable` tinyint(1) NOT NULL DEFAULT 1,
-  `searchable` tinyint(1) NOT NULL DEFAULT 1,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
+  `sortable` tinyint(1) NOT NULL DEFAULT '1',
+  `searchable` tinyint(1) NOT NULL DEFAULT '1',
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -126,15 +126,15 @@ CREATE TABLE `ark_dataclass_attribute` (
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `dataclass` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `sequence` int(11) NOT NULL,
-  `root` tinyint(1) NOT NULL DEFAULT 0,
-  `span` tinyint(1) NOT NULL DEFAULT 0,
-  `minimum` int(11) NOT NULL DEFAULT 0,
-  `maximum` int(11) NOT NULL DEFAULT 1,
-  `unique_values` int(11) NOT NULL DEFAULT 1,
-  `additional_values` int(11) NOT NULL DEFAULT 0,
+  `root` tinyint(1) NOT NULL DEFAULT '0',
+  `span` tinyint(1) NOT NULL DEFAULT '0',
+  `minimum` int(11) NOT NULL DEFAULT '0',
+  `maximum` int(11) NOT NULL DEFAULT '1',
+  `unique_values` int(11) NOT NULL DEFAULT '1',
+  `additional_values` int(11) NOT NULL DEFAULT '0',
   `vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -178,7 +178,7 @@ INSERT INTO `ark_dataclass_attribute` (`parent`, `attribute`, `dataclass`, `sequ
 
 CREATE TABLE `ark_dataclass_blob` (
   `dataclass` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `preset` blob DEFAULT NULL
+  `preset` blob
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -260,12 +260,12 @@ INSERT INTO `ark_dataclass_datetime` (`dataclass`, `pattern`, `unicode`, `php`, 
 
 CREATE TABLE `ark_dataclass_decimal` (
   `dataclass` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `prec` int(11) NOT NULL DEFAULT 200,
-  `scale` int(11) NOT NULL DEFAULT 0,
+  `prec` int(11) NOT NULL DEFAULT '200',
+  `scale` int(11) NOT NULL DEFAULT '0',
   `minimum` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `exclusive_minimum` tinyint(1) NOT NULL DEFAULT 0,
+  `exclusive_minimum` tinyint(1) NOT NULL DEFAULT '0',
   `maximum` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `exclusive_maximum` tinyint(1) NOT NULL DEFAULT 0,
+  `exclusive_maximum` tinyint(1) NOT NULL DEFAULT '0',
   `multiple_of` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `preset` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -288,9 +288,9 @@ INSERT INTO `ark_dataclass_decimal` (`dataclass`, `prec`, `scale`, `minimum`, `e
 CREATE TABLE `ark_dataclass_float` (
   `dataclass` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `minimum` double DEFAULT NULL,
-  `exclusive_minimum` tinyint(1) NOT NULL DEFAULT 0,
+  `exclusive_minimum` tinyint(1) NOT NULL DEFAULT '0',
   `maximum` double DEFAULT NULL,
-  `exclusive_maximum` tinyint(1) NOT NULL DEFAULT 0,
+  `exclusive_maximum` tinyint(1) NOT NULL DEFAULT '0',
   `multiple_of` double DEFAULT NULL,
   `preset` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -312,10 +312,10 @@ INSERT INTO `ark_dataclass_float` (`dataclass`, `minimum`, `exclusive_minimum`, 
 CREATE TABLE `ark_dataclass_integer` (
   `dataclass` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `minimum` int(11) DEFAULT NULL,
-  `exclusive_minimum` tinyint(1) NOT NULL DEFAULT 0,
+  `exclusive_minimum` tinyint(1) NOT NULL DEFAULT '0',
   `maximum` int(11) DEFAULT NULL,
-  `exclusive_maximum` tinyint(1) NOT NULL DEFAULT 0,
-  `multiple_of` int(11) DEFAULT 1,
+  `exclusive_maximum` tinyint(1) NOT NULL DEFAULT '0',
+  `multiple_of` int(11) DEFAULT '1',
   `preset` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -382,7 +382,7 @@ CREATE TABLE `ark_dataclass_spatial` (
   `srid` int(11) DEFAULT NULL,
   `format` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `extent` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `preset` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `preset` longtext COLLATE utf8mb4_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -437,7 +437,7 @@ CREATE TABLE `ark_dataclass_text` (
   `min_length` int(11) NOT NULL,
   `max_length` int(11) NOT NULL,
   `default_size` int(11) NOT NULL,
-  `preset` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `preset` longtext COLLATE utf8mb4_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -483,8 +483,8 @@ CREATE TABLE `ark_dataclass_type` (
   `datatype` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `number` tinyint(1) NOT NULL,
   `temporal` tinyint(1) NOT NULL,
-  `object` tinyint(1) NOT NULL DEFAULT 0,
-  `compound` tinyint(1) NOT NULL DEFAULT 1,
+  `object` tinyint(1) NOT NULL DEFAULT '0',
+  `compound` tinyint(1) NOT NULL DEFAULT '1',
   `storage_type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `storage_size` int(11) DEFAULT NULL,
   `value_name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -492,7 +492,7 @@ CREATE TABLE `ark_dataclass_type` (
   `parameter_vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `format_name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `format_vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `spanable` tinyint(1) NOT NULL DEFAULT 1,
+  `spanable` tinyint(1) NOT NULL DEFAULT '1',
   `model_table` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `model_entity` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `data_table` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -503,8 +503,8 @@ CREATE TABLE `ark_dataclass_type` (
   `static_form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parameter_form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `format_form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -530,64 +530,15 @@ INSERT INTO `ark_dataclass_type` (`datatype`, `number`, `temporal`, `object`, `c
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ark_instance`
---
-
-CREATE TABLE `ark_instance` (
-  `instance` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `deprecated` tinyint(1) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `ark_instance`
---
-
-INSERT INTO `ark_instance` (`instance`, `enabled`, `deprecated`) VALUES
-('core', 0, 0),
-('dime', 1, 0);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `ark_instance_route`
 --
 
 CREATE TABLE `ark_instance_route` (
   `instance` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `route` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `deprecated` tinyint(1) NOT NULL DEFAULT 0
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ark_instance_schema`
---
-
-CREATE TABLE `ark_instance_schema` (
-  `instance` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `deprecated` tinyint(1) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `ark_instance_schema`
---
-
-INSERT INTO `ark_instance_schema` (`instance`, `schma`, `enabled`, `deprecated`) VALUES
-('core', 'core.actor', 1, 0),
-('core', 'core.event', 1, 0),
-('core', 'core.file', 1, 0),
-('core', 'core.message', 1, 0),
-('core', 'core.page', 1, 0),
-('dime', 'core.actor', 1, 0),
-('dime', 'core.file', 1, 0),
-('dime', 'core.message', 1, 0),
-('dime', 'core.page', 1, 0),
-('dime', 'dime.find', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -597,9 +548,9 @@ INSERT INTO `ark_instance_schema` (`instance`, `schma`, `enabled`, `deprecated`)
 
 CREATE TABLE `ark_map` (
   `map` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `draggable` tinyint(1) NOT NULL DEFAULT 1,
-  `clickable` tinyint(1) NOT NULL DEFAULT 1,
-  `zoomable` tinyint(1) NOT NULL DEFAULT 1,
+  `draggable` tinyint(1) NOT NULL DEFAULT '1',
+  `clickable` tinyint(1) NOT NULL DEFAULT '1',
+  `zoomable` tinyint(1) NOT NULL DEFAULT '1',
   `zoom` int(11) NOT NULL,
   `min_zoom` int(11) DEFAULT NULL,
   `max_zoom` int(11) DEFAULT NULL,
@@ -656,9 +607,9 @@ CREATE TABLE `ark_map_legend` (
   `source` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `layer` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `seq` int(11) NOT NULL,
-  `is_default` tinyint(1) NOT NULL DEFAULT 0,
-  `visible` tinyint(1) NOT NULL DEFAULT 0,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  `is_default` tinyint(1) NOT NULL DEFAULT '0',
+  `visible` tinyint(1) NOT NULL DEFAULT '0',
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `options` varchar(4000) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -708,35 +659,326 @@ INSERT INTO `ark_map_source` (`source`, `type`, `subtype`, `format`, `view_class
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ark_module`
+-- Table structure for table `ark_model`
 --
 
-CREATE TABLE `ark_module` (
-  `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `superclass` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `resource` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `project` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `namespace` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `entity` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `classname` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tbl` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `core` tinyint(1) NOT NULL DEFAULT 0,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
+CREATE TABLE `ark_model` (
+  `model` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
+  `keyword` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ark_model`
+--
+
+INSERT INTO `ark_model` (`model`, `enabled`, `deprecated`, `keyword`) VALUES
+('dime', 1, 0, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_model_association`
+--
+
+CREATE TABLE `ark_model_association` (
+  `model` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `class` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `association` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `schema1` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `schema2` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_model_attribute`
+--
+
+CREATE TABLE `ark_model_attribute` (
+  `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `class` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `dataclass` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `event` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `edit` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `view` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `span` tinyint(1) NOT NULL DEFAULT '0',
+  `minimum` int(11) NOT NULL DEFAULT '0',
+  `maximum` int(11) NOT NULL DEFAULT '1',
+  `unique_values` int(11) NOT NULL DEFAULT '1',
+  `additional_values` int(11) NOT NULL DEFAULT '0',
+  `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'public',
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `ark_module`
+-- Dumping data for table `ark_model_attribute`
 --
 
-INSERT INTO `ark_module` (`module`, `superclass`, `resource`, `project`, `namespace`, `entity`, `classname`, `tbl`, `core`, `enabled`, `deprecated`, `keyword`) VALUES
-('actor', 'actor', 'actors', 'ARK', 'ARK\\Actor', 'Actor', 'ARK\\Actor\\Actor', 'ark_item_actor', 1, 1, 0, 'core.actor'),
-('event', 'event', 'events', 'ARK', 'ARK\\Workflow', 'Event', 'ARK\\Workflow\\Event', 'ark_item_event', 1, 1, 0, 'core.event'),
-('file', 'file', 'files', 'ARK', 'ARK\\File', 'File', 'ARK\\File\\File', 'ark_item_file', 1, 1, 0, 'core.file'),
-('find', 'find', 'finds', 'DIME', 'DIME\\Entity', 'Find', 'DIME\\Entity\\Find', 'ark_item_find', 0, 1, 0, 'dime.find'),
-('message', 'message', 'messages', 'ARK', 'ARK\\Message', 'Message', 'ARK\\Message\\Message', 'ark_item_message', 1, 1, 0, 'core.message'),
-('page', 'page', 'page', 'ARK', 'ARK\\Entity', 'Page', 'ARK\\Entity\\Page', 'ark_item_page', 1, 1, 0, 'core.page');
+INSERT INTO `ark_model_attribute` (`schma`, `class`, `attribute`, `dataclass`, `vocabulary`, `event`, `edit`, `view`, `span`, `minimum`, `maximum`, `unique_values`, `additional_values`, `visibility`, `enabled`, `deprecated`, `keyword`) VALUES
+('core.actor', 'actor', 'address', 'address', NULL, NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'core.actor.address'),
+('core.actor', 'actor', 'avatar', 'image', NULL, NULL, NULL, NULL, 0, 0, 1, 1, 0, 'public', 1, 0, 'core.actor.avatar'),
+('core.actor', 'actor', 'biography', 'plaintext', NULL, NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'core.actor.biography'),
+('core.actor', 'actor', 'class', 'term', 'core.actor.class', NULL, 'core.actor.update', 'core.actor.read', 0, 1, 1, 1, 0, 'restricted', 1, 0, 'core.actor.class'),
+('core.actor', 'actor', 'email', 'email', NULL, NULL, 'core.actor.update', 'core.actor.read', 0, 1, 1, 1, 0, 'restricted', 1, 0, 'core.actor.email'),
+('core.actor', 'actor', 'fullname', 'shorttext', NULL, NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'core.actor.fullname'),
+('core.actor', 'actor', 'id', 'identifier', NULL, NULL, 'core.actor.update', 'core.actor.read', 0, 1, 1, 1, 0, 'restricted', 1, 0, 'core.actor.id'),
+('core.actor', 'actor', 'initials', 'shorttext', NULL, NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'core.actor.initials'),
+('core.actor', 'actor', 'shortname', 'shorttext', NULL, NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'core.actor.shortname'),
+('core.actor', 'actor', 'telephone', 'telephone', NULL, NULL, 'core.actor.update', 'core.actor.read', 0, 1, 1, 1, 0, 'restricted', 1, 0, 'core.actor.telephone'),
+('core.actor', 'museum', 'municipality', 'term', 'dime.denmark.municipality', NULL, NULL, NULL, 0, 0, 0, 1, 0, 'public', 1, 0, 'dime.actor.municipality'),
+('core.actor', 'museum', 'participating', 'boolean', NULL, NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'dime.actor.participating'),
+('core.actor', 'person', 'detectorist_id', 'identifier', NULL, NULL, 'core.admin', 'core.actor.read', 0, 1, 1, 1, 0, 'restricted', 1, 0, 'dime.user.detectorist.id'),
+('core.actor', 'person', 'status', 'term', 'core.security.status', NULL, 'core.admin.user', 'core.admin.user', 0, 1, 1, 1, 0, 'restricted', 1, 0, 'core.security.status'),
+('core.actor', 'person', 'terms', 'term', 'core.user.terms', NULL, 'core.actor.update', 'core.actor.read', 0, 1, 1, 1, 0, 'restricted', 1, 0, 'core.user.terms'),
+('core.event', 'event', 'agents', 'actor', NULL, NULL, NULL, NULL, 0, 1, 0, 1, 0, 'public', 1, 0, 'core.event.agent'),
+('core.event', 'event', 'class', 'term', 'core.event.class', NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'core.event.class'),
+('core.event', 'event', 'id', 'identifier', NULL, NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'core.event.id'),
+('core.event', 'event', 'occurred', 'datetime', NULL, NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'core.event.occurred'),
+('core.event', 'event', 'subject', 'item', NULL, NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'core.event.subject'),
+('core.file', 'file', 'class', 'term', 'core.file.class', NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'core.file.class'),
+('core.file', 'file', 'copyright', 'actor', NULL, NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'core.file.copyright'),
+('core.file', 'file', 'description', 'plaintext', NULL, NULL, NULL, NULL, 0, 0, 1, 1, 0, 'public', 1, 0, 'core.file.description'),
+('core.file', 'file', 'id', 'identifier', NULL, NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'core.file.id'),
+('core.file', 'file', 'license', 'term', 'core.license', NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'core.file.status'),
+('core.file', 'file', 'mediatype', 'term', 'mediatype', NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'core.file.mediatype'),
+('core.file', 'file', 'status', 'term', 'core.file.status', NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'core.file.status'),
+('core.file', 'file', 'title', 'shorttext', NULL, NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'core.file.title'),
+('core.file', 'file', 'versions', 'version', NULL, NULL, NULL, NULL, 0, 1, 0, 1, 0, 'public', 1, 0, 'core.file.versions'),
+('core.message', 'mail', 'attachments', 'file', NULL, NULL, NULL, NULL, 0, 0, 0, 1, 0, 'public', 1, 0, 'core.message.mail.attachments'),
+('core.message', 'mail', 'body', 'plaintext', NULL, NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'core.message.mail.body'),
+('core.message', 'mail', 'subject', 'shorttext', NULL, NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'core.message.mail.subject'),
+('core.message', 'message', 'class', 'term', 'core.message.class', NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'core.message.class'),
+('core.message', 'message', 'id', 'identifier', NULL, NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'core.message.id'),
+('core.message', 'message', 'recipients', 'dispatch', NULL, NULL, NULL, NULL, 0, 1, 0, 1, 0, 'public', 1, 0, 'core.message.recipients'),
+('core.message', 'message', 'sender', 'actor', NULL, NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'core.message.sender'),
+('core.message', 'message', 'sent', 'datetime', NULL, NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'core.message.sent_at'),
+('core.message', 'notification', 'event', 'event', NULL, NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'core.message.notification.event'),
+('core.page', 'page', 'content', 'html', NULL, NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'property.content'),
+('core.page', 'page', 'id', 'identifier', NULL, NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'core.page.id'),
+('dime.find', 'coin', 'issuer', 'shorttext', NULL, NULL, NULL, NULL, 0, 0, 1, 1, 0, 'public', 1, 0, 'dime.find.issuer'),
+('dime.find', 'coin', 'mint', 'shorttext', NULL, NULL, NULL, NULL, 0, 0, 1, 1, 0, 'public', 1, 0, 'dime.find.mint'),
+('dime.find', 'find', 'case', 'identifier', NULL, NULL, NULL, NULL, 0, 0, 1, 1, 0, 'public', 1, 0, 'dime.find.case'),
+('dime.find', 'find', 'claim', 'file', NULL, NULL, NULL, NULL, 0, 0, 1, 1, 1, 'restricted', 1, 0, 'dime.find.claim'),
+('dime.find', 'find', 'class', 'term', 'dime.find.class', NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'dime.find.class'),
+('dime.find', 'find', 'classification', 'classification', NULL, NULL, NULL, NULL, 0, 0, 1, 1, 0, 'public', 1, 0, 'dime.find.classification'),
+('dime.find', 'find', 'condition', 'term', 'dime.find.condition', NULL, NULL, NULL, 0, 0, 1, 1, 0, 'public', 1, 0, 'dime.find.condition'),
+('dime.find', 'find', 'custodian', 'actor', NULL, NULL, 'dime.find.update.custody', 'dime.find.read.custody', 0, 1, 1, 1, 0, 'restricted', 1, 0, 'dime.find.custodian'),
+('dime.find', 'find', 'custody', 'term', 'dime.find.custody', NULL, 'dime.find.update.custody', 'dime.find.read.custody', 0, 1, 1, 1, 0, 'restricted', 1, 0, 'dime.find.custody'),
+('dime.find', 'find', 'dating', 'dating', NULL, NULL, NULL, NULL, 0, 0, 1, 1, 0, 'public', 1, 0, 'dime.find.dating'),
+('dime.find', 'find', 'description', 'description', NULL, NULL, NULL, NULL, 0, 0, 1, 1, 0, 'public', 1, 0, 'dime.find.description'),
+('dime.find', 'find', 'finddate', 'date', NULL, NULL, 'dime.find.update.finddate', 'dime.find.read.finddate', 0, 0, 1, 1, 0, 'restricted', 1, 0, 'dime.find.finddate'),
+('dime.find', 'find', 'finder', 'person', NULL, NULL, 'dime.find.update.finder', 'dime.find.read.finder', 0, 1, 1, 1, 0, 'restricted', 1, 0, 'dime.find.finder'),
+('dime.find', 'find', 'finder_id', 'identifier', NULL, NULL, 'dime.find.update.finder', 'dime.find.read.finder', 0, 0, 1, 1, 0, 'restricted', 1, 0, 'dime.find.finder_id'),
+('dime.find', 'find', 'finder_place', 'identifier', NULL, NULL, 'dime.find.update.finder', 'dime.find.read.finder', 0, 0, 1, 1, 0, 'restricted', 1, 0, 'dime.find.finder_place'),
+('dime.find', 'find', 'id', 'identifier', NULL, NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'dime.find.id'),
+('dime.find', 'find', 'image', 'image', NULL, NULL, NULL, NULL, 0, 0, 3, 1, 1, 'public', 1, 0, 'dime.find.images'),
+('dime.find', 'find', 'length', 'distance', NULL, NULL, NULL, NULL, 0, 0, 1, 1, 0, 'public', 1, 0, 'dime.find.length'),
+('dime.find', 'find', 'location', 'wkt', NULL, NULL, 'dime.find.update.location', 'dime.find.read.location', 0, 1, 1, 1, 0, 'restricted', 1, 0, 'dime.find.location'),
+('dime.find', 'find', 'material', 'term', 'dime.material', NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'dime.find.material'),
+('dime.find', 'find', 'municipality', 'term', 'dime.denmark.municipality', NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'dime.find.municipality'),
+('dime.find', 'find', 'museum', 'museum', NULL, NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'core.actor.class.museum'),
+('dime.find', 'find', 'museum_id', 'identifier', NULL, NULL, 'dime.find.update.museum_id', 'dime.find.read', 0, 0, 1, 1, 0, 'restricted', 1, 0, 'dime.find.museum_id'),
+('dime.find', 'find', 'owner', 'actor', NULL, NULL, 'dime.find.update.owner', 'dime.find.read.owner', 0, 1, 1, 1, 0, 'restricted', 1, 0, 'dime.find.owner'),
+('dime.find', 'find', 'process', 'term', 'dime.find.process', NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'dime.find.process'),
+('dime.find', 'find', 'recipient', 'actor', NULL, NULL, 'dime.find.update.custody', 'dime.find.read.custody', 0, 0, 1, 1, 0, 'restricted', 1, 0, 'dime.find.recipient'),
+('dime.find', 'find', 'recorder', 'actor', NULL, NULL, 'dime.find.update.finder', 'dime.find.read.finder', 0, 1, 1, 1, 0, 'restricted', 1, 0, 'dime.find.recorder'),
+('dime.find', 'find', 'secondary', 'term', 'dime.find.secondary', NULL, NULL, NULL, 0, 0, 0, 1, 0, 'public', 1, 0, 'dime.find.material.secondary'),
+('dime.find', 'find', 'treasure', 'term', 'dime.treasure', NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'dime.find.treasure'),
+('dime.find', 'find', 'visibility', 'term', 'core.visibility', NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'dime.find.visibility'),
+('dime.find', 'find', 'weight', 'mass', NULL, NULL, NULL, NULL, 0, 0, 1, 1, 0, 'public', 1, 0, 'dime.find.weight');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_model_class`
+--
+
+CREATE TABLE `ark_model_class` (
+  `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `class` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `namespace` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `entity` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `classname` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `superclass` tinyint(1) NOT NULL DEFAULT '0',
+  `instantiable` tinyint(1) NOT NULL DEFAULT '1',
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ark_model_class`
+--
+
+INSERT INTO `ark_model_class` (`schma`, `class`, `vocabulary`, `namespace`, `entity`, `classname`, `superclass`, `instantiable`, `enabled`, `deprecated`) VALUES
+('core.actor', 'actor', 'core.actor.class', 'ARK\\Actor', 'Actor', 'ARK\\Actor\\Actor', 1, 0, 1, 0),
+('core.actor', 'museum', 'core.actor.class', 'ARK\\Actor', 'Museum', 'ARK\\Actor\\Museum', 0, 1, 1, 0),
+('core.actor', 'person', 'core.actor.class', 'ARK\\Actor', 'Person', 'ARK\\Actor\\Person', 0, 1, 1, 0),
+('core.event', 'accessioned', 'core.event.class', 'ARK\\Workflow', 'Event', 'ARK\\Workflow\\Event', 0, 1, 1, 0),
+('core.event', 'activated', 'core.event.class', 'ARK\\Workflow', 'Event', 'ARK\\Workflow\\Event', 0, 1, 1, 0),
+('core.event', 'appraised', 'core.event.class', 'ARK\\Workflow', 'Event', 'ARK\\Workflow\\Event', 0, 1, 1, 0),
+('core.event', 'approved', 'core.event.class', 'ARK\\Workflow', 'Event', 'ARK\\Workflow\\Event', 0, 1, 1, 0),
+('core.event', 'cancelled', 'core.event.class', 'ARK\\Workflow', 'Event', 'ARK\\Workflow\\Event', 0, 1, 1, 0),
+('core.event', 'claimed', 'core.event.class', 'ARK\\Workflow', 'Event', 'ARK\\Workflow\\Event', 0, 1, 1, 0),
+('core.event', 'destroyed', 'core.event.class', 'ARK\\Workflow', 'Event', 'ARK\\Workflow\\Event', 0, 1, 1, 0),
+('core.event', 'discarded', 'core.event.class', 'ARK\\Workflow', 'Event', 'ARK\\Workflow\\Event', 0, 1, 1, 0),
+('core.event', 'edited', 'core.event.class', 'ARK\\Workflow', 'Event', 'ARK\\Workflow\\Event', 0, 1, 1, 0),
+('core.event', 'evaluated', 'core.event.class', 'ARK\\Workflow', 'Event', 'ARK\\Workflow\\Event', 0, 1, 1, 0),
+('core.event', 'event', 'core.event.class', 'ARK\\Workflow', 'Event', 'ARK\\Workflow\\Event', 1, 1, 1, 0),
+('core.event', 'loaned', 'core.event.class', 'ARK\\Workflow', 'Event', 'ARK\\Workflow\\Event', 0, 1, 1, 0),
+('core.event', 'locked', 'core.event.class', 'ARK\\Workflow', 'Event', 'ARK\\Workflow\\Event', 0, 1, 1, 0),
+('core.event', 'lost', 'core.event.class', 'ARK\\Workflow', 'Event', 'ARK\\Workflow\\Event', 0, 1, 1, 0),
+('core.event', 'published', 'core.event.class', 'ARK\\Workflow', 'Event', 'ARK\\Workflow\\Event', 0, 1, 1, 0),
+('core.event', 'received', 'core.event.class', 'ARK\\Workflow', 'Event', 'ARK\\Workflow\\Event', 0, 1, 1, 0),
+('core.event', 'recorded', 'core.event.class', 'ARK\\Workflow', 'Event', 'ARK\\Workflow\\Event', 0, 1, 1, 0),
+('core.event', 'recovered', 'core.event.class', 'ARK\\Workflow', 'Event', 'ARK\\Workflow\\Event', 0, 1, 1, 0),
+('core.event', 'registered', 'core.event.class', 'ARK\\Workflow', 'Event', 'ARK\\Workflow\\Event', 0, 1, 1, 0),
+('core.event', 'rejected', 'core.event.class', 'ARK\\Workflow', 'Event', 'ARK\\Workflow\\Event', 0, 1, 1, 0),
+('core.event', 'released', 'core.event.class', 'ARK\\Workflow', 'Event', 'ARK\\Workflow\\Event', 0, 1, 1, 0),
+('core.event', 'reported', 'core.event.class', 'ARK\\Workflow', 'Event', 'ARK\\Workflow\\Event', 0, 1, 1, 0),
+('core.event', 'requested', 'core.event.class', 'ARK\\Workflow', 'Event', 'ARK\\Workflow\\Event', 0, 1, 1, 0),
+('core.event', 'restored', 'core.event.class', 'ARK\\Workflow', 'Event', 'ARK\\Workflow\\Event', 0, 1, 1, 0),
+('core.event', 'submitted', 'core.event.class', 'ARK\\Workflow', 'Event', 'ARK\\Workflow\\Event', 0, 1, 1, 0),
+('core.event', 'suspended', 'core.event.class', 'ARK\\Workflow', 'Event', 'ARK\\Workflow\\Event', 0, 1, 1, 0),
+('core.event', 'transferred', 'core.event.class', 'ARK\\Workflow', 'Event', 'ARK\\Workflow\\Event', 0, 1, 1, 0),
+('core.event', 'unlocked', 'core.event.class', 'ARK\\Workflow', 'Event', 'ARK\\Workflow\\Event', 0, 1, 1, 0),
+('core.event', 'viewed', 'core.event.class', 'ARK\\Workflow', 'Event', 'ARK\\Workflow\\Event', 0, 1, 1, 0),
+('core.event', 'withheld', 'core.event.class', 'ARK\\Workflow', 'Event', 'ARK\\Workflow\\Event', 0, 1, 1, 0),
+('core.file', 'audio', 'core.file.class', 'ARK\\File', 'Audio', 'ARK\\File\\Audio', 0, 1, 1, 0),
+('core.file', 'document', 'core.file.class', 'ARK\\File', 'Document', 'ARK\\File\\Document', 0, 1, 1, 0),
+('core.file', 'file', 'core.file.class', 'ARK\\File', 'File', 'ARK\\File\\File', 1, 0, 1, 0),
+('core.file', 'image', 'core.file.class', 'ARK\\File', 'Image', 'ARK\\File\\Image', 0, 1, 1, 0),
+('core.file', 'other', 'core.file.class', 'ARK\\File', 'Other', 'ARK\\File\\Other', 0, 1, 1, 0),
+('core.file', 'text', 'core.file.class', 'ARK\\File', 'Text', 'ARK\\File\\Text', 0, 1, 1, 0),
+('core.file', 'video', 'core.file.class', 'ARK\\File', 'Video', 'ARK\\File\\Video', 0, 1, 1, 0),
+('core.message', 'mail', 'core.message.class', 'ARK\\Message', 'Mail', 'ARK\\Message\\Mail', 0, 1, 1, 0),
+('core.message', 'message', 'core.message.class', 'ARK\\Message', 'Message', 'ARK\\Message\\Message', 1, 0, 1, 0),
+('core.message', 'notification', 'core.message.class', 'ARK\\Message', 'Notification', 'ARK\\Message\\Notification', 0, 1, 1, 0),
+('core.page', 'page', 'core.page.class', 'ARK\\Entity', 'Page', 'ARK\\Entity\\Page', 1, 1, 1, 0),
+('dime.find', 'accessory', 'dime.find.class', 'DIME\\Entity', 'Find', 'DIME\\Entity\\Find', 0, 1, 1, 0),
+('dime.find', 'coin', 'dime.find.class', 'DIME\\Entity', 'Find', 'DIME\\Entity\\Find', 0, 1, 1, 0),
+('dime.find', 'fibula', 'dime.find.class', 'DIME\\Entity', 'Find', 'DIME\\Entity\\Find', 0, 1, 1, 0),
+('dime.find', 'find', 'dime.find.class', 'DIME\\Entity', 'Find', 'DIME\\Entity\\Find', 1, 0, 1, 0),
+('dime.find', 'metal', 'dime.find.class', 'DIME\\Entity', 'Find', 'DIME\\Entity\\Find', 0, 1, 1, 0),
+('dime.find', 'military', 'dime.find.class', 'DIME\\Entity', 'Find', 'DIME\\Entity\\Find', 0, 1, 1, 0),
+('dime.find', 'tool', 'dime.find.class', 'DIME\\Entity', 'Find', 'DIME\\Entity\\Find', 0, 1, 1, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_model_module`
+--
+
+CREATE TABLE `ark_model_module` (
+  `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `resource` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tbl` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `core` tinyint(1) NOT NULL DEFAULT '0',
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ark_model_module`
+--
+
+INSERT INTO `ark_model_module` (`module`, `resource`, `tbl`, `core`, `enabled`, `deprecated`, `keyword`) VALUES
+('actor', 'actors', 'ark_item_actor', 1, 1, 0, 'core.actor'),
+('event', 'events', 'ark_item_event', 1, 1, 0, 'core.event'),
+('file', 'files', 'ark_item_file', 1, 1, 0, 'core.file'),
+('find', 'finds', 'ark_item_find', 0, 1, 0, 'dime.find'),
+('message', 'messages', 'ark_item_message', 1, 1, 0, 'core.message'),
+('page', 'pages', 'ark_item_page', 1, 1, 0, 'core.page');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_model_root`
+--
+
+CREATE TABLE `ark_model_root` (
+  `model` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `class` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ark_model_root`
+--
+
+INSERT INTO `ark_model_root` (`model`, `schma`, `class`, `enabled`, `deprecated`) VALUES
+('dime', 'core.actor', 'actor', 1, 0),
+('dime', 'core.event', 'event', 1, 0),
+('dime', 'core.file', 'file', 1, 0),
+('dime', 'core.message', 'message', 1, 0),
+('dime', 'core.page', 'page', 1, 0),
+('dime', 'dime.find', 'find', 1, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_model_schema`
+--
+
+CREATE TABLE `ark_model_schema` (
+  `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `subclasses` tinyint(1) NOT NULL DEFAULT '0',
+  `entities` tinyint(1) NOT NULL DEFAULT '0',
+  `attribute` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `generator` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `sequence` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `event` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'restricted',
+  `new` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `view` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `remove` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `edit` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ark_model_schema`
+--
+
+INSERT INTO `ark_model_schema` (`schma`, `module`, `subclasses`, `entities`, `attribute`, `vocabulary`, `generator`, `sequence`, `event`, `visibility`, `new`, `view`, `remove`, `edit`, `enabled`, `deprecated`, `keyword`) VALUES
+('core.actor', 'actor', 1, 1, 'class', 'core.actor.class', 'assigned', NULL, NULL, 'restricted', 'core.actor.create', 'core.actor.read', 'core.actor.delete', 'core.actor.update', 1, 0, 'core.actor'),
+('core.event', 'event', 1, 0, 'class', 'core.event.class', 'sequence', 'id', NULL, 'restricted', 'core.event.create', 'core.event.read', 'core.event.delete', 'core.event.update', 1, 0, 'core.event'),
+('core.file', 'file', 1, 1, 'class', 'core.file.class', 'sequence', 'id', NULL, 'restricted', 'core.file.create', 'core.event.read', 'core.file.delete', 'core.file.update', 1, 0, 'core.file'),
+('core.message', 'message', 1, 1, 'class', 'core.message.class', 'sequence', 'id', NULL, 'restricted', 'core.message.create', 'core.message.read', 'core.message.delete', 'core.message.update', 1, 0, 'core.message'),
+('core.page', 'page', 0, 0, NULL, NULL, 'assigned', NULL, NULL, 'public', 'core.page.create', NULL, 'core.page.delete', 'core.page.update', 1, 0, 'core.page'),
+('dime.find', 'find', 1, 0, 'class', 'dime.find.class', 'sequence', 'id', NULL, 'private', 'dime.find.create', 'dime.find.read', 'dime.find.delete', 'dime.find.update', 1, 0, 'dime.find');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_model_subschema`
+--
+
+CREATE TABLE `ark_model_subschema` (
+  `model` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `class` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `subschema` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -747,8 +989,8 @@ INSERT INTO `ark_module` (`module`, `superclass`, `resource`, `project`, `namesp
 CREATE TABLE `ark_route` (
   `route` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `path` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `can_get` tinyint(1) NOT NULL DEFAULT 1,
-  `can_post` tinyint(1) NOT NULL DEFAULT 0,
+  `can_get` tinyint(1) NOT NULL DEFAULT '1',
+  `can_post` tinyint(1) NOT NULL DEFAULT '0',
   `page` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `redirect` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `controller` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
@@ -759,8 +1001,6 @@ CREATE TABLE `ark_route` (
 --
 
 INSERT INTO `ark_route` (`route`, `path`, `can_get`, `can_post`, `page`, `redirect`, `controller`) VALUES
-('admin', '/admin', 1, 0, 'core_page_admin', NULL, 'ARK\\Controller\\AdminPageController'),
-('admin.user', '/admin/users', 1, 1, 'core_page_admin_user', NULL, 'ARK\\User\\Controller\\UserAdminPageController'),
 ('dime.about', '/about', 1, 0, 'dime_page_static', NULL, 'DIME\\Controller\\View\\PageViewController'),
 ('dime.admin', '/admin', 1, 0, 'dime_page_admin', NULL, 'DIME\\Controller\\View\\AdminHomeController'),
 ('dime.admin.users', '/admin/users', 1, 1, 'dime_page_admin_user', NULL, 'DIME\\Controller\\View\\AdminUserController'),
@@ -782,13 +1022,8 @@ INSERT INTO `ark_route` (`route`, `path`, `can_get`, `can_post`, `page`, `redire
 ('dime.user.login', '/users/login', 1, 0, 'core_page_user_login', NULL, 'DIME\\Controller\\View\\UserLoginController'),
 ('dime.user.register', '/users/register', 1, 1, 'dime_page_user_register', 'dime.front', 'DIME\\Contoller\\UserRegisterController'),
 ('dime.user.reset', '/users/reset', 1, 1, 'core_page_user_reset', NULL, 'DIME\\Controller\\View\\UserResetController'),
-('home', '/', 1, 0, 'core_page_home', NULL, 'ARK\\Controller\\HomePageController'),
 ('user.check', '/users/check', 1, 1, NULL, NULL, ''),
-('user.confirm', '/users/confirm', 1, 1, 'core_page_user_confirm', NULL, 'ARK\\User\\Controller\\UserConfirmController'),
-('user.login', '/users/login', 1, 1, 'core_page_user_login', NULL, 'ARK\\User\\Controller\\UserLoginController'),
-('user.logout', '/users/logout', 1, 1, NULL, NULL, ''),
-('user.register', '/users/register', 1, 1, 'core_page_user_register', NULL, 'ARK\\User\\Controller\\UserRegisterController'),
-('user.reset', '/users/reset', 1, 1, 'core_page_user_reset', 'dime.front', 'ARK\\User\\Controller\\UserResetController');
+('user.logout', '/users/logout', 1, 1, NULL, NULL, '');
 
 -- --------------------------------------------------------
 
@@ -804,167 +1039,6 @@ CREATE TABLE `ark_route_parameter` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ark_schema`
---
-
-CREATE TABLE `ark_schema` (
-  `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `class_property` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `entities` tinyint(1) NOT NULL DEFAULT 0,
-  `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'restricted',
-  `generator` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `sequence` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `event` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `new` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `view` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `edit` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `remove` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
-  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `ark_schema`
---
-
-INSERT INTO `ark_schema` (`schma`, `module`, `class_property`, `vocabulary`, `entities`, `visibility`, `generator`, `sequence`, `event`, `new`, `view`, `edit`, `remove`, `enabled`, `deprecated`, `keyword`) VALUES
-('core.actor', 'actor', 'class', 'core.actor.class', 1, 'restricted', 'assigned', NULL, NULL, 'core.actor.create', 'core.actor.read', 'core.actor.update', 'core.actor.delete', 1, 0, 'core.actor'),
-('core.event', 'event', 'class', 'core.event.class', 0, 'restricted', 'sequence', 'id', NULL, 'core.event.create', 'core.event.read', 'core.event.update', 'core.event.delete', 1, 0, 'core.event'),
-('core.file', 'file', 'class', 'core.file.class', 1, 'restricted', 'sequence', 'id', NULL, 'core.file.create', 'core.event.read', 'core.file.update', 'core.file.delete', 1, 0, 'core.file'),
-('core.message', 'message', 'class', 'core.message.class', 1, 'restricted', 'sequence', 'id', NULL, 'core.message.create', 'core.message.read', 'core.message.update', 'core.message.delete', 1, 0, 'core.message'),
-('core.page', 'page', NULL, NULL, 0, 'public', 'assigned', NULL, NULL, 'core.page.create', NULL, 'core.page.update', 'core.page.delete', 1, 0, 'core.page'),
-('dime.find', 'find', 'class', 'dime.find.class', 0, 'private', 'sequence', 'id', NULL, 'dime.find.create', 'dime.find.read', 'dime.find.update', 'dime.find.delete', 1, 0, 'dime.find');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ark_schema_association`
---
-
-CREATE TABLE `ark_schema_association` (
-  `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `class` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `association` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `schema1` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `schema2` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `degree` int(11) NOT NULL,
-  `inverse` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `inverse_degree` int(11) NOT NULL,
-  `bidirectional` tinyint(1) NOT NULL DEFAULT 0,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
-  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ark_schema_attribute`
---
-
-CREATE TABLE `ark_schema_attribute` (
-  `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `class` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `dataclass` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `span` tinyint(1) NOT NULL DEFAULT 0,
-  `minimum` int(11) NOT NULL DEFAULT 0,
-  `maximum` int(11) NOT NULL DEFAULT 1,
-  `vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `unique_values` int(11) NOT NULL DEFAULT 1,
-  `additional_values` int(11) NOT NULL DEFAULT 0,
-  `event` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'public',
-  `edit` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `view` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
-  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `ark_schema_attribute`
---
-
-INSERT INTO `ark_schema_attribute` (`schma`, `class`, `attribute`, `dataclass`, `span`, `minimum`, `maximum`, `vocabulary`, `unique_values`, `additional_values`, `event`, `visibility`, `edit`, `view`, `enabled`, `deprecated`, `keyword`) VALUES
-('core.actor', 'actor', 'address', 'address', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.actor.address'),
-('core.actor', 'actor', 'avatar', 'image', 0, 0, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.actor.avatar'),
-('core.actor', 'actor', 'biography', 'plaintext', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.actor.biography'),
-('core.actor', 'actor', 'class', 'term', 0, 1, 1, 'core.actor.class', 1, 0, NULL, 'restricted', 'core.actor.update', 'core.actor.read', 1, 0, 'core.actor.class'),
-('core.actor', 'actor', 'email', 'email', 0, 1, 1, NULL, 1, 0, NULL, 'restricted', 'core.actor.update', 'core.actor.read', 1, 0, 'core.actor.email'),
-('core.actor', 'actor', 'fullname', 'shorttext', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.actor.fullname'),
-('core.actor', 'actor', 'id', 'identifier', 0, 1, 1, NULL, 1, 0, NULL, 'restricted', 'core.actor.update', 'core.actor.read', 1, 0, 'core.actor.id'),
-('core.actor', 'actor', 'initials', 'shorttext', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.actor.initials'),
-('core.actor', 'actor', 'shortname', 'shorttext', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.actor.shortname'),
-('core.actor', 'actor', 'telephone', 'telephone', 0, 1, 1, NULL, 1, 0, NULL, 'restricted', 'core.actor.update', 'core.actor.read', 1, 0, 'core.actor.telephone'),
-('core.actor', 'museum', 'municipality', 'term', 0, 0, 0, 'dime.denmark.municipality', 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'dime.actor.municipality'),
-('core.actor', 'museum', 'participating', 'boolean', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'dime.actor.participating'),
-('core.actor', 'person', 'detectorist_id', 'identifier', 0, 1, 1, NULL, 1, 0, NULL, 'restricted', 'core.admin', 'core.actor.read', 1, 0, 'dime.user.detectorist.id'),
-('core.actor', 'person', 'status', 'term', 0, 1, 1, 'core.security.status', 1, 0, NULL, 'restricted', 'core.admin.user', 'core.admin.user', 1, 0, 'core.security.status'),
-('core.actor', 'person', 'terms', 'term', 0, 1, 1, 'core.user.terms', 1, 0, NULL, 'restricted', 'core.actor.update', 'core.actor.read', 1, 0, 'core.user.terms'),
-('core.event', 'event', 'agents', 'actor', 0, 1, 0, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.event.agent'),
-('core.event', 'event', 'class', 'term', 0, 1, 1, 'core.event.class', 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.event.class'),
-('core.event', 'event', 'id', 'identifier', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.event.id'),
-('core.event', 'event', 'occurred', 'datetime', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.event.occurred'),
-('core.event', 'event', 'subject', 'item', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.event.subject'),
-('core.file', 'file', 'class', 'term', 0, 1, 1, 'core.file.class', 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.file.class'),
-('core.file', 'file', 'copyright', 'actor', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.file.copyright'),
-('core.file', 'file', 'description', 'plaintext', 0, 0, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.file.description'),
-('core.file', 'file', 'id', 'identifier', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.file.id'),
-('core.file', 'file', 'license', 'term', 0, 1, 1, 'core.license', 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.file.status'),
-('core.file', 'file', 'mediatype', 'term', 0, 1, 1, 'mediatype', 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.file.mediatype'),
-('core.file', 'file', 'status', 'term', 0, 1, 1, 'core.file.status', 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.file.status'),
-('core.file', 'file', 'title', 'shorttext', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.file.title'),
-('core.file', 'file', 'versions', 'version', 0, 1, 0, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.file.versions'),
-('core.message', 'mail', 'attachments', 'file', 0, 0, 0, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.message.mail.attachments'),
-('core.message', 'mail', 'body', 'plaintext', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.message.mail.body'),
-('core.message', 'mail', 'subject', 'shorttext', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.message.mail.subject'),
-('core.message', 'message', 'class', 'term', 0, 1, 1, 'core.message.class', 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.message.class'),
-('core.message', 'message', 'id', 'identifier', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.message.id'),
-('core.message', 'message', 'recipients', 'dispatch', 0, 1, 0, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.message.recipients'),
-('core.message', 'message', 'sender', 'actor', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.message.sender'),
-('core.message', 'message', 'sent', 'datetime', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.message.sent_at'),
-('core.message', 'notification', 'event', 'event', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.message.notification.event'),
-('core.page', 'page', 'content', 'html', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'property.content'),
-('core.page', 'page', 'id', 'identifier', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.page.id'),
-('dime.find', 'coin', 'issuer', 'shorttext', 0, 0, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'dime.find.issuer'),
-('dime.find', 'coin', 'mint', 'shorttext', 0, 0, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'dime.find.mint'),
-('dime.find', 'find', 'case', 'identifier', 0, 0, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'dime.find.case'),
-('dime.find', 'find', 'claim', 'file', 0, 0, 1, NULL, 1, 1, NULL, 'restricted', NULL, NULL, 1, 0, 'dime.find.claim'),
-('dime.find', 'find', 'class', 'term', 0, 1, 1, 'dime.find.class', 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'dime.find.class'),
-('dime.find', 'find', 'classification', 'classification', 0, 0, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'dime.find.classification'),
-('dime.find', 'find', 'condition', 'term', 0, 0, 1, 'dime.find.condition', 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'dime.find.condition'),
-('dime.find', 'find', 'custodian', 'actor', 0, 1, 1, NULL, 1, 0, NULL, 'restricted', 'dime.find.update.custody', 'dime.find.read.custody', 1, 0, 'dime.find.custodian'),
-('dime.find', 'find', 'custody', 'term', 0, 1, 1, 'dime.find.custody', 1, 0, NULL, 'restricted', 'dime.find.update.custody', 'dime.find.read.custody', 1, 0, 'dime.find.custody'),
-('dime.find', 'find', 'dating', 'dating', 0, 0, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'dime.find.dating'),
-('dime.find', 'find', 'description', 'description', 0, 0, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'dime.find.description'),
-('dime.find', 'find', 'finddate', 'date', 0, 0, 1, NULL, 1, 0, NULL, 'restricted', 'dime.find.update.finddate', 'dime.find.read.finddate', 1, 0, 'dime.find.finddate'),
-('dime.find', 'find', 'finder', 'person', 0, 1, 1, NULL, 1, 0, NULL, 'restricted', 'dime.find.update.finder', 'dime.find.read.finder', 1, 0, 'dime.find.finder'),
-('dime.find', 'find', 'finder_id', 'identifier', 0, 0, 1, NULL, 1, 0, NULL, 'restricted', 'dime.find.update.finder', 'dime.find.read.finder', 1, 0, 'dime.find.finder_id'),
-('dime.find', 'find', 'finder_place', 'identifier', 0, 0, 1, NULL, 1, 0, NULL, 'restricted', 'dime.find.update.finder', 'dime.find.read.finder', 1, 0, 'dime.find.finder_place'),
-('dime.find', 'find', 'id', 'identifier', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'dime.find.id'),
-('dime.find', 'find', 'image', 'image', 0, 0, 3, NULL, 1, 1, NULL, 'public', NULL, NULL, 1, 0, 'dime.find.images'),
-('dime.find', 'find', 'length', 'distance', 0, 0, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'dime.find.length'),
-('dime.find', 'find', 'location', 'wkt', 0, 1, 1, NULL, 1, 0, NULL, 'restricted', 'dime.find.update.location', 'dime.find.read.location', 1, 0, 'dime.find.location'),
-('dime.find', 'find', 'material', 'term', 0, 1, 1, 'dime.material', 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'dime.find.material'),
-('dime.find', 'find', 'municipality', 'term', 0, 1, 1, 'dime.denmark.municipality', 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'dime.find.municipality'),
-('dime.find', 'find', 'museum', 'museum', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.actor.class.museum'),
-('dime.find', 'find', 'museum_id', 'identifier', 0, 0, 1, NULL, 1, 0, NULL, 'restricted', 'dime.find.update.museum_id', 'dime.find.read', 1, 0, 'dime.find.museum_id'),
-('dime.find', 'find', 'owner', 'actor', 0, 1, 1, NULL, 1, 0, NULL, 'restricted', 'dime.find.update.owner', 'dime.find.read.owner', 1, 0, 'dime.find.owner'),
-('dime.find', 'find', 'process', 'term', 0, 1, 1, 'dime.find.process', 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'dime.find.process'),
-('dime.find', 'find', 'recipient', 'actor', 0, 0, 1, NULL, 1, 0, NULL, 'restricted', 'dime.find.update.custody', 'dime.find.read.custody', 1, 0, 'dime.find.recipient'),
-('dime.find', 'find', 'recorder', 'actor', 0, 1, 1, NULL, 1, 0, NULL, 'restricted', 'dime.find.update.finder', 'dime.find.read.finder', 1, 0, 'dime.find.recorder'),
-('dime.find', 'find', 'secondary', 'term', 0, 0, 0, 'dime.find.secondary', 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'dime.find.material.secondary'),
-('dime.find', 'find', 'treasure', 'term', 0, 1, 1, 'dime.treasure', 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'dime.find.treasure'),
-('dime.find', 'find', 'visibility', 'term', 0, 1, 1, 'core.visibility', 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'dime.find.visibility'),
-('dime.find', 'find', 'weight', 'mass', 0, 0, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'dime.find.weight');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `ark_schema_item`
 --
 
@@ -972,12 +1046,12 @@ CREATE TABLE `ark_schema_item` (
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `dataclass` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `minimum` int(11) NOT NULL DEFAULT 0,
-  `maximum` int(11) NOT NULL DEFAULT 1,
-  `unique_values` int(11) NOT NULL DEFAULT 1,
-  `additional_values` int(11) NOT NULL DEFAULT 0,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
+  `minimum` int(11) NOT NULL DEFAULT '0',
+  `maximum` int(11) NOT NULL DEFAULT '1',
+  `unique_values` int(11) NOT NULL DEFAULT '1',
+  `additional_values` int(11) NOT NULL DEFAULT '0',
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -1003,8 +1077,8 @@ INSERT INTO `ark_schema_item` (`attribute`, `dataclass`, `vocabulary`, `minimum`
 CREATE TABLE `ark_translation` (
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `domain` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `is_plural` tinyint(1) NOT NULL DEFAULT 0,
-  `has_parameters` tinyint(1) NOT NULL DEFAULT 0
+  `is_plural` tinyint(1) NOT NULL DEFAULT '0',
+  `has_parameters` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -2946,9 +3020,9 @@ INSERT INTO `ark_translation_domain` (`domain`, `keyword`) VALUES
 
 CREATE TABLE `ark_translation_language` (
   `language` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `markup` tinyint(1) NOT NULL DEFAULT 0,
-  `vocabulary` tinyint(1) NOT NULL DEFAULT 0,
-  `text` tinyint(1) NOT NULL DEFAULT 0
+  `markup` tinyint(1) NOT NULL DEFAULT '0',
+  `vocabulary` tinyint(1) NOT NULL DEFAULT '0',
+  `text` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -2970,7 +3044,7 @@ CREATE TABLE `ark_translation_message` (
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `role` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `text` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `notes` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `notes` longtext COLLATE utf8mb4_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -3134,7 +3208,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.confirm', 'default', 'Bekræft', NULL),
 ('da', 'dime.controls', 'default', 'Vis', ''),
 ('da', 'dime.copyright', 'default', 'Copyright © 2013-2017 Arkæologisk IT, Aarhus Universitet', NULL),
-('da', 'dime.credits', 'default', 'Datastruktur og support: Carsten Risager | Design: Casper Skaaning Andersen | Udvikling: L ~ P Archaeology', NULL),
+('da', 'dime.credits', 'default', 'Datastruktur og support: Carsten Risager | Design: Casper Skaaning Andersen | Udvikling: L - P : Archaeology', ''),
 ('da', 'dime.denmark.municipality', 'default', 'Kommune', NULL),
 ('da', 'dime.detector', 'default', 'Metaldetektorbrug & Danefæ', NULL),
 ('da', 'dime.detector', 'resource', 'detektering', NULL),
@@ -3470,7 +3544,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.home', 'default', 'Hjem', NULL),
 ('da', 'dime.home', 'resource', 'hjem', NULL),
 ('da', 'dime.home.alarm', 'default', 'Underretninger???', NULL),
-('da', 'dime.home.faq', 'default', '<dl><dt>Hvem Er DIME?</dt><dd>DIME er en fællesportal for detektorbrugere og Danske museer, der kan bruges af alle.</dd><dd>&nbsp;</dd><dt>Hvorfor skal jeg bruge dime?</dt><dd>DIME muliggør en hurtigere behandling af dinefund i samarbejde med museet og giver dig overblik over dine fund og fundpladser.</dd><dd>&nbsp;</dd><dt>Hvilke fund skal/kan uploades i DIME?</dt><dd>Alle detektorfund (ikke kun Danefæ) kan uploades i DIME.</dd><dd>&nbsp;</dd><dt>Kan andre se mine fundsteder?</dt><dd>Nej! Fundsteder og privatoplysninger er kunsynlige for museumsarkæologer og forskere med særlig adgang</dd><dd>&nbsp;</dd><dt>', ''),
+('da', 'dime.home.faq', 'default', '<dl><dt>Hvem Er DIME?</dt><dd>DIME er en fællesportal for detektorbrugere og Danske museer, der kan bruges af alle.</dd><dd>&nbsp;</dd><dt>Hvorfor skal jeg bruge dime?</dt><dd>DIME muliggør en hurtigere behandling af dinefund i samarbejde med museet og giver dig overblik over dine fund og fundpladser.</dd><dd>&nbsp;</dd><dt>Hvilke fund skal/kan uploades i DIME?</dt><dd>Alle detektorfund (ikke kun Danefæ) kan uploades i DIME.</dd><dd>&nbsp;</dd><dt>Kan andre se mine fundsteder?</dt><dd>Nej! Fundsteder og privatoplysninger er kun synlige for museumsarkæologer og forskere med særlig adgang</dd><dd>&nbsp;</dd><dt>', ''),
 ('da', 'dime.home.hvert', 'default', 'Hvert år finder metaldetektorbrugere landet over tusindevis af genstande fra oldtid, middelalder og senere perioder. Metalgenstandene er en del af vores fælles kulturarv og vigtige brikker i danmarkshistorien. DIME sikrer oplysninger om fundene til gavn for nulevende og efterfølgende generationer.', ''),
 ('da', 'dime.home.welcome', 'default', 'Velkommen %name%', NULL),
 ('da', 'dime.kommune.aabenraa', 'default', 'Aabenraa', NULL),
@@ -3781,7 +3855,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.treasure.pending', 'default', 'under vurdering', ''),
 ('da', 'dime.treasure.treasure', 'default', 'Danefæ', NULL),
 ('da', 'dime.user.actor.museum', 'default', 'Lokalmuseum', NULL),
-('da', 'dime.user.dashboard.faq', 'default', 'DIME NYHEDER (testfasen starter fredag d. 22 september og vi er alle meget spændte… )', ''),
+('da', 'dime.user.dashboard.faq', 'default', 'DIME NYHEDER:\nTesten er slut.', ''),
 ('da', 'dime.user.dashboard.finds', 'default', 'Du har oprettet %count% fund', ''),
 ('da', 'dime.user.dashboard.notifications', 'default', 'Du har %count% ulæste notifikationer', ''),
 ('da', 'dime.user.dashboard.text', 'default', 'For at søge eller redigere i dine egne fund gå til MINE FUND', ''),
@@ -5734,7 +5808,7 @@ CREATE TABLE `ark_view_cell` (
   `name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `width` int(11) DEFAULT NULL,
   `label` tinyint(1) DEFAULT NULL,
-  `help` tinyint(1) NOT NULL DEFAULT 0,
+  `help` tinyint(1) NOT NULL DEFAULT '0',
   `placeholder` tinyint(1) DEFAULT NULL,
   `choices` tinyint(1) DEFAULT NULL,
   `required` tinyint(1) DEFAULT NULL,
@@ -5744,15 +5818,15 @@ CREATE TABLE `ark_view_cell` (
   `edit` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `mode` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `sanitise` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `visible` tinyint(1) NOT NULL DEFAULT 1,
+  `visible` tinyint(1) NOT NULL DEFAULT '1',
   `pattern` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `display` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `value` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parameter` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `format` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `data` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
   `keyword` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `template` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `options` varchar(4000) COLLATE utf8mb4_unicode_ci DEFAULT NULL
@@ -6464,9 +6538,9 @@ INSERT INTO `ark_view_group` (`element`, `name`, `mode`, `keyword`, `template`, 
 CREATE TABLE `ark_view_nav` (
   `element` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `parent` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `seq` int(11) NOT NULL DEFAULT 0,
+  `seq` int(11) NOT NULL DEFAULT '0',
   `level` int(11) DEFAULT NULL,
-  `seperator` tinyint(1) NOT NULL DEFAULT 0,
+  `seperator` tinyint(1) NOT NULL DEFAULT '0',
   `icon` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `route` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `keyword` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -6555,19 +6629,19 @@ INSERT INTO `ark_view_page` (`element`, `mode`, `header`, `sidebar`, `content`, 
 CREATE TABLE `ark_view_table` (
   `element` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `mode` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT 'NULL',
-  `caption` tinyint(1) NOT NULL DEFAULT 1,
-  `header` tinyint(1) NOT NULL DEFAULT 1,
-  `footer` tinyint(1) NOT NULL DEFAULT 0,
-  `sortable` tinyint(1) NOT NULL DEFAULT 1,
-  `searchable` tinyint(1) NOT NULL DEFAULT 1,
-  `row` tinyint(1) NOT NULL DEFAULT 1,
-  `list` tinyint(1) NOT NULL DEFAULT 0,
-  `card` tinyint(1) NOT NULL DEFAULT 0,
-  `thumbnail` tinyint(1) NOT NULL DEFAULT 0,
+  `caption` tinyint(1) NOT NULL DEFAULT '1',
+  `header` tinyint(1) NOT NULL DEFAULT '1',
+  `footer` tinyint(1) NOT NULL DEFAULT '0',
+  `sortable` tinyint(1) NOT NULL DEFAULT '1',
+  `searchable` tinyint(1) NOT NULL DEFAULT '1',
+  `row` tinyint(1) NOT NULL DEFAULT '1',
+  `list` tinyint(1) NOT NULL DEFAULT '0',
+  `card` tinyint(1) NOT NULL DEFAULT '0',
+  `thumbnail` tinyint(1) NOT NULL DEFAULT '0',
   `view` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT 'row',
   `image` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `export` tinyint(1) NOT NULL DEFAULT 1,
-  `columns` tinyint(1) NOT NULL DEFAULT 1,
+  `export` tinyint(1) NOT NULL DEFAULT '1',
+  `columns` tinyint(1) NOT NULL DEFAULT '1',
   `pagination` int(11) DEFAULT NULL,
   `selection` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `keyword` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -6633,7 +6707,7 @@ INSERT INTO `ark_view_tree` (`id`, `ancestor`, `descendant`, `depth`) VALUES
 
 CREATE TABLE `ark_view_type` (
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `layout` tinyint(1) NOT NULL DEFAULT 0,
+  `layout` tinyint(1) NOT NULL DEFAULT '0',
   `class` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT 'NULL',
   `template` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -6696,7 +6770,7 @@ INSERT INTO `ark_view_widget` (`element`, `name`, `choices`, `keyword`, `templat
 ('core_widget_time', 'time', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TimeType', '{\"widget\": \"single_text\",\"html5\": false, \"attr\": {\"class\": \"timepicker\"}}'),
 ('core_widget_username', '_username', NULL, 'core.user.username', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', ''),
 ('core_widget_vocabulary', 'vocabulary', NULL, NULL, NULL, 'ARK\\Form\\Type\\VocabularyWidgetType', ''),
-('dime_widget_classify', 'classify', NULL, 'dime.find.classify', 'blocks/classification.html.twig', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ButtonType', '');
+('dime_widget_classify', 'classify', NULL, 'dime.find.classify', 'blocks/classification.html.twig', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ButtonType', '{\"attr\":{\"class\":\"disabled\"}}');
 
 -- --------------------------------------------------------
 
@@ -6708,12 +6782,12 @@ CREATE TABLE `ark_vocabulary` (
   `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `source` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `closed` tinyint(1) NOT NULL DEFAULT 1,
-  `transitions` tinyint(1) NOT NULL DEFAULT 0,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
+  `closed` tinyint(1) NOT NULL DEFAULT '1',
+  `transitions` tinyint(1) NOT NULL DEFAULT '0',
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `description` text COLLATE utf8mb4_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -6731,6 +6805,7 @@ INSERT INTO `ark_vocabulary` (`concept`, `type`, `source`, `closed`, `transition
 ('core.message.class', 'list', 'ARK Core', 1, 0, 1, 0, 'core.message.class', 'Message Type'),
 ('core.message.recipient.status', 'list', 'ARK Core', 1, 0, 1, 0, 'core.message.recipient.status', 'Message Recipient Status'),
 ('core.message.status', 'list', 'ARK Core', 1, 0, 1, 0, 'core.message.status', 'Message Status'),
+('core.page.class', 'list', 'ARK Core', 1, 0, 1, 0, NULL, 'Page Class'),
 ('core.security.status', 'list', 'ARK Core', 1, 0, 1, 0, 'core.security.status', 'Security Status'),
 ('core.user.terms', 'list', 'ARK Core', 1, 0, 1, 0, 'core.user.terms', 'User Terms and Conditions'),
 ('core.visibility', 'list', 'ARK Core', 1, 0, 1, 0, 'core.visibility', 'Data Visibility'),
@@ -7488,10 +7563,10 @@ CREATE TABLE `ark_vocabulary_relation` (
   `notation` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
   `recipricol` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `recipricol_notation` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `equivalence` tinyint(1) NOT NULL DEFAULT 0,
-  `hierarchy` tinyint(1) NOT NULL DEFAULT 0,
-  `associative` tinyint(1) NOT NULL DEFAULT 0,
-  `description` text COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `equivalence` tinyint(1) NOT NULL DEFAULT '0',
+  `hierarchy` tinyint(1) NOT NULL DEFAULT '0',
+  `associative` tinyint(1) NOT NULL DEFAULT '0',
+  `description` text COLLATE utf8mb4_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -7517,10 +7592,10 @@ CREATE TABLE `ark_vocabulary_term` (
   `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `term` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `alias` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `is_default` tinyint(1) NOT NULL DEFAULT 0,
-  `root` tinyint(1) NOT NULL DEFAULT 0,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
+  `is_default` tinyint(1) NOT NULL DEFAULT '0',
+  `root` tinyint(1) NOT NULL DEFAULT '0',
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `description` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -7530,6 +7605,7 @@ CREATE TABLE `ark_vocabulary_term` (
 --
 
 INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+('core.actor.class', 'actor', '', 0, 0, 1, 0, NULL, ''),
 ('core.actor.class', 'institution', '', 0, 0, 1, 0, 'core.actor.class.institution', ''),
 ('core.actor.class', 'museum', '', 0, 0, 1, 0, 'core.actor.class.museum', ''),
 ('core.actor.class', 'person', '', 0, 0, 1, 0, 'core.actor.class.person', ''),
@@ -7546,6 +7622,7 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `ro
 ('core.event.class', 'discarded', '', 0, 0, 0, 0, 'dime.find.event.discarded', ''),
 ('core.event.class', 'edited', '', 0, 0, 0, 0, 'core.event.edited', ''),
 ('core.event.class', 'evaluated', '', 0, 0, 0, 0, 'dime.find.event.evaluated', ''),
+('core.event.class', 'event', '', 0, 0, 0, 0, NULL, ''),
 ('core.event.class', 'loaned', '', 0, 0, 0, 0, 'dime.find.event.loaned', ''),
 ('core.event.class', 'locked', '', 0, 0, 0, 0, 'core.user', ''),
 ('core.event.class', 'lost', '', 0, 0, 0, 0, 'dime.find.event.lost', ''),
@@ -7570,6 +7647,7 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `ro
 ('core.event.class', 'withheld', '', 0, 0, 0, 0, 'dime.find.event.suppressed', ''),
 ('core.file.class', 'audio', '', 0, 0, 1, 0, 'core.file.class.audio', ''),
 ('core.file.class', 'document', '', 0, 0, 1, 0, 'core.file.class.document', ''),
+('core.file.class', 'file', '', 0, 0, 1, 0, NULL, ''),
 ('core.file.class', 'image', '', 0, 0, 1, 0, 'core.file.class.image', ''),
 ('core.file.class', 'other', '', 0, 0, 1, 0, 'core.file.class.other', ''),
 ('core.file.class', 'text', '', 0, 0, 1, 0, 'core.file.class.text', ''),
@@ -7592,6 +7670,7 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `ro
 ('core.license', 'ccbyncsa', 'CC BY-NC-SA', 1, 0, 1, 0, 'core.license.ccbyncsa', ''),
 ('core.license', 'ccbysa', 'CC BY-SA', 0, 0, 1, 0, 'core.license.ccbysa', ''),
 ('core.message.class', 'mail', '', 0, 0, 1, 0, 'core.message.class.mail', ''),
+('core.message.class', 'message', '', 0, 0, 1, 0, NULL, ''),
 ('core.message.class', 'notification', '', 0, 0, 1, 0, 'core.message.class.notification', ''),
 ('core.message.recipient.status', 'discarded', '', 0, 0, 1, 0, 'core.message.recipient.status.discarded', ''),
 ('core.message.recipient.status', 'read', '', 0, 0, 1, 0, 'core.message.recipient.status.read', ''),
@@ -7599,6 +7678,7 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `ro
 ('core.message.status', 'draft', '', 0, 0, 1, 0, 'core.message.status.draft', ''),
 ('core.message.status', 'read', '', 0, 0, 1, 0, 'core.message.status.read', ''),
 ('core.message.status', 'sent', '', 0, 0, 1, 0, 'core.message.status.sent', ''),
+('core.page.class', 'page', '', 0, 0, 1, 0, NULL, ''),
 ('core.security.status', 'approved', '', 0, 0, 1, 0, 'core.security.status.approve', ''),
 ('core.security.status', 'closed', '', 0, 0, 1, 0, 'core.security.status.closed', ''),
 ('core.security.status', 'expired', '', 0, 0, 1, 0, 'core.security.status.expired', ''),
@@ -7964,6 +8044,7 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `ro
 ('dime.find.class', 'accessory', '', 0, 0, 1, 0, 'dime.find.type.accessory', ''),
 ('dime.find.class', 'coin', '', 0, 0, 1, 0, 'dime.find.type.coin', ''),
 ('dime.find.class', 'fibula', '', 0, 0, 1, 0, 'dime.find.type.fibula', ''),
+('dime.find.class', 'find', '', 0, 0, 1, 0, NULL, ''),
 ('dime.find.class', 'metal', '', 0, 0, 1, 0, 'dime.find.type.metal', ''),
 ('dime.find.class', 'military', '', 0, 0, 1, 0, 'dime.find.type.military', ''),
 ('dime.find.class', 'tool', '', 0, 0, 1, 0, 'dime.find.type.tool', ''),
@@ -8137,11 +8218,11 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `ro
 ('dime.find.subtype', 'metal.rest', '', 0, 0, 0, 0, 'dime.find.subtype.metal.rest', ''),
 ('dime.find.subtype', 'metal.slag', '', 0, 0, 0, 0, 'dime.find.subtype.metal.slag', ''),
 ('dime.find.subtype', 'metal.tin', '', 0, 0, 0, 0, 'dime.find.subtype.metal.tin', ''),
-('dime.find.subtype', 'metal.unknown', '', 0, 0, 0, 0, 'dime.find.subtype.metal.unknown', ''),
+('dime.find.subtype', 'metal.unknown', '', 0, 0, 0, 0, 'dime.find.subtype.metal.unknown', '');
+INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
 ('dime.find.subtype', 'military.ammunition', '', 0, 0, 0, 0, 'dime.find.subtype.military.ammunition', ''),
 ('dime.find.subtype', 'military.armor', '', 0, 0, 0, 0, 'dime.find.subtype.military.armor', ''),
-('dime.find.subtype', 'military.arrow', '', 0, 0, 0, 0, 'dime.find.subtype.military.arrow', '');
-INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+('dime.find.subtype', 'military.arrow', '', 0, 0, 0, 0, 'dime.find.subtype.military.arrow', ''),
 ('dime.find.subtype', 'military.firearm', '', 0, 0, 0, 0, 'dime.find.subtype.military.firearm', ''),
 ('dime.find.subtype', 'military.fitting', '', 0, 0, 0, 0, 'dime.find.subtype.military.fitting', ''),
 ('dime.find.subtype', 'military.fitting.other', '', 0, 0, 0, 0, 'dime.find.subtype.military.fitting.other', ''),
@@ -8809,12 +8890,12 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `ro
 ('language', 'stq', 'frisian.saterland', 0, 0, 1, 0, 'language.frisian.saterland', ''),
 ('language', 'su', 'sundanese', 0, 0, 1, 0, 'language.sundanese', ''),
 ('language', 'suk', 'sukuma', 0, 0, 1, 0, 'language.sukuma', ''),
-('language', 'sus', 'susu', 0, 0, 1, 0, 'language.susu', ''),
+('language', 'sus', 'susu', 0, 0, 1, 0, 'language.susu', '');
+INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
 ('language', 'sux', 'sumerian', 0, 0, 1, 0, 'language.sumerian', ''),
 ('language', 'sv', 'swedish', 0, 0, 1, 0, 'language.swedish', ''),
 ('language', 'sw', 'swahili', 0, 0, 1, 0, 'language.swahili', ''),
-('language', 'sw-CD', 'swahili.congo', 0, 0, 1, 0, 'language.swahili.congo', '');
-INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+('language', 'sw-CD', 'swahili.congo', 0, 0, 1, 0, 'language.swahili.congo', ''),
 ('language', 'swb', 'comorian', 0, 0, 1, 0, 'language.comorian', ''),
 ('language', 'syc', 'syriac.classical', 0, 0, 1, 0, 'language.syriac.classical', ''),
 ('language', 'syr', 'syriac', 0, 0, 1, 0, 'language.syriac', ''),
@@ -8932,13 +9013,13 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `ro
 
 CREATE TABLE `ark_vocabulary_type` (
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `equivalence` tinyint(1) NOT NULL DEFAULT 0,
-  `hierarchy` tinyint(1) NOT NULL DEFAULT 0,
-  `association` tinyint(1) NOT NULL DEFAULT 0,
-  `enabled` tinyint(1) NOT NULL DEFAULT 0,
-  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
+  `equivalence` tinyint(1) NOT NULL DEFAULT '0',
+  `hierarchy` tinyint(1) NOT NULL DEFAULT '0',
+  `association` tinyint(1) NOT NULL DEFAULT '0',
+  `enabled` tinyint(1) NOT NULL DEFAULT '0',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `description` text COLLATE utf8mb4_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -8963,10 +9044,10 @@ CREATE TABLE `ark_workflow_action` (
   `event_vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `event_term` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `agent` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `default_permission` tinyint(1) NOT NULL DEFAULT 0,
-  `default_agency` tinyint(1) NOT NULL DEFAULT 0,
-  `default_allowance` tinyint(1) NOT NULL DEFAULT 0,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  `default_permission` tinyint(1) NOT NULL DEFAULT '0',
+  `default_agency` tinyint(1) NOT NULL DEFAULT '0',
+  `default_allowance` tinyint(1) NOT NULL DEFAULT '0',
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `description` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -9144,7 +9225,7 @@ CREATE TABLE `ark_workflow_condition` (
   `action` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `class` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `grp` int(11) NOT NULL DEFAULT 0,
+  `grp` int(11) NOT NULL DEFAULT '0',
   `operator` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'eq',
   `value` varchar(4000) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -9238,7 +9319,6 @@ INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
 ('anonymous', 'core.user.login'),
 ('anonymous', 'core.user.register'),
 ('anonymous', 'core.user.reset'),
-('anonymous', 'dime.find.read'),
 ('appraiser', 'core.actor.read'),
 ('appraiser', 'core.actor.update'),
 ('appraiser', 'core.message.read'),
@@ -9362,7 +9442,7 @@ INSERT INTO `ark_workflow_notify` (`id`, `schma`, `action`, `class`, `attribute`
 CREATE TABLE `ark_workflow_permission` (
   `permission` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `description` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -9434,7 +9514,7 @@ CREATE TABLE `ark_workflow_role` (
   `role` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `agent_for` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `level` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -9656,25 +9736,11 @@ ALTER TABLE `ark_dataclass_type`
   ADD KEY `datatype_foreign` (`keyword`) USING BTREE;
 
 --
--- Indexes for table `ark_instance`
---
-ALTER TABLE `ark_instance`
-  ADD PRIMARY KEY (`instance`);
-
---
 -- Indexes for table `ark_instance_route`
 --
 ALTER TABLE `ark_instance_route`
   ADD PRIMARY KEY (`instance`,`route`),
   ADD KEY `route_foreign` (`route`) USING BTREE,
-  ADD KEY `instance_foreign` (`instance`) USING BTREE;
-
---
--- Indexes for table `ark_instance_schema`
---
-ALTER TABLE `ark_instance_schema`
-  ADD PRIMARY KEY (`instance`,`schma`),
-  ADD KEY `schema_foreign` (`schma`) USING BTREE,
   ADD KEY `instance_foreign` (`instance`) USING BTREE;
 
 --
@@ -9710,15 +9776,84 @@ ALTER TABLE `ark_map_source`
   ADD KEY `keyword_foreign` (`keyword`) USING BTREE;
 
 --
--- Indexes for table `ark_module`
+-- Indexes for table `ark_model`
 --
-ALTER TABLE `ark_module`
+ALTER TABLE `ark_model`
+  ADD PRIMARY KEY (`model`),
+  ADD KEY `model_keyword_constraint` (`keyword`);
+
+--
+-- Indexes for table `ark_model_association`
+--
+ALTER TABLE `ark_model_association`
+  ADD PRIMARY KEY (`model`,`schma`,`class`,`association`),
+  ADD KEY `keyword_foreign` (`keyword`),
+  ADD KEY `schema_foreign` (`schma`),
+  ADD KEY `schema1_foreign` (`schema1`),
+  ADD KEY `schema2_foreign` (`schema2`);
+
+--
+-- Indexes for table `ark_model_attribute`
+--
+ALTER TABLE `ark_model_attribute`
+  ADD PRIMARY KEY (`schma`,`class`,`attribute`),
+  ADD KEY `dataclass_foreign` (`dataclass`),
+  ADD KEY `vocabulary_foreign` (`vocabulary`),
+  ADD KEY `view_foreign` (`view`),
+  ADD KEY `edit_foreign` (`edit`),
+  ADD KEY `keyword_foreign` (`keyword`),
+  ADD KEY `schema_foreign` (`schma`),
+  ADD KEY `schema_attribte_event_constraint` (`vocabulary`,`event`);
+
+--
+-- Indexes for table `ark_model_class`
+--
+ALTER TABLE `ark_model_class`
+  ADD PRIMARY KEY (`schma`,`class`),
+  ADD KEY `schema_foreign` (`schma`),
+  ADD KEY `model_class_class_constraint` (`vocabulary`,`class`);
+
+--
+-- Indexes for table `ark_model_module`
+--
+ALTER TABLE `ark_model_module`
   ADD PRIMARY KEY (`module`),
-  ADD UNIQUE KEY `tbl_unique` (`tbl`) USING BTREE,
-  ADD UNIQUE KEY `classname_unique` (`classname`) USING BTREE,
-  ADD UNIQUE KEY `resource_unique` (`resource`) USING BTREE,
-  ADD UNIQUE KEY `entity_unique` (`entity`) USING BTREE,
-  ADD KEY `keyword_foreign` (`keyword`) USING BTREE;
+  ADD UNIQUE KEY `tbl_unique` (`tbl`),
+  ADD UNIQUE KEY `resource_unique` (`resource`),
+  ADD KEY `keyword_foreign` (`keyword`);
+
+--
+-- Indexes for table `ark_model_root`
+--
+ALTER TABLE `ark_model_root`
+  ADD PRIMARY KEY (`model`,`schma`,`class`),
+  ADD KEY `schema_foreign` (`schma`),
+  ADD KEY `instance_foreign` (`model`),
+  ADD KEY `model_root_class_constraint` (`schma`,`class`);
+
+--
+-- Indexes for table `ark_model_schema`
+--
+ALTER TABLE `ark_model_schema`
+  ADD PRIMARY KEY (`schma`),
+  ADD KEY `module` (`module`),
+  ADD KEY `vocabulary_foreign` (`vocabulary`),
+  ADD KEY `keyword_foreign` (`keyword`),
+  ADD KEY `new_foreign` (`new`),
+  ADD KEY `remove_foreign` (`remove`),
+  ADD KEY `edit_foreign` (`edit`),
+  ADD KEY `view_foreign` (`view`),
+  ADD KEY `event_foreign` (`event`);
+
+--
+-- Indexes for table `ark_model_subschema`
+--
+ALTER TABLE `ark_model_subschema`
+  ADD PRIMARY KEY (`model`,`schma`,`class`,`subschema`),
+  ADD KEY `schema_foreign` (`schma`),
+  ADD KEY `instance_foreign` (`model`),
+  ADD KEY `model_subschema_subschema_constraint` (`subschema`),
+  ADD KEY `model_subschema_schema_constraint` (`schma`,`class`);
 
 --
 -- Indexes for table `ark_route`
@@ -9733,43 +9868,6 @@ ALTER TABLE `ark_route`
 --
 ALTER TABLE `ark_route_parameter`
   ADD PRIMARY KEY (`route`,`parameter`);
-
---
--- Indexes for table `ark_schema`
---
-ALTER TABLE `ark_schema`
-  ADD PRIMARY KEY (`schma`),
-  ADD KEY `module` (`module`),
-  ADD KEY `vocabulary_foreign` (`vocabulary`) USING BTREE,
-  ADD KEY `keyword_foreign` (`keyword`) USING BTREE,
-  ADD KEY `new_foreign` (`new`) USING BTREE,
-  ADD KEY `remove_foreign` (`remove`) USING BTREE,
-  ADD KEY `edit_foreign` (`edit`) USING BTREE,
-  ADD KEY `view_foreign` (`view`) USING BTREE,
-  ADD KEY `event_foreign` (`event`) USING BTREE;
-
---
--- Indexes for table `ark_schema_association`
---
-ALTER TABLE `ark_schema_association`
-  ADD PRIMARY KEY (`schma`,`class`,`association`),
-  ADD KEY `inverse_foreign` (`inverse`) USING BTREE,
-  ADD KEY `keyword_foreign` (`keyword`) USING BTREE,
-  ADD KEY `schema_foreign` (`schma`) USING BTREE,
-  ADD KEY `schema1_foreign` (`schema1`) USING BTREE,
-  ADD KEY `schema2_foreign` (`schema2`) USING BTREE;
-
---
--- Indexes for table `ark_schema_attribute`
---
-ALTER TABLE `ark_schema_attribute`
-  ADD PRIMARY KEY (`schma`,`class`,`attribute`),
-  ADD KEY `dataclass_foreign` (`dataclass`) USING BTREE,
-  ADD KEY `vocabulary_foreign` (`vocabulary`) USING BTREE,
-  ADD KEY `view_foreign` (`view`) USING BTREE,
-  ADD KEY `edit_foreign` (`edit`) USING BTREE,
-  ADD KEY `keyword_foreign` (`keyword`) USING BTREE,
-  ADD KEY `schema_foreign` (`schma`) USING BTREE;
 
 --
 -- Indexes for table `ark_schema_item`
@@ -10057,13 +10155,11 @@ ALTER TABLE `ark_workflow_update`
 --
 ALTER TABLE `ark_view_tree`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
-
 --
 -- AUTO_INCREMENT for table `ark_workflow_notify`
 --
 ALTER TABLE `ark_workflow_notify`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
-
 --
 -- Constraints for dumped tables
 --
@@ -10181,13 +10277,6 @@ ALTER TABLE `ark_instance_route`
   ADD CONSTRAINT `instance_route_route_constraint` FOREIGN KEY (`route`) REFERENCES `ark_route` (`route`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `ark_instance_schema`
---
-ALTER TABLE `ark_instance_schema`
-  ADD CONSTRAINT `instance_schema_instance_constraint` FOREIGN KEY (`instance`) REFERENCES `ark_instance` (`instance`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `instance_schema_schema_constraint` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON UPDATE CASCADE;
-
---
 -- Constraints for table `ark_map`
 --
 ALTER TABLE `ark_map`
@@ -10215,10 +10304,74 @@ ALTER TABLE `ark_map_source`
   ADD CONSTRAINT `map_source_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Constraints for table `ark_module`
+-- Constraints for table `ark_model`
 --
-ALTER TABLE `ark_module`
-  ADD CONSTRAINT `module_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `ark_model`
+  ADD CONSTRAINT `model_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints for table `ark_model_association`
+--
+ALTER TABLE `ark_model_association`
+  ADD CONSTRAINT `model_association_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `model_association_model_constraint` FOREIGN KEY (`model`) REFERENCES `ark_model` (`model`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `model_association_schema1_constraint` FOREIGN KEY (`schema1`) REFERENCES `ark_model_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `model_association_schema2_constraint` FOREIGN KEY (`schema2`) REFERENCES `ark_model_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `model_association_schema_constraint` FOREIGN KEY (`schma`) REFERENCES `ark_model_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `ark_model_attribute`
+--
+ALTER TABLE `ark_model_attribute`
+  ADD CONSTRAINT `model_attribte_event_constraint` FOREIGN KEY (`vocabulary`,`event`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `model_attribute_dataclass_constraint` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `model_attribute_edit_constraint` FOREIGN KEY (`edit`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `model_attribute_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `model_attribute_schema_constraint` FOREIGN KEY (`schma`,`class`) REFERENCES `ark_model_class` (`schma`, `class`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `model_attribute_view_constraint` FOREIGN KEY (`view`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `model_attribute_vocabulary_constraint` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `ark_model_class`
+--
+ALTER TABLE `ark_model_class`
+  ADD CONSTRAINT `model_class_class_constraint` FOREIGN KEY (`vocabulary`,`class`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `model_class_schema_constraint` FOREIGN KEY (`schma`) REFERENCES `ark_model_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `model_class_vocabulary_constraint` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `ark_model_module`
+--
+ALTER TABLE `ark_model_module`
+  ADD CONSTRAINT `model_module_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints for table `ark_model_root`
+--
+ALTER TABLE `ark_model_root`
+  ADD CONSTRAINT `model_root_class_constraint` FOREIGN KEY (`schma`,`class`) REFERENCES `ark_model_class` (`schma`, `class`),
+  ADD CONSTRAINT `model_root_model_constraint` FOREIGN KEY (`model`) REFERENCES `ark_model` (`model`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `ark_model_schema`
+--
+ALTER TABLE `ark_model_schema`
+  ADD CONSTRAINT `model_schema_edit_constraint` FOREIGN KEY (`edit`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `model_schema_event_constraint` FOREIGN KEY (`event`) REFERENCES `ark_vocabulary` (`concept`),
+  ADD CONSTRAINT `model_schema_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `model_schema_module_constraint` FOREIGN KEY (`module`) REFERENCES `ark_model_module` (`module`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `model_schema_new_constraint` FOREIGN KEY (`new`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `model_schema_remove_constraint` FOREIGN KEY (`remove`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `model_schema_view_constraint` FOREIGN KEY (`view`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `model_schema_vocabulary_constraint` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `ark_model_subschema`
+--
+ALTER TABLE `ark_model_subschema`
+  ADD CONSTRAINT `model_subschema_model_constraint` FOREIGN KEY (`model`) REFERENCES `ark_model` (`model`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `model_subschema_schema_constraint` FOREIGN KEY (`schma`,`class`) REFERENCES `ark_model_class` (`schma`, `class`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `model_subschema_subschema_constraint` FOREIGN KEY (`subschema`) REFERENCES `ark_model_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_route`
@@ -10232,39 +10385,6 @@ ALTER TABLE `ark_route`
 --
 ALTER TABLE `ark_route_parameter`
   ADD CONSTRAINT `route_constraint` FOREIGN KEY (`route`) REFERENCES `ark_route` (`route`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `ark_schema`
---
-ALTER TABLE `ark_schema`
-  ADD CONSTRAINT `schema_edit_constraint` FOREIGN KEY (`edit`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `schema_event_constraint` FOREIGN KEY (`event`) REFERENCES `ark_vocabulary` (`concept`),
-  ADD CONSTRAINT `schema_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `schema_module_constraint` FOREIGN KEY (`module`) REFERENCES `ark_module` (`module`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `schema_new_constraint` FOREIGN KEY (`new`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `schema_remove_constraint` FOREIGN KEY (`remove`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `schema_view_constraint` FOREIGN KEY (`view`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `schema_vocabulary_constraint` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
-
---
--- Constraints for table `ark_schema_association`
---
-ALTER TABLE `ark_schema_association`
-  ADD CONSTRAINT `schema_association_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `schema_association_schema1_constraint` FOREIGN KEY (`schema1`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `schema_association_schema2_constraint` FOREIGN KEY (`schema2`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `schema_association_schema_constraint` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `ark_schema_attribute`
---
-ALTER TABLE `ark_schema_attribute`
-  ADD CONSTRAINT `schema_attribute_dataclass_constraint` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `schema_attribute_edit_constraint` FOREIGN KEY (`edit`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `schema_attribute_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `schema_attribute_schema_constraint` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `schema_attribute_view_constraint` FOREIGN KEY (`view`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `schema_attribute_vocabulary_constraint` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_schema_item`
