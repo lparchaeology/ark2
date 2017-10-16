@@ -103,7 +103,7 @@ class ORM
                     self::persist($ent);
                 }
             }
-            if ($ent) {
+            if (isset($ent)) {
                 self::manager($ent)->flush();
             }
         } elseif (is_object($entity)) {
