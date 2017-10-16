@@ -36,9 +36,11 @@ class LocalText
     protected $content = [];
     protected $mediatype = 'text/plain';
 
-    public function __construct(?string $content, string $language = null)
+    public function __construct(string $content = null, string $language = null)
     {
-        $this->setContent($content, $language);
+        if ($content) {
+            $this->setContent($content, $language);
+        }
     }
 
     public function languages() : iterable
