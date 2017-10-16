@@ -108,6 +108,9 @@ class TextDataclass extends Dataclass
         if ($data === [] || $data === null) {
             return $fragments;
         }
+        if (is_string($data)) {
+            $data = new LocalText($data);
+        }
         if ($data instanceof LocalText) {
             foreach ($data->contents() as $language => $content) {
                 $fragment = Fragment::createFromAttribute($attribute, $creator, $created);

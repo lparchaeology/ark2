@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 16, 2017 at 04:51 PM
+-- Generation Time: Oct 16, 2017 at 07:32 PM
 -- Server version: 10.1.26-MariaDB-0+deb9u1
 -- PHP Version: 7.1.10-1+0~20170929170818.9+stretch~1.gbp501135
 
@@ -738,7 +738,7 @@ INSERT INTO `ark_model_attribute` (`schma`, `class`, `attribute`, `dataclass`, `
 ('core.actor', 'museum', 'municipality', 'term', 'dime.denmark.municipality', NULL, NULL, NULL, 0, 0, 0, 1, 0, 'public', 1, 0, 'dime.actor.municipality'),
 ('core.actor', 'museum', 'participating', 'boolean', NULL, NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'dime.actor.participating'),
 ('core.actor', 'person', 'detectorist_id', 'identifier', NULL, NULL, 'core.admin', 'core.actor.read', 0, 1, 1, 1, 0, 'restricted', 1, 0, 'dime.user.detectorist.id'),
-('core.actor', 'person', 'status', 'term', 'core.security.status', NULL, 'core.admin.user', 'core.admin.user', 0, 1, 1, 1, 0, 'restricted', 1, 0, 'core.security.status'),
+('core.actor', 'person', 'status', 'term', 'core.security.user.status', NULL, 'core.admin.user', 'core.admin.user', 0, 1, 1, 1, 0, 'restricted', 1, 0, 'core.security.user.status'),
 ('core.actor', 'person', 'terms', 'term', 'core.user.terms', NULL, 'core.actor.update', 'core.actor.read', 0, 1, 1, 1, 0, 'restricted', 1, 0, 'core.user.terms'),
 ('core.event', 'event', 'agents', 'actor', NULL, NULL, NULL, NULL, 0, 1, 0, 1, 0, 'public', 1, 0, 'core.event.agent'),
 ('core.event', 'event', 'class', 'term', 'core.event.class', NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'core.event.class'),
@@ -1238,15 +1238,17 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('core.role.anon', 'core', 0, 0),
 ('core.role.anonymous', 'core', 0, 0),
 ('core.role.user', 'core', 0, 0),
-('core.security.status', 'core', 0, 0),
-('core.security.status.approve', 'core', 0, 0),
-('core.security.status.closed', 'core', 0, 0),
-('core.security.status.expired', 'core', 0, 0),
-('core.security.status.locked', 'core', 0, 0),
-('core.security.status.new', 'core', 0, 0),
-('core.security.status.registered', 'core', 0, 0),
-('core.security.status.suspended', 'core', 0, 0),
-('core.security.status.verified', 'core', 0, 0),
+('core.security.user.status', 'core', 0, 0),
+('core.security.user.status.approved', 'core', 0, 0),
+('core.security.user.status.closed', 'core', 0, 0),
+('core.security.user.status.disabled', 'core', 0, 0),
+('core.security.user.status.enabled', 'core', 0, 0),
+('core.security.user.status.expired', 'core', 0, 0),
+('core.security.user.status.locked', 'core', 0, 0),
+('core.security.user.status.new', 'core', 0, 0),
+('core.security.user.status.registered', 'core', 0, 0),
+('core.security.user.status.suspended', 'core', 0, 0),
+('core.security.user.status.verified', 'core', 0, 0),
 ('core.user', 'core', 0, 0),
 ('core.user.agree', 'core', 0, 0),
 ('core.user.email', 'core', 0, 0),
@@ -2195,12 +2197,12 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.user.actor.museum', 'dime', 0, 0),
 ('dime.user.dashboard.faq', 'dime', 0, 0),
 ('dime.user.dashboard.finds', 'dime', 0, 1),
-('dime.user.dashboard.notifications', 'dime', 0, 1),
+('dime.user.dashboard.notifications', 'dime', 0, 1);
+INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
 ('dime.user.dashboard.text', 'dime', 0, 0),
 ('dime.user.dashboard.title', 'dime', 0, 0),
 ('dime.user.detectorist.id', 'dime', 0, 0),
-('dime.user.login', 'dime', 0, 0);
-INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
+('dime.user.login', 'dime', 0, 0),
 ('dime.user.name', 'dime', 0, 0),
 ('dime.user.password', 'dime', 0, 0),
 ('dime.user.password.forgot', 'dime', 0, 0),
@@ -3127,15 +3129,15 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'core.role.admin', 'default', 'Administrator', NULL),
 ('da', 'core.role.anon', 'default', 'Anonym', NULL),
 ('da', 'core.role.user', 'default', 'Bruger', NULL),
-('da', 'core.security.status', 'default', 'Status', NULL),
-('da', 'core.security.status.approve', 'default', 'Godkendt', NULL),
-('da', 'core.security.status.closed', 'default', 'Lukket', ''),
-('da', 'core.security.status.expired', 'default', 'Udløbet', NULL),
-('da', 'core.security.status.locked', 'default', 'Låst', NULL),
-('da', 'core.security.status.new', 'default', 'Ny', NULL),
-('da', 'core.security.status.registered', 'default', 'Registreret', ''),
-('da', 'core.security.status.suspended', 'default', 'suspenderet', NULL),
-('da', 'core.security.status.verified', 'default', 'Godkendt', NULL),
+('da', 'core.security.user.status', 'default', 'Status', NULL),
+('da', 'core.security.user.status.approved', 'default', 'Godkendt', NULL),
+('da', 'core.security.user.status.closed', 'default', 'Lukket', ''),
+('da', 'core.security.user.status.expired', 'default', 'Udløbet', NULL),
+('da', 'core.security.user.status.locked', 'default', 'Låst', NULL),
+('da', 'core.security.user.status.new', 'default', 'Ny', NULL),
+('da', 'core.security.user.status.registered', 'default', 'Registreret', ''),
+('da', 'core.security.user.status.suspended', 'default', 'suspenderet', NULL),
+('da', 'core.security.user.status.verified', 'default', 'Godkendt', NULL),
 ('da', 'core.user', 'resource', 'brugere', NULL),
 ('da', 'core.user.agree', 'default', 'Jeg accepterer hermed betingelserne for anvendelsen af DIME.', ''),
 ('da', 'core.user.email', 'default', 'Email', NULL),
@@ -3714,9 +3716,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.kommune.sonderborg', 'default', 'Sønderborg', NULL),
 ('da', 'dime.kommune.sonderborg', 'official', 'Sønderborg Kommune', NULL),
 ('da', 'dime.kommune.soro', 'default', 'Sorø', NULL),
-('da', 'dime.kommune.soro', 'official', 'Sorø Kommune', NULL),
-('da', 'dime.kommune.stevns', 'default', 'Stevns', NULL);
+('da', 'dime.kommune.soro', 'official', 'Sorø Kommune', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('da', 'dime.kommune.stevns', 'default', 'Stevns', NULL),
 ('da', 'dime.kommune.stevns', 'official', 'Stevns Kommune', NULL),
 ('da', 'dime.kommune.struer', 'default', 'Struer', NULL),
 ('da', 'dime.kommune.struer', 'official', 'Struer Kommune', NULL),
@@ -3987,15 +3989,17 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'core.role.admin', 'default', 'Administrator', ''),
 ('en', 'core.role.anon', 'default', 'Anonymous', ''),
 ('en', 'core.role.user', 'default', 'Researcher', ''),
-('en', 'core.security.status', 'default', 'Status', ''),
-('en', 'core.security.status.approve', 'default', 'Approved', ''),
-('en', 'core.security.status.closed', 'default', 'Closed', ''),
-('en', 'core.security.status.expired', 'default', 'Expired', ''),
-('en', 'core.security.status.locked', 'default', 'Locked', ''),
-('en', 'core.security.status.new', 'default', 'New', ''),
-('en', 'core.security.status.registered', 'default', 'Registered', ''),
-('en', 'core.security.status.suspended', 'default', 'Suspended', ''),
-('en', 'core.security.status.verified', 'default', 'Verified', ''),
+('en', 'core.security.user.status', 'default', 'Status', ''),
+('en', 'core.security.user.status.approved', 'default', 'Approved', ''),
+('en', 'core.security.user.status.closed', 'default', 'Closed', ''),
+('en', 'core.security.user.status.disabled', 'default', 'Disabled', ''),
+('en', 'core.security.user.status.enabled', 'default', 'Enabled', ''),
+('en', 'core.security.user.status.expired', 'default', 'Expired', ''),
+('en', 'core.security.user.status.locked', 'default', 'Locked', ''),
+('en', 'core.security.user.status.new', 'default', 'New', ''),
+('en', 'core.security.user.status.registered', 'default', 'Registered', ''),
+('en', 'core.security.user.status.suspended', 'default', 'Suspended', ''),
+('en', 'core.security.user.status.verified', 'default', 'Verified', ''),
 ('en', 'core.user', 'resource', 'users', ''),
 ('en', 'core.user.agree', 'default', 'I agree to abide by the site Terms and Conditions.', ''),
 ('en', 'core.user.email', 'default', 'Email', ''),
@@ -4462,10 +4466,10 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.subtype.accessory.jewelery.pearl', 'default', 'Pearl', NULL),
 ('en', 'dime.find.subtype.accessory.jewelery.pendant', 'default', 'Pendant / Amulet', NULL),
 ('en', 'dime.find.subtype.accessory.jewelery.ring', 'default', 'Finger ring', NULL),
-('en', 'dime.find.subtype.accessory.lace', 'default', 'Lace End', NULL),
-('en', 'dime.find.subtype.accessory.medal', 'default', 'Medal / Order', NULL),
-('en', 'dime.find.subtype.accessory.other', 'default', 'Other costume accessories (specify in description field)', NULL);
+('en', 'dime.find.subtype.accessory.lace', 'default', 'Lace End', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.find.subtype.accessory.medal', 'default', 'Medal / Order', NULL),
+('en', 'dime.find.subtype.accessory.other', 'default', 'Other costume accessories (specify in description field)', NULL),
 ('en', 'dime.find.subtype.accessory.pilgrim', 'default', 'Pilgrim Badge', NULL),
 ('en', 'dime.find.subtype.accessory.pin', 'default', 'Clothes pin', NULL),
 ('en', 'dime.find.subtype.accessory.tutulus', 'default', 'Tutulus', NULL),
@@ -5137,12 +5141,12 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'language.capiznon', 'default', 'Capiznon', NULL),
 ('en', 'language.carib', 'default', 'Carib', NULL),
 ('en', 'language.catalan', 'default', 'Catalan', NULL),
-('en', 'language.cayuga', 'default', 'Cayuga', NULL),
+('en', 'language.cayuga', 'default', 'Cayuga', NULL);
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'language.cebuano', 'default', 'Cebuano', NULL),
 ('en', 'language.chagatai', 'default', 'Chagatai', NULL),
 ('en', 'language.chamorro', 'default', 'Chamorro', NULL),
-('en', 'language.chechen', 'default', 'Chechen', NULL);
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'language.chechen', 'default', 'Chechen', NULL),
 ('en', 'language.cherokee', 'default', 'Cherokee', NULL),
 ('en', 'language.cheyenne', 'default', 'Cheyenne', NULL),
 ('en', 'language.chibcha', 'default', 'Chibcha', NULL),
@@ -5885,7 +5889,7 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('core_user_credentials', '', 0, 0, 0, 'core_widget_username', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, 'active', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('core_user_credentials', '', 0, 0, 2, 'core_widget_email', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, 'active', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('core_user_credentials', '', 0, 0, 4, 'core_widget_password_confirm', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, 'active', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_user_filter', '', 0, 0, 0, 'core_widget_choice', NULL, 'core.security.status', 'status', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"style\": \"width:95%\"}}'),
+('core_user_filter', '', 0, 0, 0, 'core_widget_choice', NULL, 'core.security.user.status', 'status', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"style\": \"width:95%\"}}'),
 ('core_user_filter', '', 0, 2, 0, 'core_widget_submit', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.select', NULL, NULL),
 ('core_user_login', '', 0, 0, 0, 'core_widget_username', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, 'active', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('core_user_login', '', 0, 0, 2, 'core_widget_password', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, 'active', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
@@ -6076,7 +6080,7 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('dime_user_actor', '', 0, 0, 12, 'core_actor_email', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_user_actor', '', 0, 0, 24, 'core_widget_submit', NULL, NULL, 'save', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.save', NULL, NULL),
 ('dime_user_actor', '', 0, 1, 2, 'core_actor_avatar', NULL, NULL, NULL, 4, 0, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('dime_user_filter', '', 0, 0, 0, 'core_widget_choice', NULL, 'core.security.status', 'status', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"style\": \"width:95%\"}}'),
+('dime_user_filter', '', 0, 0, 0, 'core_widget_choice', NULL, 'core.security.user.status', 'status', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"style\": \"width:95%\"}}'),
 ('dime_user_filter', '', 0, 2, 0, 'core_widget_submit', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.select', NULL, NULL),
 ('dime_user_profile', '', 0, 0, 0, 'dime_home_action', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_user_profile', '', 1, 0, 0, 'dime_user_actor', NULL, NULL, NULL, 7, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
@@ -6806,7 +6810,7 @@ INSERT INTO `ark_vocabulary` (`concept`, `type`, `source`, `closed`, `transition
 ('core.message.recipient.status', 'list', 'ARK Core', 1, 0, 1, 0, 'core.message.recipient.status', 'Message Recipient Status'),
 ('core.message.status', 'list', 'ARK Core', 1, 0, 1, 0, 'core.message.status', 'Message Status'),
 ('core.page.class', 'list', 'ARK Core', 1, 0, 1, 0, NULL, 'Page Class'),
-('core.security.status', 'list', 'ARK Core', 1, 0, 1, 0, 'core.security.status', 'Security Status'),
+('core.security.user.status', 'list', 'ARK Core', 1, 0, 1, 0, 'core.security.user.status', 'Security Status'),
 ('core.user.terms', 'list', 'ARK Core', 1, 0, 1, 0, 'core.user.terms', 'User Terms and Conditions'),
 ('core.visibility', 'list', 'ARK Core', 1, 0, 1, 0, 'core.visibility', 'Data Visibility'),
 ('core.workflow.role', 'list', 'ARK Core', 1, 0, 1, 0, 'core.workflow.role', 'ARK Workflow Roles'),
@@ -7679,13 +7683,15 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `ro
 ('core.message.status', 'read', '', 0, 0, 1, 0, 'core.message.status.read', ''),
 ('core.message.status', 'sent', '', 0, 0, 1, 0, 'core.message.status.sent', ''),
 ('core.page.class', 'page', '', 0, 0, 1, 0, NULL, ''),
-('core.security.status', 'approved', '', 0, 0, 1, 0, 'core.security.status.approve', ''),
-('core.security.status', 'closed', '', 0, 0, 1, 0, 'core.security.status.closed', ''),
-('core.security.status', 'expired', '', 0, 0, 1, 0, 'core.security.status.expired', ''),
-('core.security.status', 'locked', '', 0, 0, 1, 0, 'core.security.status.locked', ''),
-('core.security.status', 'registered', '', 1, 0, 1, 0, 'core.security.status.registered', ''),
-('core.security.status', 'suspended', '', 0, 0, 1, 0, 'core.security.status.suspended', ''),
-('core.security.status', 'verified', '', 0, 0, 1, 0, 'core.security.status.verified', ''),
+('core.security.user.status', 'approved', '', 0, 0, 1, 0, 'core.security.user.status.approved', ''),
+('core.security.user.status', 'closed', '', 0, 0, 1, 0, 'core.security.user.status.closed', ''),
+('core.security.user.status', 'disabled', '', 0, 0, 1, 0, NULL, ''),
+('core.security.user.status', 'enabled', '', 0, 0, 1, 0, NULL, ''),
+('core.security.user.status', 'expired', '', 0, 0, 1, 0, 'core.security.user.status.expired', ''),
+('core.security.user.status', 'locked', '', 0, 0, 1, 0, 'core.security.user.status.locked', ''),
+('core.security.user.status', 'registered', '', 1, 0, 1, 0, 'core.security.user.status.registered', ''),
+('core.security.user.status', 'suspended', '', 0, 0, 1, 0, 'core.security.user.status.suspended', ''),
+('core.security.user.status', 'verified', '', 0, 0, 1, 0, 'core.security.user.status.verified', ''),
 ('core.user.terms', 'v1', '', 1, 0, 1, 0, 'core.user.terms.v1', ''),
 ('core.visibility', 'private', '', 1, 0, 1, 0, 'core.visibility.private', ''),
 ('core.visibility', 'public', '', 0, 0, 1, 0, 'core.visibility.public', ''),
@@ -8216,10 +8222,10 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `ro
 ('dime.find.subtype', 'metal.mold', '', 0, 0, 0, 0, 'dime.find.subtype.metal.mold', ''),
 ('dime.find.subtype', 'metal.other', '', 0, 0, 0, 0, 'dime.find.subtype.metal.other', ''),
 ('dime.find.subtype', 'metal.rest', '', 0, 0, 0, 0, 'dime.find.subtype.metal.rest', ''),
-('dime.find.subtype', 'metal.slag', '', 0, 0, 0, 0, 'dime.find.subtype.metal.slag', ''),
-('dime.find.subtype', 'metal.tin', '', 0, 0, 0, 0, 'dime.find.subtype.metal.tin', ''),
-('dime.find.subtype', 'metal.unknown', '', 0, 0, 0, 0, 'dime.find.subtype.metal.unknown', '');
+('dime.find.subtype', 'metal.slag', '', 0, 0, 0, 0, 'dime.find.subtype.metal.slag', '');
 INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+('dime.find.subtype', 'metal.tin', '', 0, 0, 0, 0, 'dime.find.subtype.metal.tin', ''),
+('dime.find.subtype', 'metal.unknown', '', 0, 0, 0, 0, 'dime.find.subtype.metal.unknown', ''),
 ('dime.find.subtype', 'military.ammunition', '', 0, 0, 0, 0, 'dime.find.subtype.military.ammunition', ''),
 ('dime.find.subtype', 'military.armor', '', 0, 0, 0, 0, 'dime.find.subtype.military.armor', ''),
 ('dime.find.subtype', 'military.arrow', '', 0, 0, 0, 0, 'dime.find.subtype.military.arrow', ''),
@@ -8887,11 +8893,11 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `ro
 ('language', 'ss', 'swati', 0, 0, 1, 0, 'language.swati', ''),
 ('language', 'ssy', 'saho', 0, 0, 1, 0, 'language.saho', ''),
 ('language', 'st', 'sotho.southern', 0, 0, 1, 0, 'language.sotho.southern', ''),
-('language', 'stq', 'frisian.saterland', 0, 0, 1, 0, 'language.frisian.saterland', ''),
+('language', 'stq', 'frisian.saterland', 0, 0, 1, 0, 'language.frisian.saterland', '');
+INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
 ('language', 'su', 'sundanese', 0, 0, 1, 0, 'language.sundanese', ''),
 ('language', 'suk', 'sukuma', 0, 0, 1, 0, 'language.sukuma', ''),
-('language', 'sus', 'susu', 0, 0, 1, 0, 'language.susu', '');
-INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+('language', 'sus', 'susu', 0, 0, 1, 0, 'language.susu', ''),
 ('language', 'sux', 'sumerian', 0, 0, 1, 0, 'language.sumerian', ''),
 ('language', 'sv', 'swedish', 0, 0, 1, 0, 'language.swedish', ''),
 ('language', 'sw', 'swahili', 0, 0, 1, 0, 'language.swahili', ''),
@@ -9523,14 +9529,15 @@ CREATE TABLE `ark_workflow_role` (
 --
 
 INSERT INTO `ark_workflow_role` (`role`, `agent_for`, `level`, `enabled`, `keyword`) VALUES
-('admin', NULL, '', 1, 'core.role.admin'),
-('anonymous', NULL, '', 1, 'core.role.anon'),
-('appraiser', 'museum', '', 1, 'dime.role.appraiser'),
-('curator', 'museum', '', 1, 'dime.role.curator'),
-('detectorist', NULL, '', 1, 'dime.role.detectorist'),
-('registrar', 'museum', '', 1, 'dime.role.registrar'),
-('researcher', 'museum', '', 1, 'dime.role.researcher'),
-('user', NULL, '', 1, 'core.role.user');
+('admin', NULL, 'ROLE_ADMIN', 1, 'core.role.admin'),
+('anonymous', NULL, 'ROLE_ANON', 1, 'core.role.anon'),
+('appraiser', 'museum', 'ROLE_USER', 1, 'dime.role.appraiser'),
+('curator', 'museum', 'ROLE_USER', 1, 'dime.role.curator'),
+('detectorist', NULL, 'ROLE_USER', 1, 'dime.role.detectorist'),
+('registrar', 'museum', 'ROLE_USER', 1, 'dime.role.registrar'),
+('researcher', 'museum', 'ROLE_USER', 1, 'dime.role.researcher'),
+('sysadmin', NULL, 'ROLE_SUPER_ADMIN', 1, 'core.role.admin'),
+('user', NULL, 'ROLE_USER', 1, 'core.role.user');
 
 -- --------------------------------------------------------
 

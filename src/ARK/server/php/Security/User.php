@@ -404,6 +404,7 @@ class User implements AdvancedUserInterface, Serializable
     public function setLevel(string $level) : void
     {
         $this->level = $level;
+        $this->levels = null;
     }
 
     public function accounts() : iterable

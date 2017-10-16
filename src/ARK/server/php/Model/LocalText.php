@@ -36,6 +36,11 @@ class LocalText
     protected $content = [];
     protected $mediatype = 'text/plain';
 
+    public function __construct(?string $content, string $language = null)
+    {
+        $this->setContent($content, $language);
+    }
+
     public function languages() : iterable
     {
         return array_keys($this->content);
