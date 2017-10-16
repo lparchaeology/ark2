@@ -91,7 +91,7 @@ class Database
         return $this->classnames[$namespace] ?? [];
     }
 
-    public function getSuperclassForSchema($schema) : ?iterable
+    public function getSuperclassForSchema($schema) : ?string
     {
         $this->loadEntities();
         foreach ($this->entities['schema'][$schema] as $entity) {
@@ -520,24 +520,23 @@ class Database
                 schma.schma, schma.subclasses, schma.entities, schma.vocabulary, schma.generator, schma.sequence,
                 module.module, module.tbl, module.core
             FROM ark_model_class AS class, ark_model_schema AS schma, ark_model_module AS module
-            WHERE class.classname IS NOT NULL
-            AND class.enabled = TRUE
+            WHERE class.enabled = TRUE
             AND schma.schma = class.schma
-            AND schma.enabled = true
+            AND schma.enabled = TRUE
             AND module.module = schma.module
-            AND module.enabled = true
+            AND module.enabled = TRUE
         ';
         $entities = $this->core()->fetchAll($sql, []);
         foreach ($entities as $entity) {
-            $this->entities['classname'][$entity['classname']] = $entity;
-            $this->entities['namespace'][$entity['namespace']][] = $entity;
-            $this->entities['entity'][$entity['entity']][] = $entity;
-            $this->entities['schema'][$entity['schma']][] = $entity;
-            $this->entities['module'][$entity['module']][] = $entity;
-            if ($entity['instantiable'] || ($entity['superclass'] && !$entity['entities'])) {
+            if ($entity['superclass'] || $entity['entities']) {
+                $this->entities['classname'][$entity['classname']] = $entity;
+                $this->entities['namespace'][$entity['namespace']][] = $entity;
+                $this->entities['entity'][$entity['entity']][] = $entity;
+                $this->entities['schema'][$entity['schma']][] = $entity;
+                $this->entities['module'][$entity['module']][] = $entity;
                 $this->classnames[$entity['namespace']][] = $entity['classname'];
             }
-            if ($entity['entities'] && $entity['instantiable'] && !$entity['superclass']) {
+            if ($entity['entities'] && !$entity['superclass']) {
                 $this->subclasses[$entity['schma']][] = $entity;
             }
         }

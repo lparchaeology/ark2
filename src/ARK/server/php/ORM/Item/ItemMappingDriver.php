@@ -51,7 +51,7 @@ class ItemMappingDriver implements MappingDriver
     {
         // Table
         $entity = Service::database()->getEntityForClassName($classname);
-        if (!$entity) {
+        if (!$entity || ($entity['entities'] && !$entity['superclass'])) {
             return;
         }
         $classnames[] = $entity['classname'];

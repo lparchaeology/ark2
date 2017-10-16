@@ -31,6 +31,7 @@ namespace ARK\ORM;
 
 use ARK\Error\Error;
 use ARK\Error\ErrorException;
+use ARK\Model\Schema\Module;
 use ARK\Service;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -132,6 +133,11 @@ class ORM
     public static function findOneBy($class, iterable $criteria, iterable $orderBy = null)
     {
         return self::repository($class)->findOneBy($criteria, $orderBy);
+    }
+
+    public static function findItemByModule(string $module, string $id)
+    {
+        return self::find(Module::class, $module)->find($id);
     }
 
     public static function matching($class, Criteria $criteria)

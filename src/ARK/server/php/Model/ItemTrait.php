@@ -29,7 +29,6 @@
 
 namespace ARK\Model;
 
-use ARK\Model\Schema\Module;
 use ARK\Model\Schema\Schema;
 use ARK\ORM\ORM;
 use ARK\Vocabulary\Term;
@@ -63,8 +62,7 @@ trait ItemTrait
     public function parent() : ?Item
     {
         if ($this->parentId && $this->parent === null) {
-            $module = ORM::find(Module::class, $this->parentModule);
-            $this->parent = ORM::find($module->classname(), $this->parentId);
+            $this->parent = ORM::findItemByModule($this->parentModule, $this->parentId);
         }
         return $this->parent;
     }

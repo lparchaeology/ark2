@@ -29,6 +29,7 @@
 
 namespace ARK\Model;
 
+use ARK\Model\Fragment\Fragment;
 use ARK\ORM\ORM;
 use ARK\Service;
 use DateTime;
