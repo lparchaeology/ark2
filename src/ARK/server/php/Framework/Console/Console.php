@@ -46,6 +46,8 @@ use ARK\Security\Console\Command\UserEnableCommand;
 use ARK\Security\Console\Command\UserListCommand;
 use ARK\Security\Console\Command\UserPasswordResetCommand;
 use ARK\Security\Console\Command\UserPasswordSetCommand;
+use ARK\Security\Console\Command\UserRoleAddCommand;
+use ARK\Security\Console\Command\UserRoleDeleteCommand;
 use ARK\Security\Console\Command\UserVerifyCommand;
 use ARK\Translation\Console\Command\TranslationAddCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand;
@@ -76,6 +78,8 @@ class Console extends AbstractConsole
         $this->add(new UserListCommand());
         $this->add(new UserPasswordSetCommand());
         $this->add(new UserPasswordResetCommand());
+        $this->add(new UserRoleAddCommand());
+        $this->add(new UserRoleDeleteCommand());
         $this->add(new UserVerifyCommand());
 
         // View Commands
