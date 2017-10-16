@@ -38,6 +38,7 @@ use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
+use ARK\Service;
 use ARK\Vocabulary\Term;
 use ARK\Workflow\Permission;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -64,13 +65,14 @@ class Schema
     protected $update;
     protected $delete;
     protected $model;
-    protected $classes;
+    protected $superclass;
+    protected $subclasses;
     protected $attributes;
     protected $associations;
 
     public function __construct()
     {
-        $this->classes = new ArrayCollection();
+        $this->subclasses = new ArrayCollection();
         $this->attributes = new ArrayCollection();
         $this->associations = new ArrayCollection();
     }
@@ -83,6 +85,11 @@ class Schema
     public function module() : Module
     {
         return $this->module;
+    }
+
+    public function superclass() : Module
+    {
+        return $this->superclass;
     }
 
     public function hasSubclasses() : bool
@@ -159,8 +166,8 @@ class Schema
         $this->init();
         $class = $this->checkClass($subclass);
         $attributes = array_values($this->model[$class]['attributes']);
-        if ($all && $class !== $this->module->superclass()) {
-            return array_merge(array_values($this->model[$this->module->superclass()]['attributes']), $attributes);
+        if ($all && $class !== $this->superclass) {
+            return array_merge(array_values($this->model[$this->superclass]['attributes']), $attributes);
         }
         return $attributes;
     }
@@ -175,8 +182,8 @@ class Schema
         $this->init();
         $class = $this->checkClass($subclass);
         $names = array_keys($this->model[$class]['attributes']);
-        if ($all && $subclass !== $this->module->superclass()) {
-            return array_merge(array_keys($this->model[$this->module->superclass()]['attributes']), $names);
+        if ($all && $subclass !== $this->superclass) {
+            return array_merge(array_keys($this->model[$this->superclass]['attributes']), $names);
         }
         return $names;
     }
@@ -184,7 +191,7 @@ class Schema
     public function attribute(string $name) : ?Attribute
     {
         $this->init();
-        return $this->model[$this->module->id()]['allattributes'][$name] ?? null;
+        return $this->model[$this->superclass]['allattributes'][$name] ?? null;
     }
 
     public function associations(string $subclass = null, bool $all = true) : iterable
@@ -192,8 +199,8 @@ class Schema
         $this->init();
         $class = $this->checkClass($subclass);
         $associations = array_values($this->model[$class]['associations']);
-        if ($all && $class !== $this->module->superclass()) {
-            return array_merge(array_values($this->model[$this->module->superclass()]['associations']), $associations);
+        if ($all && $class !== $this->superclass) {
+            return array_merge(array_values($this->model[$this->superclass]['associations']), $associations);
         }
         return $associations;
     }
@@ -208,8 +215,8 @@ class Schema
         $this->init();
         $class = $this->checkClass($subclass);
         $names = array_keys($this->model[$class]['associations']);
-        if ($all && $class !== $this->module->superclass()) {
-            return array_merge(array_keys($this->model[$this->module->superclass()]['associations']), $names);
+        if ($all && $class !== $this->superclass) {
+            return array_merge(array_keys($this->model[$this->superclass]['associations']), $names);
         }
         return $names;
     }
@@ -254,19 +261,18 @@ class Schema
     protected function checkClass(string $class = null) : string
     {
         $this->init();
-        $superclass = $this->module()->superclass();
         if (!$class) {
-            $class = $superclass;
+            $class = $this->superclass;
         }
         if ($this->hasSubclasses()) {
-            if ($class === $superclass) {
+            if ($class === $this->superclass) {
                 throw new SubclassRequiredException();
             }
             if (!in_array($class, $this->subclasses, true)) {
                 throw new SubclassInvalidException();
             }
         } else {
-            if ($class !== $superclass) {
+            if ($class !== $this->superclass) {
                 throw new SuperclassInvalidException();
             }
         }
@@ -275,29 +281,31 @@ class Schema
 
     private function init() : void
     {
-        if ($this->model === null) {
-            $module = $this->module->id();
-            $this->model[$module]['attributes'] = [];
-            $this->model[$module]['allattributes'] = [];
-            $this->model[$module]['associations'] = [];
-            $this->model[$module]['allassociations'] = [];
-            if ($this->vocabulary) {
-                foreach ($this->vocabulary->terms() as $term) {
-                    $subclass = $term->name();
-                    $this->subclasses[] = $subclass;
-                    $this->model[$subclass]['subclass'] = $subclass;
-                    $this->model[$subclass]['attributes'] = [];
-                    $this->model[$subclass]['associations'] = [];
-                }
+        if ($this->model !== null) {
+            return;
+        }
+        $this->model = [];
+        $this->subclasses = [];
+        $entities = Service::database()->getEntitiesForSchema($this->schma);
+        foreach ($entities as $entity) {
+            $class = $entity['class'];
+            $this->model[$class]['attributes'] = [];
+            $this->model[$class]['associations'] = [];
+            if ($entity['superclass']) {
+                $this->superclass = $class;
+                $this->model[$this->superclass]['allattributes'] = [];
+                $this->model[$this->superclass]['allassociations'] = [];
+            } else {
+                $this->subclasses[] = $class;
             }
-            foreach ($this->attributes as $attribute) {
-                $this->model[$module]['allattributes'][$attribute->name()] = $attribute;
-                $this->model[$attribute->class()]['attributes'][$attribute->name()] = $attribute;
-            }
-            foreach ($this->associations as $association) {
-                $this->model[$module]['allassociations'][$association->name()] = $association;
-                $this->model[$association->class()]['associations'][$association->name()] = $association;
-            }
+        }
+        foreach ($this->attributes as $attribute) {
+            $this->model[$this->superclass]['allattributes'][$attribute->name()] = $attribute;
+            $this->model[$attribute->class()]['attributes'][$attribute->name()] = $attribute;
+        }
+        foreach ($this->associations as $association) {
+            $this->model[$this->superclass]['allassociations'][$association->name()] = $association;
+            $this->model[$association->class()]['associations'][$association->name()] = $association;
         }
     }
 }

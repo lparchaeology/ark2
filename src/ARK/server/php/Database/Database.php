@@ -91,6 +91,12 @@ class Database
         return $this->classnames[$namespace] ?? [];
     }
 
+    public function getEntitiesForSchema($schema) : ?string
+    {
+        $this->loadEntities();
+        return $this->entities['schema'][$schema];
+    }
+
     public function getSuperclassForSchema($schema) : ?string
     {
         $this->loadEntities();
