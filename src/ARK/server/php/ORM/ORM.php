@@ -90,17 +90,24 @@ class ORM
         return self::manager($entity)->contains($entity);
     }
 
+    public static function isScheduled($entity) : bool
+    {
+        return self::manager($entity)->getUnitOfWork()->isEntityScheduled($entity);
+    }
+
     public static function flush($entity) : void
     {
         if (is_array($entity) || $entity instanceof Collection) {
             foreach ($entity as $ent) {
-                if (is_object($ent) && !self::contains($ent)) {
+                if (is_object($ent) && !self::isScheduled($ent)) {
                     self::persist($ent);
                 }
             }
             self::manager($ent)->flush();
-        } elseif (is_object($entity) && !self::contains($entity)) {
-            self::persist($entity);
+        } elseif (is_object($entity)) {
+            if (!self::isScheduled($entity)) {
+                self::persist($entity);
+            }
             self::manager($entity)->flush();
         }
     }
