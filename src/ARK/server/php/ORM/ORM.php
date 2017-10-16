@@ -52,7 +52,9 @@ class ORM
         }
         // TODO Proper error strategy?
         $class = (is_object($class) ? get_class($class) : $class);
-        throw new ErrorException(new Error('ENTITY_NOT_MANAGED', 'Entity Not Managed', "Entity $class not managed by ORM"));
+        throw new ErrorException(
+            new Error('ENTITY_NOT_MANAGED', "$class not managed", "Entity $class is not managed by the ORM")
+        );
     }
 
     public static function repository($class)
