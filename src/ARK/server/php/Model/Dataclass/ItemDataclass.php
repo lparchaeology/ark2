@@ -80,7 +80,7 @@ class ItemDataclass extends Dataclass
             $fragment = $fragment->first();
         }
         $module = ORM::find(Module::class, $fragment->parameter());
-        return ORM::find($module->classname(), $fragment->value());
+        return $module->find($fragment->value());
     }
 
     protected function hydrateFragment($data, Fragment $fragment, Vocabulary $vocabulary = null) : void

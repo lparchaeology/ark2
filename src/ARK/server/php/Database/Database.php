@@ -91,6 +91,17 @@ class Database
         return $this->classnames[$namespace] ?? [];
     }
 
+    public function getSuperclassForSchema($schema) : ?iterable
+    {
+        $this->loadEntities();
+        foreach ($this->entities['schema'][$schema] as $entity) {
+            if ($entity['superclass']) {
+                return $entity['classname'];
+            }
+        }
+        return null;
+    }
+
     public function getDatatypes() : ?iterable
     {
         $this->loadDatatypes();
@@ -509,7 +520,7 @@ class Database
             $this->entities['entity'][$entity['entity']][] = $entity;
             $this->entities['schema'][$entity['schma']][] = $entity;
             $this->entities['module'][$entity['module']][] = $entity;
-            if ($entity['instantiable']) {
+            if ($entity['instantiable'] || ($entity['superclass'] && !$entity['entities'])) {
                 $this->classnames[$entity['namespace']][] = $entity['classname'];
             }
             if ($entity['entities'] && $entity['instantiable'] && !$entity['superclass']) {

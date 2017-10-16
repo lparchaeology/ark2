@@ -82,9 +82,9 @@ class Update
         $builder->addStringKey('class', 30);
         $builder->addMappedStringKey('attribute', 'attributeName', 30);
 
-        $builder->addStringField('actor', 'boolean');
-        $builder->addStringField('subject', 'boolean');
-        $builder->addStringField('clear', 'boolean');
+        $builder->addField('actor', 'boolean');
+        $builder->addField('subject', 'boolean');
+        $builder->addField('clear', 'boolean');
         $builder->addStringField('term', 30);
         $builder->addStringField('id', 30);
 

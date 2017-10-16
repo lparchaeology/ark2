@@ -123,7 +123,7 @@ class ObjectDataclass extends Dataclass
         $builder = new ClassMetadataBuilder($metadata, 'ark_dataclass_object');
 
         // Associations
-        $builder->addOneToManyField('attributes', DataclassAttribute::class, 'parent', null, null, ['sequence' => 'ASC']);
+        $builder->addOneToManyField('attributes', DataclassAttribute::class, 'parent', null, true, ['sequence' => 'ASC']);
     }
 
     protected function fragmentValue($fragment, Collection $properties = null)

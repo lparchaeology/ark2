@@ -30,6 +30,7 @@
 namespace ARK\Model\Schema;
 
 use ARK\Model\EnabledTrait;
+use ARK\Model\Item;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
@@ -90,6 +91,13 @@ class Module
     public function schemas() : Collection
     {
         return $this->schemas;
+    }
+
+    public function find(string $id) : ?Item
+    {
+        $item = Service::database()->getItem($this->table, $id);
+        $classname = Service::database()->getSuperclassForSchema($item['schma']);
+        return ORM::find($classname, $id);
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void
