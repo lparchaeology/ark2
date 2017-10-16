@@ -567,7 +567,7 @@ class User implements AdvancedUserInterface, Serializable
         $builder->addMappedField('last_login', 'lastLogin', 'datetime');
 
         // Relationships
-        $builder->addManyToManyField('accounts', Account::class, 'ark_auth_account');
+        $builder->addManyToManyField('accounts', Account::class, 'ark_security_account');
     }
 
     private function initLevels() : void
