@@ -98,10 +98,11 @@ class ORM
                     self::persist($ent);
                 }
             }
+            self::manager($ent)->flush();
         } elseif (is_object($entity) && !self::contains($entity)) {
             self::persist($entity);
+            self::manager($entity)->flush();
         }
-        self::manager($entity)->flush();
     }
 
     public static function rollback() : void
