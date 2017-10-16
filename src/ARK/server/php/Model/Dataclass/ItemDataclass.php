@@ -79,8 +79,7 @@ class ItemDataclass extends Dataclass
         if ($fragment instanceof Collection) {
             $fragment = $fragment->first();
         }
-        $module = ORM::find(Module::class, $fragment->parameter());
-        return $module->find($fragment->value());
+        return ORM::findItemByModule($fragment->parameter(), $fragment->value());
     }
 
     protected function hydrateFragment($data, Fragment $fragment, Vocabulary $vocabulary = null) : void
