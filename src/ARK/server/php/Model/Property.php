@@ -147,7 +147,7 @@ class Property
     // TODO Is there a better way?
     protected function updateItem($value) : void
     {
-        if ($this->name() === $this->item->schema()->classProperty()) {
+        if ($this->name() === $this->item->schema()->classAttributeName()) {
             $this->item->setClass($this->fragments->get(0)->value());
         }
         if ($this->name() === 'visibility') {
