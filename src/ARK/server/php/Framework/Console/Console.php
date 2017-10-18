@@ -99,5 +99,11 @@ class Console extends AbstractConsole
         //$this->add(new MigrateCommand());
         //$this->add(new StatusCommand());
         //$this->add(new VersionCommand());
+
+        // Add custom commands
+        $commands = $this->app['ark']['console']['commands'] ?? [];
+        foreach ($commands as $command) {
+            $this->add(new $command());
+        }
     }
 }
