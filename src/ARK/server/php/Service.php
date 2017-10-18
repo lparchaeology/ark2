@@ -178,7 +178,7 @@ class Service
     }
 
     public static function translate(
-        string $id,
+        ?string $id,
         string $role = 'default',
         iterable $parameters = [],
         string $domain = 'messages',
@@ -188,7 +188,7 @@ class Service
     }
 
     public static function translateChoice(
-        string $id,
+        ?string $id,
         int $number,
         string $role = 'default',
         iterable $parameters = [],
