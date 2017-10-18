@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 16, 2017 at 07:32 PM
+-- Generation Time: Oct 18, 2017 at 03:21 PM
 -- Server version: 10.1.26-MariaDB-0+deb9u1
 -- PHP Version: 7.1.10-1+0~20170929170818.9+stretch~1.gbp501135
 
@@ -1150,6 +1150,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('core.datatype.string', 'vocabulary', 0, 0),
 ('core.datatype.text', 'vocabulary', 0, 0),
 ('core.datatype.time', 'vocabulary', 0, 0),
+('core.error.form.invalid.error', 'dime', 0, 0),
 ('core.event', 'core', 0, 0),
 ('core.event.agent', 'core', 0, 0),
 ('core.event.class', 'core', 0, 0),
@@ -2196,9 +2197,9 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.treasure.treasure', 'vocabulary', 0, 0),
 ('dime.user.actor.museum', 'dime', 0, 0),
 ('dime.user.dashboard.faq', 'dime', 0, 0),
-('dime.user.dashboard.finds', 'dime', 0, 1),
-('dime.user.dashboard.notifications', 'dime', 0, 1);
+('dime.user.dashboard.finds', 'dime', 0, 1);
 INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
+('dime.user.dashboard.notifications', 'dime', 0, 1),
 ('dime.user.dashboard.text', 'dime', 0, 0),
 ('dime.user.dashboard.title', 'dime', 0, 0),
 ('dime.user.detectorist.id', 'dime', 0, 0),
@@ -2986,6 +2987,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('user.menu.password', 'user', 0, 0),
 ('user.menu.register', 'user', 0, 0),
 ('user.menu.view', 'user', 0, 0),
+('Værdien er ikke gyldig. data[credentials].username.error', 'dime', 0, 0),
 ('vocabulary.country', 'core', 0, 0),
 ('vocabulary.distance', 'core', 0, 0),
 ('vocabulary.language', 'core', 0, 0),
@@ -3092,6 +3094,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'core.button.search', 'default', 'Søg', NULL),
 ('da', 'core.button.select', 'default', 'Vælg', NULL),
 ('da', 'core.button.send', 'default', 'Send', NULL),
+('da', 'core.error.form.invalid.error', 'default', 'Der er fejl i formularen', ''),
 ('da', 'core.event', 'default', 'begivenhed', ''),
 ('da', 'core.event.class.viewed', 'default', 'Vist', NULL),
 ('da', 'core.event.edited', 'default', 'Ændret', NULL),
@@ -3169,7 +3172,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'core.user.role.expiry', 'default', 'Udløbsdato', ''),
 ('da', 'core.user.terms', 'default', 'Betingelser', NULL),
 ('da', 'core.user.terms.agree', 'default', 'Jeg accepterer vilkårene for DIME.', ''),
-('da', 'core.user.username', 'default', 'Brugernavn', NULL),
+('da', 'core.user.username', 'default', 'Brugernavn (uden mellemrum)', ''),
 ('da', 'core.users', 'resource', 'brugere', NULL),
 ('da', 'core.visibility.private', 'default', 'Privat', NULL),
 ('da', 'core.visibility.public', 'default', 'Offentlig', NULL),
@@ -3715,9 +3718,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.kommune.solrod', 'official', 'Solrød Kommune', NULL),
 ('da', 'dime.kommune.sonderborg', 'default', 'Sønderborg', NULL),
 ('da', 'dime.kommune.sonderborg', 'official', 'Sønderborg Kommune', NULL),
-('da', 'dime.kommune.soro', 'default', 'Sorø', NULL),
-('da', 'dime.kommune.soro', 'official', 'Sorø Kommune', NULL);
+('da', 'dime.kommune.soro', 'default', 'Sorø', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('da', 'dime.kommune.soro', 'official', 'Sorø Kommune', NULL),
 ('da', 'dime.kommune.stevns', 'default', 'Stevns', NULL),
 ('da', 'dime.kommune.stevns', 'official', 'Stevns Kommune', NULL),
 ('da', 'dime.kommune.struer', 'default', 'Struer', NULL),
@@ -3911,6 +3914,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'user.menu.password', 'default', 'Ændr dit password', NULL),
 ('da', 'user.menu.register', 'default', 'Opret konto', NULL),
 ('da', 'user.menu.view', 'default', 'Vis brugerprofil', NULL),
+('da', 'Værdien er ikke gyldig. data[credentials].username.error', 'default', 'Det valgte brugernavn er ikke gyldigt. Brugernavnet kan kun bestå af bogstaver og tal, dvs. ingen mellemrum eller specialtegn', ''),
 ('en', 'core.action.approve', 'default', 'Approve', ''),
 ('en', 'core.action.cancel', 'default', 'Cancel', ''),
 ('en', 'core.action.edit', 'default', 'edit', NULL),
@@ -4463,11 +4467,11 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.subtype.accessory.jewelery.necklace', 'default', 'Necklace - collar, ring, or chain', NULL),
 ('en', 'dime.find.subtype.accessory.jewelery.other', 'default', 'Other jewelry (specify in description field)', NULL),
 ('en', 'dime.find.subtype.accessory.jewelery.pasyning', 'default', 'Påsyningsblik?', NULL),
-('en', 'dime.find.subtype.accessory.jewelery.pearl', 'default', 'Pearl', NULL),
+('en', 'dime.find.subtype.accessory.jewelery.pearl', 'default', 'Pearl', NULL);
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'dime.find.subtype.accessory.jewelery.pendant', 'default', 'Pendant / Amulet', NULL),
 ('en', 'dime.find.subtype.accessory.jewelery.ring', 'default', 'Finger ring', NULL),
-('en', 'dime.find.subtype.accessory.lace', 'default', 'Lace End', NULL);
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.find.subtype.accessory.lace', 'default', 'Lace End', NULL),
 ('en', 'dime.find.subtype.accessory.medal', 'default', 'Medal / Order', NULL),
 ('en', 'dime.find.subtype.accessory.other', 'default', 'Other costume accessories (specify in description field)', NULL),
 ('en', 'dime.find.subtype.accessory.pilgrim', 'default', 'Pilgrim Badge', NULL),
@@ -5137,12 +5141,12 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'language.buriat', 'default', 'Buriat', NULL),
 ('en', 'language.burmese', 'default', 'Burmese', NULL),
 ('en', 'language.caddo', 'default', 'Caddo', NULL),
-('en', 'language.cantonese', 'default', 'Cantonese', NULL),
+('en', 'language.cantonese', 'default', 'Cantonese', NULL);
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'language.capiznon', 'default', 'Capiznon', NULL),
 ('en', 'language.carib', 'default', 'Carib', NULL),
 ('en', 'language.catalan', 'default', 'Catalan', NULL),
-('en', 'language.cayuga', 'default', 'Cayuga', NULL);
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'language.cayuga', 'default', 'Cayuga', NULL),
 ('en', 'language.cebuano', 'default', 'Cebuano', NULL),
 ('en', 'language.chagatai', 'default', 'Chagatai', NULL),
 ('en', 'language.chamorro', 'default', 'Chamorro', NULL),
