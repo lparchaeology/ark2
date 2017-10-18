@@ -187,12 +187,15 @@ class Application extends AbstractApplication
     }
 
     public function translate(
-        string $id,
+        ?string $id,
         string $role = 'default',
         iterable $parameters = [],
         string $domain = 'messages',
         strint $locale = null
     ) : string {
+        if (!$id) {
+            return  '';
+        }
         if ($role !== null && $role !== 'default') {
             $lookup = $id.'.'.$role;
             $msg = $this->trans($lookup, $parameters, $domain, $locale);
@@ -204,13 +207,16 @@ class Application extends AbstractApplication
     }
 
     public function translateChoice(
-        string $id,
+        ?string $id,
         int $number,
         string $role = 'default',
         iterable $parameters = [],
         string $domain = 'messages',
         strint $locale = null
     ) : string {
+        if (!$id) {
+            return  '';
+        }
         if ($role !== null && $role !== 'default') {
             $lookup = $id.'.'.$role;
             $msg = $this->transChoice($lookup, $number, $parameters, $domain, $locale);

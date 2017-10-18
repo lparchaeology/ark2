@@ -81,7 +81,7 @@ class DimeClassListCommand extends AbstractCommand
 
     private function period(Term $term) : string
     {
-        $period = $term->parmValue($name, 'period');
+        $period = $this->parmValue($term, 'period');
         if ($period) {
             $term = Vocabulary::findTerm('dime.period', $period);
             return Translation::translate($term->keyword());
