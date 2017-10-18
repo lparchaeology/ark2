@@ -124,6 +124,27 @@ class Translation
         ORM::persist($msg);
     }
 
+    public static function translate(
+        string $id,
+        string $role = 'default',
+        iterable $parameters = [],
+        string $domain = 'messages',
+        string $locale = null
+    ) : string {
+        return Service::translate($id, $role, $parameters, $domain, $locale);
+    }
+
+    public static function translateChoice(
+        string $id,
+        int $number,
+        string $role = 'default',
+        iterable $parameters = [],
+        string $domain = 'messages',
+        string $locale = null
+    ) : string {
+        return Service::translateChoice($id, $number, $role, $parameters, $domain, $locale);
+    }
+
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_translation');
