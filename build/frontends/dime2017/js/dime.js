@@ -122,6 +122,12 @@ $(document).ready(function () {
                 return false; // abort the thumbnail removal
             }
         }).on('filedeleted', function (event, id) {
+
+            var abort = true;
+            if (confirm(window.confirmfiledelete)) {
+                abort = false;
+            }
+            return abort;
             var form_root_array = $(this).closest(".file-input").find("input[type=file]").attr('id').split("_");
             form_root_array.splice(-1, 1);
             var existing_id_container = form_root_array.join("_") + "_existing";
@@ -131,7 +137,13 @@ $(document).ready(function () {
             } else {
                 return false; // abort the thumbnail removal
             }
-        });
+        }).on("filepredelete", function(event) {
+            var abort = true;
+            if (confirm(window.confirmfiledelete)) {
+                abort = false;
+            }
+            return abort;
+        })
     });
 
     $(".carouselextratext_0").show();
@@ -177,5 +189,17 @@ $(document).ready(function () {
             $('[data-toggle="tooltip"]').tooltip('hide');
         }
     })
+    
+    $("#find_class_term").on("change",function(){
+        window.onbeforeunload = function() {
+            return true;
+        };
+    });
+    $("#find_save").on("click",function(){
+        if ($(this).closest("form")[0].checkValidity()){
+            window.onbeforeunload = null;
+        }
+    })
+    
 
 });

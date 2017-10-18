@@ -286,6 +286,7 @@ input[type=radio]:checked ~ label::before {
 .form-year input{
     padding: 0 0 0 10px;
     height: 2em;
+    min-width:5em;
 }
 .mappick-decimal-control {
     padding: 0 12px;
@@ -296,6 +297,10 @@ input[type=radio]:checked ~ label::before {
 
 .form-group-widget {
    // max-width: 20em;
+}
+
+.file-footer-buttons .glyphicon {
+    display:block;
 }
 
 .glyphicon-question-sign {
