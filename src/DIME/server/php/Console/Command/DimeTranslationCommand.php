@@ -37,7 +37,6 @@ use ARK\Translation\Message;
 use ARK\Translation\Role;
 use ARK\Translation\Translation;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 
 class DimeTranslationCommand extends AbstractCommand
 {
@@ -45,7 +44,7 @@ class DimeTranslationCommand extends AbstractCommand
     {
         $this->setName('dime:translation')
              ->setDescription('Add or Set a DIME translation.')
-             ->addArgument('keyword', InputArgument::OPTIONAL, 'The translation keyword');
+             ->addOptionalArgument('keyword', 'The translation keyword');
     }
 
     protected function doExecute() : void

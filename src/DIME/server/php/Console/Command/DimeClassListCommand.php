@@ -40,7 +40,7 @@ class DimeClassListCommand extends AbstractCommand
     {
         $this->setName('dime:class:list')
             ->setDescription('List all find classifications.')
-            ->addArgument('class', InputArgument::OPTIONAL, 'The class to list');
+            ->addOptionalArgument('class', 'The class to list');
     }
 
     protected function doExecute() : void
