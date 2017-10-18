@@ -32,6 +32,7 @@ namespace ARK\Framework;
 use ARK\ARK;
 use Silex\Application;
 use Symfony\Component\Debug\Debug;
+use Symfony\Component\Debug\ErrorHandler;
 
 abstract class AbstractApplication extends Application
 {
