@@ -30,6 +30,8 @@
 namespace DIME\Console\Command;
 
 use ARK\Framework\Console\Command\AbstractCommand;
+use ARK\Translation\Translation;
+use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
 
 class DimeClassListCommand extends AbstractCommand
@@ -37,17 +39,59 @@ class DimeClassListCommand extends AbstractCommand
     protected function configure() : void
     {
         $this->setName('dime:class:list')
-            ->setDescription('List all find classifications.');
+            ->setDescription('List all find classifications.')
+            ->addArgument('class', InputArgument::OPTIONAL, 'The class to list');
     }
 
     protected function doExecute() : void
     {
+        $only = $this->input->getArgument('class');
         $taxonomy = Vocabulary::find('dime.find.class');
-        $headers = ['Class', 'Subclass', 'Description'];
+        $headers = ['Class', 'Subclass', 'Subclass', 'Period', 'Start Year', 'End Year'];
         $rows = [];
-        foreach ($taxonomy as $class) {
-            $rows[] = [$class->name(), '', $class->keyword()];
+        foreach ($taxonomy->terms() as $class) {
+            if ($only && $class->name() !== $only) {
+                continue;
+            }
+            $rows[] = [Translation::translate($class->keyword()), '', '', '', '', ''];
+            foreach ($class->descendents() as $subclass) {
+                $rows[] = [
+                    '',
+                    Translation::translate($subclass->keyword()),
+                    '',
+                    $this->period($subclass),
+                    $this->parmValue($subclass, 'year_start'),
+                    $this->parmValue($subclass, 'year_end'),
+                ];
+                foreach ($subclass->descendents() as $subsubclass) {
+                    $rows[] = [
+                        '',
+                        '',
+                        Translation::translate($subsubclass->keyword()),
+                        $this->period($subsubclass),
+                        $this->parmValue($subsubclass, 'year_start'),
+                        $this->parmValue($subsubclass, 'year_end'),
+                    ];
+                }
+            }
+            $rows[] = [];
         }
         $this->writeTable($headers, $rows);
+    }
+
+    private function period(Term $term) : string
+    {
+        $period = $term->parmValue($name, 'period');
+        if ($period) {
+            $term = Vocabulary::findTerm('dime.period', $period);
+            return Translation::translate($term->keyword());
+        }
+        return '';
+    }
+
+    private function parmValue(Term $term, string $name) : string
+    {
+        $parm = $term->parameter($name);
+        return $parm ? $parm->value() : '';
     }
 }

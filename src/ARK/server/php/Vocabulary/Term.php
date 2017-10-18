@@ -86,6 +86,16 @@ class Term
         return $this->parameters;
     }
 
+    public function parameter(string $name) : ?Parameter
+    {
+        foreach ($this->parameters as $parameter) {
+            if ($parameter->name() === $name) {
+                return $parameter;
+            }
+        }
+        return null;
+    }
+
     public function related() : Collection
     {
         return $this->related;
