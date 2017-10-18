@@ -27,8 +27,9 @@
  * @since      2.0
  */
 
-namespace ARK\Translation\Console\Command;
+namespace DIME\Console\Command;
 
+use ARK\Framework\Console\Command\AbstractCommand;
 use ARK\ORM\ORM;
 use ARK\Translation\Domain;
 use ARK\Translation\Language;
@@ -37,38 +38,28 @@ use ARK\Translation\Role;
 use ARK\Translation\Translation;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ChoiceQuestion;
-use Symfony\Component\Console\Question\Question;
 
-class TranslationDimeCommand extends Command
+class DimeTranslationCommand extends AbstractCommand
 {
     protected function configure() : void
     {
-        $this->setName('translation:dime')
+        $this->setName('dime:translation')
              ->setDescription('Add or Set a DIME translation.')
              ->addArgument('keyword', InputArgument::OPTIONAL, 'The translation keyword');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) : void
+    protected function doExecute() : void
     {
-        $question = $this->getHelper('question');
-
-        $keyword = $input->getArgument('keyword');
-        if (!$keyword) {
-            $keywordQuestion = new Question('Please enter the keyword: ');
-            $keyword = $question->ask($input, $output, $keywordQuestion);
-        }
+        $keyword = $this->input->getArgument('keyword');
 
         $key = ORM::find(Translation::class, $keyword);
         if ($key) {
-            $output->writeln("\nTranslation keyword exists in domain ".$key->domain()->name());
+            $this->write("\nTranslation keyword exists in domain ".$key->domain()->name());
             $messages = ORM::findBy(Message::class, ['keyword' => $keyword]);
             foreach ($messages as $message) {
-                $output->writeln($message->language()->code().' = '.$message->text());
+                $this->write($message->language()->code().' = '.$message->text());
             }
-            $output->writeln('');
+            $this->write('');
         } else {
             $domain = ORM::find(Domain::class, 'dime');
             $key = new Translation($keyword, $domain);
@@ -81,16 +72,12 @@ class TranslationDimeCommand extends Command
         foreach ($roles as $role) {
             $roleNames[] = $role->name();
         }
-        $roleQuestion = new ChoiceQuestion("Please choose the role (Default: 'default'): ", $roleNames, 'default');
-        $roleQuestion->setAutocompleterValues($roleNames);
-        $role = $question->ask($input, $output, $roleQuestion);
+        $role = $this->askChoice('Please choose the role', $roleNames, 'default');
         $role = ORM::findOneBy(Role::class, ['name' => $role]);
 
-        $daQuestion = new Question('Please enter the Danish text: ');
-        $daText = $question->ask($input, $output, $daQuestion);
+        $daText = $question->askQuestion('Please enter the Danish text: ');
 
-        $enQuestion = new Question('Please enter the English text: ');
-        $enText = $question->ask($input, $output, $enQuestion);
+        $enText = $question->ask('Please enter the English text: ');
 
         if ($daText || $enText) {
             ORM::persist($key);
@@ -116,7 +103,12 @@ class TranslationDimeCommand extends Command
 
         if ($daText || $enText) {
             ORM::manager('core')->flush();
-            $output->writeln("\nTranslations added.");
+            $this->write("\nTranslations added.");
         }
+    }
+
+    protected function doInteract() : void
+    {
+        $this->askArgument('keyword', 'Please enter the translation keyword');
     }
 }
