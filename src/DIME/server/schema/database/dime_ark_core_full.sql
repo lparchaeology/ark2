@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 19, 2017 at 05:47 PM
+-- Generation Time: Oct 19, 2017 at 09:42 PM
 -- Server version: 10.1.26-MariaDB-0+deb9u1
 -- PHP Version: 7.1.10-1+0~20170929170818.9+stretch~1.gbp501135
 
@@ -6026,9 +6026,9 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('dime_find_add', '', 0, 1, 4, 'core_widget_submit', NULL, NULL, 'save', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'edit', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.find.save', NULL, NULL),
 ('dime_find_add_case', '', 0, 0, 4, 'dime_find_case', NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_artefact', '', 0, 0, 0, 'dime_widget_classify', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"data-toggle\": \"modal\", \"data-target\":\"#dating-modal\"}}'),
-('dime_find_artefact', '', 0, 0, 2, 'dime_find_class', NULL, NULL, NULL, NULL, 1, 0, NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('dime_find_artefact', '', 0, 0, 4, 'dime_find_classification', NULL, NULL, NULL, NULL, 1, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('dime_find_artefact', '', 0, 0, 6, 'dime_find_dating', NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('dime_find_artefact', '', 0, 0, 2, 'dime_find_class', NULL, NULL, NULL, NULL, 1, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, 'readonly', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('dime_find_artefact', '', 0, 0, 4, 'dime_find_classification', NULL, NULL, NULL, NULL, 1, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, 'readonly', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('dime_find_artefact', '', 0, 0, 6, 'dime_find_dating', NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, 'readonly', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_artefact', '', 0, 0, 8, 'dime_find_mint', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_artefact', '', 0, 0, 10, 'dime_find_issuer', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_artefact', '', 0, 0, 12, 'dime_find_material', NULL, NULL, NULL, NULL, 1, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
@@ -6468,12 +6468,12 @@ INSERT INTO `ark_view_field` (`element`, `schma`, `class`, `attribute`, `display
 ('dime_actor_municipality', 'core.actor', 'museum', 'municipality', 'fullname', 'active', NULL, NULL, NULL, NULL, NULL, ''),
 ('dime_find_case', 'dime.find', 'find', 'case', NULL, 'active', NULL, NULL, NULL, NULL, NULL, ''),
 ('dime_find_claim', 'dime.find', 'find', 'claim', 'name', 'active', NULL, NULL, NULL, NULL, NULL, ''),
-('dime_find_class', 'dime.find', 'find', 'class', NULL, 'active', NULL, NULL, NULL, NULL, NULL, ''),
-('dime_find_classification', 'dime.find', 'find', 'classification', NULL, 'active', NULL, NULL, NULL, NULL, 'DIME\\Form\\Type\\ClassificationPropertyType', ''),
+('dime_find_class', 'dime.find', 'find', 'class', NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, ''),
+('dime_find_classification', 'dime.find', 'find', 'classification', NULL, 'readonly', NULL, NULL, NULL, NULL, 'DIME\\Form\\Type\\ClassificationPropertyType', ''),
 ('dime_find_condition', 'dime.find', 'find', 'condition', NULL, 'active', NULL, NULL, NULL, NULL, NULL, ''),
 ('dime_find_custodian', 'dime.find', 'find', 'custodian', 'fullname', 'static', NULL, NULL, NULL, NULL, NULL, ''),
 ('dime_find_custody', 'dime.find', 'find', 'custody', NULL, 'static', NULL, NULL, NULL, NULL, NULL, ''),
-('dime_find_dating', 'dime.find', 'find', 'dating', NULL, 'active', NULL, NULL, NULL, 'blocks/dating.html.twig', 'DIME\\Form\\Type\\DatingPropertyType', ''),
+('dime_find_dating', 'dime.find', 'find', 'dating', NULL, 'readonly', NULL, NULL, NULL, 'blocks/dating.html.twig', 'DIME\\Form\\Type\\DatingPropertyType', ''),
 ('dime_find_description', 'dime.find', 'find', 'description', NULL, 'active', NULL, NULL, NULL, NULL, 'DIME\\Form\\Type\\DescriptionPropertyType', ''),
 ('dime_find_finddate', 'dime.find', 'find', 'finddate', NULL, 'active', NULL, NULL, NULL, NULL, NULL, '{\"widget\": \"picker\", \"attr\": {\"data-date-format\": \"yyyy-mm-dd\", \"class\": \"datepicker\"}}'),
 ('dime_find_finder', 'dime.find', 'find', 'finder', 'fullname', 'active', NULL, NULL, NULL, NULL, NULL, ''),
