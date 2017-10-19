@@ -47,19 +47,42 @@ class DimeClassListCommand extends AbstractCommand
     {
         $only = $this->input->getArgument('class');
         $taxonomy = Vocabulary::find('dime.find.class');
-        $headers = ['Class', 'Subclass', 'Subclass', 'Period', 'Start Year', 'End Year'];
+        $headers = [
+            'Class',
+            'Subclass 1',
+            'Subclass 2',
+            'Term',
+            'Keyword',
+            'Period Term',
+            'Period',
+            'Start Year',
+            'End Year',
+        ];
         $rows = [];
         foreach ($taxonomy->terms() as $class) {
             if ($only && $class->name() !== $only) {
                 continue;
             }
-            $rows[] = [Translation::translate($class->keyword()), '', '', '', '', ''];
+            $rows[] = [
+                Translation::translate($class->keyword()),
+                '',
+                '',
+                $class->name(),
+                $class->keyword(),
+                '',
+                '',
+                '',
+                '',
+            ];
             foreach ($class->descendents() as $subclass) {
                 $rows[] = [
                     '',
                     Translation::translate($subclass->keyword()),
                     '',
-                    $this->period($subclass),
+                    $subclass->name(),
+                    $subclass->keyword(),
+                    $this->periodCode($subclass),
+                    $this->periodName($subclass),
                     $this->parmValue($subclass, 'year_start'),
                     $this->parmValue($subclass, 'year_end'),
                 ];
@@ -68,7 +91,10 @@ class DimeClassListCommand extends AbstractCommand
                         '',
                         '',
                         Translation::translate($subsubclass->keyword()),
-                        $this->period($subsubclass),
+                        $subsubclass->name(),
+                        $subsubclass->keyword(),
+                        $this->periodCode($subsubclass),
+                        $this->periodName($subsubclass),
                         $this->parmValue($subsubclass, 'year_start'),
                         $this->parmValue($subsubclass, 'year_end'),
                     ];
@@ -79,13 +105,25 @@ class DimeClassListCommand extends AbstractCommand
         $this->writeTable($headers, $rows);
     }
 
-    private function period(Term $term) : string
+    private function periodName(Term $term) : string
     {
         $period = $this->parmValue($term, 'period');
         if ($period) {
             $term = Vocabulary::findTerm('dime.period', $period);
             if ($term) {
                 return Translation::translate($term->keyword());
+            }
+        }
+        return '';
+    }
+
+    private function periodCode(Term $term) : string
+    {
+        $period = $this->parmValue($term, 'period');
+        if ($period) {
+            $term = Vocabulary::findTerm('dime.period', $period);
+            if ($term) {
+                return $term->name();
             }
         }
         return '';
