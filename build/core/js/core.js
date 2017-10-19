@@ -3,12 +3,12 @@ $(document).ready(function () {
     moment.locale(lang);
     $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales[lang]);
 
+    // Set global defaults for all Select2 widgets
+    $.fn.select2.defaults.set("language", lang);
+    $.fn.select2.defaults.set("minimumResultsForSearch", 11);
+    $.fn.select2.defaults.set("width", 'resolve');
     // Replace all select tags with Select2
-    $("select").select2({
-        language: lang,
-        minimumResultsForSearch: 11,
-        width: 'resolve',
-    });
+    $("select").select2();
     // HACK To fix Select2 not being responsive
     // See https://github.com/select2/select2/issues/3278 and http://stackoverflow.com/a/41429176
     $(".select2.select2-container").css("width", "100%");
@@ -30,10 +30,12 @@ $(document).ready(function () {
 
 
     // Fake readonly mode on select widgets
+    $('.readonly-required').prop('required', false);
     $('.readonly-select').prop('disabled', true);
 });
 
 // Undo fake readonly mode
 $('form').submit(function () {
     $('.readonly-select').prop('disabled', false);
+    $('.readonly-required').prop('required', true);
 });

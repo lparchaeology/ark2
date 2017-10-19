@@ -42,6 +42,7 @@ class DatingPropertyType extends AbstractPropertyType
     public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $valueOptions = $options['state']['value']['options'];
+        $integerOptions = $valueOptions;
         $field = $options['state']['field'];
         $dataclass = $field->attribute()->dataclass();
 
@@ -56,11 +57,14 @@ class DatingPropertyType extends AbstractPropertyType
             $valueOptions['choice_label'] = 'keyword';
             $valueOptions['placeholder'] = 'core.placeholder';
             $options['state']['value']['type'] = ChoiceType::class;
+            if (isset($valueOptions['attr']['readonly'])) {
+                $valueOptions['attr']['class'] = 'readonly-select';
+            }
             $integerType = "Symfony\Component\Form\Extension\Core\Type\IntegerType";
         }
 
-        $builder->add('year', $integerType);
-        $builder->add('year_span', $integerType);
+        $builder->add('year', $integerType, $integerOptions);
+        $builder->add('year_span', $integerType, $integerOptions);
         $builder->add('period', $options['state']['value']['type'], $valueOptions);
         $builder->add('period_span', $options['state']['value']['type'], $valueOptions);
 

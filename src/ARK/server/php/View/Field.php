@@ -441,6 +441,9 @@ class Field extends Element
             }
             if ($state['modus'] === 'readonly') {
                 $options['attr']['class'] = $this->concatAttr($options, 'class', 'readonly-select');
+                if ($this->attribute()->isRequired()) {
+                    $options['attr']['class'] = $this->concatAttr($options, 'class', 'readonly-required');
+                }
             }
         }
         //$options['constraints'] = $this->attribute()->constraints();
@@ -460,6 +463,9 @@ class Field extends Element
                 $options['attr']['class'] = $this->concatAttr($options, 'class', 'readonly-select');
             } else {
                 $options['attr']['readonly'] = true;
+            }
+            if ($this->attribute()->isRequired()) {
+                $options['attr']['class'] = $this->concatAttr($options, 'class', 'readonly-required');
             }
         }
         return $options;
