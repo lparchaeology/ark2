@@ -52,6 +52,7 @@ abstract class Vocabulary
     protected $transitions = false;
     protected $definition;
     protected $terms;
+    protected $enabledTerms;
 
     public function __construct()
     {
@@ -78,9 +79,20 @@ abstract class Vocabulary
         return $this->closed;
     }
 
-    public function terms() : Collection
+    public function terms(bool $all = false) : Collection
     {
-        return $this->terms;
+        if ($all) {
+            return $this->terms;
+        }
+        if ($this->enabledTerms === null) {
+            $this->enabledTerms = new ArrayCollection();
+            foreach ($this->terms as $term) {
+                if ($term->isEnabled()) {
+                    $this->enabledTerm->add($term);
+                }
+            }
+        }
+        return $this->enabledTerms;
     }
 
     public function term(string $name) : ?Term

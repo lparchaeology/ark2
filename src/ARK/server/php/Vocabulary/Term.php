@@ -101,13 +101,15 @@ class Term
         return $this->related;
     }
 
-    public function descendents() : Collection
+    public function descendents(bool $all = false) : Collection
     {
         if ($this->descendents === null) {
             $this->descendents = new ArrayCollection();
             foreach ($this->related as $related) {
                 if ($related->fromTerm()->name() !== $related->toTerm()->name() && $related->relation()->id() === 'broader') {
-                    $this->descendents->add($related->toTerm());
+                    if ($related->toTerm()->isEnabled() || $all) {
+                        $this->descendents->add($related->toTerm());
+                    }
                 }
             }
         }
