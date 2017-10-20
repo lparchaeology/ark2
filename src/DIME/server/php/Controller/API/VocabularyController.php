@@ -65,6 +65,9 @@ class VocabularyController
                 foreach ($vocabulary->terms() as $term) {
                     $data['terms'][$term->name()] = $this->serializeTerm($term);
                 }
+                foreach ($vocabulary->terms() as $term) {
+                    $data['taxonomy'][$term->name()] = $this->serializeTerm($term);
+                }
             } else {
                 $data['error']['code'] = 0;
                 $data['error']['message'] = 'No Vocabulary';
@@ -79,7 +82,7 @@ class VocabularyController
         return new JsonResponse($data);
     }
 
-    public function serializeTerm(Term $term)
+    protected function serializeTerm(Term $term)
     {
         $data['name'] = $term->name();
         $data['alias'] = $term->alias();
@@ -99,6 +102,10 @@ class VocabularyController
         $data['descendents'] = [];
         foreach ($term->descendents() as $descendent) {
             $data['descendents'][] = $descendent->name();
+        }
+        $data['taxonomy'] = [];
+        foreach ($term->descendents() as $descendent) {
+            $data['taxonomy'][$descendent->name()] = serializeTerm($descendent);
         }
         return $data;
     }
