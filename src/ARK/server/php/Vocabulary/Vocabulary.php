@@ -88,7 +88,7 @@ abstract class Vocabulary
             $this->enabledTerms = new ArrayCollection();
             foreach ($this->terms as $term) {
                 if ($term->isEnabled()) {
-                    $this->enabledTerm->add($term);
+                    $this->enabledTerms->add($term);
                 }
             }
         }
