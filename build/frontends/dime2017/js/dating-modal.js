@@ -130,6 +130,7 @@ var initTimeline = function () {
             $('#find_class_term').val(targetSplit[0]);
             $('#find_class_term').select2(select2Options);
             $('#find_class_term').trigger('select2:select');
+            $('#find_class_term').setCustomValidity('');
             $('#find_classification_subtype').val(targetSplit[0] + '.' + targetSplit[1]);
             $('#find_classification_subtype').select2(select2Options);
             $('#find_classification_subtype').trigger('select2:select');
@@ -158,7 +159,9 @@ var initTimeline = function () {
 
     $('#find_classify').removeClass("disabled").addClass("btn-default");
     $('#find_class_term').prop('required', true);
-
+    if ($('#find_class_term').val() == '') {
+        $('#find_class_term').setCustomValidity('dime.find.class.required');
+    }
     // on launching the modal do the stuff to make it work
     $('#find_classify').on('click', function () {
 
@@ -214,6 +217,7 @@ var initTimeline = function () {
             $('#find_class_term').val(target);
             $('#find_class_term').select2(select2Options);
             $('#find_class_term').trigger('select2:select');
+            $('#find_class_term').setCustomValidity('');
             level1.val(target.split('.')[0] + '.unknown');
             level1.trigger('select2:select');
         });
