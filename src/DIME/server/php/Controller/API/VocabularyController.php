@@ -105,7 +105,7 @@ class VocabularyController
         }
         $data['taxonomy'] = [];
         foreach ($term->descendents() as $descendent) {
-            $data['taxonomy'][$descendent->name()] = serializeTerm($descendent);
+            $data['taxonomy'][$descendent->name()] = $this->serializeTerm($descendent);
         }
         return $data;
     }
