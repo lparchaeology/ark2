@@ -106,8 +106,8 @@ class ORM
             if (isset($ent)) {
                 self::manager($ent)->flush();
             }
-        } elseif (is_object($entity)) {
-            if (!self::isScheduled($entity)) {
+        } else {
+            if (is_object($entity) && !self::isScheduled($entity)) {
                 self::persist($entity);
             }
             self::manager($entity)->flush();
