@@ -142,7 +142,7 @@ class Page extends Element
         $state = parent::buildState($data, $state);
 
         $mode = $state['workflow']['mode'];
-        if ($this->visibility === 'restricted') {
+        if ($this->visibility !== 'public') {
             $actor = $state['actor'];
             if ($mode === 'edit' && !$actor->hasPermission($this->updatePermission())) {
                 $mode = 'view';
@@ -150,9 +150,6 @@ class Page extends Element
             if ($mode === 'view' && !$actor->hasPermission($this->readPermission())) {
                 $mode = 'deny';
             }
-        }
-        if ($this->visibility === 'private') {
-            // TODO What?
         }
         $state['mode'] = $mode;
         $state['page'] = $this;

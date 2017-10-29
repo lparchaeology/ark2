@@ -29,6 +29,8 @@
 
 namespace DIME\Controller\View;
 
+use ARK\Error\ErrorException;
+use ARK\Http\Error\InternalServerError;
 use ARK\Model\Fragment\ItemFragment;
 use ARK\ORM\ORM;
 use ARK\Service;
@@ -41,6 +43,9 @@ class HomePageController extends DimeFormController
     public function buildData(Request $request)
     {
         $actor = Service::workflow()->actor();
+        if ($actor === null) {
+            throw new ErrorException(new InternalServerError(ACTOR_NOT_FOUND, 'No actor found', 'No actor found'));
+        }
         $finder = ['module' => 'find', 'attribute' => 'finder', 'value' => $actor->id()];
 
         // Populate the Dashboard

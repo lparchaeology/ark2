@@ -124,13 +124,8 @@ class Registry extends SymfonyRegistry
         if ($this->can($actor, 'edit', $item)) {
             return 'edit';
         }
-        try {
-            $action = $this->action($item->schema()->name(), 'view');
-            if ($action && ($item->visibility()->name() === 'public' || $action->isAllowed($actor))) {
-                return 'view';
-            }
-        } catch (WorkflowException $e) {
-            // noop
+        if ($item->visibility()->name() === 'public' || $this->can($actor, 'view', $item)) {
+            return 'view';
         }
         return 'deny';
     }

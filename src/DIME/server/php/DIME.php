@@ -67,7 +67,7 @@ class DIME
         if ($actor === null) {
             $actor = Service::workflow()->actor();
         }
-        if ($actor->id() === 'anonymous') {
+        if ($actor === null || $actor->id() === 'anonymous') {
             return new ArrayCollection();
         }
         $msgIds = Service::database()->getActorMessages($actor->id());
