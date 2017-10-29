@@ -190,7 +190,7 @@ class SiteCreateCommand extends DatabaseCommand
                 }
                 try {
                     $admin->beginTransaction();
-                    $admin->loadSql(ARK::namespaceDir('ARK')."/server/schema/database/$db.sql");
+                    $admin->import(ARK::namespaceDir('ARK')."/server/schema/database/$db.sql");
                     $admin->commit();
                     $this->write(" * Loaded $db data...");
                 } catch (Exception $e) {

@@ -57,7 +57,7 @@ class VocabularyController
             $vocabulary = Vocabulary::find($content->concept);
             if ($vocabulary) {
                 $data['concept'] = $vocabulary->concept();
-                $data['type'] = $vocabulary->type();
+                $data['type'] = $vocabulary->type()->name();
                 $data['source'] = $vocabulary->source();
                 $data['closed'] = $vocabulary->closed();
                 $data['keyword'] = $vocabulary->keyword();
@@ -88,6 +88,7 @@ class VocabularyController
         $data['alias'] = $term->alias();
         $data['default'] = $term->isDefault();
         $data['root'] = $term->isRoot();
+        $data['keyword'] = $term->keyword();
         $data['parameters'] = [];
         foreach ($term->parameters() as $parameter) {
             $data['parameters'][$parameter->name()]['type'] = $parameter->type();
