@@ -35,16 +35,9 @@ use ARK\Service;
 use DIME\DIME;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class ProfileViewController extends DimeFormController
 {
-    public function __invoke(Request $request, $id = null) : Response
-    {
-        $request->attributes->set('actor', $id);
-        return parent::__invoke($request);
-    }
-
     public function buildState(Request $request, $data) : iterable
     {
         $state = parent::buildState($request, $data);
@@ -54,7 +47,7 @@ class ProfileViewController extends DimeFormController
 
     public function buildData(Request $request)
     {
-        $id = $request->attributes->get('actor');
+        $id = $request->attributes->get('id');
         if (!$actor = ORM::find(Actor::class, $id)) {
             throw new ErrorException(new NotFoundError('PROFILE_NOT_FOUND', 'Profile not found', "Profile for user $id not found"));
         }

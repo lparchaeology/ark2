@@ -43,7 +43,7 @@ class FindViewController extends DimeFormController
 {
     public function buildData(Request $request)
     {
-        $id = $request->attributes->get('find');
+        $id = $request->attributes->get('id');
         $find = ORM::find(Find::class, $id);
         if (!$find) {
             throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Find not found', "Find $id not found"));
