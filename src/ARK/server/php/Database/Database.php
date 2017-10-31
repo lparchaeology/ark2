@@ -91,6 +91,12 @@ class Database
         return $this->classnames[$namespace] ?? [];
     }
 
+    public function getAllResources() : ?iterable
+    {
+        $this->loadEntities();
+        return $this->entities['resource'] ?? [];
+    }
+
     public function getEntitiesForSchema($schema) : ?iterable
     {
         $this->loadEntities();
@@ -521,6 +527,7 @@ class Database
         $this->entities['entity'] = [];
         $this->entities['schema'] = [];
         $this->entities['module'] = [];
+        $this->entities['resource'] = [];
         $sql = '
             SELECT class.classname, class.entity, class.namespace, class.class, class.superclass, class.instantiable,
                 schma.schma, schma.subclasses, schma.entities, schma.vocabulary, schma.generator, schma.sequence,
@@ -544,6 +551,9 @@ class Database
             $this->classnames[$entity['namespace']][] = $entity['classname'];
             if ($entity['entities'] && !$entity['superclass']) {
                 $this->subclasses[$entity['schma']][] = $entity;
+            }
+            if ($entity['superclass']) {
+                $this->entities['resource'][$entity['classname']] = $entity;
             }
         }
     }
