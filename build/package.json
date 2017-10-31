@@ -73,6 +73,7 @@
         "x-editable": "^1.5.1"
     },
     "dependencies": {
+        "@api-platform/admin": "github:api-platform/admin",
         "bootstrap-datetime-picker": "^2.4.4",
         "colresizable": "^1.6.0",
         "eonasdan-bootstrap-datetimepicker": "^4.17.47",
