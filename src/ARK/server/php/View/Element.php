@@ -269,4 +269,19 @@ abstract class Element implements ElementInterface
             $options
         );
     }
+
+    protected function concat(iterable $options, string $option, string $value) : string
+    {
+        return isset($options[$attr]) ? $options[$attr].' '.$value : $value;
+    }
+
+    protected function concatAttr(iterable $options, string $attr, string $value) : string
+    {
+        return isset($options['attr'][$attr]) ? $options['attr'][$attr].' '.$value : $value;
+    }
+
+    protected function concatOption(iterable $options, string $option, string $attr, string $value) : string
+    {
+        return isset($options[$option][$attr]) ? $options[$option][$attr].' '.$value : $value;
+    }
 }
