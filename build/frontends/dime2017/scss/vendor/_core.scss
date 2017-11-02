@@ -7,30 +7,14 @@
  */
 
 /*
- * Resposive settings
- */
-
-$break-small: 767px;
-//Danish word wrapping:
-$break-large-tablet: 926px;
-//English word wrapping 
-$break-large-tablet: 1439px;
-$break-tablet: 1199px;
-@media (min-width: $break-tablet) {
-    .collapse {
-        display: block;
-    }
-}
-
-/*
  * Base structure
  */
-html,body
-{
+body,
+html {
     width: 100%;
-    margin: 0px;
-    padding: 0px;
-    overflow-x: hidden; 
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
 }
 
 body {
@@ -44,105 +28,6 @@ body {
 .sub-header {
     padding-bottom: 10px;
     border-bottom: 1px solid #eee;
-}
-
-/*
-* Icons
-*/
-
-.dime-icon {
-    position: relative;
-    top: 1px;
-    display: inline-block;
-    font-style: normal;
-    font-weight: normal;
-    line-height: 1;
-    float: left;
-    background-size: cover;
-    display: block;
-    /* This is required */
-}
-
-.dime-icon.normal {
-    width: 32px;
-    height: 32px;
-}
-
-.dime-icon.normal.wide {
-    width: 64px;
-}
-
-.dime-icon.small {
-    width: 16px;
-    height: 16px;
-}
-
-.dime-icon.small.wide {
-    width: 32px;
-}
-
-.dime-icon.medium {
-    width: 64px;
-    height: 64px;
-}
-
-.dime-icon.medium.wide {
-    width: 128px;
-}
-
-.dime-icon.large {
-    width: 128px;
-    height: 128px;
-}
-
-.dime-icon.large.wide {
-    width: 256px;
-}
-
-.dime-icon.icon-user {
-    background-image: url("../images/icons/logged_in_.png");
-}
-
-.dime-icon.icon-user-edit {
-    background-image: url("../images/icons/edit_user.png");
-    margin: 0 25px;
-    float: none;
-}
-
-.dime-icon.icon-mine {
-    background-image: url("../images/icons/my_finds.png");
-}
-
-.dime-icon.icon-add {
-    background-image: url("../images/icons/add_find.png");
-}
-
-.dime-icon.icon-search {
-    background-image: url("../images/icons/search_find.png");
-}
-
-.dime-icon.icon-map {
-    background-image: url("../images/icons/map.png");
-}
-
-.dime-icon.icon-heatmap {
-    background-image: url("../images/icons/heatmap.png");
-}
-
-.dime-icon.icon-notification {
-    background-image: url("../images/icons/notifications.png");
-}
-
-.dime-icon.icon-new-notification {
-    background-image: url("../images/icons/new_notifications.png");
-}
-
-.dime-icon.icon-admin-users {
-    background-image: url("../images/icons/edit_user.png");	
-}
-
-.dime-icon.icon-user-focus {
-    background-image: url("../images/icons/edit_user.png");	
 }
 
 /*
@@ -168,7 +53,6 @@ body {
 .content-col-2 {
     padding: 20px;
 }
-
 
 /*
  * Placeholder dashboard ideas
@@ -236,6 +120,6 @@ body {
     border-radius: 6px 0 6px 6px;
 }
 
-.open>.dropdown-menu {
+.open > .dropdown-menu {
     position: absolute;
 }

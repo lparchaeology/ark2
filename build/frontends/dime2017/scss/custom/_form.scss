@@ -1,0 +1,159 @@
+/* Select2 */
+
+.select2-container--default {
+    text-transform: capitalize;
+}
+
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="text"],
+.select2-container--default .select2-selection--single {
+    border: 1px solid black;
+    border-radius: 10px;
+    height: 1.4em;
+    line-height: 1.4em;
+    vertical-align: middle;
+    padding: 0 5px;
+}
+
+.select2-container--default .select2-selection--multiple {
+    border: 1px solid black;
+    border-radius: 10px;
+    vertical-align: middle;
+    padding: 0 5px;
+}
+
+.select2-container--open .select2-dropdown--below {
+    border: 1px solid black;
+    border-radius: 0 0 10px 10px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__rendered,
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 1em;
+    padding: 2px 10px;
+    overflow: hidden;
+    word-wrap: break-word;
+    text-overflow: inherit;
+    white-space: normal;
+}
+
+.select2-container--default .select2-selection--single span.select2-selection__rendered {
+    //height: 1.2em;
+}
+
+.form-group input[type="password"],
+.form-group input[type=text] {
+    width: 50%;
+    max-width: 20em;
+}
+
+.form-group input[type="email"] {
+    width: 50%;
+    max-width: 30em;
+}
+
+.form-group .kv-fileinput-caption {
+    border: 1px solid black;
+    height: 1.6em;
+    padding: 0 5px;
+    border-radius: 0;
+    display: none;
+}
+
+.filters label {
+    text-align: left;
+}
+@media (max-width: $break-small) {
+    .form-group input[type="email"],
+    .form-group input[type="password"],
+    .form-group input[type=text] {
+        width: 100%;
+    }
+}
+@media (min-width: $break-small) {
+    .form-horizontal .control-label {
+        margin-top: 0;
+    }
+
+    .form-group input[type="email"],
+    .form-group input[type="password"],
+    .form-group input[type=text] {
+        width: 100%;
+    }
+
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected],
+.select2-results__option[aria-selected] {
+    border-radius: 10px;
+    line-height: 1em;
+    padding: 0.2em;
+}
+
+/* File Uploader */
+
+.file-preview-thumbnails img {
+    display: block;
+    max-width: 90%;
+    max-height: 90%;
+    width: auto;
+    height: auto;
+    margin: auto;
+}
+
+.krajee-default.file-preview-frame {
+    max-width: 90%;
+    display: block;
+}
+
+.krajee-default.file-preview-frame .kv-file-content {
+    height: inherit;
+}
+
+/* Dating */
+.dating-til {
+    text-align: center;
+    width: 100%;
+}
+
+.form-year input {
+    padding: 0 0 0 10px;
+    height: 2em;
+    min-width: 5em;
+}
+
+.mappick-decimal-control {
+    padding: 0 12px;
+}
+
+.help {}
+
+.form-group-widget {
+    // max-width: 20em;
+}
+
+.file-footer-buttons .glyphicon {
+    display: block;
+}
+
+.glyphicon-question-sign {
+    cursor: pointer;
+}
+
+.fileinput-remove {
+    display: none;
+}
+
+.file-input {
+    margin: auto;
+    //max-width: 200px;
+}
+
+.file-input .btn {
+    height: 1.6em;
+}
+
+.file-input .hidden-xs {
+    display: none;
+}

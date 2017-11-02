@@ -6,12 +6,11 @@
 // Import Vendor Bootstrap
 @import "bootstrap";
 
-
 // Import custom changes to vendor core
+@import "vendor/responsive";
 @import "vendor/core";
 @import "vendor/form";
 @import "vendor/frame";
-@import "vendor/map";
 
 // Import other vendor sass
 @import "summernote";
