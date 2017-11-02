@@ -1,0 +1,223 @@
+
+/*
+ * Top navigation
+ * Hide default border to remove 1px line.
+ */
+
+.dime-nav {
+    position: absolute;
+    top: 35px;
+}
+@media (max-width: $break-large-tablet) {
+    .navbar {
+        height: 138px;
+    }
+}
+@media (max-width: $break-small) {
+    .navbar {
+        height: 250px;
+    }
+
+    .dime-nav {
+        top: 0;
+    }
+}
+
+.dime-nav li {
+    vertical-align: bottom;
+    text-align: center;
+    border: none;
+}
+
+.dime-nav li a {
+    display: inline;
+}
+
+.dime-nav.nav-tabs li a:focus,
+.dime-nav.nav-tabs li.active a:focus .dime-nav.nav-tabs li a:hover,
+.dime-nav.nav-tabs li.active a:hover,
+.dime-nav.nav-tabs-justified li a,
+.dime-nav.nav-tabs.nav-justified li a .dime-nav.nav-tabs li.active a {
+    background: none;
+    box-shadow: none;
+    border: none;
+    padding: 0;
+}
+
+.dime-nav.nav-tabs li.active a:focus,
+.dime-nav.nav-tabs li.active a:hover {
+    cursor: pointer;
+}
+
+.dime-nav.nav-tabs li:hover .dropdown-menu {
+    display: block;
+}
+
+.dime-nav.nav-tabs li:hover .dropdown-menu a {
+    line-height: 2.5em;
+}
+
+.dime-nav.nav-tabs .dropdown-menu {
+    margin-top: -1px;
+    border-radius: 5px;
+    background-color: #ececec;
+    border: 1px solid black;
+    min-width: 100%;
+}
+
+.dime-nav.nav-tabs li.active a {
+    color: #fff;
+}
+
+.dime-nav a {
+    color: #fff;
+    text-transform: uppercase;
+}
+
+.dime-banner {
+    text-align: center;
+    height: 80px;
+}
+@media (max-width: $break-tablet) {
+    .dime-banner .navbar-toggle {
+        display: block;
+        float: none;
+        z-index: 1;
+    }
+}
+
+.dime-top {
+    display: inline-flex;
+}
+
+.dime-title {
+    background: url("../images/brand/logo.png");
+    display: inline-flex;
+    background-size: contain;
+    line-height: 64px;
+    width: 270px;
+}
+/*
+* Login
+*/
+
+.loginmodal-container.dime {
+    border: 1px solid black;
+    background-image: linear-gradient(0deg, #f4f4f4, #c3c3c3);
+    text-align: center;
+    padding: 50px 10px;
+}
+
+.loginmodal-container.dime input {
+    border: 1px solid black;
+    display: block;
+    margin: 15px auto;
+    width: 250px;
+}
+
+.modal-dialog {
+    margin: 10% auto;
+    width: 400px;
+}
+
+.usertool a {
+    color: #c3c3c3;
+    weight: 100;
+}
+
+.usertool span {
+    display: inline-flex;
+}
+
+.usertool .profile-img {
+    width: 80px;
+    height: 80px;
+}
+
+a.loginbutton {
+    display: inline-block;
+    background: #f7f7f7;
+    padding: 5px;
+    color: #000;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 15px 0;
+    white-space: nowrap;
+    min-width: 80px;
+    text-transform: uppercase;
+}
+
+a.loginbutton span.text {
+    vertical-align: bottom;
+}
+
+a.loginbutton span.glyphicon {
+    padding: 0 5px;
+}
+
+a.loginbutton:hover {
+    text-decoration: none;
+}
+
+.username {
+    padding: 5px;
+}
+
+.useractions {
+    padding: 0 1vw;
+}
+
+/*
+ * User tool
+ */
+
+.usertool {
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.dime-icon.icon-user {
+    padding-right: 5px;
+    float: none;
+}
+
+.usertool .usergreeting {
+    padding-left: 0;
+}
+
+.dime-listhead {
+    display: inline-flex;
+    position: relative;
+    margin-top: 10px;
+}
+
+.dime-listhead.normal {
+    line-height: 32px;
+}
+
+.dime-listhead.small {
+    line-height: 16px;
+}
+
+.dime-navlist {
+    text-align: center;
+    box-shadow: none;
+}
+
+.dime-navlist li {
+    border: medium none;
+    padding: 2px 15px;
+}
+
+.dime-navlist li a {
+    color: black;
+}
+
+.dime-navlist li.active,
+.dime-navlist li.active:focus,
+.dime-navlist li.active:hover {
+    background: none;
+    border: none;
+    font-weight: 600;
+    text-shadow: none;
+}

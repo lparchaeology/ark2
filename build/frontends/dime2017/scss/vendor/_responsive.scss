@@ -1,0 +1,15 @@
+/*
+ * Resposive settings
+ */
+
+$break-small: 767px;
+//Danish word wrapping:
+$break-large-tablet: 926px;
+//English word wrapping
+$break-large-tablet: 1439px;
+$break-tablet: 1199px;
+@media (min-width: $break-tablet) {
+    .collapse {
+        display: block;
+    }
+}
