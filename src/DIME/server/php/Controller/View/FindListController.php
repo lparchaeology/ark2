@@ -234,7 +234,7 @@ class FindListController extends DimeFormController
                     $select['placeholder'] = false;
                 } else {
                     $select['placeholder'] = '';
-                    $select['mode'] = 'readonly';
+                    $select['modus'] = 'readonly';
                 }
             }
             $state['select']['museum'] = $select;
@@ -253,11 +253,12 @@ class FindListController extends DimeFormController
                 $select['choices'] = [$actor];
                 $select['multiple'] = false;
                 $select['placeholder'] = false;
+                $select['modus'] = 'readonly';
             } else {
                 $select['choices'] = [];
                 $select['multiple'] = false;
                 $select['placeholder'] = '';
-                $select['mode'] = 'readonly';
+                $select['modus'] = 'readonly';
             }
             $state['select']['finder'] = $select;
         }

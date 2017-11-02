@@ -133,6 +133,12 @@ class Widget extends Element
                 $options['multiple'] = $select['multiple'];
             }
             $options['required'] = $select['required'] ?? $options['required'];
+            if (isset($select['modus']) && $select['modus'] === 'readonly') {
+                $options['attr']['class'] = $this->concatAttr($options, 'class', 'readonly-select');
+                if ($options['required']) {
+                    $options['attr']['class'] = $this->concatAttr($options, 'class', 'readonly-required');
+                }
+            }
         }
 
         unset($options['state']);

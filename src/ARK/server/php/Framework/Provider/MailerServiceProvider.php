@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Framework\Provider;
@@ -43,16 +42,16 @@ class MailerServiceProvider implements ServiceProviderInterface
         // For SwiftMailer options see https://silex.symfony.com/doc/2.0/providers/swiftmailer.html
         if ($container['ark']['mailer']['enabled']) {
             $container->register(new SwiftmailerServiceProvider());
-            $settings = $container['ark']['mailer'];
-            $options = $settings['options'];
+            $settings = $container['ark']['mailer'] ?? null;
+            $options = $settings['options'] ?? [];
             $credentials = Security::credentials('smtp');
-            $options['username'] = $credentials['username'];
-            $options['password'] = $credentials['password'];
+            $options['username'] = $credentials['username'] ?? null;
+            $options['password'] = $options['username'] ? $credentials['password'] ?? null : null;
             $container['swiftmailer.options'] = $options;
-            $container['swiftmailer.use_spool'] = $settings['use_spool'];
-            $container['swiftmailer.sender_address'] = $settings['sender']['address'];
-            $container['swiftmailer.delivery_addresses'] = $settings['delivery']['addresses'];
-            $container['swiftmailer.delivery_whitelist'] = $settings['delivery']['whitelist'];
+            $container['swiftmailer.use_spool'] = $settings['use_spool'] ?? false;
+            $container['swiftmailer.sender_address'] = $settings['sender']['address'] ?? null;
+            $container['swiftmailer.delivery_addresses'] = $settings['delivery']['addresses'] ?? null;
+            $container['swiftmailer.delivery_whitelist'] = $settings['delivery']['whitelist'] ?? null;
         }
     }
 }
