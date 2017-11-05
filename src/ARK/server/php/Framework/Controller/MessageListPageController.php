@@ -30,14 +30,12 @@
 namespace ARK\Framework\Controller;
 
 use ARK\Framework\PageController;
-use DIME\DIME;
 use Symfony\Component\HttpFoundation\Request;
 
 class MessageListPageController extends PageController
 {
     public function buildData(Request $request)
     {
-        $data['messages'] = DIME::getNotifications();
-        return $data;
+        return [];
     }
 }

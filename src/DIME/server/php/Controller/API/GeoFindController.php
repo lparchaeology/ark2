@@ -35,6 +35,7 @@ use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\Vocabulary\Term;
 use Brick\Geo\Point;
+use DIME\DIME;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -60,7 +61,7 @@ class GeoFindController
                     $data['municipality']['text'] = Service::translate($municipality->keyword());
                 }
 
-                $id = Service::database()->getMunicipalityMuseum($mid);
+                $id = DIME::getMunicipalityMuseum($mid);
                 if ($id) {
                     $museum = ORM::find(Museum::class, $id[0]['item']);
                     $data['museum']['id'] = $museum->id();
