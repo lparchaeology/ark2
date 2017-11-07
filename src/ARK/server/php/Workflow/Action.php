@@ -52,6 +52,7 @@ class Action
     protected $event;
     protected $action = '';
     protected $agent = '';
+    protected $actionable = false;
     protected $defaultPermission = false;
     protected $defaultAgency = false;
     protected $defaultAllowence = false;
@@ -93,6 +94,11 @@ class Action
     public function agent() : Actor
     {
         return $this->agent;
+    }
+
+    public function isActionable() : bool
+    {
+        return $this->actionable;
     }
 
     public function enabled() : bool
@@ -231,10 +237,11 @@ class Action
 
         // Fields
         $builder->addStringField('agent', 30);
-        $builder->addField('enabled', 'boolean');
+        $builder->addField('actionable', 'boolean');
         $builder->addMappedField('default_allowance', 'defaultAllowence', 'boolean');
         $builder->addMappedField('default_agency', 'defaultAgency', 'boolean');
         $builder->addMappedField('default_permission', 'defaultPermission', 'boolean');
+        $builder->addField('enabled', 'boolean');
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Associations

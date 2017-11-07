@@ -93,6 +93,24 @@ class Registry extends SymfonyRegistry
         return $actions;
     }
 
+    public function actionable(Actor $actor, Item $item) : Collection
+    {
+        $schema = $item->schema()->name();
+        $this->init($schema);
+        $actions = new ArrayCollection();
+        foreach ($this->actions[$schema] as $action) {
+            try {
+                if ($action->isActionable() && $action->isGranted($actor, $item)) {
+                    $actions[$action->name()] = $action;
+                }
+            } catch (WorkflowException $e) {
+                // noop
+                //dump($e->getMessage());
+            }
+        }
+        return $actions;
+    }
+
     public function actions(Actor $actor, Item $item) : Collection
     {
         $schema = $item->schema()->name();

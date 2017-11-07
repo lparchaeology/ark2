@@ -117,11 +117,8 @@ abstract class PageController extends Controller
     {
         $state = parent::buildState($request, $data);
 
-        // Check the Actor's workflow mode for this Item, i.e. edit or view
-        $item = $this->item($data);
-        $state['workflow']['mode'] = $item ? Service::workflow()->mode($state['actor'], $item) : 'view';
-
         // Set up the Select choices to show users
+        $item = $this->item($data);
         if ($item && $state['workflow']['mode'] === 'edit') {
             $select['choice_value'] = 'name';
             $select['choice_name'] = 'name';
@@ -129,6 +126,9 @@ abstract class PageController extends Controller
             $select['choices'] = $state['actions'];
             $select['multiple'] = false;
             $select['placeholder'] = Service::translate('core.placeholder');
+            if ($state['actions']->isEmpty()) {
+                $select['modus'] = 'readonly';
+            }
             $state['select']['actions'] = $select;
 
             $select['choice_value'] = 'id';
