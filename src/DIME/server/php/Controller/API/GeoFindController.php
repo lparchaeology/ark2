@@ -30,8 +30,6 @@
 namespace DIME\Controller\API;
 
 use ARK\Actor\Museum;
-use ARK\Database\Database;
-use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\Vocabulary\Term;
 use Brick\Geo\Point;
@@ -50,20 +48,15 @@ class GeoFindController
             $data['in'] = $wkt;
             $data['x'] = $point->x();
             $data['y'] = $point->y();
-            $mid = Service::database()->getSpatialTermsContain('dime.denmark.municipality', $wkt, '4326');
-            if ($mid) {
-                $mid = $mid[0]['term'];
-
-                $municipality = ORM::find(Term::class, ['concept' => 'dime.denmark.municipality', 'term' => $mid]);
-                if ($municipality) {
-                    $data['municipality']['concept'] = $municipality->concept()->concept();
-                    $data['municipality']['term'] = $municipality->name();
-                    $data['municipality']['text'] = Service::translate($municipality->keyword());
-                }
-
-                $id = DIME::getMunicipalityMuseum($mid);
-                if ($id) {
-                    $museum = ORM::find(Museum::class, $id[0]['item']);
+            $data['municipality'] = null;
+            $data['museum'] = null;
+            $municipality = DIME::findMunicipality($wkt);
+            if ($municipality) {
+                $data['municipality']['concept'] = $municipality->concept()->concept();
+                $data['municipality']['term'] = $municipality->name();
+                $data['municipality']['text'] = Service::translate($municipality->keyword());
+                $museum = DIME::getMunicipalityMuseum($municipality->name());
+                if ($museum) {
                     $data['museum']['id'] = $museum->id();
                     $data['museum']['module'] = $museum->schema()->module()->id();
                     $data['museum']['name'] = $museum->property('fullname')->value()->content();

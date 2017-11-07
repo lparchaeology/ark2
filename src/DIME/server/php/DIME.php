@@ -34,6 +34,8 @@ use ARK\Actor\Museum;
 use ARK\Message\Notification;
 use ARK\ORM\ORM;
 use ARK\Service;
+use ARK\Vocabulary\Term;
+use ARK\Vocabulary\Vocabulary;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Connection;
 
@@ -97,7 +99,21 @@ class DIME
         return $unread;
     }
 
-    public static function getMunicipalityMuseum(string $municipality) : ?iterable
+    public static function findMunicipality(string $wkt) : ?Term
+    {
+        $mid = Service::database()->getSpatialTermsContain('dime.denmark.municipality', $wkt, '4326');
+        if ($mid) {
+            return self::getMunicipality($mid[0]['term']);
+        }
+        return null;
+    }
+
+    public static function getMunicipality(string $municipality) : ?Term
+    {
+        return Vocabulary::findTerm('dime.denmark.municipality', $municipality);
+    }
+
+    public static function getMunicipalityMuseum(string $municipality) : ?Museum
     {
         $sql = '
             SELECT item
@@ -111,9 +127,11 @@ class DIME
             ':parameter' => 'dime.denmark.municipality',
             ':value' => $municipality,
         ];
-
-        $id = Service::database()->data()->fetchAll($sql, $params);
-        return ORM::find(Museum::class, $id[0]['item'] ?? null);
+        $ids = Service::database()->data()->fetchAll($sql, $params);
+        if (isset($ids[0]['item'])) {
+            return ORM::find(Museum::class, $ids[0]['item']);
+        }
+        return null;
     }
 
     public static function getActorFinds(string $actor) : ?iterable

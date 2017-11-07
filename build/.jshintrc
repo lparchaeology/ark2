@@ -1,7 +1,14 @@
 {
     "globals": {
         "browser": true,
-        "devel": true
+        "devel": true,
+        "ol": true,
+        "proj4": true,
+        "window": true,
+        "document": true,
+        "console": true,
+        "alert": true,
+        "confirm": true
     },
     "undef": true,
     "unused": true,
