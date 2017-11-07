@@ -1,10 +1,10 @@
 // Build the Custom CSS from Sass source
 
 // Import other custom styles
-@import "vendor/responsive";
-@import "custom/core";
-@import "custom/form";
-@import "custom/frame";
+@import "vendor/bootstrap3/responsive";
+@import "custom/bootstrap3/core";
+@import "custom/bootstrap3/form";
+@import "custom/bootstrap3/frame";
 @import "custom/map";
 @import "custom/carousel";
 @import "custom/table";

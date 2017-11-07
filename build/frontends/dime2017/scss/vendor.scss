@@ -1,16 +1,16 @@
 // Build the Theme CSS from Sass source
 
 // Import any custom Bootstrap variable overrides
-@import "vendor/variables";
+@import "vendor/bootstrap3/variables";
 
 // Import Vendor Bootstrap
 @import "bootstrap";
 
 // Import custom changes to vendor core
-@import "vendor/responsive";
-@import "vendor/core";
-@import "vendor/form";
-@import "vendor/frame";
+@import "vendor/bootstrap3/responsive";
+@import "vendor/bootstrap3/core";
+@import "vendor/bootstrap3/form";
+@import "vendor/bootstrap3/frame";
 
 // Import other vendor sass
 @import "summernote";
