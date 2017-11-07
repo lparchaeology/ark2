@@ -7,7 +7,7 @@ var initTimeline = function () {
 
     // window.periodvocabulary contains the apiresponse for all the periods
     // this script is initiated on the response from that
-    for (period_id in window.periodvocabulary) {
+    for (var period_id in window.periodvocabulary) {
         var period = window.periodvocabulary[period_id];
 
         // get the end - or the current date
@@ -36,7 +36,7 @@ var initTimeline = function () {
             // the content we get from the dropdown menu - so it is translated and marked up how we want it
             content: $("#find_dating_period").find("option[value=" + period.name + "]").html(),
             start: vis.moment(start, "Y"),
-            end: vis.moment(end, "Y").endOf("year")
+            end: vis.moment(end, "Y").endOf("year"),
         });
     }
 
@@ -56,8 +56,8 @@ var initTimeline = function () {
             axis: 0,
             item: {
                 horizontal: -5,
-                vertical: 1
-            }
+                vertical: 1,
+            },
         },
         zoomMin: 157680000000, //5 years (1000*60*60*24*365*5) in milliseconds
         zoomMax: 315700000000000, //10000 years (1000*60*60*24*365*10000) in milliseconds
@@ -65,7 +65,7 @@ var initTimeline = function () {
         horizontalScroll: true,
         zoomKey: 'ctrlKey',
         end: vis.moment(new Date().getFullYear(), 'Y'),
-        start: vis.moment(-2000, 'Y')
+        start: vis.moment(-2000, 'Y'),
     };
 
     // Create a Timeline
@@ -73,7 +73,6 @@ var initTimeline = function () {
 
     // this will hide pills which are either too small or too large to be comfortably shown
     $('.vis-range').each(function (i, e) {
-        var remove = [];
         if ($(e).width() < 100 || $(e).width() > 2000) {
             $(e).hide();
         } else {
@@ -101,8 +100,8 @@ var initTimeline = function () {
     var updateTimeline = function (target) {
         // if there is a target use that
         console.log({ "target": target });
-        if (target != 'undefined' && target != null) {
-            if (typeof window.subtypevocabulary[target].parameters != 'undefined') {
+        if (target !== 'undefined' && target !== null) {
+            if (typeof window.subtypevocabulary[target].parameters !== 'undefined') {
                 try {
                     var target_years = getYearsFromTarget(target);
                     console.log(target_years);
@@ -134,14 +133,14 @@ var initTimeline = function () {
             $('#find_classification_subtype').select2(select2Options);
             $('#find_classification_subtype').trigger('select2:select');
             $('#find_classification_subtype').select2('close');
-            if (targetSplit.length = 3) {
+            if (targetSplit.length === 3) {
                 $('#find_classification_subtype').val(target);
                 $('#find_classification_subtype').select2(select2Options);
                 $('#find_classification_subtype').trigger('select2:select');
                 $('#find_classification_subtype').select2('close');
             }
         } else {
-            if ($('#find_subtype_level1').val() == 'undefined') {
+            if ($('#find_subtype_level1').val() === 'undefined') {
                 $('#find_classification_subtype').val(null);
                 $('#find_classification_subtype').select2(select2Options);
             } else {
@@ -151,7 +150,7 @@ var initTimeline = function () {
             }
         }
 
-    }
+    };
 
     // now that we have that all set up make the find classify trigger a modal
     $('#find_classify').attr('data-toggle', 'modal');
@@ -159,7 +158,7 @@ var initTimeline = function () {
     $('#find_classify').removeClass("disabled").addClass("btn-default");
     // Make sure required-but-readonly Class field is populated
     $('#find').submit(function (e) {
-        if ($('#find_class_term').val() == '' || $('#find_class_term').val() == undefined) {
+        if ($('#find_class_term').val() === '' || $('#find_class_term').val() === undefined) {
             e.preventDefault();
             $('.readonly-select').prop('disabled', true);
             $('#find_classify').click();
@@ -176,7 +175,7 @@ var initTimeline = function () {
         // TODO Get this markup from somewhere
         var typelabel = "Type";
         typediv.append($('<label>' + typelabel + '</label>'));
-        typediv.append($('#find_class_term').clone().attr('id', 'find_class_term_modal'))
+        typediv.append($('#find_class_term').clone().attr('id', 'find_class_term_modal'));
         $(".classification-holder").append(typediv);
 
         // set the new width, and set the value to match the dropdown on the main page
@@ -209,11 +208,11 @@ var initTimeline = function () {
 
         // on selecting a new "Type" wipe and rebuild the klassifications
         $('#find_class_term_modal').on("select2:select select2:unselecting", function () {
-            var target = $(this).val()
+            var target = $(this).val();
             level1.empty();
             level2.empty();
             for (var subtype in window.subtypevocabulary) {
-                if (target == subtype.split('.')[0] && subtype.split('.').length == 2) {
+                if (target === subtype.split('.')[0] && subtype.split('.').length === 2) {
                     $(window.subtypevocabulary[subtype].optionelement).clone().appendTo(level1);
                 }
             }
@@ -230,9 +229,10 @@ var initTimeline = function () {
             updateTimeline(target);
             level2.empty();
             for (var subtype in window.subtypevocabulary) {
-                if (target != null) {
-                    if (target.split('.')[0] == subtype.split('.')[0]
-                        && target.split('.')[1] == subtype.split('.')[1] && subtype.split('.').length == 3) {
+                if (target !== null) {
+                    if (target.split('.')[0] === subtype.split('.')[0]
+                        && target.split('.')[1] === subtype.split('.')[1]
+                        && subtype.split('.').length === 3) {
                         $(window.subtypevocabulary[subtype].optionelement).clone().appendTo(level2);
                     }
                 }
@@ -248,16 +248,16 @@ var initTimeline = function () {
         // set the initial values and set it up
         level1.empty();
         for (var subtype in window.subtypevocabulary) {
-            if ($('#find_class_term_modal').val() == subtype.split('.')[0] && subtype.split('.').length == 2) {
+            if ($('#find_class_term_modal').val() === subtype.split('.')[0] && subtype.split('.').length === 2) {
                 $(window.subtypevocabulary[subtype].optionelement).clone().appendTo(level1);
             }
         }
 
         var currentSubtype = $('#find_classification_subtype').val();
 
-        if (currentSubtype != null) {
+        if (currentSubtype !== null) {
             var currentSubtypeSplit = currentSubtype.split('.');
-            if (currentSubtypeSplit.length == 2) {
+            if (currentSubtypeSplit.length === 2) {
                 level1.val(currentSubtype);
                 level1.trigger('select2:select');
             } else {
@@ -295,16 +295,23 @@ var initTimeline = function () {
 
     $(timeline).attr('pannning', false);
 
-    timeline.on('rangechange', function (event) {
+    timeline.on('rangechange', function () {
         $(timeline).attr('pannning', true);
     });
-    timeline.on('rangechanged', function (event) {
+    timeline.on('rangechanged', function () {
         setTimeout(function () {
             $(timeline).attr('pannning', false);
         }, 100);
     });
 
     timeline.on('click', function (event) {
+        var existing_start = null;
+        var existing_start = null;
+        var item_start = null;
+        var item_end = null;
+        var start = null;
+        var end = null;
+
         if ($(timeline).attr('pannning')) {
             return true;
         }
@@ -319,43 +326,42 @@ var initTimeline = function () {
             existing_end = null;
         }
 
-        if (existing_start != null) {
+        if (existing_start !== null) {
             timeline.removeCustomTime('start');
         }
-        if (existing_end != null) {
+        if (existing_end !== null) {
             timeline.removeCustomTime('end');
         }
 
         console.log({ "event": event });
 
-        if (event.item != null) {
-
+        if (event.item !== null) {
             try {
-                var item_start = vis.moment(window.periodvocabulary[event.item].parameters.year_start.value, 'Y');
+                item_start = vis.moment(window.periodvocabulary[event.item].parameters.year_start.value, 'Y');
             } catch (e) {
-                var item_start = vis.moment('-10000', 'Y');
+                item_start = vis.moment('-10000', 'Y');
             }
             try {
-                var item_end = vis.moment(window.periodvocabulary[event.item].parameters.year_end.value, 'Y');
+                item_end = vis.moment(window.periodvocabulary[event.item].parameters.year_end.value, 'Y');
             } catch (e) {
-                var item_end = vis.moment(new Date(), 'Y');
+                item_end = vis.moment(new Date(), 'Y');
             }
 
             if (event.event.shiftKey) {
                 if (existing_start < item_start) {
-                    var start = vis.moment(existing_start);
+                    start = vis.moment(existing_start);
                 } else {
-                    var start = item_start;
+                    start = item_start;
                 }
 
                 if (existing_end > item_end) {
-                    var end = vis.moment(existing_end);
+                    end = vis.moment(existing_end);
                 } else {
-                    var end = item_end;
+                    end = item_end;
                 }
             } else {
-                var start = item_start;
-                var end = item_end;
+                start = item_start;
+                end = item_end;
             }
 
             var item_mid_point = (start.year() + end.year()) / 2;
@@ -365,10 +371,10 @@ var initTimeline = function () {
             timeline.moveTo(vis.moment(item_mid_point, 'Y'));
 
         } else {
-            if (existing_start == null) {
+            if (existing_start === null) {
                 start = event.time;
                 end = null;
-            } else if (existing_end == null) {
+            } else if (existing_end === null) {
                 start = existing_start;
                 end = event.time;
             } else {
@@ -394,10 +400,10 @@ var initTimeline = function () {
         $('#find_dating_year_span').trigger('keyup');
 
         function customTimeExists(timeid) {
-            var promise = new Promise(function (resolve, reject) {
+            var promise = new Promise(function (resolve) {
                 window.setTimeout(function () {
                     console.log("looping");
-                    if ($(".vis-custom-time").filter("." + timeid).length != 1) {
+                    if ($(".vis-custom-time").filter("." + timeid).length !== 1) {
                         customTimeExists();
                     } else {
                         resolve();
@@ -408,36 +414,36 @@ var initTimeline = function () {
         }
 
         function updateTimeline(year, timeid) {
+            var formid = null;
             vis_year = vis.moment(year, "Y");
             timeline.setCustomTime(vis_year, timeid);
             drawLabel(timeid);
-            if (timeid == 'start') {
-                var formid = '#find_dating_year';
+            if (timeid === 'start') {
+                formid = '#find_dating_year';
             } else {
-                var formid = '#find_dating_year_span';
-
+                formid = '#find_dating_year_span';
             }
             $(formid).val(new Date(year).getFullYear(), 'Y');
             $(formid).trigger('keyup');
         }
 
         function drawLabel(timeid) {
-            span = $("#" + timeid + "-label");
-            if (span.length == 0) {
+            var span = $("#" + timeid + "-label");
+            if (span.length === 0) {
                 var labelinput = $("<input id=\"" + timeid + "-input\" class=\"timelinelabelinput\">");
                 labelinput.val(new Date(start).getFullYear());
                 labelinput.on("keyup", function (e) {
-                    if (e.keyCode == 13) {
+                    if (e.keyCode === 13) {
                         e.preventDefault();
                         updateTimeline($(this).val(), timeid);
                     }
                 });
-                labelinput.on("blur", function (e) {
+                labelinput.on("blur", function () {
                     updateTimeline($(this).val(), timeid);
                 });
                 var labelform = $("<form onsubmit=\"return false;\">");
                 labelform.append(labelinput);
-                var span = $("<span id=\"" + timeid + "-label\" class=\"timelinelabel\">");
+                span = $("<span id=\"" + timeid + "-label\" class=\"timelinelabel\">");
                 span.append(labelform);
                 span.css("position", "absolute");
                 span.css("margin-top", "-45px");
@@ -460,24 +466,24 @@ var initTimeline = function () {
 
         timeline.addCustomTime(start, 'start');
 
-        customTimeExists('start').then(function (result) {
+        customTimeExists('start').then(function () {
             drawLabel('start');
         });
 
         timeline.on("rangechange", function () {
-            customTimeExists('start').then(function (result) {
+            customTimeExists('start').then(function () {
                 drawLabel('start');
             });
         });
 
         timeline.addCustomTime(end, 'end');
 
-        customTimeExists('end').then(function (result) {
+        customTimeExists('end').then(function () {
             drawLabel('end');
         });
 
         timeline.on("rangechange", function () {
-            customTimeExists('end').then(function (result) {
+            customTimeExists('end').then(function () {
                 drawLabel('end');
             });
         });
@@ -485,13 +491,13 @@ var initTimeline = function () {
 
         timeline.on('timechanged', function (properties) {
 
-            if (properties.id == 'start') {
+            if (properties.id === 'start') {
                 if (properties.time > timeline.getCustomTime('end')) {
                     timeline.removeCustomTime('start');
                     timeline.addCustomTime(timeline.getCustomTime('end'), 'start');
                     return false;
                 }
-                customTimeExists('start').then(function (result) {
+                customTimeExists('start').then(function () {
                     drawLabel('start');
                 });
             } else {
@@ -500,7 +506,7 @@ var initTimeline = function () {
                     timeline.addCustomTime(timeline.getCustomTime('start'), 'end');
                     return false;
                 }
-                customTimeExists('end').then(function (result) {
+                customTimeExists('end').then(function () {
                     drawLabel('end');
                 });
             }
@@ -521,7 +527,6 @@ var initTimeline = function () {
 
     timeline.on('rangechanged', function () {
         $('.vis-range').each(function (i, e) {
-            var remove = [];
             if ($(e).width() < 100 || $(e).width() > 1800) {
                 $(e).hide();
             } else {

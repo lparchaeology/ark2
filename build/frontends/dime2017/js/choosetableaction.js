@@ -16,24 +16,25 @@ $('document').ready(function () {
                 });
             }
         });
-/*
-    var getavailableActions = function(itemkey, itemvalue){
-        $.post(path + 'api/v2/'.itemkey, itemvalue )
-        .fail(function() {
-            console.log('Error fetching ARK schema');
-        })
-        .done(function(response) {
-            var itemSchema = response[itemkey];
-            var response = [];
-            for (item in itemSchema['actions']){
-                if (itemSchema['actions'][item] == true ){
-                    response.push(itemSchema['actions'][item].clone());
+    */
+    /*
+        var getavailableActions = function(itemkey, itemvalue){
+            $.post(path + 'api/v2/'.itemkey, itemvalue )
+            .fail(function() {
+                console.log('Error fetching ARK schema');
+            })
+            .done(function(response) {
+                var itemSchema = response[itemkey];
+                var response = [];
+                for (item in itemSchema['actions']){
+                    if (itemSchema['actions'][item] == true ){
+                        response.push(itemSchema['actions'][item].clone());
+                    }
                 }
-            }
-            return response;
-        });
-    }
-*/
+                return response;
+            });
+        }
+    */
     var getAvailableActions = function (itemkey, itemvalue) {
         return JSON.parse(JSON.stringify(window.itemAvailableActions[itemvalue]));
     };

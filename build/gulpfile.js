@@ -254,7 +254,7 @@ gulp.task('scripts', function () {
             .pipe(concat(script + '.js'))
             .pipe(sourcemaps.init(manifest.options.sourcemaps))
             .pipe(uglify(manifest.options.uglify))
-            .pipe(sourcemaps.write('.'))
+            .pipe(sourcemaps.write())
             .pipe(rename(script + '.min.js'))
             .pipe(gulp.dest(dest));
     }

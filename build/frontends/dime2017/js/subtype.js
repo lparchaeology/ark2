@@ -30,36 +30,37 @@ var initSubtype = function () {
                 var highlighted_item_id = item.attr('id');
                 var highlighted_item_code = highlighted_item_id.split('-');
                 var highlighted_item_concept = highlighted_item_code[highlighted_item_code.length - 1];
+                var tooltip = null;
                 try {
                     if (typeof subtypevocabulary[highlighted_item_concept].parameters != "undefined") {
                         var subtypeItemParams = subtypevocabulary[highlighted_item_concept].parameters;
                         if (typeof subtypeItemParams.year_start != "undefined"
                             && typeof subtypeItemParams.year_end != "undefined") {
-                            var tooltip = subtypeItemParams.year_start.value + "\xa0\u2014\xa0" + subtypeItemParams.year_end.value;
+                            tooltip = subtypeItemParams.year_start.value + "\xa0\u2014\xa0" + subtypeItemParams.year_end.value;
                         } else if (typeof subtypevocabulary[highlighted_item_concept].parameters.period != "undefined") {
-                            var tooltip = subtypevocabulary[highlighted_item_concept].parameters.period.value;
+                            tooltip = subtypevocabulary[highlighted_item_concept].parameters.period.value;
                         } else {
-                            var tooltip = "Undefined";
+                            tooltip = "Undefined";
                         }
                     } else {
-                        var tooltip = "Undefined";
+                        tooltip = "Undefined";
                     }
                 } catch (e) {
 
                 }
 
                 var promise = new Promise(function (resolve) {
-                    item.attr({ "data-toggle": "tooltip", "data-placement": "right", "title": tooltip });
+                    item.attr({ "data-toggle": "tooltip", "data-placement": "right", "title": tooltip, });
                     item.tooltip();
                     resolve(true);
                 });
-                promise.then(function (result) {
+                promise.then(function () {
                     item.tooltip('show');
                 });
-            }
+            },
         }, '#select2-' + subtype_id + '-results .select2-results__option.select2-results__option--highlighted');
 
-    }
+    };
 
     $('#' + date_start_id).on('focusout', function () {
         //console.log($(this).val());
@@ -75,7 +76,7 @@ var initSubtype = function () {
         //console.log(target);
 
         // Toggle the Coin-only fields.
-        if (target == 'coin') {
+        if (target === 'coin') {
             $('#find_mint_content').closest('.form-group').show();
             $('#find_issuer_content').closest('.form-group').show();
             $('#find_secondary_term_looped').closest('.checkbox').show();
@@ -88,7 +89,7 @@ var initSubtype = function () {
 
         $('#' + subtype_id).empty();
         for (var subtype in subtypevocabulary) {
-            if (target == subtype.split('.')[0] && subtype.split('.').length == 2) {
+            if (target === subtype.split('.')[0] && subtype.split('.').length === 2) {
                 subtypevocabulary[subtype].optionelement.appendTo('#' + subtype_id);
             }
         }
@@ -102,7 +103,7 @@ var initSubtype = function () {
         var target = $(this).val();
         //console.log(target);
 
-        if (target == "up") {
+        if (target === "up") {
             $('#' + type_id).trigger('select2:select');
             $('#' + subtype_id).select2('open');
             return true;
@@ -113,7 +114,7 @@ var initSubtype = function () {
             $('#' + subtype_id).empty();
             $('#' + subtype_id).append(goupoption);
             for (var subtype in subtypevocabulary) {
-                if (target.split('.')[0] == subtype.split('.')[0] && target.split('.')[1] == subtype.split('.')[1]) {
+                if (target.split('.')[0] === subtype.split('.')[0] && target.split('.')[1] === subtype.split('.')[1]) {
                     subtypevocabulary[subtype].optionelement.appendTo('#' + subtype_id);
                 }
             }
@@ -129,8 +130,8 @@ var initSubtype = function () {
         try {
             var target_years = getYearsFromTarget(target);
 
-            target_start_year = target_years.start;
-            target_end_year = target_years.end;
+            var target_start_year = target_years.start;
+            var target_end_year = target_years.end;
 
             var current_start_year = parseInt($('#' + date_start_id).val());
             var current_end_year = parseInt($('#' + date_start_id + '_span').val());
@@ -147,12 +148,12 @@ var initSubtype = function () {
 
             $('#' + date_start_id).attr({
                 "min": target_start_year,
-                "max": target_end_year
+                "max": target_end_year,
             });
 
             $('#' + date_start_id + '_span').attr({
                 "max": target_end_year,
-                "max": target_end_year
+                "max": target_end_year,
             });
 
             $('#' + date_start_id).trigger('keyup');
@@ -173,22 +174,24 @@ var initSubtype = function () {
 };
 
 window.getYearsFromTarget = function (target) {
+    var target_start_year = null;
+    var target_end_year = null;
 
-    if (typeof subtypevocabulary[target].parameters.year_start != "undefined") {
+    if (typeof subtypevocabulary[target].parameters.year_start !== "undefined") {
 
-        var target_start_year = parseInt(subtypevocabulary[target].parameters.year_start.value);
+        target_start_year = parseInt(subtypevocabulary[target].parameters.year_start.value);
 
-        var target_end_year = parseInt(subtypevocabulary[target].parameters.year_end.value);
+        target_end_year = parseInt(subtypevocabulary[target].parameters.year_end.value);
 
-    } else if (typeof subtypevocabulary[target].parameters.period != "undefined") {
+    } else if (typeof subtypevocabulary[target].parameters.period !== "undefined") {
 
-        var target_start_year = parseInt(window.periodvocabulary[subtypevocabulary[target].parameters.period.value].parameters.year_start.value);
+        target_start_year = parseInt(window.periodvocabulary[subtypevocabulary[target].parameters.period.value].parameters.year_start.value);
 
-        var target_end_year = parseInt(window.periodvocabulary[subtypevocabulary[target].parameters.period.value].parameters.year_end.value);
+        target_end_year = parseInt(window.periodvocabulary[subtypevocabulary[target].parameters.period.value].parameters.year_end.value);
     }
 
-    return { "start": target_start_year, "end": target_end_year }
-}
+    return { "start": target_start_year, "end": target_end_year, };
+};
 
 $(document).ready(function () {
 
@@ -208,7 +211,7 @@ $(document).ready(function () {
         .done(function (response) {
             window.typevocabulary = response.terms;
 
-            var query = { "concept": "dime.find.subtype" };
+            query = { "concept": "dime.find.subtype", };
 
             $.post(path + 'api/internal/vocabulary', JSON.stringify(query))
                 .fail(function () {
@@ -217,7 +220,7 @@ $(document).ready(function () {
                 .done(function (response) {
                     window.subtypevocabulary = response.terms;
                     for (var subtype in subtypevocabulary) {
-                        if ($('#' + subtype_id).val() != subtype) {
+                        if ($('#' + subtype_id).val() !== subtype) {
                             subtypevocabulary[subtype].optionelement = $('#' + subtype_id + ' option[value="' + subtype + '"]').detach();
                         }
                     }
