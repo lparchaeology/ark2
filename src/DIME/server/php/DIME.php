@@ -30,10 +30,12 @@
 namespace DIME;
 
 use ARK\Actor\Actor;
+use ARK\Actor\Museum;
 use ARK\Message\Notification;
 use ARK\ORM\ORM;
 use ARK\Service;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\DBAL\Connection;
 
 class DIME
 {
@@ -93,5 +95,135 @@ class DIME
             }
         }
         return $unread;
+    }
+
+    public static function getMunicipalityMuseum(string $municipality) : ?iterable
+    {
+        $sql = '
+            SELECT item
+            FROM ark_fragment_string
+            WHERE module = :module
+            AND parameter = :parameter
+            AND value = :value
+        ';
+        $params = [
+            ':module' => 'actor',
+            ':parameter' => 'dime.denmark.municipality',
+            ':value' => $municipality,
+        ];
+
+        $id = Service::database()->data()->fetchAll($sql, $params);
+        return ORM::find(Museum::class, $id[0]['item'] ?? null);
+    }
+
+    public static function getActorFinds(string $actor) : ?iterable
+    {
+        $sql = "
+            SELECT DISTINCT item
+            FROM ark_fragment_item
+            WHERE module = 'find'
+            AND attribute = 'finder'
+            AND value = :actor
+        ";
+        $params = [
+            ':actor' => $actor,
+        ];
+
+        return Service::database()->data()->fetchAllColumn($sql, 'item', $params);
+    }
+
+    public static function getFinders() : ?iterable
+    {
+        $sql = "
+            SELECT DISTINCT value
+            FROM ark_fragment_item
+            WHERE module = 'find'
+            AND attribute = 'finder'
+        ";
+        return Service::database()->data()->fetchAllColumn($sql, 'value');
+    }
+
+    public static function findSearch(iterable $query) : ?iterable
+    {
+        $conn = Service::database()->data();
+        $pre = "
+            SELECT item
+            FROM ark_fragment_string
+            WHERE module = 'find'
+        ";
+        $types = [
+            Connection::PARAM_STR_ARRAY,
+        ];
+        $results = [];
+        if (isset($query['municipality'])) {
+            $sql = $pre."AND attribute = 'municipality' AND value IN (?)";
+            $params = [
+                $query['municipality'],
+            ];
+            $results['municipality'] = $conn->fetchAllColumn($sql, 'item', $params, $types);
+        }
+        if (isset($query['class'])) {
+            $sql = $pre."AND attribute = 'class' AND value IN (?)";
+            $params = [
+                $query['class'],
+            ];
+            $results['class'] = $conn->fetchAllColumn($sql, 'item', $params, $types);
+        }
+        if (isset($query['period'])) {
+            $sql = $pre."AND attribute = 'period' AND value IN (?)";
+            $params = [
+                $query['period'],
+            ];
+            $results['period'] = $conn->fetchAllColumn($sql, 'item', $params, $types);
+        }
+        if (isset($query['material'])) {
+            $sql = $pre."AND attribute = 'material' AND value IN (?)";
+            $params = [
+                $query['material'],
+            ];
+            $results['material'] = $conn->fetchAllColumn($sql, 'item', $params, $types);
+        }
+        if (isset($query['status'])) {
+            $sql = $pre."AND attribute = 'process' AND value IN (?)";
+            $params = [
+                $query['status'],
+            ];
+            $results['status'] = $conn->fetchAllColumn($sql, 'item', $params, $types);
+        }
+        if (isset($query['treasure'])) {
+            $sql = $pre."AND attribute = 'treasure' AND value IN (?)";
+            $params = [
+                $query['treasure'],
+            ];
+            $results['treasure'] = $conn->fetchAllColumn($sql, 'item', $params, $types);
+        }
+
+        $pre = "
+            SELECT item
+            FROM ark_fragment_item
+            WHERE module = 'find'
+        ";
+        if (isset($query['museum'])) {
+            $sql = $pre."AND attribute = 'museum' AND parameter = 'actor' AND value IN (?)";
+            $params = [
+                $query['museum'],
+            ];
+            $results['museum'] = $conn->fetchAllColumn($sql, 'item', $params, $types);
+        }
+        if (isset($query['finder'])) {
+            $sql = $pre."AND attribute = 'finder' AND parameter = 'actor' AND value IN (?)";
+            $params = [
+                $query['finder'],
+            ];
+            $results['finder'] = $conn->fetchAllColumn($sql, 'item', $params, $types);
+        }
+        $all = [];
+        foreach ($results as $key => $items) {
+            $all = array_merge($all, $items);
+        }
+        $all = array_unique($all);
+        sort($all);
+        $result = call_user_func_array('array_intersect', array_merge([$all], array_values($results)));
+        return $result;
     }
 }

@@ -31,7 +31,6 @@ namespace DIME\Controller\View;
 
 use ARK\Actor\Actor;
 use ARK\ORM\ORM;
-use ARK\Service;
 use DIME\DIME;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,7 +51,7 @@ class ProfileViewController extends DimeFormController
             throw new ErrorException(new NotFoundError('PROFILE_NOT_FOUND', 'Profile not found', "Profile for user $id not found"));
         }
         $data['actor'] = $actor;
-        $items = Service::database()->getActorFinds($actor->id());
+        $items = DIME::getActorFinds($actor->id());
         $data['finds']['items'] = ORM::findBy(Find::class, ['id' => $items]);
         return $data;
     }

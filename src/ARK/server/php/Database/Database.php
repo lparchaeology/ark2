@@ -214,7 +214,7 @@ class Database
     {
         $sql = '
             SELECT term
-            FROM dime_ark_spatial.ark_spatial_term
+            FROM ark_spatial_term
             WHERE concept = :concept
             AND ST_Contains(geometry, ST_GeometryFromText(:point, :srid))
         ';
@@ -268,51 +268,6 @@ class Database
         }
 
         return $this->spatial()->fetchAll($sql, $params);
-    }
-
-    public function getMunicipalityMuseum(string $municipality) : ?iterable
-    {
-        $sql = '
-            SELECT item
-            FROM ark_fragment_string
-            WHERE module = :module
-            AND parameter = :parameter
-            AND value = :value
-        ';
-        $params = [
-            ':module' => 'actor',
-            ':parameter' => 'dime.denmark.municipality',
-            ':value' => $municipality,
-        ];
-
-        return $this->data()->fetchAll($sql, $params);
-    }
-
-    public function getActorFinds(string $actor) : ?iterable
-    {
-        $sql = "
-            SELECT DISTINCT item
-            FROM ark_fragment_item
-            WHERE module = 'find'
-            AND attribute = 'finder'
-            AND value = :actor
-        ";
-        $params = [
-            ':actor' => $actor,
-        ];
-
-        return $this->data()->fetchAllColumn($sql, 'item', $params);
-    }
-
-    public function getFinders() : ?iterable
-    {
-        $sql = "
-            SELECT DISTINCT value
-            FROM ark_fragment_item
-            WHERE module = 'find'
-            AND attribute = 'finder'
-        ";
-        return $this->data()->fetchAllColumn($sql, 'value');
     }
 
     public function getActorMessages(string $actor) : ?iterable
@@ -432,89 +387,6 @@ class Database
         ];
 
         return $this->data()->fetchAssoc($sql, $params);
-    }
-
-    public function findSearch(iterable $query) : ?iterable
-    {
-        $pre = "
-            SELECT item
-            FROM ark_fragment_string
-            WHERE module = 'find'
-        ";
-        $types = [
-            Connection::PARAM_STR_ARRAY,
-        ];
-        $results = [];
-        if (isset($query['municipality'])) {
-            $sql = $pre."AND attribute = 'municipality' AND value IN (?)";
-            $params = [
-                $query['municipality'],
-            ];
-            $results['municipality'] = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
-        }
-        if (isset($query['class'])) {
-            $sql = $pre."AND attribute = 'class' AND value IN (?)";
-            $params = [
-                $query['class'],
-            ];
-            $results['class'] = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
-        }
-        if (isset($query['period'])) {
-            $sql = $pre."AND attribute = 'period' AND value IN (?)";
-            $params = [
-                $query['period'],
-            ];
-            $results['period'] = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
-        }
-        if (isset($query['material'])) {
-            $sql = $pre."AND attribute = 'material' AND value IN (?)";
-            $params = [
-                $query['material'],
-            ];
-            $results['material'] = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
-        }
-        if (isset($query['status'])) {
-            $sql = $pre."AND attribute = 'process' AND value IN (?)";
-            $params = [
-                $query['status'],
-            ];
-            $results['status'] = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
-        }
-        if (isset($query['treasure'])) {
-            $sql = $pre."AND attribute = 'treasure' AND value IN (?)";
-            $params = [
-                $query['treasure'],
-            ];
-            $results['treasure'] = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
-        }
-
-        $pre = "
-            SELECT item
-            FROM ark_fragment_item
-            WHERE module = 'find'
-        ";
-        if (isset($query['museum'])) {
-            $sql = $pre."AND attribute = 'museum' AND parameter = 'actor' AND value IN (?)";
-            $params = [
-                $query['museum'],
-            ];
-            $results['museum'] = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
-        }
-        if (isset($query['finder'])) {
-            $sql = $pre."AND attribute = 'finder' AND parameter = 'actor' AND value IN (?)";
-            $params = [
-                $query['finder'],
-            ];
-            $results['finder'] = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
-        }
-        $all = [];
-        foreach ($results as $key => $items) {
-            $all = array_merge($all, $items);
-        }
-        $all = array_unique($all);
-        sort($all);
-        $result = call_user_func_array('array_intersect', array_merge([$all], array_values($results)));
-        return $result;
     }
 
     private function loadEntities() : void

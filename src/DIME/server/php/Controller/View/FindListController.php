@@ -156,7 +156,7 @@ class FindListController extends DimeFormController
         }
 
         if ($query) {
-            $items = Service::database()->findSearch($query);
+            $items = DIME::findSearch($query);
             $finds = ORM::findBy(Find::class, ['id' => $items]);
         } else {
             $finds = ORM::findAll(Find::class);
@@ -245,7 +245,7 @@ class FindListController extends DimeFormController
             // Otherwise they cannot filter by Finder
             unset($select['mode']);
             if ($actor->hasPermission('dime.find.filter.finder')) {
-                $finders = Service::database()->getFinders();
+                $finders = DIME::getFinders();
                 $select['choices'] = ORM::findBy(Person::class, ['id' => $finders]);
                 $select['multiple'] = false;
                 $select['placeholder'] = Service::translate('core.placeholder');
