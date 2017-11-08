@@ -91,6 +91,14 @@
     padding: 0.2em;
 }
 
+// Hide the select arrow if readonly
+.readonly-select.select2-hidden-accessible + .select2-container {
+    .select2-selection__arrow,
+    .select2-selection__clear {
+        display: none;
+    }
+}
+
 /* File Uploader */
 
 .file-preview-thumbnails img {
