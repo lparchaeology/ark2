@@ -64,7 +64,6 @@ class VocabularyWidgetType extends AbstractType implements DataMapperInterface
             'choice_value' => 'name',
             'choice_name' => 'name',
             'choice_label' => 'keyword',
-            'state' => null,
             'placeholder' => 'core.placeholder',
             'expanded' => false,
             'multiple' => false,

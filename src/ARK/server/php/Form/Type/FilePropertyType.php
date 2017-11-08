@@ -50,6 +50,7 @@ class FilePropertyType extends AbstractPropertyType
         $builder->add('file', FileType::class, $fileOptions);
         $hiddenOptions['label'] = false;
         $hiddenOptions['mapped'] = false;
+        $hiddenOptions['hidden'] = true;
         $hiddenOptions['entry_type'] = HiddenType::class;
         $builder->add('previous', CollectionType::class, $hiddenOptions);
         $builder->add('existing', CollectionType::class, $hiddenOptions);
@@ -149,8 +150,7 @@ class FilePropertyType extends AbstractPropertyType
     protected function options() : iterable
     {
         return [
-                'compound' => true,
-                'display' => null,
+            'compound' => true,
         ];
     }
 }

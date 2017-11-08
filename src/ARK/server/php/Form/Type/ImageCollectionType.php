@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Carousel Form Type
+ * ARK Carousel Form Type.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -39,7 +39,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ImageCollectionType extends AbstractType implements DataMapperInterface
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $fieldOptions['label'] = false;
         $fieldOptions['mapped'] = false;
@@ -47,7 +47,7 @@ class ImageCollectionType extends AbstractType implements DataMapperInterface
         $builder->setDataMapper($this);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver) : void
     {
         $resolver->setDefaults([
             'compound' => true,
@@ -55,7 +55,7 @@ class ImageCollectionType extends AbstractType implements DataMapperInterface
         ]);
     }
 
-    public function mapDataToForms($property, $forms)
+    public function mapDataToForms($property, $forms) : void
     {
         if (!$property) {
             return;
@@ -65,7 +65,7 @@ class ImageCollectionType extends AbstractType implements DataMapperInterface
         $forms['image']->setData($value);
     }
 
-    public function mapFormsToData($forms, &$property)
+    public function mapFormsToData($forms, &$property) : void
     {
         if (!$property instanceof Property) {
             return;

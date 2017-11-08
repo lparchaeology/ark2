@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Form\Type;
@@ -50,8 +49,6 @@ abstract class AbstractPropertyType extends AbstractType implements DataMapperIn
         'data_class' => null,
         'empty_data' => null,
         'default_data' => null,
-        'hidden' => false,
-        'state' => null,
     ];
 
     public function addForm(FormBuilderInterface $builder, iterable $state, string $form) : void

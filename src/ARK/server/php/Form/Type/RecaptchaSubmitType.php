@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Form Type
+ * ARK Form Type.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -31,15 +31,12 @@
 namespace ARK\Form\Type;
 
 use ARK\Service;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\ButtonTypeInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RecaptchaSubmitType extends SubmitType
 {
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver) : void
     {
         $resolver->setDefaults([
             'attr' => [
