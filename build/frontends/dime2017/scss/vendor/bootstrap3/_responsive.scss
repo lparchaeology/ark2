@@ -8,8 +8,35 @@ $break-large-tablet: 926px;
 //English word wrapping
 $break-large-tablet: 1439px;
 $break-tablet: 1199px;
+
 @media (min-width: $break-tablet) {
     .collapse {
         display: block;
+    }
+}
+
+@media (max-width: 320px) {
+    .tooltip-inner {
+         min-width: initial;
+         width: 320px;
+    }
+}
+
+@media (max-width: $break-small) {
+    .form-group input[type="email"],
+    .form-group input[type="password"],
+    .form-group input[type=text] {
+        width: 100%;
+    }
+}
+
+@media (min-width: $break-small) {
+    .form-horizontal .control-label {
+        margin-top: 0;
+    }
+    .form-group input[type="email"],
+    .form-group input[type="password"],
+    .form-group input[type=text] {
+        width: 100%;
     }
 }

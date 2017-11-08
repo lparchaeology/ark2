@@ -35,6 +35,7 @@ use ARK\ORM\ORM;
 use ARK\Service;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class DatingPropertyType extends AbstractPropertyType
@@ -49,7 +50,7 @@ class DatingPropertyType extends AbstractPropertyType
         if (isset($options['state']['static'])) {
             $builder->add('display_year', $options['state']['display']['type'], $options['state']['display']['options']);
             $builder->add('display_period', $options['state']['display']['type'], $options['state']['display']['options']);
-            $integerType = "Symfony\Component\Form\Extension\Core\Type\HiddenType";
+            $integerType = HiddenType::class;
         } else {
             $valueOptions['choices'] = $dataclass->attribute('period')->vocabulary()->terms();
             $valueOptions['choice_value'] = 'name';
@@ -60,7 +61,7 @@ class DatingPropertyType extends AbstractPropertyType
             if (isset($valueOptions['attr']['readonly'])) {
                 $valueOptions['attr']['class'] = 'readonly-select';
             }
-            $integerType = "Symfony\Component\Form\Extension\Core\Type\IntegerType";
+            $integerType = TextType::class;
         }
 
         $builder->add('year', $integerType, $integerOptions);

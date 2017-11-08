@@ -123,3 +123,10 @@ body {
 .open > .dropdown-menu {
     position: absolute;
 }
+
+.tooltip-inner {
+    text-align: justify;
+    text-justify: inter-word;
+    min-width: 250px;
+    max-width: 100%;
+}

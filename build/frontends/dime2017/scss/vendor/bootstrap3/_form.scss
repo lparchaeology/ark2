@@ -7,6 +7,37 @@
     border-radius: 10px;
 }
 
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="text"],
+.form-group input[type="number"] {
+    border: 1px solid black;
+    border-radius: 10px;
+    height: 1.4em;
+    line-height: 1.4em;
+    width: 50%;
+    vertical-align: middle;
+    padding: 0 10px;
+}
+
+.form-group input[type="password"],
+.form-group input[type=text] {
+    max-width: 20em;
+}
+
+.form-group input[type="email"] {
+    max-width: 30em;
+}
+
+.form-group input[type="number"] {
+    width: 100%;
+}
+
+.form-group-widget span.help {
+    position: absolute;
+    left: 102%;
+}
+
 .input-group-addon:last-child {
     padding: 0 10px 0 5px;
     height: 5px;
@@ -16,12 +47,6 @@
     border-radius: 10px;
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
-}
-
-.form-group-widget span.help {
-    position: relative;
-    top: -1.4em;
-    left: 102%;
 }
 
 /* BTN */
