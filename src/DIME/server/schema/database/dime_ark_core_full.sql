@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 07, 2017 at 08:30 PM
--- Server version: 10.2.10-MariaDB
+-- Generation Time: Nov 09, 2017 at 01:10 AM
+-- Server version: 10.1.25-MariaDB
 -- PHP Version: 7.1.11
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -32,10 +32,10 @@ SET time_zone = "+00:00";
 CREATE TABLE `ark_dataclass` (
   `dataclass` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `datatype` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `object` tinyint(1) NOT NULL DEFAULT 0,
-  `array` tinyint(1) NOT NULL DEFAULT 0,
-  `span` tinyint(1) NOT NULL DEFAULT 0,
-  `multiple` tinyint(1) NOT NULL DEFAULT 0,
+  `object` tinyint(1) NOT NULL DEFAULT '0',
+  `array` tinyint(1) NOT NULL DEFAULT '0',
+  `span` tinyint(1) NOT NULL DEFAULT '0',
+  `multiple` tinyint(1) NOT NULL DEFAULT '0',
   `value_name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `format_name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `format_vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -48,10 +48,10 @@ CREATE TABLE `ark_dataclass` (
   `static_form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parameter_form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `format_form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `sortable` tinyint(1) NOT NULL DEFAULT 1,
-  `searchable` tinyint(1) NOT NULL DEFAULT 1,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
+  `sortable` tinyint(1) NOT NULL DEFAULT '1',
+  `searchable` tinyint(1) NOT NULL DEFAULT '1',
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -126,15 +126,15 @@ CREATE TABLE `ark_dataclass_attribute` (
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `dataclass` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `sequence` int(11) NOT NULL,
-  `root` tinyint(1) NOT NULL DEFAULT 0,
-  `span` tinyint(1) NOT NULL DEFAULT 0,
-  `minimum` int(11) NOT NULL DEFAULT 0,
-  `maximum` int(11) NOT NULL DEFAULT 1,
-  `unique_values` int(11) NOT NULL DEFAULT 1,
-  `additional_values` int(11) NOT NULL DEFAULT 0,
+  `root` tinyint(1) NOT NULL DEFAULT '0',
+  `span` tinyint(1) NOT NULL DEFAULT '0',
+  `minimum` int(11) NOT NULL DEFAULT '0',
+  `maximum` int(11) NOT NULL DEFAULT '1',
+  `unique_values` int(11) NOT NULL DEFAULT '1',
+  `additional_values` int(11) NOT NULL DEFAULT '0',
   `vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -178,7 +178,7 @@ INSERT INTO `ark_dataclass_attribute` (`parent`, `attribute`, `dataclass`, `sequ
 
 CREATE TABLE `ark_dataclass_blob` (
   `dataclass` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `preset` blob DEFAULT NULL
+  `preset` blob
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -260,12 +260,12 @@ INSERT INTO `ark_dataclass_datetime` (`dataclass`, `pattern`, `unicode`, `php`, 
 
 CREATE TABLE `ark_dataclass_decimal` (
   `dataclass` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `prec` int(11) NOT NULL DEFAULT 200,
-  `scale` int(11) NOT NULL DEFAULT 0,
+  `prec` int(11) NOT NULL DEFAULT '200',
+  `scale` int(11) NOT NULL DEFAULT '0',
   `minimum` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `exclusive_minimum` tinyint(1) NOT NULL DEFAULT 0,
+  `exclusive_minimum` tinyint(1) NOT NULL DEFAULT '0',
   `maximum` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `exclusive_maximum` tinyint(1) NOT NULL DEFAULT 0,
+  `exclusive_maximum` tinyint(1) NOT NULL DEFAULT '0',
   `multiple_of` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `preset` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -288,9 +288,9 @@ INSERT INTO `ark_dataclass_decimal` (`dataclass`, `prec`, `scale`, `minimum`, `e
 CREATE TABLE `ark_dataclass_float` (
   `dataclass` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `minimum` double DEFAULT NULL,
-  `exclusive_minimum` tinyint(1) NOT NULL DEFAULT 0,
+  `exclusive_minimum` tinyint(1) NOT NULL DEFAULT '0',
   `maximum` double DEFAULT NULL,
-  `exclusive_maximum` tinyint(1) NOT NULL DEFAULT 0,
+  `exclusive_maximum` tinyint(1) NOT NULL DEFAULT '0',
   `multiple_of` double DEFAULT NULL,
   `preset` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -312,10 +312,10 @@ INSERT INTO `ark_dataclass_float` (`dataclass`, `minimum`, `exclusive_minimum`, 
 CREATE TABLE `ark_dataclass_integer` (
   `dataclass` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `minimum` int(11) DEFAULT NULL,
-  `exclusive_minimum` tinyint(1) NOT NULL DEFAULT 0,
+  `exclusive_minimum` tinyint(1) NOT NULL DEFAULT '0',
   `maximum` int(11) DEFAULT NULL,
-  `exclusive_maximum` tinyint(1) NOT NULL DEFAULT 0,
-  `multiple_of` int(11) DEFAULT 1,
+  `exclusive_maximum` tinyint(1) NOT NULL DEFAULT '0',
+  `multiple_of` int(11) DEFAULT '1',
   `preset` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -382,7 +382,7 @@ CREATE TABLE `ark_dataclass_spatial` (
   `srid` int(11) DEFAULT NULL,
   `format` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `extent` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `preset` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `preset` longtext COLLATE utf8mb4_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -437,7 +437,7 @@ CREATE TABLE `ark_dataclass_text` (
   `min_length` int(11) NOT NULL,
   `max_length` int(11) NOT NULL,
   `default_size` int(11) NOT NULL,
-  `preset` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `preset` longtext COLLATE utf8mb4_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -483,8 +483,8 @@ CREATE TABLE `ark_dataclass_type` (
   `datatype` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `number` tinyint(1) NOT NULL,
   `temporal` tinyint(1) NOT NULL,
-  `object` tinyint(1) NOT NULL DEFAULT 0,
-  `compound` tinyint(1) NOT NULL DEFAULT 1,
+  `object` tinyint(1) NOT NULL DEFAULT '0',
+  `compound` tinyint(1) NOT NULL DEFAULT '1',
   `storage_type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `storage_size` int(11) DEFAULT NULL,
   `value_name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -492,7 +492,7 @@ CREATE TABLE `ark_dataclass_type` (
   `parameter_vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `format_name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `format_vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `spanable` tinyint(1) NOT NULL DEFAULT 1,
+  `spanable` tinyint(1) NOT NULL DEFAULT '1',
   `model_table` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `model_entity` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `data_table` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -503,8 +503,8 @@ CREATE TABLE `ark_dataclass_type` (
   `static_form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parameter_form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `format_form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -536,8 +536,8 @@ INSERT INTO `ark_dataclass_type` (`datatype`, `number`, `temporal`, `object`, `c
 CREATE TABLE `ark_instance_route` (
   `instance` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `route` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `deprecated` tinyint(1) NOT NULL DEFAULT 0
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -548,9 +548,9 @@ CREATE TABLE `ark_instance_route` (
 
 CREATE TABLE `ark_map` (
   `map` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `draggable` tinyint(1) NOT NULL DEFAULT 1,
-  `clickable` tinyint(1) NOT NULL DEFAULT 1,
-  `zoomable` tinyint(1) NOT NULL DEFAULT 1,
+  `draggable` tinyint(1) NOT NULL DEFAULT '1',
+  `clickable` tinyint(1) NOT NULL DEFAULT '1',
+  `zoomable` tinyint(1) NOT NULL DEFAULT '1',
   `zoom` int(11) NOT NULL,
   `min_zoom` int(11) DEFAULT NULL,
   `max_zoom` int(11) DEFAULT NULL,
@@ -607,9 +607,9 @@ CREATE TABLE `ark_map_legend` (
   `source` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `layer` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `seq` int(11) NOT NULL,
-  `is_default` tinyint(1) NOT NULL DEFAULT 0,
-  `visible` tinyint(1) NOT NULL DEFAULT 0,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  `is_default` tinyint(1) NOT NULL DEFAULT '0',
+  `visible` tinyint(1) NOT NULL DEFAULT '0',
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `options` varchar(4000) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -664,8 +664,8 @@ INSERT INTO `ark_map_source` (`source`, `type`, `subtype`, `format`, `view_class
 
 CREATE TABLE `ark_model` (
   `model` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
   `keyword` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -689,8 +689,8 @@ CREATE TABLE `ark_model_association` (
   `association` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `schema1` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `schema2` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -709,14 +709,14 @@ CREATE TABLE `ark_model_attribute` (
   `event` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `edit` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `view` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `span` tinyint(1) NOT NULL DEFAULT 0,
-  `minimum` int(11) NOT NULL DEFAULT 0,
-  `maximum` int(11) NOT NULL DEFAULT 1,
-  `unique_values` int(11) NOT NULL DEFAULT 1,
-  `additional_values` int(11) NOT NULL DEFAULT 0,
+  `span` tinyint(1) NOT NULL DEFAULT '0',
+  `minimum` int(11) NOT NULL DEFAULT '0',
+  `maximum` int(11) NOT NULL DEFAULT '1',
+  `unique_values` int(11) NOT NULL DEFAULT '1',
+  `additional_values` int(11) NOT NULL DEFAULT '0',
   `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'public',
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -810,10 +810,10 @@ CREATE TABLE `ark_model_class` (
   `namespace` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `entity` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `classname` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `superclass` tinyint(1) NOT NULL DEFAULT 0,
-  `instantiable` tinyint(1) NOT NULL DEFAULT 1,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `deprecated` tinyint(1) NOT NULL DEFAULT 0
+  `superclass` tinyint(1) NOT NULL DEFAULT '0',
+  `instantiable` tinyint(1) NOT NULL DEFAULT '1',
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -884,9 +884,9 @@ CREATE TABLE `ark_model_module` (
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `resource` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tbl` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `core` tinyint(1) NOT NULL DEFAULT 0,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
+  `core` tinyint(1) NOT NULL DEFAULT '0',
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -912,8 +912,8 @@ CREATE TABLE `ark_model_root` (
   `model` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `class` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `deprecated` tinyint(1) NOT NULL DEFAULT 0
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -937,8 +937,8 @@ INSERT INTO `ark_model_root` (`model`, `schma`, `class`, `enabled`, `deprecated`
 CREATE TABLE `ark_model_schema` (
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `subclasses` tinyint(1) NOT NULL DEFAULT 0,
-  `entities` tinyint(1) NOT NULL DEFAULT 0,
+  `subclasses` tinyint(1) NOT NULL DEFAULT '0',
+  `entities` tinyint(1) NOT NULL DEFAULT '0',
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `generator` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -949,8 +949,8 @@ CREATE TABLE `ark_model_schema` (
   `view` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `remove` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `edit` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -977,8 +977,8 @@ CREATE TABLE `ark_model_subschema` (
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `class` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `subschema` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `deprecated` tinyint(1) NOT NULL DEFAULT 0
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -990,8 +990,8 @@ CREATE TABLE `ark_model_subschema` (
 CREATE TABLE `ark_route` (
   `route` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `path` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `can_get` tinyint(1) NOT NULL DEFAULT 1,
-  `can_post` tinyint(1) NOT NULL DEFAULT 0,
+  `can_get` tinyint(1) NOT NULL DEFAULT '1',
+  `can_post` tinyint(1) NOT NULL DEFAULT '0',
   `page` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `redirect` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `controller` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
@@ -1047,12 +1047,12 @@ CREATE TABLE `ark_schema_item` (
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `dataclass` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `minimum` int(11) NOT NULL DEFAULT 0,
-  `maximum` int(11) NOT NULL DEFAULT 1,
-  `unique_values` int(11) NOT NULL DEFAULT 1,
-  `additional_values` int(11) NOT NULL DEFAULT 0,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
+  `minimum` int(11) NOT NULL DEFAULT '0',
+  `maximum` int(11) NOT NULL DEFAULT '1',
+  `unique_values` int(11) NOT NULL DEFAULT '1',
+  `additional_values` int(11) NOT NULL DEFAULT '0',
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -1078,8 +1078,8 @@ INSERT INTO `ark_schema_item` (`attribute`, `dataclass`, `vocabulary`, `minimum`
 CREATE TABLE `ark_translation` (
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `domain` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `is_plural` tinyint(1) NOT NULL DEFAULT 0,
-  `has_parameters` tinyint(1) NOT NULL DEFAULT 0
+  `is_plural` tinyint(1) NOT NULL DEFAULT '0',
+  `has_parameters` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -1638,6 +1638,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.find.case', 'dime', 0, 0),
 ('dime.find.claim', 'dime', 0, 0),
 ('dime.find.class', 'dime', 0, 0),
+('dime.find.class.unassigned', 'dime', 0, 0),
 ('dime.find.classification', 'dime', 0, 0),
 ('dime.find.classify', 'dime', 0, 0),
 ('dime.find.condition', 'dime', 0, 0),
@@ -2185,9 +2186,9 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.period.prehistoric', 'dime', 0, 0),
 ('dime.period.reformation', 'vocabulary', 0, 0),
 ('dime.period.stone', 'vocabulary', 0, 0),
-('dime.period.undated', 'vocabulary', 0, 0),
-('dime.period.viking', 'vocabulary', 0, 0);
+('dime.period.undated', 'vocabulary', 0, 0);
 INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
+('dime.period.viking', 'vocabulary', 0, 0),
 ('dime.period.viking.early', 'vocabulary', 0, 0),
 ('dime.period.viking.late', 'vocabulary', 0, 0),
 ('dime.period.viking.medieval', 'vocabulary', 0, 0),
@@ -3053,9 +3054,9 @@ INSERT INTO `ark_translation_domain` (`domain`, `keyword`) VALUES
 
 CREATE TABLE `ark_translation_language` (
   `language` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `markup` tinyint(1) NOT NULL DEFAULT 0,
-  `vocabulary` tinyint(1) NOT NULL DEFAULT 0,
-  `text` tinyint(1) NOT NULL DEFAULT 0
+  `markup` tinyint(1) NOT NULL DEFAULT '0',
+  `vocabulary` tinyint(1) NOT NULL DEFAULT '0',
+  `text` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -3077,7 +3078,7 @@ CREATE TABLE `ark_translation_message` (
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `role` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `text` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `notes` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `notes` longtext COLLATE utf8mb4_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -3265,6 +3266,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.find.case', 'help', 'Et museums sagsnummer består normalt af et akronym med efterfølgende sagsnummer f.eks. MOM18640). Det ansvarlige museum kan oplyse dig om sagsnummer hvis de allerede har registreret den pågældende fundplads.', NULL),
 ('da', 'dime.find.claim', 'default', '#Danefæ#', ''),
 ('da', 'dime.find.class', 'default', 'Type', NULL),
+('da', 'dime.find.class.unassigned', 'default', 'Afventer bestemmelse', NULL),
 ('da', 'dime.find.classification', 'default', 'Klassifikation', NULL),
 ('da', 'dime.find.classify', 'default', 'Angiv type og datering ', ''),
 ('da', 'dime.find.condition', 'default', 'Tilstand', NULL),
@@ -3739,9 +3741,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.kommune.middelfart', 'default', 'Middelfart', NULL),
 ('da', 'dime.kommune.middelfart', 'official', 'Middelfart Kommune', NULL),
 ('da', 'dime.kommune.morso', 'default', 'Morsø', NULL),
-('da', 'dime.kommune.morso', 'official', 'Morsø Kommune', NULL),
-('da', 'dime.kommune.naestved', 'default', 'Næstved', NULL);
+('da', 'dime.kommune.morso', 'official', 'Morsø Kommune', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('da', 'dime.kommune.naestved', 'default', 'Næstved', NULL),
 ('da', 'dime.kommune.naestved', 'official', 'Næstved Kommune', NULL),
 ('da', 'dime.kommune.norddjurs', 'default', 'Norddjurs', NULL),
 ('da', 'dime.kommune.norddjurs', 'official', 'Norddjurs Kommune', NULL),
@@ -4420,6 +4422,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.case', 'help', 'A museum\'s case number usually consists of an acronym followed by file number, for example. MOM18640). The responsible museum can provide you with a registration number if they have already registered the relevant venue.', ''),
 ('en', 'dime.find.claim', 'default', 'Danefæ registrering', ''),
 ('en', 'dime.find.class', 'default', 'Type', 'DIME Find Type'),
+('en', 'dime.find.class.unassigned', 'default', 'Awaiting Assessment', NULL),
 ('en', 'dime.find.classification', 'default', 'Classification', NULL),
 ('en', 'dime.find.classify', 'default', 'Classify', ''),
 ('en', 'dime.find.condition', 'default', 'Condition', NULL),
@@ -4493,10 +4496,10 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.process.recorded', 'default', 'Find recorded by finder', NULL),
 ('en', 'dime.find.process.rejected', 'default', 'More details requested by museum', NULL),
 ('en', 'dime.find.process.released', 'default', 'Aretefact returned to finder', NULL),
-('en', 'dime.find.process.reported', 'default', 'Find reported to museum', NULL),
-('en', 'dime.find.query.set', 'default', 'Your search found %items% finds.', ''),
-('en', 'dime.find.recipient', 'default', 'Recipient', NULL);
+('en', 'dime.find.process.reported', 'default', 'Find reported to museum', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.find.query.set', 'default', 'Your search found %items% finds.', ''),
+('en', 'dime.find.recipient', 'default', 'Recipient', NULL),
 ('en', 'dime.find.save', 'default', 'Save', 'DIME Find Save button'),
 ('en', 'dime.find.search', 'default', 'Search Finds', NULL),
 ('en', 'dime.find.secondary.ceramic', 'default', 'Ceramic', ''),
@@ -5141,11 +5144,11 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'fragment.datetime', 'default', 'DateTime Fragment', NULL),
 ('en', 'fragment.decimal', 'default', 'Decimal Fragment', NULL),
 ('en', 'fragment.float', 'default', 'Float Fragment', NULL),
-('en', 'fragment.geometry', 'default', 'Geometry Fragment', NULL),
+('en', 'fragment.geometry', 'default', 'Geometry Fragment', NULL);
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'fragment.integer', 'default', 'Integer Fragment', NULL),
 ('en', 'fragment.item', 'default', 'Item Fragment', NULL),
-('en', 'fragment.object', 'default', 'Object Fragment', NULL);
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'fragment.object', 'default', 'Object Fragment', NULL),
 ('en', 'fragment.string', 'default', 'String Fragment', NULL),
 ('en', 'fragment.text', 'default', 'Text Fragment', NULL),
 ('en', 'fragment.time', 'default', 'Time Fragment', NULL),
@@ -5908,7 +5911,7 @@ CREATE TABLE `ark_view_cell` (
   `name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `width` int(11) DEFAULT NULL,
   `label` tinyint(1) DEFAULT NULL,
-  `help` tinyint(1) NOT NULL DEFAULT 0,
+  `help` tinyint(1) NOT NULL DEFAULT '0',
   `placeholder` tinyint(1) DEFAULT NULL,
   `choices` tinyint(1) DEFAULT NULL,
   `required` tinyint(1) DEFAULT NULL,
@@ -5918,15 +5921,15 @@ CREATE TABLE `ark_view_cell` (
   `edit` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `mode` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `sanitise` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `visible` tinyint(1) NOT NULL DEFAULT 1,
+  `visible` tinyint(1) NOT NULL DEFAULT '1',
   `pattern` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `display` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `value` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parameter` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `format` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `data` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
   `keyword` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `template` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `options` varchar(4000) COLLATE utf8mb4_unicode_ci DEFAULT NULL
@@ -6638,9 +6641,9 @@ INSERT INTO `ark_view_group` (`element`, `name`, `mode`, `keyword`, `template`, 
 CREATE TABLE `ark_view_nav` (
   `element` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `parent` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `seq` int(11) NOT NULL DEFAULT 0,
+  `seq` int(11) NOT NULL DEFAULT '0',
   `level` int(11) DEFAULT NULL,
-  `seperator` tinyint(1) NOT NULL DEFAULT 0,
+  `seperator` tinyint(1) NOT NULL DEFAULT '0',
   `icon` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `route` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `keyword` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -6729,19 +6732,19 @@ INSERT INTO `ark_view_page` (`element`, `mode`, `header`, `sidebar`, `content`, 
 CREATE TABLE `ark_view_table` (
   `element` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `mode` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT 'NULL',
-  `caption` tinyint(1) NOT NULL DEFAULT 1,
-  `header` tinyint(1) NOT NULL DEFAULT 1,
-  `footer` tinyint(1) NOT NULL DEFAULT 0,
-  `sortable` tinyint(1) NOT NULL DEFAULT 1,
-  `searchable` tinyint(1) NOT NULL DEFAULT 1,
-  `row` tinyint(1) NOT NULL DEFAULT 1,
-  `list` tinyint(1) NOT NULL DEFAULT 0,
-  `card` tinyint(1) NOT NULL DEFAULT 0,
-  `thumbnail` tinyint(1) NOT NULL DEFAULT 0,
+  `caption` tinyint(1) NOT NULL DEFAULT '1',
+  `header` tinyint(1) NOT NULL DEFAULT '1',
+  `footer` tinyint(1) NOT NULL DEFAULT '0',
+  `sortable` tinyint(1) NOT NULL DEFAULT '1',
+  `searchable` tinyint(1) NOT NULL DEFAULT '1',
+  `row` tinyint(1) NOT NULL DEFAULT '1',
+  `list` tinyint(1) NOT NULL DEFAULT '0',
+  `card` tinyint(1) NOT NULL DEFAULT '0',
+  `thumbnail` tinyint(1) NOT NULL DEFAULT '0',
   `view` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT 'row',
   `image` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `export` tinyint(1) NOT NULL DEFAULT 1,
-  `columns` tinyint(1) NOT NULL DEFAULT 1,
+  `export` tinyint(1) NOT NULL DEFAULT '1',
+  `columns` tinyint(1) NOT NULL DEFAULT '1',
   `pagination` int(11) DEFAULT NULL,
   `selection` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `keyword` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -6807,7 +6810,7 @@ INSERT INTO `ark_view_tree` (`id`, `ancestor`, `descendant`, `depth`) VALUES
 
 CREATE TABLE `ark_view_type` (
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `layout` tinyint(1) NOT NULL DEFAULT 0,
+  `layout` tinyint(1) NOT NULL DEFAULT '0',
   `class` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT 'NULL',
   `template` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -6882,12 +6885,12 @@ CREATE TABLE `ark_vocabulary` (
   `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `source` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `closed` tinyint(1) NOT NULL DEFAULT 1,
-  `transitions` tinyint(1) NOT NULL DEFAULT 0,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
+  `closed` tinyint(1) NOT NULL DEFAULT '1',
+  `transitions` tinyint(1) NOT NULL DEFAULT '0',
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `description` text COLLATE utf8mb4_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -7683,10 +7686,10 @@ CREATE TABLE `ark_vocabulary_relation` (
   `notation` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
   `recipricol` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `recipricol_notation` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `equivalence` tinyint(1) NOT NULL DEFAULT 0,
-  `hierarchy` tinyint(1) NOT NULL DEFAULT 0,
-  `associative` tinyint(1) NOT NULL DEFAULT 0,
-  `description` text COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `equivalence` tinyint(1) NOT NULL DEFAULT '0',
+  `hierarchy` tinyint(1) NOT NULL DEFAULT '0',
+  `associative` tinyint(1) NOT NULL DEFAULT '0',
+  `description` text COLLATE utf8mb4_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -7712,10 +7715,10 @@ CREATE TABLE `ark_vocabulary_term` (
   `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `term` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `alias` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `is_default` tinyint(1) NOT NULL DEFAULT 0,
-  `root` tinyint(1) NOT NULL DEFAULT 0,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
+  `is_default` tinyint(1) NOT NULL DEFAULT '0',
+  `root` tinyint(1) NOT NULL DEFAULT '0',
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `description` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -8170,7 +8173,8 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `ro
 ('dime.find.class', 'metal', '', 0, 0, 1, 0, 'dime.find.type.metal', ''),
 ('dime.find.class', 'military', '', 0, 0, 1, 0, 'dime.find.type.military', ''),
 ('dime.find.class', 'tool', '', 0, 0, 1, 0, 'dime.find.type.tool', ''),
-('dime.find.class', 'unknown', '', 1, 0, 1, 0, 'dime.find.type.unknown', ''),
+('dime.find.class', 'unassigned', '', 1, 0, 1, 0, 'dime.find.class.unassigned', ''),
+('dime.find.class', 'unknown', '', 0, 0, 1, 0, 'dime.find.type.unknown', ''),
 ('dime.find.condition', 'fragmented', '', 0, 0, 1, 0, 'dime.find.condition.fragmented', ''),
 ('dime.find.condition', 'modified', '', 0, 0, 1, 0, 'dime.find.condition.modified', ''),
 ('dime.find.condition', 'unfinished', '', 0, 0, 1, 0, 'dime.find.condition.unfinished', ''),
@@ -9159,13 +9163,13 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `ro
 
 CREATE TABLE `ark_vocabulary_type` (
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `equivalence` tinyint(1) NOT NULL DEFAULT 0,
-  `hierarchy` tinyint(1) NOT NULL DEFAULT 0,
-  `association` tinyint(1) NOT NULL DEFAULT 0,
-  `enabled` tinyint(1) NOT NULL DEFAULT 0,
-  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
+  `equivalence` tinyint(1) NOT NULL DEFAULT '0',
+  `hierarchy` tinyint(1) NOT NULL DEFAULT '0',
+  `association` tinyint(1) NOT NULL DEFAULT '0',
+  `enabled` tinyint(1) NOT NULL DEFAULT '0',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `description` text COLLATE utf8mb4_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -9190,11 +9194,11 @@ CREATE TABLE `ark_workflow_action` (
   `event_vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `event_term` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `agent` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `actionable` tinyint(1) NOT NULL DEFAULT 0,
-  `default_permission` tinyint(1) NOT NULL DEFAULT 0,
-  `default_agency` tinyint(1) NOT NULL DEFAULT 0,
-  `default_allowance` tinyint(1) NOT NULL DEFAULT 0,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  `actionable` tinyint(1) NOT NULL DEFAULT '0',
+  `default_permission` tinyint(1) NOT NULL DEFAULT '0',
+  `default_agency` tinyint(1) NOT NULL DEFAULT '0',
+  `default_allowance` tinyint(1) NOT NULL DEFAULT '0',
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `description` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -9372,7 +9376,7 @@ CREATE TABLE `ark_workflow_condition` (
   `action` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `class` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `grp` int(11) NOT NULL DEFAULT 0,
+  `grp` int(11) NOT NULL DEFAULT '0',
   `operator` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'eq',
   `value` varchar(4000) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -9589,7 +9593,7 @@ INSERT INTO `ark_workflow_notify` (`id`, `schma`, `action`, `class`, `attribute`
 CREATE TABLE `ark_workflow_permission` (
   `permission` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `description` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -9661,7 +9665,7 @@ CREATE TABLE `ark_workflow_role` (
   `role` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `agent_for` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `level` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
