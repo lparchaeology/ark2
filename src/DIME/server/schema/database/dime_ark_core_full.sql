@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 09, 2017 at 07:49 PM
+-- Generation Time: Nov 09, 2017 at 08:03 PM
 -- Server version: 10.2.10-MariaDB
 -- PHP Version: 7.1.11
 
@@ -1638,6 +1638,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.find.case', 'dime', 0, 0),
 ('dime.find.claim', 'dime', 0, 0),
 ('dime.find.class', 'dime', 0, 0),
+('dime.find.class.unassessed', 'dime', 0, 0),
 ('dime.find.classification', 'dime', 0, 0),
 ('dime.find.classify', 'dime', 0, 0),
 ('dime.find.condition', 'dime', 0, 0),
@@ -2185,9 +2186,9 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.period.prehistoric', 'dime', 0, 0),
 ('dime.period.reformation', 'vocabulary', 0, 0),
 ('dime.period.stone', 'vocabulary', 0, 0),
-('dime.period.undated', 'vocabulary', 0, 0),
-('dime.period.viking', 'vocabulary', 0, 0);
+('dime.period.undated', 'vocabulary', 0, 0);
 INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
+('dime.period.viking', 'vocabulary', 0, 0),
 ('dime.period.viking.early', 'vocabulary', 0, 0),
 ('dime.period.viking.late', 'vocabulary', 0, 0),
 ('dime.period.viking.medieval', 'vocabulary', 0, 0),
@@ -3265,6 +3266,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.find.case', 'help', 'Et museums sagsnummer består normalt af et akronym med efterfølgende sagsnummer f.eks. MOM18640). Det ansvarlige museum kan oplyse dig om sagsnummer hvis de allerede har registreret den pågældende fundplads.', NULL),
 ('da', 'dime.find.claim', 'default', '#Danefæ#', ''),
 ('da', 'dime.find.class', 'default', 'Type', NULL),
+('da', 'dime.find.class.unassessed', 'default', 'Afventer bestemmelse', NULL),
 ('da', 'dime.find.classification', 'default', 'Klassifikation', NULL),
 ('da', 'dime.find.classify', 'default', 'Angiv type og datering ', ''),
 ('da', 'dime.find.condition', 'default', 'Tilstand', NULL),
@@ -3739,9 +3741,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.kommune.middelfart', 'default', 'Middelfart', NULL),
 ('da', 'dime.kommune.middelfart', 'official', 'Middelfart Kommune', NULL),
 ('da', 'dime.kommune.morso', 'default', 'Morsø', NULL),
-('da', 'dime.kommune.morso', 'official', 'Morsø Kommune', NULL),
-('da', 'dime.kommune.naestved', 'default', 'Næstved', NULL);
+('da', 'dime.kommune.morso', 'official', 'Morsø Kommune', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('da', 'dime.kommune.naestved', 'default', 'Næstved', NULL),
 ('da', 'dime.kommune.naestved', 'official', 'Næstved Kommune', NULL),
 ('da', 'dime.kommune.norddjurs', 'default', 'Norddjurs', NULL),
 ('da', 'dime.kommune.norddjurs', 'official', 'Norddjurs Kommune', NULL),
@@ -4420,6 +4422,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.case', 'help', 'A museum\'s case number usually consists of an acronym followed by file number, for example. MOM18640). The responsible museum can provide you with a registration number if they have already registered the relevant venue.', ''),
 ('en', 'dime.find.claim', 'default', 'Danefæ registrering', ''),
 ('en', 'dime.find.class', 'default', 'Type', 'DIME Find Type'),
+('en', 'dime.find.class.unassessed', 'default', 'Awaiting Assessment', NULL),
 ('en', 'dime.find.classification', 'default', 'Classification', NULL),
 ('en', 'dime.find.classify', 'default', 'Classify', ''),
 ('en', 'dime.find.condition', 'default', 'Condition', NULL),
@@ -4493,10 +4496,10 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.process.recorded', 'default', 'Find recorded by finder', NULL),
 ('en', 'dime.find.process.rejected', 'default', 'More details requested by museum', NULL),
 ('en', 'dime.find.process.released', 'default', 'Aretefact returned to finder', NULL),
-('en', 'dime.find.process.reported', 'default', 'Find reported to museum', NULL),
-('en', 'dime.find.query.set', 'default', 'Your search found %items% finds.', ''),
-('en', 'dime.find.recipient', 'default', 'Recipient', NULL);
+('en', 'dime.find.process.reported', 'default', 'Find reported to museum', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.find.query.set', 'default', 'Your search found %items% finds.', ''),
+('en', 'dime.find.recipient', 'default', 'Recipient', NULL),
 ('en', 'dime.find.save', 'default', 'Save', 'DIME Find Save button'),
 ('en', 'dime.find.search', 'default', 'Search Finds', NULL),
 ('en', 'dime.find.secondary.ceramic', 'default', 'Ceramic', ''),
@@ -5141,11 +5144,11 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'fragment.datetime', 'default', 'DateTime Fragment', NULL),
 ('en', 'fragment.decimal', 'default', 'Decimal Fragment', NULL),
 ('en', 'fragment.float', 'default', 'Float Fragment', NULL),
-('en', 'fragment.geometry', 'default', 'Geometry Fragment', NULL),
+('en', 'fragment.geometry', 'default', 'Geometry Fragment', NULL);
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'fragment.integer', 'default', 'Integer Fragment', NULL),
 ('en', 'fragment.item', 'default', 'Item Fragment', NULL),
-('en', 'fragment.object', 'default', 'Object Fragment', NULL);
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'fragment.object', 'default', 'Object Fragment', NULL),
 ('en', 'fragment.string', 'default', 'String Fragment', NULL),
 ('en', 'fragment.text', 'default', 'Text Fragment', NULL),
 ('en', 'fragment.time', 'default', 'Time Fragment', NULL),
@@ -8140,7 +8143,8 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `seq`, `is_defaul
 ('dime.find.class', 'metal', '', NULL, 0, 0, 1, 0, 'dime.find.type.metal', ''),
 ('dime.find.class', 'military', '', NULL, 0, 0, 1, 0, 'dime.find.type.military', ''),
 ('dime.find.class', 'tool', '', NULL, 0, 0, 1, 0, 'dime.find.type.tool', ''),
-('dime.find.class', 'unknown', '', NULL, 1, 0, 1, 0, 'dime.find.type.unknown', ''),
+('dime.find.class', 'unassessed', '', NULL, 1, 0, 1, 0, 'dime.find.class.unassessed', ''),
+('dime.find.class', 'unknown', '', NULL, 0, 0, 1, 0, 'dime.find.type.unknown', ''),
 ('dime.find.condition', 'fragmented', '', NULL, 0, 0, 1, 0, 'dime.find.condition.fragmented', ''),
 ('dime.find.condition', 'modified', '', NULL, 0, 0, 1, 0, 'dime.find.condition.modified', ''),
 ('dime.find.condition', 'unfinished', '', NULL, 0, 0, 1, 0, 'dime.find.condition.unfinished', ''),
@@ -8271,9 +8275,9 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `seq`, `is_defaul
 ('dime.find.subtype', 'fibula.circular.small', '', NULL, 0, 0, 1, 0, 'dime.find.subtype.fibula.circular.small', ''),
 ('dime.find.subtype', 'fibula.circular.tin', '', NULL, 0, 0, 1, 0, 'dime.find.subtype.fibula.circular.tin', ''),
 ('dime.find.subtype', 'fibula.circular.unknown', '', NULL, 1, 0, 1, 0, 'dime.find.subtype.fibula.circular.unknown', ''),
-('dime.find.subtype', 'fibula.enamel', '', NULL, 0, 0, 1, 0, 'dime.find.subtype.fibula.enamel', ''),
-('dime.find.subtype', 'fibula.enamel.central', '', NULL, 0, 0, 1, 0, 'dime.find.subtype.fibula.enamel.central', '');
+('dime.find.subtype', 'fibula.enamel', '', NULL, 0, 0, 1, 0, 'dime.find.subtype.fibula.enamel', '');
 INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `seq`, `is_default`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+('dime.find.subtype', 'fibula.enamel.central', '', NULL, 0, 0, 1, 0, 'dime.find.subtype.fibula.enamel.central', ''),
 ('dime.find.subtype', 'fibula.enamel.cross', '', NULL, 0, 0, 1, 0, 'dime.find.subtype.fibula.enamel.cross', ''),
 ('dime.find.subtype', 'fibula.enamel.multiple', '', NULL, 0, 0, 1, 0, 'dime.find.subtype.fibula.enamel.multiple', ''),
 ('dime.find.subtype', 'fibula.enamel.other', '', NULL, 0, 0, 1, 0, 'dime.find.subtype.fibula.enamel.other', ''),
@@ -8860,10 +8864,10 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `seq`, `is_defaul
 ('language', 'mul', 'multiple', NULL, 0, 0, 1, 0, 'language.multiple', ''),
 ('language', 'mus', 'creek', NULL, 0, 0, 1, 0, 'language.creek', ''),
 ('language', 'mwl', 'mirandese', NULL, 0, 0, 1, 0, 'language.mirandese', ''),
-('language', 'mwr', 'marwari', NULL, 0, 0, 1, 0, 'language.marwari', ''),
-('language', 'mwv', 'mentawai', NULL, 0, 0, 1, 0, 'language.mentawai', ''),
-('language', 'my', 'burmese', NULL, 0, 0, 1, 0, 'language.burmese', '');
+('language', 'mwr', 'marwari', NULL, 0, 0, 1, 0, 'language.marwari', '');
 INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `seq`, `is_default`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+('language', 'mwv', 'mentawai', NULL, 0, 0, 1, 0, 'language.mentawai', ''),
+('language', 'my', 'burmese', NULL, 0, 0, 1, 0, 'language.burmese', ''),
 ('language', 'mye', 'myene', NULL, 0, 0, 1, 0, 'language.myene', ''),
 ('language', 'myv', 'erzya', NULL, 0, 0, 1, 0, 'language.erzya', ''),
 ('language', 'mzn', 'mazanderani', NULL, 0, 0, 1, 0, 'language.mazanderani', ''),
