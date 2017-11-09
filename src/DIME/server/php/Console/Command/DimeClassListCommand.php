@@ -48,15 +48,14 @@ class DimeClassListCommand extends AbstractCommand
         $only = $this->input->getArgument('class');
         $taxonomy = Vocabulary::find('dime.find.class');
         $headers = [
+            'Term',
+            'Period',
+            'To Period',
             'Class',
             'Subclass 1',
             'Subclass 2',
-            'Term',
-            'Keyword',
-            'Period Term',
-            'Period',
-            'Start Year',
-            'End Year',
+            'Period Name',
+            'To Period Name',
         ];
         $rows = [];
         foreach ($taxonomy->terms() as $class) {
@@ -64,11 +63,10 @@ class DimeClassListCommand extends AbstractCommand
                 continue;
             }
             $rows[] = [
-                Translation::translate($class->keyword()),
-                '',
-                '',
                 $class->name(),
-                $class->keyword(),
+                '',
+                '',
+                $this->translate($class->keyword()),
                 '',
                 '',
                 '',
@@ -76,27 +74,25 @@ class DimeClassListCommand extends AbstractCommand
             ];
             foreach ($class->descendents() as $subclass) {
                 $rows[] = [
-                    '',
-                    Translation::translate($subclass->keyword()),
-                    '',
                     $subclass->name(),
-                    $subclass->keyword(),
                     $this->periodCode($subclass),
+                    $this->periodCode($subclass, 'period_span'),
+                    '',
+                    $this->translate($subclass->keyword()),
+                    '',
                     $this->periodName($subclass),
-                    $this->parmValue($subclass, 'year_start'),
-                    $this->parmValue($subclass, 'year_end'),
+                    $this->periodName($subclass, 'period_span'),
                 ];
                 foreach ($subclass->descendents() as $subsubclass) {
                     $rows[] = [
-                        '',
-                        '',
-                        Translation::translate($subsubclass->keyword()),
                         $subsubclass->name(),
-                        $subsubclass->keyword(),
                         $this->periodCode($subsubclass),
+                        $this->periodCode($subsubclass, 'period_span'),
+                        '',
+                        '',
+                        $this->translate($subsubclass->keyword()),
                         $this->periodName($subsubclass),
-                        $this->parmValue($subsubclass, 'year_start'),
-                        $this->parmValue($subsubclass, 'year_end'),
+                        $this->periodName($subsubclass, 'period_span'),
                     ];
                 }
             }
@@ -105,21 +101,27 @@ class DimeClassListCommand extends AbstractCommand
         $this->writeTable($headers, $rows);
     }
 
-    private function periodName(Term $term) : string
+    private function translate(string $keyword, int $len = 30) : string
     {
-        $period = $this->parmValue($term, 'period');
+        $tran = Translation::translate($keyword);
+        return strlen($tran) > $len ? substr($tran, 0, $len).'...' : $tran;
+    }
+
+    private function periodName(Term $term, string $parm = 'period') : string
+    {
+        $period = $this->parmValue($term, $parm);
         if ($period) {
             $term = Vocabulary::findTerm('dime.period', $period);
             if ($term) {
-                return Translation::translate($term->keyword());
+                return $this->translate($term->keyword());
             }
         }
         return '';
     }
 
-    private function periodCode(Term $term) : string
+    private function periodCode(Term $term, string $parm = 'period') : string
     {
-        $period = $this->parmValue($term, 'period');
+        $period = $this->parmValue($term, $parm);
         if ($period) {
             $term = Vocabulary::findTerm('dime.period', $period);
             if ($term) {
