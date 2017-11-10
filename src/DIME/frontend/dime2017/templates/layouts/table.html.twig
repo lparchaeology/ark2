@@ -2,60 +2,77 @@
 
 <div class='table-wrapper-div'>
 
-    {% set table_class = 'table bootstrap-table table-hover dime-table' %}
-
     <table
         id="{{element.id}}"
-        class="{{table_class}}"
+        class="{{ 'table bootstrap-table ' ~ element.classes }}"
         data-toggle="table"
-        data-classes="{{table_class}}"
+        data-classes="{{ 'table bootstrap-table ' ~ element.classes }}"
         data-sort-name="id"
-        {#data-show-refresh="true"#}
-        data-show-toggle="true"
-        data-show-columns="true"
+        data-show-refresh="{{ element.canRefresh }}"
+        data-show-toggle="{{ element.canToggleView }}"
+        data-show-columns="{{ element.canChooseColumns }}"
         data-mobile-responsive="true"
-        data-show-export="true"
-        data-switchcardview="true"
+        data-show-export="{{ element.canExportData }}"
+        data-switchcardview="{{ element.canToggleView }}"
         data-click-to-select="true"
-        icons = "{ columns: 'glyphicon-th-list icon-th-list' }"
-    >
+        {% if element.dataUrl %}
+            data-url="{{ element.dataUrl }}"
+        {% endif %}
+        icons="{ columns: 'glyphicon-th-list icon-th-list' }">
 
-        <thead>
-            <tr>
-                <th class="checkedhead" data-field="checked" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
-                {% if data[0] is defined and data[0].hasAttribute(state.image) %}
-                    <th class="thumbimagehead" data-field="{{ state.image }}" data-title="{{ state.image }}" data-sortable="false"></th>
-                {% endif %}
-                {% for child in children %}
-                    <th data-field="{{ child.element.id }}" data-title="{{ child.state.keyword | translate }}" data-sortable="true" data-sorter="alphanum" data-visible="{{ child.state.visible }}" data-card-visible="false">
-                        {{ child.state.keyword | translate }}
-                    </th>
-                {% endfor %}
-                <th class="controlshead" data-field="controls" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
-            </tr>
-        </thead>
+        {% if element.showCaption %}
+            <caption>{{ element.keyword | translate('caption') }}</caption>
+        {% endif %}
+
+        {% if element.showHeader %}
+            <thead>
+                <tr>
+                    {% if element.selection %}
+                        <th class="checkedhead" data-field="checked" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
+                    {% endif %}
+                    {% if element.image %}
+                        <th class="thumbimagehead" data-field="{{element.image}}" data-title="{{element.image}}" data-sortable="false"></th>
+                    {% endif %}
+                    {% for child in children %}
+                        {% set childId = child.state.name ? child.element.id ~ '_' ~ child.state.name : child.element.id %}
+                        <th data-field="{{ childId }}" data-title="{{ child.state.keyword | translate }}" data-sortable="true" data-sorter="alphanum" data-visible="{{ child.state.visible }}" data-card-visible="false">
+                            {{ child.state.keyword | translate }}
+                        </th>
+                    {% endfor %}
+                    <th class="controlshead" data-field="controls" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
+                </tr>
+            </thead>
+        {% endif %}
 
         <tbody>
             {% for item in data %}
-                <tr data-unique-id = "{{ item.id }}" >
-                    <td class="not-card-visible"><span class="tablecheckbox glyphicon glyphicon-unchecked"></span></td>
-                    {% if item.hasAttribute(state.image) %}
+                <tr data-unique-id="{{ item.id }}">
+                    {% if element.selection %}
+                        <td class="not-card-visible">
+                            <span class="tablecheckbox glyphicon glyphicon-unchecked"></span>
+                        </td>
+                    {% endif %}
+                    {% if element.image %}
                         <td class="thumbimage">
-                            {% set image = item.property(state.image).value() %}
+                            {% set image = item.property(element.image).value() %}
                             {% if image is not empty %}
-                                {% if item.property(state.image).attribute.hasMultipleOccurrences %}
+                                {% if item.property(element.image).attribute.hasMultipleOccurrences %}
                                     {% set image = image[0] %}
                                 {% endif %}
-                                <img src="{{path('img', {'image': image.id}) ~ '?p=thumb'}}" alt='' />
+                                <img src="{{path('img', {'image': image.id}) ~ '?p=thumb'}}" alt=''/>
                             {% else %}
                                 <span class="glyphicon glyphicon-picture placeholder-img"></span>
                             {% endif %}
                         </td>
                     {% endif %}
                     {% for child in children %}
-                        {% set child = child | merge({'data' : item.property(child.state.name) }) %}
+                        {% if item.property is defined %}
+                            {% set val = item.property(child.state.name) %}
+                        {% else %}
+                            {% set val = attribute(item, child.state.name) %}
+                        {% endif %}
+                        {% set child = child | merge({'data' : val }) %}
                         <td>
-                            <span class="cell-label">{{ child.state.keyword | translate }}</span>
                             {{ child.element.renderView(child, forms, form) | raw }}
                         </td>
                     {% endfor %}
@@ -73,6 +90,11 @@
                 </tr>
             {% endfor %}
         </tbody>
+
+        {% if element.showFooter %}
+            <tfoot>
+            </tfoot>
+        {% endif %}
 
     </table>
 
