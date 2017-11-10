@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 09, 2017 at 08:03 PM
+-- Generation Time: Nov 10, 2017 at 05:33 PM
 -- Server version: 10.2.10-MariaDB
 -- PHP Version: 7.1.11
 
@@ -6758,13 +6758,13 @@ CREATE TABLE `ark_view_table` (
 --
 
 INSERT INTO `ark_view_table` (`element`, `mode`, `caption`, `header`, `footer`, `sortable`, `searchable`, `row`, `list`, `card`, `thumbnail`, `view`, `image`, `export`, `columns`, `pagination`, `selection`, `keyword`, `classes`, `template`, `url`) VALUES
-('core_actor_table', 'view', 0, 1, 0, 1, 1, 1, 0, 0, 0, 'row', NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL),
-('core_file_table', NULL, 0, 1, 0, 1, 1, 1, 0, 0, 0, 'row', NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL),
-('core_message_table', 'view', 0, 1, 0, 1, 1, 1, 0, 0, 0, 'row', NULL, 1, 1, NULL, NULL, NULL, NULL, 'layouts/messagelist.html.twig', NULL),
-('core_profile_table', 'view', 0, 1, 0, 1, 1, 1, 0, 0, 0, 'row', NULL, 1, 1, NULL, NULL, 'core.profiles', NULL, NULL, NULL),
-('dime_find_front_table', NULL, 0, 1, 0, 1, 1, 1, 0, 0, 0, 'row', NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', NULL, 0, 1, 0, 1, 1, 1, 0, 0, 0, 'row', NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL),
-('dime_profile_table', NULL, 0, 1, 0, 1, 1, 1, 0, 0, 0, 'row', NULL, 1, 1, NULL, NULL, 'dime.profiles', NULL, NULL, NULL);
+('core_actor_table', 'view', 0, 1, 0, 1, 1, 1, 0, 0, 0, 'row', NULL, 1, 1, NULL, NULL, NULL, 'table-hover dime-table', NULL, NULL),
+('core_file_table', NULL, 0, 1, 0, 1, 1, 1, 0, 0, 0, 'row', NULL, 1, 1, NULL, NULL, NULL, 'table-hover dime-table', NULL, NULL),
+('core_message_table', 'view', 0, 1, 0, 1, 1, 1, 0, 0, 0, 'row', NULL, 1, 1, NULL, NULL, NULL, 'table-hover dime-table', 'layouts/messagelist.html.twig', NULL),
+('core_profile_table', 'view', 0, 1, 0, 1, 1, 1, 0, 0, 0, 'row', NULL, 1, 1, NULL, NULL, 'core.profiles', 'table-hover dime-table', NULL, NULL),
+('dime_find_front_table', NULL, 0, 1, 0, 1, 1, 1, 0, 0, 0, 'row', NULL, 1, 1, NULL, NULL, NULL, 'table-hover dime-table', NULL, NULL),
+('dime_find_table', NULL, 0, 1, 0, 1, 1, 1, 0, 0, 0, 'row', NULL, 1, 1, NULL, NULL, NULL, 'table-hover dime-table', NULL, NULL),
+('dime_profile_table', NULL, 0, 1, 0, 1, 1, 1, 0, 0, 0, 'row', NULL, 1, 1, NULL, NULL, 'dime.profiles', 'table-hover dime-table', NULL, NULL);
 
 -- --------------------------------------------------------
 
