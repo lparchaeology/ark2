@@ -1,54 +1,48 @@
 {# Block to write out correctly formatted field value #}
 {% block dating %}
-<div class="form-group">
 
-    {{ form_label(form) }}
-
-    <div class="col-sm-7 col-lg-7">
-    
-        {% if (state.mode is sameas("edit")) %}
-            <div class="row">
-                <div class="col-sm-9">
+    {% if (state.mode is sameas("edit")) %}
+        <div class="form-group">
+            {{ form_label(form.period) }}
+            <div class="form-group-widget col-xs-11 col-sm-7 col-lg-7">
+                <div class="col-sm-9 dating-period">
                     {{ form_widget(form.period) }}
                 </div>
-                <div class="col-sm-3 form-year">
+                <div class="col-sm-3 dating-year">
                     {{ form_widget(form.year) }}
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="dating-til">{{ "dime.dating.til"| trans }}</div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-9">
+        </div>
+        <div class="form-group">
+            {{ form_label(form.period_span) }}
+            <div class="form-group-widget col-xs-11 col-sm-7 col-lg-7">
+                <div class="col-sm-9 dating-period">
                     {{ form_widget(form.period_span) }}
                 </div>
-                <div class="col-sm-3 form-year">
+                <div class="col-sm-3 dating-year">
                     {{ form_widget(form.year_span) }}
                 </div>
             </div>
-        {% else %}
-             <div class="row">
-                 <div class="col-sm-12">
-                    {{ form_widget(form.display_period) }}
-                    {{ form_widget(form.period) }}
-                    {{ form_widget(form.period_span) }}
-                 </div>
+        </div>
+    {% else %}
+        <div class="form-group">
+            {{ form_label(form.display_period) }}
+            <div class="form-group-widget col-xs-11 col-sm-7 col-lg-7">
+                {{ form_widget(form.display_period) }}
+                {{ form_widget(form.period) }}
+                {{ form_widget(form.period_span) }}
+             </div>
+        </div>
+        <div class="form-group">
+            {{ form_label(form.display_year) }}
+            <div class="form-group-widget col-xs-11 col-sm-7 col-lg-7">
+                {{ form_widget(form.display_year) }}
+                {{ form_widget(form.year) }}
+                {{ form_widget(form.year_span) }}
             </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    {{ form_widget(form.display_year) }}
-                    {{ form_widget(form.year) }}
-                    {{ form_widget(form.year_span) }}
-                </div>
-            </div>
-        {% endif %}
-
-    </div>
+        </div>
+    {% endif %}
 
     {% do form.setRendered %}
-
-</div>
 
 {% endblock dating %}
