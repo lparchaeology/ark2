@@ -76,6 +76,12 @@
         "/api/v2": "DIME\\Routing\\ApiControllerProvider",
         "/": "DIME\\Routing\\ViewControllerProvider"
     },
+    "console": {
+        "commands": [
+            "DIME\\Console\\Command\\DimeTranslationCommand",
+            "DIME\\Console\\Command\\DimeClassListCommand"
+        ]
+    },
     "security": {
         "anonymous": true,
         "https": false,

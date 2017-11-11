@@ -4,9 +4,9 @@
 
     <table
         id="{{element.id}}"
-        class="{{ element.classes }}"
+        class="{{ 'table bootstrap-table ' ~ element.classes }}"
         data-toggle="table"
-        data-classes="{{ element.classes }}"
+        data-classes="{{ 'table bootstrap-table ' ~ element.classes }}"
         data-sort-name="id"
         data-show-refresh="{{ element.canRefresh }}"
         data-show-toggle="{{ element.canToggleView }}"

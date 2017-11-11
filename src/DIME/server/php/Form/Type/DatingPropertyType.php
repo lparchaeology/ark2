@@ -48,8 +48,11 @@ class DatingPropertyType extends AbstractPropertyType
         $dataclass = $field->attribute()->dataclass();
 
         if (isset($options['state']['static'])) {
-            $builder->add('display_year', $options['state']['display']['type'], $options['state']['display']['options']);
-            $builder->add('display_period', $options['state']['display']['type'], $options['state']['display']['options']);
+            $displayOptions = $options['state']['display']['options'];
+            $displayOptions['label'] = 'dime.dating.period';
+            $builder->add('display_period', $options['state']['display']['type'], $displayOptions);
+            $displayOptions['label'] = 'dime.dating.year';
+            $builder->add('display_year', $options['state']['display']['type'], $displayOptions);
             $integerType = HiddenType::class;
         } else {
             $valueOptions['choices'] = $dataclass->attribute('period')->vocabulary()->terms();
@@ -66,7 +69,9 @@ class DatingPropertyType extends AbstractPropertyType
 
         $builder->add('year', $integerType, $integerOptions);
         $builder->add('year_span', $integerType, $integerOptions);
+        $valueOptions['label'] = 'dime.dating.from';
         $builder->add('period', $options['state']['value']['type'], $valueOptions);
+        $valueOptions['label'] = 'dime.dating.to';
         $builder->add('period_span', $options['state']['value']['type'], $valueOptions);
 
         $fieldOptions['label'] = false;
