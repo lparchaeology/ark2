@@ -30,31 +30,20 @@
 namespace ARK\Form\Extension;
 
 use Symfony\Component\Form\AbstractTypeExtension;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class FormTypeExtension extends AbstractTypeExtension
+class HiddenTypeExtension extends AbstractTypeExtension
 {
     public function getExtendedType()
     {
-        return FormType::class;
+        return HiddenType::class;
     }
 
     public function configureOptions(OptionsResolver $resolver) : void
     {
         $resolver->setDefaults([
-            'help' => null,
-            'hidden' => null,
-            'state' => null,
-            'display' => null,
+            'hidden' => true,
         ]);
-    }
-
-    public function buildView(FormView $view, FormInterface $form, array $options) : void
-    {
-        $view->vars['help'] = $options['help'];
-        $view->vars['hidden'] = $options['hidden'];
     }
 }
