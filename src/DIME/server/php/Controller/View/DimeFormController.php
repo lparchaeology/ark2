@@ -74,6 +74,7 @@ abstract class DimeFormController extends PageController
         $view = parent::buildContext($request, $view);
         // FIXME temp hardcode for now, later replace with Nav table
         $view['menus'] = $this->menuConfig($request->attributes->get('_route'));
+
         return $view;
     }
 

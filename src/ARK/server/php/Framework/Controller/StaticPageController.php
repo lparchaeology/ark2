@@ -44,7 +44,8 @@ class StaticPageController extends PageController
     public function buildData(Request $request)
     {
         $route = $request->attributes->get('_route');
-        if (!$page = ORM::find(Page::class, $route)) {
+        $page = ORM::find(Page::class, $route);
+        if (!$page) {
             throw new ErrorException(new NotFoundError('PAGE_NOT_FOUND', 'Page not found', "Page $page not found"));
         }
         return $page;

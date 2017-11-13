@@ -1,22 +1,19 @@
 {# Default page layout with default navbar, sidebar, and content sections #}
 
 {# Include the standard page block #}
-{% extends "doc.html.twig" %}
+{% extends "framework/doc.html.twig" %}
 
 {# Include the standard head block #}
 {% use "blocks/head.html.twig" %}
 
-{# Include the standard head block #}
-{% use "blocks/styles.html.twig" %}
+{# Include the standard link block #}
+{% use "blocks/link.html.twig" %}
+
+{# Include the standard flash block #}
+{% use "blocks/flash.html.twig" %}
 
 {# Include the standard body block #}
 {% use "blocks/body.html.twig" %}
-
-{# Include the standard head block #}
-{% use "blocks/scripts.html.twig" %}
-
-{# Include the standard link block #}
-{% use "blocks/link.html.twig" %}
 
 {# Include the standard navbar block #}
 {% use "blocks/navbar.html.twig" %}
@@ -24,14 +21,5 @@
 {# Include the standard sidebar block #}
 {% use "blocks/sidebar.html.twig" %}
 
-{# Include the standard content block #}
-{% use "blocks/content.html.twig" %}
-
-{# Include the standard flash block #}
-{% use "blocks/flash.html.twig" %}
-
 {# Include the standard sidebar block #}
 {% use "blocks/footer.html.twig" %}
-
-{# Include the standard addrecord block #}
-{% use "blocks/addrecord.html.twig" %}

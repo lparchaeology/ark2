@@ -33,45 +33,31 @@ use ARK\Entity\Page;
 use ARK\Error\ErrorException;
 use ARK\Http\Error\NotFoundError;
 use ARK\ORM\ORM;
-use ARK\Service;
 use DIME\DIME;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class PageViewController extends DimeFormController
 {
-    public function __invoke(Request $request) : Response
+    public function buildData(Request $request)
     {
-        $page = $request->attributes->get('_route');
-        if (!$item = ORM::find(Page::class, $page)) {
+        $route = $request->attributes->get('_route');
+        $page = ORM::find(Page::class, $route);
+        if (!$page) {
             throw new ErrorException(new NotFoundError('PAGE_NOT_FOUND', 'Page not found', "Page $page not found"));
         }
+        dump($page);
+        return $page;
+    }
 
-        if ($request->getMethod() === 'POST') {
-            $value = $item->property('content')->value();
-            $value->setContent($request->getContent());
-            $item->property('content')->setValue($value);
-            ORM::flush('data');
-            return new Response('', 203);
-        }
-
-        $value = $item->property('content')->value();
-        $content = '';
-
-        // TODO Use visibility / permissions
-        if (Service::security()->isGranted('ROLE_ADMIN')) {
-            $content .= '<button id="pageedit" type="button" class="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">Edit</button>';
-            $content .= '<div class="inlineedit">';
-            $content .= $value->content();
-            $content .= '</div>';
-        } else {
-            $content .= $value->content();
-        }
-
-        $context['state'] = $this->buildState($request, $item);
-        $context = $this->buildContext($request, $context);
-        $context['content'][0] = $content;
-
-        return Service::view()->renderResponse('pages/page.html.twig', $context);
+    public function processForm(Request $request, Form $form) : void
+    {
+        $page = $this->buildData($request);
+        $content = $page->property('content')->value();
+        $content->setContent($request->getContent());
+        $page->property('content')->setValue($content);
+        ORM::flush($page);
+        //return new Response('', 203);
     }
 }

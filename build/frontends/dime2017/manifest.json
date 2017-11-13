@@ -64,8 +64,6 @@
                     "moment/moment.js",
                     "moment/locale/en-gb.js",
                     "moment/locale/da.js",
-                    "summernote/dist/summernote.js",
-                    "summernote/dist/lang/summernote-da-DK.js",
                     "select2/dist/js/select2.js",
                     "select2/dist/js/i18n/da.js",
                     "file-saver/FileSaver.js",
@@ -168,24 +166,24 @@
                         "bootstrap-table/dist/bootstrap-table.css",
                         "bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.css",
                         "bootstrap-fileinput/css/fileinput.css",
-                        "openlayers/dist/ol.css",
                         "vis/dist/vis-timeline-graph2d.min.css"
                     ],
                     "core": [],
                     "custom": [
-                        "scss/custom.scss"
+                        "scss/default.scss"
                     ]
                 }
             ],
             "ark-map": [{
-                    "stream": "main",
-                    "vendor": [
-                        "openlayers/dist/ol.css"
-                    ],
-                    "core": [],
-                    "custom": []
-                }
-            ],
+                "stream": "main",
+                "vendor": [
+                    "openlayers/dist/ol.css"
+                ],
+                "core": [],
+                "custom": [
+                    "scss/map.scss"
+                ]
+            }],
             "ark-static": [{
                     "stream": "bootstrap",
                     "vendor": [],

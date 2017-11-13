@@ -1,7 +1,7 @@
 {# Define the standard content block #}
 {% block content %}
 
-    {% block flash %}{% endblock %}
+    {{ block('flash') }}
 
     {% if children is defined %}
 

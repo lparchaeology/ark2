@@ -1,7 +1,13 @@
 {# Page layout with recaptcha script #}
 
 {# Extend the standard ARK Bootstrap page #}
-{% extends "pages/page.html.twig" %}
+{% extends "framework/page.html.twig" %}
 
-{# Include the static content block #}
+{# Include the static styles block #}
+{% use "blocks/styles_default.html.twig" %}
+
+{# Include the standard content block #}
+{% use "blocks/content.html.twig" %}
+
+{# Include the recaptcha scripts block #}
 {% use "blocks/scripts_recaptcha.html.twig" %}

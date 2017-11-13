@@ -59,12 +59,11 @@
             }
         },
         "scripts": {
-            "ark": {
+            "ark-default": {
                 "vendor": [
                     "jquery/dist/jquery.js",
                     "jquery-form/src/jquery.form.js",
                     "bootstrap-sass/assets/javascripts/bootstrap.js",
-                    "summernote/dist/summernote.js",
                     "select2/dist/js/select2.js",
                     "file-saver.js/FileSaver.js",
                     "tableexport.jquery.plugin/tableExport.min.js",
@@ -92,23 +91,55 @@
                     "bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.js"
                 ],
                 "core": [
-                    "js/**/*"
+                    "js/alert.js",
+                    "js/form.js",
+                    "js/pageedit.js",
+                    "js/routing.js",
+                    "js/utilities.js",
+                    "js/core-ready.js",
+                    "js/form-ready.js"
                 ],
                 "custom": [
                     "js/**/*"
                 ]
             },
-            "ol4": {
+            "ark-map": {
                 "vendor": [
                     "proj4/dist/proj4.js",
                     "openlayers/dist/ol.js"
                 ],
-                "core": [],
+                "core": [
+                    "js/map-ol4.js",
+                    "js/map-ready.js"
+                ],
+                "custom": []
+            },
+            "ark-jquery": {
+                "vendor": [
+                    "jquery/dist/jquery.js",
+                    "jquery-form/src/jquery.form.js"
+                ],
+                "core": [
+                    "js/routing.js"
+                ],
+                "custom": []
+            },
+            "ark-static": {
+                "vendor": [
+                    "jquery/dist/jquery.js",
+                    "bootstrap-sass/assets/javascripts/bootstrap.js",
+                    "summernote/dist/summernote.js",
+                    "summernote/dist/lang/summernote-da-DK.js"
+                ],
+                "core": [
+                    "js/pageedit.js",
+                    "js/routing.js"
+                ],
                 "custom": []
             }
         },
         "styles": {
-            "ark": [{
+            "ark-default": [{
                     "stream": "bootstrap",
                     "vendor": [],
                     "core": [],
@@ -125,13 +156,37 @@
                         "x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css",
                         "bootstrap-table/dist/bootstrap-table.min.css",
                         "bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.css",
-                        "bootstrap-fileinput/css/fileinput.min.css",
-                        "openlayers/dist/ol.css"
+                        "bootstrap-fileinput/css/fileinput.min.css"
                     ],
                     "core": [],
                     "custom": [
-                        "scss/theme.scss"
+                        "scss/default.scss"
                     ]
+                }
+            ],
+            "ark-map": [{
+                "stream": "main",
+                "vendor": [
+                    "openlayers/dist/ol.css"
+                ],
+                "core": [],
+                "custom": []
+            }],
+            "ark-static": [{
+                    "stream": "bootstrap",
+                    "vendor": [],
+                    "core": [],
+                    "custom": [
+                        "scss/vendor.scss"
+                    ]
+                },
+                {
+                    "stream": "main",
+                    "vendor": [
+                        "summernote/dist/summernote.css"
+                    ],
+                    "core": [],
+                    "custom": []
                 }
             ]
         }

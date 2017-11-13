@@ -39,11 +39,11 @@
     color: $gray-darker; //CUSTOM
     text-transform: uppercase;
 
-     > .small > a,
+    > .small,
      > a,
      > small,
      > small > a,
-    > .small {
+    > .small > a {
         color: inherit;
     }
 }
@@ -62,8 +62,8 @@
 // any kind of custom content between the two.
 
 .panel {
-     > .list-group,
-    > .panel-collapse > .list-group {
+    > .panel-collapse > .list-group,
+    > .list-group {
         margin-bottom: 0;
 
         .list-group-item {
@@ -111,9 +111,9 @@
 // watch it go full width.
 
 .panel {
-     > .table,
+    > .panel-collapse > .table,
      > .table-responsive > .table,
-    > .panel-collapse > .table {
+    > .table {
         margin-bottom: 0;
 
         caption {
@@ -122,12 +122,12 @@
         }
     }
     // Add border top radius for first one
-     > .table:first-child,
-    > .table-responsive:first-child > .table:first-child {
+    > .table-responsive:first-child > .table:first-child,
+    > .table:first-child {
         @include border-top-radius(($panel-border-radius - 1));
 
-         > thead:first-child,
-        > tbody:first-child {
+        > tbody:first-child,
+        > thead:first-child {
             > tr:first-child {
                 border-top-left-radius: ($panel-border-radius - 1);
                 border-top-right-radius: ($panel-border-radius - 1);
@@ -145,12 +145,12 @@
         }
     }
     // Add border bottom radius for last one
-     > .table:last-child,
-    > .table-responsive:last-child > .table:last-child {
+    > .table-responsive:last-child > .table:last-child,
+    > .table:last-child {
         @include border-bottom-radius(($panel-border-radius - 1));
 
-         > tbody:last-child,
-        > tfoot:last-child {
+        > tfoot:last-child,
+        > tbody:last-child {
             > tr:last-child {
                 border-bottom-left-radius: ($panel-border-radius - 1);
                 border-bottom-right-radius: ($panel-border-radius - 1);
@@ -168,53 +168,53 @@
         }
     }
 
-     > .panel-body + .table,
+    > .panel-body + .table-responsive,
      > .table + .panel-body,
      > .table-responsive + .panel-body,
-    > .panel-body + .table-responsive {
+    > .panel-body + .table {
         border-top: 1px solid $table-border-color;
     }
 
-     > .table > tbody:first-child > tr:first-child th,
-    > .table > tbody:first-child > tr:first-child td {
+    > .table > tbody:first-child > tr:first-child td,
+    > .table > tbody:first-child > tr:first-child th {
         border-top: 0;
     }
 
-     > .table-bordered,
-    > .table-responsive > .table-bordered {
+    > .table-responsive > .table-bordered,
+    > .table-bordered {
         border: 0;
 
-         > tfoot,
+        > tbody,
          > thead,
-        > tbody {
+        > tfoot {
             > tr {
-                 > th:first-child,
-                > td:first-child {
+                > td:first-child,
+                > th:first-child {
                     border-left: 0;
                 }
 
-                 > th:last-child,
-                > td:last-child {
+                > td:last-child,
+                > th:last-child {
                     border-right: 0;
                 }
             }
         }
 
-         > thead,
-        > tbody {
+        > tbody,
+        > thead {
             > tr:first-child {
-                 > td,
-                > th {
+                > th,
+                > td {
                     border-bottom: 0;
                 }
             }
         }
 
-         > tbody,
-        > tfoot {
+        > tfoot,
+        > tbody {
             > tr:last-child {
-                 > td,
-                > th {
+                > th,
+                > td {
                     border-bottom: 0;
                 }
             }

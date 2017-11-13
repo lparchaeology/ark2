@@ -5,7 +5,4 @@ $FontPathOpenSans: "../fonts/opensans";
 @import 'open-sans.scss';
 
 // Import Bootstrap (vendor or custom)
-@import 'vendor/bootstrap';
-
-// Import other non-Bootstrap vendor styles
-@import 'summernote';
+@import 'vendor/bootstrap3/bootstrap';

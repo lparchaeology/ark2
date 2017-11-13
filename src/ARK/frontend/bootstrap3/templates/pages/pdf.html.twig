@@ -1,10 +1,7 @@
-{# Default page layout with default navbar, sidebar, and content sections #}
+{# PDF page layout #}
 
 {# Include the standard page block #}
-{% extends "doc.html.twig" %}
-
-{# Include the PDF styles block #}
-{% use "blocks/styles_pdf.html.twig" %}
+{% extends "framework/doc.html.twig" %}
 
 {# Include the standard head block #}
 {% use "blocks/head.html.twig" %}
@@ -13,7 +10,10 @@
 {% use "blocks/body.html.twig" %}
 
 {# Include the PDF scripts block #}
-{% use "blocks/scripts_pdf.html.twig" %}
+{% use "blocks/styles_default.html.twig" %}
 
 {# Include the standard content block #}
 {% use "blocks/content.html.twig" %}
+
+{# Include the PDF scripts block #}
+{% use "blocks/scripts_pdf.html.twig" %}
