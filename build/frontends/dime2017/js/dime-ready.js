@@ -183,7 +183,6 @@ $(document).ready(function () {
     });
 
     $("body").on("click", function (e) {
-        console.log("kill all tooltip");
         // unless clicking a tooptip
         if ($(e.target).hasClass("tooltip") == false && $(e.target).hasClass("help") == false) {
             $('[data-toggle="tooltip"]').tooltip('hide');
