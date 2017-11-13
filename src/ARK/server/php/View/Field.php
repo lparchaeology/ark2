@@ -127,6 +127,19 @@ class Field extends Element
         return $this->keyword ?? $this->attribute->keyword();
     }
 
+    public function renderValue(iterable $view, iterable $forms = [], FormView $form = null) : string
+    {
+        //dump('RENDER VALUE : '.get_class($this).' '.$this->id().' '.$this->keyword());
+        //dump($view);
+        //dump($form);
+        if ($view['state']['mode'] === 'deny') {
+            return '';
+        }
+        $view = $this->buildContext($view, $forms, $form);
+        $form = $view['form']['display'] ?? $view['form']['static'] ?? null;
+        return Service::translate($form->vars['value'] ?? '');
+    }
+
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Joined Table Inheritance

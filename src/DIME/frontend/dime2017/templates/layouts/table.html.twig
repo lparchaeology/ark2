@@ -72,7 +72,8 @@
                             {% set val = attribute(item, child.state.name) %}
                         {% endif %}
                         {% set child = child | merge({'data' : val }) %}
-                        <td>
+                        <td data-tableexport-value="{{ child.element.renderValue(child, forms, form) | raw }}">
+                            <span class="cell-label">{{ child.state.keyword | translate }}</span>
                             {{ child.element.renderView(child, forms, form) | raw }}
                         </td>
                     {% endfor %}

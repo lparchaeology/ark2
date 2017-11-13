@@ -32,6 +32,168 @@
         var that = this;
         var $btnGroup = this.$toolbar.find('>.btn-group');
 
+        var removeTextSelection = function removeTextSelection() {
+            var sel = window.getSelection ? window.getSelection() : document.selection;
+            if (sel) {
+                if (sel.removeAllRanges) {
+                    sel.removeAllRanges();
+                } else if (sel.empty) {
+                    sel.empty();
+                }
+            }
+        };
+
+        var createItemModal = function createItemModal(item, fields) {
+            var html = '<div id="modalWindow" class="modal fade in" style="display:none;" data-backdrop="false">';
+            html += '<div class="modal-dialog thumbmodal-container dime" tabindex="-1" >';
+            // html += '<div class="modal-header">';
+            html += '<button type="button" class="close" data-dismiss="modal" aria-label="Close">';
+            html += '<span aria-hidden="true">&times;</span>';
+            html += '</button>';
+            html += '<div class="modal-body thumbModal">';
+            for (var field in fields) {
+                html += '<div class="field">';
+                if (fields[field].field !== 'checked') {
+                    if (fields[field].field === 'image') {
+                        //html += item[fields[field].field].replace('/img/thumb.','/img/');
+                        html += item[fields[field].field];
+                    } else {
+                        html += item[fields[field].field];
+                    }
+                }
+                html += '</div>';
+            }
+            html += '</div>';
+            html += '</div>'; // modalWindow
+
+            $("#thumbModal").html(html);
+            $("#modalWindow").modal();
+            $('#modalWindow').on('hidden.bs.modal', function () {
+                $('tbody tr').removeClass('selected');
+            });
+        };
+
+        var formclick = function (evt) {
+            var self = '';
+            var ark_id = '';
+
+            removeTextSelection();
+            if ($(evt.target).is('a')) {
+                return true;
+            }
+
+            if ($(evt.target).is('tr')) {
+                self = $(evt.target);
+            } else {
+                self = $(evt.target).closest('tr');
+            }
+            ark_id = self.attr('data-unique-id');
+
+            if (self.hasClass('selected')) {
+                self.removeClass('selected');
+                self.find('.tablecheckbox').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
+            } else {
+                self.addClass('selected');
+                self.find('.tablecheckbox').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+
+            }
+
+        };
+
+        var mapclick = function (evt, row, $element) {
+            var self = '';
+            var ark_id = '';
+
+            removeTextSelection();
+            if ($(evt.target).is('a')) {
+                return true;
+            }
+
+            if ($(evt.target).hasClass('icon-user-focus')) {
+                return true;
+            }
+
+            if ($(evt.target).is('tr')) {
+                self = $(evt.target);
+            } else {
+                self = $(evt.target).closest('tr');
+            }
+            ark_id = self.attr('data-unique-id');
+
+            if (typeof window.selected === 'undefined') {
+                window.selected = [];
+            }
+
+            if (self.hasClass('selected')) {
+                window.selected = window.selected.filter(function (e) { return e !== ark_id; });
+            } else {
+                window.selected.push(ark_id);
+            }
+
+            if (typeof mapcollection === 'undefined') {
+                if (self.hasClass('selected')) {
+                    self.removeClass('selected');
+                    self.find('.tablecheckbox').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
+                } else {
+                    self.addClass('selected');
+                    self.find('.tablecheckbox').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+                }
+                return true;
+            }
+
+            map.getLayers().forEach(function (i, e, a) {
+                if (i.get('name') === 'finds') {
+                    if (typeof i.getSource().getFeatures === 'function') {
+                        i.getSource().getFeatures().forEach(function (i, e, a) {
+                            if (i.get('ark_id').toUpperCase() === ark_id) {
+                                if (self.hasClass('selected')) {
+                                    mapcollection.remove(i);
+                                } else {
+                                    mapcollection.push(i);
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+
+        };
+
+        var thumbclick = function thumbclick(evt) {
+            var self = '';
+
+            if ($(evt.target).is('tr')) {
+                self = $(evt.target);
+            } else {
+                self = $(evt.target).closest('tr');
+            }
+
+            window.tableclick(evt);
+
+            createItemModal(that.data[self[0].rowIndex - 1], that.columns);
+
+        };
+
+        var sortSelection = function (clickfunc) {
+            var ark_id = '';
+
+            $('tbody tr').off("click");
+            $('tbody tr').on("click", { "target": this }, clickfunc);
+
+            if (typeof mapcollection !== 'undefined') {
+                mapcollection.forEach(function (e, i, a) {
+                    ark_id = e.get('ark_id');
+                    $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
+                });
+            } else if (typeof window.selected !== 'undefined') {
+                window.selected.forEach(function (ark_id) {
+                    $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected')
+                    $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").find('.tablecheckbox').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+
+                });
+            }
+        };
+
         if (!this.options.switchcardview) {
             return;
         }
@@ -75,186 +237,11 @@
 
         $(document).ready(function () {
 
-            window.removeTextSelection = function () {
-                var sel = window.getSelection ? window.getSelection() : document.selection;
-                if (sel) {
-                    if (sel.removeAllRanges) {
-                        sel.removeAllRanges();
-                    } else if (sel.empty) {
-                        sel.empty();
-                    }
-                }
-            };
-
-            window.createItemModal = function (item, fields) {
-                var html = '<div id="modalWindow" class="modal fade in" style="display:none;" data-backdrop="false">';
-                html += '<div class="modal-dialog thumbmodal-container dime" tabindex="-1" >';
-                // html += '<div class="modal-header">';
-                html += '<button type="button" class="close" data-dismiss="modal" aria-label="Close">';
-                html += '<span aria-hidden="true">&times;</span>';
-                html += '</button>';
-                html += '<div class="modal-body thumbModal">';
-                for (var field in fields) {
-                    html += '<div class="field">';
-                    if (fields[field].field !== 'checked') {
-                        if (fields[field].field === 'image') {
-                            //html += item[fields[field].field].replace('/img/thumb.','/img/');
-                            html += item[fields[field].field];
-                        } else {
-                            html += item[fields[field].field];
-                        }
-                    }
-                    html += '</div>';
-                }
-                html += '</div>';
-                html += '</div>'; // modalWindow
-
-                $("#thumbModal").html(html);
-                console.log($("#thumbModal").length);
-                $("#modalWindow").modal();
-                console.log("modallaunched");
-                $('#modalWindow').on('hidden.bs.modal', function () {
-                    $('tbody tr').removeClass('selected');
-                });
-                console.log("modallistned");
-                /*
-                $('.modal-body img').load(function () {
-                    console.log("modalloading");
-                    console.log(this);
-                    console.log(this.naturalWidth);
-                    $('.thumbmodal-container').width(this.naturalWidth + 70);
-                });
-                */
-                console.log("modalloaded");
-            };
-
-            var formclick = function (evt) {
-                var self = '';
-                var ark_id = '';
-
-                removeTextSelection();
-                if ($(evt.target).is('a')) {
-                    return true;
-                }
-
-                if ($(evt.target).is('tr')) {
-                    self = $(evt.target);
-                } else {
-                    self = $(evt.target).closest('tr');
-                }
-                ark_id = self.attr('data-unique-id');
-
-                if (self.hasClass('selected')) {
-                    self.removeClass('selected');
-                    self.find('.tablecheckbox').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
-                } else {
-                    self.addClass('selected');
-                    self.find('.tablecheckbox').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
-
-                }
-
-            };
-
-            var mapclick = function (evt, row, $element) {
-                var self = '';
-                var ark_id = '';
-
-                removeTextSelection();
-                if ($(evt.target).is('a')) {
-                    return true;
-                }
-
-                if ($(evt.target).hasClass('icon-user-focus')) {
-                    return true;
-                }
-
-                if ($(evt.target).is('tr')) {
-                    self = $(evt.target);
-                } else {
-                    self = $(evt.target).closest('tr');
-                }
-                ark_id = self.attr('data-unique-id');
-
-                if (typeof window.selected === 'undefined') {
-                    window.selected = [];
-                }
-
-                if (self.hasClass('selected')) {
-                    window.selected = window.selected.filter(function (e) { return e !== ark_id; });
-                } else {
-                    window.selected.push(ark_id);
-                }
-
-                if (typeof mapcollection === 'undefined') {
-                    if (self.hasClass('selected')) {
-                        self.removeClass('selected');
-                        self.find('.tablecheckbox').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
-                    } else {
-                        self.addClass('selected');
-                        self.find('.tablecheckbox').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
-                    }
-                    return true;
-                }
-
-                map.getLayers().forEach(function (i, e, a) {
-                    if (i.get('name') === 'finds') {
-                        if (typeof i.getSource().getFeatures === 'function') {
-                            i.getSource().getFeatures().forEach(function (i, e, a) {
-                                if (i.get('ark_id').toUpperCase() === ark_id) {
-                                    if (self.hasClass('selected')) {
-                                        mapcollection.remove(i);
-                                    } else {
-                                        mapcollection.push(i);
-                                    }
-                                }
-                            });
-                        }
-                    }
-                });
-
-            };
             if (window.itemkey === 'find') {
                 window.tableclick = mapclick;
             } else {
                 window.tableclick = formclick;
             }
-
-            window.thumbclick = function (evt) {
-                var self = '';
-
-                console.log("thumbclick");
-
-                if ($(evt.target).is('tr')) {
-                    self = $(evt.target);
-                } else {
-                    self = $(evt.target).closest('tr');
-                }
-
-                window.tableclick(evt);
-
-                createItemModal(that.data[self[0].rowIndex - 1], that.columns);
-
-            };
-
-            var sortSelection = function (clickfunc) {
-                var ark_id = '';
-
-                $('tbody tr').off("click");
-                $('tbody tr').on("click", { "target": this }, clickfunc);
-
-                if (typeof mapcollection !== 'undefined') {
-                    mapcollection.forEach(function (e, i, a) {
-                        ark_id = e.get('ark_id');
-                        $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
-                    });
-                } else if (typeof window.selected !== 'undefined') {
-                    window.selected.forEach(function (ark_id) {
-                        $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected')
-                        $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").find('.tablecheckbox').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
-
-                    });
-                }
-            };
 
             that.$toolbar.find('button[name="tableView"]').on('click', function () {
                 $(this).blur();
