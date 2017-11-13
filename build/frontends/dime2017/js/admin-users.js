@@ -71,31 +71,3 @@ var adminUserSelected = function (e) {
     var target = $(e.target).is('tr') ? $(e.target) : $(e.target).closest('tr');
     fetchAdminUserActor(target.attr('data-unique-id'));
 };
-
-$('document').ready(function () {
-
-    $('#actor').ajaxForm({
-        beforeSubmit: adminUserFormSubmit,
-        success: adminUserFormSuccess,
-        type: 'post',
-        clearForm: false,
-        dataType: 'json',
-    });
-    $('#password_set').ajaxForm({
-        beforeSubmit: adminUserFormSubmit,
-        success: adminUserFormSuccess,
-        type: 'post',
-        clearForm: true,
-        dataType: 'json',
-    });
-    $('#role_add').ajaxForm({
-        beforeSubmit: adminUserFormSubmit,
-        success: adminUserFormSuccess,
-        type: 'post',
-        clearForm: true,
-        dataType: 'json',
-    });
-
-    $('.icon-user-focus').on("click", { "target": this }, adminUserSelected);
-
-});

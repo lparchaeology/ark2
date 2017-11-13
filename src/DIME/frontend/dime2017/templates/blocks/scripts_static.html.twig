@@ -2,9 +2,9 @@
 
 {% block scripts -%}
 
-{{ parent() }}
-
 <!-- Combined jQuery, Bootstrap and ARK js -->
 <script src="{{ asset('scripts/ark-static.min.js', 'frontend') }}"></script>
+
+{{ parent() }}
 
 {%- endblock scripts %}

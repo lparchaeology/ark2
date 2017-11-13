@@ -1,0 +1,9 @@
+{% block initialise -%}
+
+<!-- Router js -->
+<script>
+    Router.setBasePath('{{ routing.base_path }}');
+    Router.setRoutes(JSON.parse("{{ routing.routes | json_encode() | escape('js') }}"))
+</script>
+
+{%- endblock initialise %}

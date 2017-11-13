@@ -109,7 +109,19 @@
                     "js/form-ready.js"
                 ],
                 "custom": [
-                    "js/**/*"
+                    "js/admin-users.js",
+                    "js/classification-dating.js",
+                    "js/classification-modal.js",
+                    "js/classification-period.js",
+                    "js/classification-subtype.js",
+                    "js/messages.js",
+                    "js/table-switchcardmobile.js",
+                    "js/table-switchcardview.js",
+                    "js/dime-ready.js",
+                    "js/admin-users-ready.js",
+                    "js/classification-ready.js",
+                    "js/messages-ready.js",
+                    "js/table-ready.js"
                 ]
             },
             "ark-map": {
@@ -117,11 +129,13 @@
                     "proj4/dist/proj4.js",
                     "openlayers/dist/ol.js"
                 ],
-                "core": [
+                "core": [],
+                "custom": [
                     "js/map-ol4.js",
-                    "js/map-ready.js"
-                ],
-                "custom": []
+                    "js/location-ol4.js",
+                    "js/map-ready.js",
+                    "js/location-ready.js"
+                ]
             },
             "ark-jquery": {
                 "vendor": [
