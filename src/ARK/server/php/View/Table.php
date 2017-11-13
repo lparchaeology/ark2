@@ -120,7 +120,12 @@ class Table extends Element
         return $this->url ?? '';
     }
 
-    public function pageSize() : integer
+    public function pagination() : bool
+    {
+        return $this->pagination > 0;
+    }
+
+    public function pageSize() : int
     {
         // TODO Get default from config file
         return $this->pagination ?? 10;

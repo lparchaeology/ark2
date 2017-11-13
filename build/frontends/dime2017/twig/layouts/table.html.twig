@@ -11,8 +11,12 @@
         data-show-refresh="{{ element.canRefresh }}"
         data-show-toggle="{{ element.canToggleView }}"
         data-show-columns="{{ element.canChooseColumns }}"
+        data-pagination="{{ element.pagination }}"
+        data-page-size="{{ element.pageSize }}"
         data-mobile-responsive="true"
         data-show-export="{{ element.canExportData }}"
+        data-export-data-type="all"
+        data-export-types="['csv', 'txt']"
         data-switchcardview="{{ element.canToggleView }}"
         data-click-to-select="true"
         {% if element.dataUrl %}
@@ -28,18 +32,38 @@
             <thead>
                 <tr>
                     {% if element.selection %}
-                        <th class="checkedhead" data-field="checked" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
+                        <th class="checkedhead"
+                            data-field="checked"
+                            data-sortable="false"
+                            data-switchable="false"
+                            data-card-visible="false"
+                            data-tableexport-display="none"></th>
                     {% endif %}
                     {% if element.image %}
-                        <th class="thumbimagehead" data-field="{{element.image}}" data-title="{{element.image}}" data-sortable="false"></th>
+                        <th class="thumbimagehead"
+                            data-field="{{element.image}}"
+                            data-title="{{element.image}}"
+                            data-sortable="false"
+                            data-tableexport-display="none"></th>
                     {% endif %}
                     {% for child in children %}
                         {% set childId = child.state.name ? child.element.id ~ '_' ~ child.state.name : child.element.id %}
-                        <th data-field="{{ childId }}" data-title="{{ child.state.keyword | translate }}" data-sortable="true" data-sorter="alphanum" data-visible="{{ child.state.visible }}" data-card-visible="false">
+                        <th data-field="{{ childId }}"
+                            data-title="{{ child.state.keyword | translate }}"
+                            data-sortable="true"
+                            data-sorter="alphanum"
+                            data-visible="{{ child.state.visible }}"
+                            data-card-visible="false"
+                            data-tableexport-value="{{ child.state.keyword | translate }}">
                             {{ child.state.keyword | translate }}
                         </th>
                     {% endfor %}
-                    <th class="controlshead" data-field="controls" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
+                    <th class="controlshead"
+                        data-field="controls"
+                        data-sortable="false"
+                        data-switchable="false"
+                        data-card-visible="false"
+                        data-tableexport-display="none"></th>
                 </tr>
             </thead>
         {% endif %}
@@ -48,12 +72,16 @@
             {% for item in data %}
                 <tr data-unique-id="{{ item.id }}">
                     {% if element.selection %}
-                        <td class="not-card-visible">
+                        <td class="not-card-visible"
+                            data-field="checked"
+                            data-tableexport-display="none">
                             <span class="tablecheckbox glyphicon glyphicon-unchecked"></span>
                         </td>
                     {% endif %}
                     {% if element.image %}
-                        <td class="thumbimage">
+                        <td class="thumbimage"
+                            data-field="{{element.image}}"
+                            data-tableexport-display="none">
                             {% set image = item.property(element.image).value() %}
                             {% if image is not empty %}
                                 {% if item.property(element.image).attribute.hasMultipleOccurrences %}
@@ -72,12 +100,16 @@
                             {% set val = attribute(item, child.state.name) %}
                         {% endif %}
                         {% set child = child | merge({'data' : val }) %}
-                        <td data-tableexport-value="{{ child.element.renderValue(child, forms, form) | raw }}">
+                        {% set childId = child.state.name ? child.element.id ~ '_' ~ child.state.name : child.element.id %}
+                        <td data-field="{{ childId }}"
+                            data-tableexport-value="{{ child.element.renderValue(child, forms, form) | raw }}">
                             <span class="cell-label">{{ child.state.keyword | translate }}</span>
                             {{ child.element.renderView(child, forms, form) | raw }}
                         </td>
                     {% endfor %}
-                    <td class="controls" data-tableexport-display="none">
+                    <td class="controls"
+                        data-field="controls"
+                        data-tableexport-display="none">
                         <span class="cell-label">{{ 'dime.controls'|trans }}</span>
                         {% if state.controls.actor is defined and state.controls.actor %}
                             <a href="#" class="open-focus">
