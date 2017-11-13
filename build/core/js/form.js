@@ -120,3 +120,9 @@ var FormMapper = (function () {
     };
 
 })();
+
+// Undo fake readonly mode
+$('form').submit(function () {
+    $('.readonly-select').prop('disabled', false);
+    $('.readonly-required').prop('required', true);
+});

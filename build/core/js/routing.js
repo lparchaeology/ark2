@@ -1,3 +1,5 @@
+// Pure JavaScript code for routing
+
 var Router = (function () {
 
     var base = '';

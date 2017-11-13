@@ -1,10 +1,12 @@
 {# Define the standard sidebar block #}
 
-{% use "blocks/link.html.twig" %}
+{% use "blocks/usertool.html.twig" %}
+{% use "blocks/loginmodal.html.twig" %}
 
 {% block sidebar %}
 
     {% block usertool %}{% endblock %}
+    {% block loginmodal %}{% endblock %}
 
     <div class="row">
         <ul class="list-group dime-navlist">

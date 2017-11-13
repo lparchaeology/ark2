@@ -57,7 +57,7 @@
             }
         },
         "scripts": {
-            "ark": {
+            "ark-default": {
                 "vendor": [
                     "jquery/dist/jquery.js",
                     "jquery-form/src/jquery.form.js",
@@ -102,26 +102,30 @@
                     "vis/dist/vis.js"
                 ],
                 "core": [
-                    "js/core.js",
                     "js/alert.js",
                     "js/form.js",
                     "js/pageedit.js",
                     "js/routing.js",
-                    "js/utilities.js"
+                    "js/utilities.js",
+                    "js/core-ready.js",
+                    "js/form-ready.js"
                 ],
                 "custom": [
                     "js/**/*"
                 ]
             },
-            "ol4": {
+            "ark-map": {
                 "vendor": [
                     "proj4/dist/proj4.js",
                     "openlayers/dist/ol.js"
                 ],
-                "core": [],
+                "core": [
+                    "js/map-ol4.js",
+                    "js/map-ready.js"
+                ],
                 "custom": []
             },
-            "jquery": {
+            "ark-jquery": {
                 "vendor": [
                     "jquery/dist/jquery.js",
                     "jquery-form/src/jquery.form.js"
@@ -130,11 +134,23 @@
                     "js/routing.js"
                 ],
                 "custom": []
-
+            },
+            "ark-static": {
+                "vendor": [
+                    "jquery/dist/jquery.js",
+                    "bootstrap-sass/assets/javascripts/bootstrap.js",
+                    "summernote/dist/summernote.js",
+                    "summernote/dist/lang/summernote-da-DK.js"
+                ],
+                "core": [
+                    "js/pageedit.js",
+                    "js/routing.js"
+                ],
+                "custom": []
             }
         },
         "styles": {
-            "ark": [{
+            "ark-default": [{
                     "stream": "bootstrap",
                     "vendor": [],
                     "core": [],
@@ -159,6 +175,32 @@
                     "custom": [
                         "scss/custom.scss"
                     ]
+                }
+            ],
+            "ark-map": [{
+                    "stream": "main",
+                    "vendor": [
+                        "openlayers/dist/ol.css"
+                    ],
+                    "core": [],
+                    "custom": []
+                }
+            ],
+            "ark-static": [{
+                    "stream": "bootstrap",
+                    "vendor": [],
+                    "core": [],
+                    "custom": [
+                        "scss/vendor.scss"
+                    ]
+                },
+                {
+                    "stream": "main",
+                    "vendor": [
+                        "summernote/dist/summernote.css"
+                    ],
+                    "core": [],
+                    "custom": []
                 }
             ]
         }

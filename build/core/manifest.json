@@ -90,7 +90,14 @@
                     "bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.js"
                 ],
                 "core": [
-                    "js/**/*"
+                    "js/alert.js",
+                    "js/form.js",
+                    "js/pageedit.js",
+                    "js/register.js",
+                    "js/routing.js",
+                    "js/utilities.js",
+                    "js/core_ready.js",
+                    "js/form_ready.js"
                 ],
                 "custom": [
                     "js/**/*"
@@ -101,7 +108,10 @@
                     "proj4/dist/proj4.js",
                     "openlayers/dist/ol.js"
                 ],
-                "core": [],
+                "core": [
+                    "js/map_ol4.js",
+                    "js/map_ready.js"
+                ],
                 "custom": []
             }
         },
