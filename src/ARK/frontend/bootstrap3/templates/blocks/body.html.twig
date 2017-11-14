@@ -5,19 +5,19 @@
         <div class="row">
 
             <div class="col-md-1 sidebar">
-                {% block sidebar %}{% endblock %}
+                {{ block('sidebar') }}
             </div>
 
             <div class="col-xs-12 col-md-12 col-lg-10">
-                {% block navbar %}{% endblock %}
+                {{ block('navbar') }}
                 <div class="main row">
-                    {% block content %}{% endblock %}
+                    {{ block('content') }}
                 </div>
             </div>
 
         </div>
     </div>
 
-    {% block footer %}{% endblock %}
+    {{ block('footer') }}
 
 {% endblock body %}

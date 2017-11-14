@@ -2,11 +2,11 @@
 
 {% block scripts -%}
 
-{{ parent() }}
-
 <!-- Default jQuery, Bootstrap and ARK js -->
 <script src="{{ asset('scripts/ark-default.min.js', 'frontend') }}"></script>
 <!-- Recaptcha only for pages that need it -->
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+{{ parent() }}
 
 {%- endblock scripts %}

@@ -73,6 +73,7 @@
                         {% endif %}
                         {% set child = child | merge({'data' : val }) %}
                         <td>
+                            <span class="cell-label">{{ child.state.keyword | translate }}</span>
                             {{ child.element.renderView(child, forms, form) | raw }}
                         </td>
                     {% endfor %}

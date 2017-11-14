@@ -1,11 +1,11 @@
 {# Define the standard <body> block including navbar, sidebar, and content block #}
 {% block body %}
 
-    {% block navbar %}{% endblock %}
+    {{ block('navbar') }}
 
     <div class="container-fluid">
         <div class="jumbotron">
-            {% block content %}{% endblock %}
+            {{ block('content') }}
         </div>
     </div>
 
