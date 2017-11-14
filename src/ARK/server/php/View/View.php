@@ -36,6 +36,7 @@ use ARK\Framework\Application;
 use ARK\ORM\ORM;
 use ARK\Service;
 use League\Glide\Responses\SymfonyResponseFactory;
+use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Twig_Environment;
@@ -52,6 +53,11 @@ class View
     public function templates() : Twig_Environment
     {
         return $this->app['twig'];
+    }
+
+    public function assets() : Packages
+    {
+        return $this->app['assets.packages'];
     }
 
     public function layout(string $name) : Layout

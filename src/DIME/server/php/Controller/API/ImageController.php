@@ -29,9 +29,7 @@
 
 namespace DIME\Controller\API;
 
-use ARK\Error\ErrorException;
 use ARK\File\Image;
-use ARK\Http\Error\NotFoundError;
 use ARK\ORM\ORM;
 use ARK\Service;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,9 +40,6 @@ class ImageController
     public function __invoke(Request $request, $image) : Response
     {
         $file = ORM::find(Image::class, $image);
-        if (!$file) {
-            throw new ErrorException(new NotFoundError('IMAGE_NOT_FOUND', 'Image not found', "Image $image not found"));
-        }
-        return Service::imageResponse($file->path(), $request->query->all());
+        return Service::imageResponse($file ? $file->path() : '', $request->query->all());
     }
 }

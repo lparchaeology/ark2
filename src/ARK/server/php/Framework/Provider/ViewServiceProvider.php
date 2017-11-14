@@ -60,7 +60,6 @@ class ViewServiceProvider implements ServiceProviderInterface
         $container['bus.command.handlers'] = array_merge($container['bus.command.handlers'], $commands);
 
         // Enable the Assets
-        $container['dir.assets'] = $container['dir.web'].'/assets/'.$container['ark']['web']['frontend'];
         $container['path.assets'] = '/assets/'.$container['ark']['web']['frontend'];
         $container->register(
             new AssetServiceProvider(),

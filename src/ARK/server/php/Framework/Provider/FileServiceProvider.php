@@ -51,6 +51,7 @@ class FileServiceProvider implements ServiceProviderInterface
         $container['dir.config'] = $container['dir.site'].'/config';
         $container['dir.files'] = $container['dir.site'].$container['ark']['file']['root'];
         $container['dir.web'] = $container['dir.site'].'/web';
+        $container['dir.assets'] = $container['dir.web'].'/assets/'.$container['ark']['web']['frontend'];
 
         $container->register(new FlysystemServiceProvider());
         $data = $container['ark']['file']['data'];
@@ -60,6 +61,7 @@ class FileServiceProvider implements ServiceProviderInterface
         $cache['path'] = ($cache['adapter'] === 'Local' ? $container['dir.files'].$cache['path'] : $cache['path']);
         $cache['adapter'] = 'League\\Flysystem\\Adapter\\'.$cache['adapter'];
         $container['flysystem.filesystems'] = [
+            'assets' => ['adapter' => Local::class, 'args' => [$container['dir.assets'].'/images']],
             'tmp' => ['adapter' => Local::class, 'args' => [$container['dir.files'].'/tmp']],
             'download' => ['adapter' => Local::class, 'args' => [$container['dir.files'].'/download']],
             'upload' => ['adapter' => Local::class, 'args' => [$container['dir.files'].'/upload']],
