@@ -47,7 +47,6 @@ class PageViewController extends DimeFormController
         if (!$page) {
             throw new ErrorException(new NotFoundError('PAGE_NOT_FOUND', 'Page not found', "Page $page not found"));
         }
-        dump($page);
         return $page;
     }
 
