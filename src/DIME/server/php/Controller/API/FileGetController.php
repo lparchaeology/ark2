@@ -29,6 +29,7 @@
 
 namespace DIME\Controller\API;
 
+use ARK\Error\ErrorException;
 use ARK\File\File;
 use ARK\ORM\ORM;
 use ARK\Service;
@@ -43,6 +44,9 @@ class FileGetController
     {
         // TODO Wrap in a nice neat class or Service call
         $file = ORM::find(File::class, $id);
+        if (!$file) {
+            throw new ErrorException(new NotFoundError('FILE_NOT_FOUND', 'File not found', "File $id not found"));
+        }
         $factory = new SymfonyResponseFactory($request);
         $response = $factory->create(Service::filesystem(), $file->path());
         $disposition = ($request->query->has('d') ? ResponseHeaderBag::DISPOSITION_ATTACHMENT : ResponseHeaderBag::DISPOSITION_INLINE);
