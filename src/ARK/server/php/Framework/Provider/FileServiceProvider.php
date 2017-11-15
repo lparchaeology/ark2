@@ -68,13 +68,28 @@ class FileServiceProvider implements ServiceProviderInterface
             'data' => ['adapter' => $data['adapter'], 'args' => [$data['path']]],
             'cache' => ['adapter' => $cache['adapter'], 'args' => [$cache['path']]],
         ];
-        $container['glide.server'] = function ($app) {
+
+        $container['image'] = function ($app) {
+            $image = new Container();
             $config = $app['ark']['image'];
-            $config['source'] = $app['flysystems']['data'];
-            $config['cache'] = $app['flysystems']['cache'];
-            $config['base_url'] = '/img/';
-            $config['response'] = new SymfonyResponseFactory();
-            return ServerFactory::create($config);
+            $flysystems = $app['flysystems'];
+            $image['file'] = function ($image) use ($config, $flysystems) {
+                $config = $config;
+                $config['source'] = $flysystems['data'];
+                $config['cache'] = $flysystems['cache'];
+                $config['base_url'] = '/img/data/';
+                $config['response'] = new SymfonyResponseFactory();
+                return ServerFactory::create($config);
+            };
+            $image['assets'] = function ($image) use ($config, $flysystems) {
+                $config = $config;
+                $config['source'] = $flysystems['assets'];
+                $config['cache'] = $flysystems['cache'];
+                $config['base_url'] = '/img/';
+                $config['response'] = new SymfonyResponseFactory();
+                return ServerFactory::create($config);
+            };
+            return $image;
         };
     }
 }

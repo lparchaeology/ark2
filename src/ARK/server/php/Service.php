@@ -35,7 +35,6 @@ use ARK\Security\Security;
 use ARK\Spatial\Spatial;
 use ARK\View\View;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use League\Flysystem\Filesystem;
 use League\Glide\Server;
 use Monolog\Logger;
@@ -103,18 +102,14 @@ class Service
         return self::$app->redirect(self::path($path, $parmameters), $status);
     }
 
-    public static function imageServer() : Server
+    public static function imageServer(string $server = 'file') : Server
     {
-        return self::$app['glide.server'];
+        return self::$app['image'][$server];
     }
 
-    public static function imageResponse(string $path, iterable $parameters = []) : Response
+    public static function imageResponse(string $server, string $path, iterable $parameters = []) : Response
     {
-        try {
-            return self::$app['glide.server']->getImageResponse($path, $parameters);
-        } catch (Exception $e) {
-            return self::$app['glide.server']->getResponseFactory()->create(self::filesystem('assets'), 'icons/image.svg');
-        }
+        return self::imageServer($server)->getImageResponse($path, $parameters);
     }
 
     public static function forms() : FormFactory

@@ -84,7 +84,7 @@ class ViewControllerProvider implements ControllerProviderInterface
             ->bind('api.geo.find');
         $controllers->get('/api/geo/choropleth', 'DIME\Controller\API\ChoroplethController')
             ->bind('api.geo.choropleth');
-        $controllers->get('/img/{image}', 'DIME\Controller\API\ImageController')
+        $controllers->get('/img/{server}/{image}', 'ARK\Framework\ImageController')
             ->bind('img');
 
         // Admin Routes

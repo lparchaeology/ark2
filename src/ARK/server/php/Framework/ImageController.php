@@ -29,38 +29,36 @@
 
 namespace ARK\Framework;
 
-use ARK\Error\ErrorException;
 use ARK\File\Image;
-use ARK\Http\Error\NotFoundError;
 use ARK\ORM\ORM;
 use ARK\Service;
+use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class ImageController extends Controller
+class ImageController
 {
-    public function handleRequest(Request $request) : Response
+    public function __invoke(Request $request, $server, $image) : Response
     {
-        if (!$file = $this->buildData($request)) {
-            throw new ErrorException(
-                new NotFoundError('IMAGE_NOT_FOUND', 'Image not found', 'The image file was not found')
-            );
+        if ($server === 'file') {
+            $file = ORM::find(Image::class, $image);
+            $path = $file ? $file->path() : '';
+        } else {
+            $path = $server.'/'.$image;
+            $server = 'assets';
         }
-        return Service::imageResponse($file->path(), $request->query->all());
-    }
-
-    public function buildData(Request $request)
-    {
-        return ORM::find(Image::class, $request->attributes->get('image'));
-    }
-
-    public function buildState(Request $request, $data) : iterable
-    {
-        return [];
-    }
-
-    public function defaultOptions(string $route = null) : iterable
-    {
-        return [];
+        try {
+            if ($path) {
+                return Service::imageResponse($server, $path, $request->query->all());
+            }
+        } catch (Exception $e) {
+            $msg = $e->getMessage();
+        }
+        try {
+            return Service::imageResponse('assets', 'icons/image.svg', $request->query->all());
+        } catch (Exception $e) {
+            throw new NotFoundHttpException($msg);
+        }
     }
 }
