@@ -31,8 +31,8 @@ namespace ARK\Translation\Twig;
 
 use Symfony\Component\Translation\TranslatorInterface;
 use Twig_Extension;
+use Twig_Filter;
 use Twig_NodeVisitorInterface;
-use Twig_SimpleFilter;
 
 class TranslateExtension extends Twig_Extension
 {
@@ -57,8 +57,8 @@ class TranslateExtension extends Twig_Extension
     public function getFilters() : iterable
     {
         return [
-            new Twig_SimpleFilter('translate', [$this, 'translate']),
-            new Twig_SimpleFilter('translatechoice', [$this, 'translatechoice']),
+            new Twig_Filter('translate', [$this, 'translate']),
+            new Twig_Filter('translatechoice', [$this, 'translatechoice']),
         ];
     }
 
