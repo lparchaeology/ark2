@@ -87,7 +87,7 @@
                                 {% if item.property(element.image).attribute.hasMultipleOccurrences %}
                                     {% set image = image[0] %}
                                 {% endif %}
-                                <img src="{{path('img', {'server': 'file', 'image': image.id}) ~ '?p=thumb'}}" alt=''/>
+                                <img src="{{ imagePath('file', image.id, {'p': 'thumb'}) }}" alt=''/>
                             {% else %}
                                 <span class="glyphicon glyphicon-picture placeholder-img"></span>
                             {% endif %}

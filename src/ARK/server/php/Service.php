@@ -112,6 +112,13 @@ class Service
         return self::imageServer($server)->getImageResponse($path, $parameters);
     }
 
+    public static function imagePath(string $server, string $image, iterable $parameters = []) : string
+    {
+        $parameters['server'] = $server;
+        $parameters['image'] = $image;
+        return self::path('img', $parameters);
+    }
+
     public static function forms() : FormFactory
     {
         return self::$app['form.factory'];

@@ -5,7 +5,7 @@
     {% for seq in [1, 2, 3] %}
         {% set item = {
             'key': seq - 1,
-            'server': 'assets',
+            'server': 'brand',
             'image': 'sample' ~ seq ~ '.jpg',
             'path': '',
             'find': null
@@ -18,7 +18,7 @@
         {% set item = {
             'key': key,
             'server': 'file',
-            'image': find.property('image').value()[0].id,
+            'image': find.property('image').value[0].id,
             'path': path('dime.finds.view', {'id': find.id}),
             'find': find
             }
@@ -37,7 +37,7 @@
                 {% if item.find -%}
                     <a href="{{ item.path }}">
                 {%- endif -%}
-                <img src="{{path('img', {'server': item.server, 'image': item.image}) ~ '?p=preview'}}" alt="" />
+                <img src="{{ imagePath(item.server, item.image, {'p': 'preview'}) }}" alt="" />
                 {%- if item.find -%}
                     </a>
                 {%- endif %}
@@ -60,7 +60,7 @@
         {% set itemClass = 'active' %}
         {% for item in items %}
             <li data-target='#carousel-custom' data-slide-to='{{ item.key }}' class="{{ itemClass }}">
-                <img src="{{path('img', {'server': item.server, 'image': item.image}) ~ '?p=thumb'}}" alt='' />
+                <img src="{{ imagePath(item.server, item.image, {'p': 'thumb'}) }}" alt='' />
             </li>
             {% set itemClass = '' %}
         {% endfor %}

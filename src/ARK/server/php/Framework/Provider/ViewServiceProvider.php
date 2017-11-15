@@ -34,8 +34,8 @@ use ARK\ARK;
 use ARK\Translation\Twig\TranslateExtension;
 use ARK\View\Bus\NavAddHandler;
 use ARK\View\Bus\NavAddMessage;
+use ARK\View\Twig\ViewExtension;
 use ARK\View\View;
-use Fuz\Jordan\Twig\Extension\TreeExtension;
 use Knp\Snappy\Image;
 use Knp\Snappy\Pdf;
 use Pimple\Container;
@@ -80,7 +80,7 @@ class ViewServiceProvider implements ServiceProviderInterface
             $twig->addExtension(new Twig_Extensions_Extension_Intl());
             $twig->addExtension(new Twig_Extensions_Extension_Date($app['translator']));
             $twig->addExtension(new TranslateExtension($app['translator']));
-            $twig->addExtension(new TreeExtension());
+            $twig->addExtension(new ViewExtension());
             return $twig;
         });
         $container['twig.path'] = [
