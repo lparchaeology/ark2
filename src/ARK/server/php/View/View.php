@@ -30,9 +30,9 @@
 namespace ARK\View;
 
 use ARK\Error\Error;
-use ARK\Error\ErrorException;
 use ARK\File\File;
 use ARK\Framework\Application;
+use ARK\Http\Exception\InternalServerHttpException;
 use ARK\ORM\ORM;
 use ARK\Service;
 use League\Glide\Responses\SymfonyResponseFactory;
@@ -66,8 +66,9 @@ class View
         if ($layout) {
             return $layout;
         }
-        throw new ErrorException(
-            new Error('INVALID_LAYOUT_NAME', "Invalid Layout Name: $name", "Layout $name does not exist")
+        throw new InternalServerHttpException(
+            'INVALID_LAYOUT_NAME',
+            "Layout $name does not exist"
         );
     }
 

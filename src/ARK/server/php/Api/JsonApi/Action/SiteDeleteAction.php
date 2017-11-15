@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK JSON:API Action
+ * ARK JSON:API Action.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -21,11 +21,10 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Api\JsonApi\Action;
@@ -34,18 +33,14 @@ use ARK\Api\JsonApi\Error\NotFoundError;
 use ARK\Api\JsonApi\Http\JsonApiException;
 use ARK\Api\JsonApi\Http\JsonApiRequest;
 use ARK\Api\JsonApi\Http\JsonApiResponse;
-use ARK\Api\JsonApi\Resource\ItemResource;
-use ARK\Api\JsonApi\Serializer\ItemSerializer;
 use ARK\Framework\Application;
-use ARK\Model\Module\Module;
 use ARK\ORM\EntityManager;
 use Exception;
-use Tobscure\JsonApi\Document;
 use Tobscure\JsonApi\Resource;
 
 class SiteDeleteAction extends AbstractJsonApiAction
 {
-    protected $em = null;
+    protected $em;
 
     public function __invoke(Application $app, JsonApiRequest $request, string $siteSlug = null)
     {
@@ -54,7 +49,7 @@ class SiteDeleteAction extends AbstractJsonApiAction
         return parent::__invoke($app, $request);
     }
 
-    protected function fetchData()
+    protected function fetchData() : void
     {
         $item = $em->find('ARK\Model\Item\Site', $this->site);
         if (!$item || !$item->isValid()) {
@@ -64,7 +59,7 @@ class SiteDeleteAction extends AbstractJsonApiAction
         $this->data = $item;
     }
 
-    protected function validateParamaters()
+    protected function validateParamaters() : void
     {
         if ($this->parameters->hasParameters()) {
             $this->addError(new BadRequestError('Invalid Parameters', 'Delete requests should not have parameters.'));
@@ -72,7 +67,7 @@ class SiteDeleteAction extends AbstractJsonApiAction
         }
     }
 
-    protected function performAction()
+    protected function performAction() : void
     {
         try {
             $this->em->remove($this->data);
@@ -83,7 +78,7 @@ class SiteDeleteAction extends AbstractJsonApiAction
         }
     }
 
-    protected function createResponse()
+    protected function createResponse() : void
     {
         $this->response = new JsonApiResponse(null, 204);
     }

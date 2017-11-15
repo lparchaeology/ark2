@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK JSON:API Serializer
+ * ARK JSON:API Serializer.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -21,16 +21,14 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Api\JsonApi\Serializer;
 
-use ARK\Model\Item\Item;
 use Tobscure\JsonApi\AbstractSerializer;
 use Tobscure\JsonApi\Collection;
 use Tobscure\JsonApi\Relationship;
@@ -56,7 +54,7 @@ class ItemSerializer extends AbstractSerializer
     {
         $attributes = [];
         foreach ($item->properties() as $property) {
-            if (!$fields or in_array($property->name(), $fields)) {
+            if (!$fields or in_array($property->name(), $fields, true)) {
                 $attributes[$property->name()] = $property->serialize();
             }
         }
@@ -73,26 +71,26 @@ class ItemSerializer extends AbstractSerializer
     public function getRelationship($item, $name)
     {
         foreach ($item->submodules() as $submodule) {
-            if ($submodule->type() == $name) {
-                return new Relationship(new Collection($submodule->items(), new ItemSerializer()));
+            if ($submodule->type() === $name) {
+                return new Relationship(new Collection($submodule->items(), new self()));
             }
         }
         foreach ($item->relationships() as $relationship) {
-            if ($relationship->type() == $name) {
-                return new Relationship(new Collection($relationship->items(), new ItemSerializer()));
+            if ($relationship->type() === $name) {
+                return new Relationship(new Collection($relationship->items(), new self()));
             }
         }
     }
 
     public function getRelationships($item)
     {
-        $relationships = array();
+        $relationships = [];
         return $relationships;
         foreach ($item->submodules() as $submodule) {
-            $relationships[] = new Relationship(new Collection($submodule->items(), new ItemSerializer()));
+            $relationships[] = new Relationship(new Collection($submodule->items(), new self()));
         }
         foreach ($item->relationships() as $relationship) {
-            $relationships[] = new Relationship(new Collection($relationship->items(), new ItemSerializer()));
+            $relationships[] = new Relationship(new Collection($relationship->items(), new self()));
         }
         return $relationships;
     }

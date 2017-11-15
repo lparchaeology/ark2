@@ -29,14 +29,14 @@
 
 namespace ARK\Api\JsonApi\Http;
 
+use ARK\Api\JsonApi\Error\BadRequestError;
+use ARK\Api\JsonApi\Error\NotAcceptableError;
+use ARK\Api\JsonApi\Error\UnrecognizedParamaterError;
+use ARK\Api\JsonApi\Error\UnsupportedMediaTypeError;
 use ARK\Api\JsonApi\JsonApiException;
 use ARK\Api\JsonApi\JsonSchemaTrait;
 use ARK\Error\ErrorBag;
 use ARK\Framework\Application;
-use ARK\Http\Error\BadRequestError;
-use ARK\Http\Error\NotAcceptableError;
-use ARK\Http\Error\UnrecognizedParamaterError;
-use ARK\Http\Error\UnsupportedMediaTypeError;
 use Symfony\Component\HttpFoundation\Request;
 
 class JsonApiRequest extends Request

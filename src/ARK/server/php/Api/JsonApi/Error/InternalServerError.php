@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK HTTP Not Acceptable Error
+ * ARK API Error.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -21,26 +21,29 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Http\Error;
+namespace ARK\Api\JsonApi\Error;
 
 use ARK\Error\Error;
 
-class NotAcceptableError extends Error
+class InternalServerError extends Error
 {
-    public function __construct(/*string*/ $mediaType)
+    public function __construct(/*string*/ $code = null, /*string*/ $title = null, /*string*/ $detail = null)
     {
-        parent::__construct(
-            'NOT_ACCEPTABLE',
-            'Not Acceptable',
-            "Required Accept Header = application/vnd.api+json. Provided Accept Header = ".$mediaType,
-            406
-        );
+        if (!$code) {
+            $code = 'INTERNAL_SERVER_ERROR';
+        }
+        if (!$title) {
+            $title = 'Internal Server Error';
+        }
+        if (!$detail) {
+            $detail = 'Unknown Internal Server Error';
+        }
+        parent::__construct($code, $title, $detail, 500);
     }
 }

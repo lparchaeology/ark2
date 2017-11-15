@@ -21,23 +21,22 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Api\JsonApi\Action;
 
+use ARK\Api\JsonApi\Error\BadRequestError;
+use ARK\Api\JsonApi\Error\InternalServerError;
 use ARK\Api\JsonApi\Http\JsonApiRequest;
 use ARK\Api\JsonApi\Http\JsonApiResponse;
 use ARK\Api\JsonApi\JsonApiException;
 use ARK\Api\JsonApi\Resource\ItemResource;
 use ARK\Database\Database;
 use ARK\Framework\Application;
-use ARK\Http\Error\BadRequestError;
-use ARK\Http\Error\InternalServerError;
 use ARK\Model\Item\Item;
 use ARK\Model\Module\Module;
 use Exception;

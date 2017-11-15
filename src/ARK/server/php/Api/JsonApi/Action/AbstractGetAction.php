@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK JSON:API Action
+ * ARK JSON:API Action.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -21,19 +21,18 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Api\JsonApi\Action;
 
+use ARK\Api\JsonApi\Error\NotFoundError;
 use ARK\Api\JsonApi\Http\JsonApiResponse;
 use ARK\Api\JsonApi\JsonApiException;
 use ARK\Api\JsonApi\Resource\ItemResource;
-use ARK\Http\Error\NotFoundError;
 use ARK\ORM\ORM;
 use ARK\Service;
 use Tobscure\JsonApi\Document;
@@ -44,7 +43,7 @@ class AbstractGetAction extends AbstractJsonApiAction
     protected $class;
     protected $resource;
 
-    protected function fetchData()
+    protected function fetchData() : void
     {
         $item = ORM::find($this->class, $this->id);
         if (!$item) {
@@ -59,7 +58,7 @@ class AbstractGetAction extends AbstractJsonApiAction
         return ['schema'];
     }
 
-    protected function createResponse()
+    protected function createResponse() : void
     {
         $resource = new ItemResource($this->data, $this->parameters, Service::serializer());
         $document = new Document($resource);

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Exception Notice.
+ * ARK API Error.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,14 +27,19 @@
  * @since      2.0
  */
 
-namespace ARK\Notice;
+namespace ARK\Api\JsonApi\Error;
 
-class NoticeError extends \Error implements Notify
+use ARK\Error\Error;
+
+class MethodNotAllowedError extends Error
 {
-    use NoticeTrait;
-
-    public function __construct(\Throwable $previous = null)
+    public function __construct(/*string*/ $method)
     {
-        parent::__construct($this->keyword(), $this->code(), $previous);
+        parent::__construct(
+            'METHOD_NOT_ALLOWED',
+            'Method Not Allowed',
+            'The '.$method.' method is not allowed.',
+            405
+        );
     }
 }

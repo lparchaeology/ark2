@@ -30,7 +30,6 @@
 namespace ARK\Security;
 
 use ARK\Actor\Actor;
-use ARK\Error\ErrorException;
 use ARK\Framework\Application;
 use ARK\Model\Attribute;
 use ARK\Model\Item;
@@ -42,6 +41,7 @@ use ARK\Workflow\Security\ActorUser;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 class Security
@@ -138,7 +138,7 @@ class Security
     {
         $errors = $this->app['password.validate']->validate($plainPassword, $this->app['password.validator.constraint']);
         if (count($errors) > 0) {
-            throw ErrorException();
+            throw BadCredentialsException();
         }
         return true;
     }

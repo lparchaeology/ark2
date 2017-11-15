@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Unsupported Media Type Error
+ * ARK HTTP Internal Server Error.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,20 +28,15 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Http\Error;
+namespace ARK\Http\Exception;
 
 use ARK\Error\Error;
-use ARK\Http\Error\UnsupportedMediaTypeError;
+use Symfony\Component\HttpKernel\Exception\HttpException as HttpKernelException;
 
-class UnsupportedMediaTypeError extends Error
+abstract class HttpException extends HttpKernelException
 {
-    public function __construct(/*string*/ $mediaType)
+    public function __construct($key, $status, $message = null, \Exception $previous = null, $code = 0)
     {
-        parent::__construct(
-            'UNSUPPORTED_MEDIA_TYPE',
-            'Unsupported Media Type',
-            "Required Media Type = application/vnd.api+json. Provided Media Type = ".$mediaType,
-            415
-        );
+        parent::__construct($status, $message, $previous, [], $code);
     }
 }

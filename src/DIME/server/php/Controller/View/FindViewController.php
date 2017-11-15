@@ -29,8 +29,7 @@
 
 namespace DIME\Controller\View;
 
-use ARK\Error\ErrorException;
-use ARK\Http\Error\NotFoundError;
+use ARK\Http\Exception\ItemNotFoundHttpException;
 use ARK\Model\Item;
 use ARK\ORM\ORM;
 use ARK\Service;
@@ -46,7 +45,7 @@ class FindViewController extends DimeFormController
         $id = $request->attributes->get('id');
         $find = ORM::find(Find::class, $id);
         if (!$find) {
-            throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Find not found', "Find $id not found"));
+            throw new ItemNotFoundHttpException('Find', $id);
         }
         $data['find'] = $find;
         return $data;

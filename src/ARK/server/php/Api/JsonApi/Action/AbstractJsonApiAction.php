@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK JSON:API Action
+ * ARK JSON:API Action.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -21,36 +21,31 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Api\JsonApi\Action;
 
-use ARK\Api\JsonApi\Http\JsonApiRequest;
-use ARK\Api\JsonApi\Http\JsonApiResponse;
+use ARK\Api\JsonApi\Error\InternalServerError;
 use ARK\Api\JsonApi\Http\JsonApiErrorResponse;
+use ARK\Api\JsonApi\Http\JsonApiRequest;
 use ARK\Api\JsonApi\JsonApiException;
 use ARK\Error\Error;
 use ARK\Error\ErrorBag;
 use ARK\Framework\Application;
-use ARK\Http\Error\InternalServerError;
 use ARK\Service;
-use Exception;
-use League\JsonGuard\Validator;
-use Seld\JsonLint\ParsingException;
 
 abstract class AbstractJsonApiAction
 {
-    protected $request = null;
-    protected $parameters = null;
-    protected $data = null;
-    protected $serializer = null;
-    protected $response = null;
-    protected $errors = null;
+    protected $request;
+    protected $parameters;
+    protected $data;
+    protected $serializer;
+    protected $response;
+    protected $errors;
 
     public function __invoke(JsonApiRequest $request)
     {
@@ -79,9 +74,8 @@ abstract class AbstractJsonApiAction
         return $this->response;
     }
 
-    protected function fetchData()
+    protected function fetchData() : void
     {
-        return;
     }
 
     protected function customParameters()
@@ -89,24 +83,20 @@ abstract class AbstractJsonApiAction
         return [];
     }
 
-    protected function validateParameters()
+    protected function validateParameters() : void
     {
-        return;
     }
 
-    protected function validateContent()
+    protected function validateContent() : void
     {
-        return;
     }
 
-    protected function performAction()
+    protected function performAction() : void
     {
-        return;
     }
 
-    protected function createResponse()
+    protected function createResponse() : void
     {
-        return;
     }
 
     protected function getErrors()
@@ -114,22 +104,22 @@ abstract class AbstractJsonApiAction
         return $this->errors;
     }
 
-    protected function setErrors(ErrorBag $errors)
+    protected function setErrors(ErrorBag $errors) : void
     {
         $this->errors->setErrors($errors->getErrors());
     }
 
-    protected function addErrors(ErrorBag $errors)
+    protected function addErrors(ErrorBag $errors) : void
     {
         $this->errors->addErrors($errors->getErrors());
     }
 
-    protected function addError(Error $error)
+    protected function addError(Error $error) : void
     {
         $this->errors->addError($error);
     }
 
-    protected function prependError(Error $error)
+    protected function prependError(Error $error) : void
     {
         $this->errors->prependError($error);
     }

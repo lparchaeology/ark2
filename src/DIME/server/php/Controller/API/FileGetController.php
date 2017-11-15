@@ -29,8 +29,8 @@
 
 namespace DIME\Controller\API;
 
-use ARK\Error\ErrorException;
 use ARK\File\File;
+use ARK\Http\Exception\ItemNotFoundHttpException;
 use ARK\ORM\ORM;
 use ARK\Service;
 use League\Glide\Responses\SymfonyResponseFactory;
@@ -45,7 +45,7 @@ class FileGetController
         // TODO Wrap in a nice neat class or Service call
         $file = ORM::find(File::class, $id);
         if (!$file) {
-            throw new ErrorException(new NotFoundError('FILE_NOT_FOUND', 'File not found', "File $id not found"));
+            throw new ItemNotFoundHttpException('File', $id);
         }
         $factory = new SymfonyResponseFactory($request);
         $response = $factory->create(Service::filesystem(), $file->path());

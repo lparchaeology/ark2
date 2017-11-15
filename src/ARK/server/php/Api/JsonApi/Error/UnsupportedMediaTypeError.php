@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK HTTP Bad Request Error
+ * ARK API Error.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -21,27 +21,25 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Http\Error;
+namespace ARK\Api\JsonApi\Error;
 
 use ARK\Error\Error;
 
-class BadRequestError extends Error
+class UnsupportedMediaTypeError extends Error
 {
-    public function __construct(/*string*/ $title = null, /*string*/ $detail = null)
+    public function __construct(/*string*/ $mediaType)
     {
-        if (!$title) {
-            $title = 'Bad Request Error';
-        }
-        if (!$detail) {
-            $detail = 'Unknown Bad Request Error';
-        }
-        parent::__construct('BAD_REQUEST', $title, $detail, 400);
+        parent::__construct(
+            'UNSUPPORTED_MEDIA_TYPE',
+            'Unsupported Media Type',
+            'Required Media Type = application/vnd.api+json. Provided Media Type = '.$mediaType,
+            415
+        );
     }
 }

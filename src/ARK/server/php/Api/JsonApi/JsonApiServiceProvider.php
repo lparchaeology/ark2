@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK JSON:API Service Provider
+ * ARK JSON:API Service Provider.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Api\JsonApi;
@@ -38,7 +37,7 @@ use Pimple\ServiceProviderInterface;
 
 class JsonApiServiceProvider implements ServiceProviderInterface
 {
-    public function register(Container $app)
+    public function register(Container $app) : void
     {
         $app['jsonapi.schema'] = function () use ($app) {
             return $app['jsonschema.dereferencer']->dereference('file://../../../schema/json/jsonapi.json');

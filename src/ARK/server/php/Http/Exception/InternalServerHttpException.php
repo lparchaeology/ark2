@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK HTTP Unrecognized Paramater Error
+ * ARK HTTP Internal Server Error.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,20 +28,19 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Http\Error;
+namespace ARK\Http\Exception;
 
 use ARK\Error\Error;
-use ARK\Http\Error\UnrecognizedParamaterError;
+use Exception;
 
-class UnrecognizedParamaterError extends Error
+class InternalServerHttpException extends HttpException
 {
-    public function __construct(/*string*/ $parameter)
-    {
-        parent::__construct(
-            'UNRECOGNIZED_PARAMETER',
-            'Unrecognized Parameter',
-            "Unrecognised parameter = ".$parameter,
-            400
-        );
+    public function __construct(
+        string $key = 'INTERNAL_SERVER_ERROR',
+        String $message = 'Unknown Internal Server Error',
+        Exception $previous = null,
+        int $code = 0
+    ) {
+        parent::__construct($key, 500, $message, $previous, [], $code);
     }
 }

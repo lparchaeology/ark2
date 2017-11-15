@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK JSON:API Request Parameters
+ * ARK JSON:API Request Parameters.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -21,11 +21,10 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Api\JsonApi\Http;
@@ -34,13 +33,13 @@ use ARK\Error\ErrorBag;
 
 class JsonApiParameters
 {
-    protected $paramaters = null;
-    protected $includedRelationships = null;
-    protected $sparseFieldset = null;
-    protected $sortFieldset = null;
-    protected $pagination = null;
-    protected $filters = null;
-    protected $schema = null;
+    protected $paramaters;
+    protected $includedRelationships;
+    protected $sparseFieldset;
+    protected $sortFieldset;
+    protected $pagination;
+    protected $filters;
+    protected $schema;
 
     public function __construct(/*string*/ $path, array $paramaters)
     {
@@ -58,6 +57,131 @@ class JsonApiParameters
         return !empty($this->paramaters);
     }
 
+    public function validateIncludedRelationships(array $availableRelationships, ErrorBag $errors) : void
+    {
+        $this->parseIncludedRelationships();
+        foreach ($this->includedRelationships as $relationship) {
+            if (!in_array($relationship, $availableRelationships, true)) {
+                $errors->addError(new InvalidIncludedRelationshipError($relationship));
+            }
+        }
+    }
+
+    public function hasIncludedRelationships()
+    {
+        $this->parseIncludedRelationships();
+        return !empty($this->includedRelationships);
+    }
+
+    public function isIncludedRelationship($relationship)
+    {
+        $this->parseIncludedRelationships();
+        return in_array($relationship, $this->includedRelationships, true);
+    }
+
+    public function getIncludedRelationships()
+    {
+        $this->parseIncludedRelationships();
+        return $this->includedRelationships;
+    }
+
+    public function validateSparseFieldset($resource, array $resourceFields, ErrorBag $errors) : void
+    {
+        $this->parseSparseFieldset();
+        foreach ($this->sparseFieldset[$resource] as $field) {
+            if (!in_array($field, $resourceFields, true)) {
+                $errors->addError(new InvalidSparseFieldsetError($resource, $field, $resourceFields));
+            }
+        }
+    }
+
+    public function hasSparseFieldset($resource)
+    {
+        $this->parseSparseFieldset();
+        return isset($this->sparseFieldset[$resource]);
+    }
+
+    public function inSparseFieldset($resource, $field)
+    {
+        $this->parseSparseFieldset();
+        return isset($this->sparseFieldset[$resource]) && isset($this->sparseFieldset[$resource][$field]);
+    }
+
+    public function getSparseFieldset($resource)
+    {
+        $this->parseSparseFieldset();
+        return isset($this->sparseFieldset[$resource]) ? array_keys($this->sparseFieldset[$resource]) : [];
+    }
+
+    public function validateSortFieldset(array $resourceFields, ErrorBag $errors) : void
+    {
+        $this->parseSortFieldset();
+        foreach ($this->sortFieldset as $field => $order) {
+            if (!in_array($field, $resourceFields, true)) {
+                $errors->addError(new InvalidSortFieldsetError($field, $resourceFields));
+            }
+        }
+    }
+
+    public function hasSortFieldset()
+    {
+        $this->parseSortFieldset();
+        return isset($this->sortFieldset);
+    }
+
+    public function inSortFieldset($field)
+    {
+        $this->parseSortFieldset();
+        return isset($this->sortFieldset[$field]);
+    }
+
+    public function getSortFieldset()
+    {
+        $this->parseSortFieldset();
+        return $this->sortFieldset;
+    }
+
+    public function getSortOrder($field)
+    {
+        if ($this->inSortFieldset($field)) {
+            return $this->sortFieldset[$field];
+        }
+        return null;
+    }
+
+    public function hasPagination()
+    {
+        $this->parsePagination();
+        return !empty($this->pagination);
+    }
+
+    public function getPagination()
+    {
+        $this->parsePagination();
+        return $this->pagination;
+    }
+
+    public function hasFilters()
+    {
+        $this->parseFilters();
+        return !empty($this->filters);
+    }
+
+    public function getFilters()
+    {
+        $this->parseFilters();
+        return $this->filters;
+    }
+
+    public function includeSchema()
+    {
+        if ($this->schema === null) {
+            $param = $this->getParameter('schema');
+            $this->schema = ($param === 'true' ? true : false);
+        }
+        return $this->schema;
+    }
+
     protected function hasParameter($key)
     {
         return isset($this->paramaters[$key]);
@@ -68,7 +192,7 @@ class JsonApiParameters
         return isset($this->paramaters[$key]) ? $this->paramaters[$key] : $default;
     }
 
-    protected function parseIncludedRelationships()
+    protected function parseIncludedRelationships() : void
     {
         if ($this->includedRelationships !== null) {
             return;
@@ -93,35 +217,7 @@ class JsonApiParameters
         }
     }
 
-    public function validateIncludedRelationships(array $availableRelationships, ErrorBag $errors)
-    {
-        $this->parseIncludedRelationships();
-        foreach ($this->includedRelationships as $relationship) {
-            if (!in_array($relationship, $availableRelationships)) {
-                $errors->addError(new InvalidIncludedRelationshipError($relationship));
-            }
-        }
-    }
-
-    public function hasIncludedRelationships()
-    {
-        $this->parseIncludedRelationships();
-        return !empty($this->includedRelationships);
-    }
-
-    public function isIncludedRelationship($relationship)
-    {
-        $this->parseIncludedRelationships();
-        return in_array($relationship, $this->includedRelationships);
-    }
-
-    public function getIncludedRelationships()
-    {
-        $this->parseIncludedRelationships();
-        return $this->includedRelationships;
-    }
-
-    protected function parseSparseFieldset()
+    protected function parseSparseFieldset() : void
     {
         if ($this->sparseFieldset !== null) {
             return;
@@ -133,40 +229,12 @@ class JsonApiParameters
         }
         foreach ($fields as $resource => $included) {
             if ($included && is_string($included)) {
-                $this->sparseFieldset[$resource] = explode(",", $included);
+                $this->sparseFieldset[$resource] = explode(',', $included);
             }
         }
     }
 
-    public function validateSparseFieldset($resource, array $resourceFields, ErrorBag $errors)
-    {
-        $this->parseSparseFieldset();
-        foreach ($this->sparseFieldset[$resource] as $field) {
-            if (!in_array($field, $resourceFields)) {
-                $errors->addError(new InvalidSparseFieldsetError($resource, $field, $resourceFields));
-            }
-        }
-    }
-
-    public function hasSparseFieldset($resource)
-    {
-        $this->parseSparseFieldset();
-        return isset($this->sparseFieldset[$resource]);
-    }
-
-    public function inSparseFieldset($resource, $field)
-    {
-        $this->parseSparseFieldset();
-        return (isset($this->sparseFieldset[$resource]) && isset($this->sparseFieldset[$resource][$field]));
-    }
-
-    public function getSparseFieldset($resource)
-    {
-        $this->parseSparseFieldset();
-        return isset($this->sparseFieldset[$resource]) ? array_keys($this->sparseFieldset[$resource]) : [];
-    }
-
-    protected function parseSortFieldset()
+    protected function parseSortFieldset() : void
     {
         if ($this->sortFieldset !== null) {
             return;
@@ -187,88 +255,19 @@ class JsonApiParameters
         }
     }
 
-    public function validateSortFieldset(array $resourceFields, ErrorBag $errors)
+    protected function parsePagination() : void
     {
-        $this->parseSortFieldset();
-        foreach ($this->sortFieldset as $field => $order) {
-            if (!in_array($field, $resourceFields)) {
-                $errors->addError(new InvalidSortFieldsetError($field, $resourceFields));
-            }
-        }
-    }
-
-    public function hasSortFieldset()
-    {
-        $this->parseSortFieldset();
-        return isset($this->sortFieldset);
-    }
-
-    public function inSortFieldset($field)
-    {
-        $this->parseSortFieldset();
-        return (isset($this->sortFieldset[$field]));
-    }
-
-    public function getSortFieldset()
-    {
-        $this->parseSortFieldset();
-        return $this->sortFieldset;
-    }
-
-    public function getSortOrder($field)
-    {
-        if ($this->inSortFieldset($field)) {
-            return $this->sortFieldset[$field];
-        }
-        return null;
-    }
-
-    protected function parsePagination()
-    {
-        $pagination =  $this->getParameter('page');
+        $pagination = $this->getParameter('page');
         $this->pagination = is_array($pagination) ? $pagination : [];
     }
 
-    public function hasPagination()
-    {
-        $this->parsePagination();
-        return !empty($this->pagination);
-    }
-
-    public function getPagination()
-    {
-        $this->parsePagination();
-        return $this->pagination;
-    }
-
-    protected function parseFilters()
+    protected function parseFilters() : void
     {
         if ($this->filters !== null) {
             return;
         }
         $param = $this->getParameter('filter');
         $this->filters = is_array($param) ? $param : explode(',', $param);
-    }
-
-    public function hasFilters()
-    {
-        $this->parseFilters();
-        return !empty($this->filters);
-    }
-
-    public function getFilters()
-    {
-        $this->parseFilters();
-        return $this->filters;
-    }
-
-    public function includeSchema()
-    {
-        if ($this->schema === null) {
-            $param = $this->getParameter('schema');
-            $this->schema = ($param == 'true' ? true : false);
-        }
-        return $this->schema;
     }
 }
 /*

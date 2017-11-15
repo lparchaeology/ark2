@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK JSON:API Resource
+ * ARK JSON:API Resource.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -21,11 +21,10 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Api\JsonApi\Resource;
@@ -51,7 +50,7 @@ class ItemResource extends Resource
         }
     }
 
-    public function setParameters(JsonApiParameters $parameters)
+    public function setParameters(JsonApiParameters $parameters) : void
     {
         $this->parameters = $parameters;
         $this->includes = $parameters->getIncludedRelationships();

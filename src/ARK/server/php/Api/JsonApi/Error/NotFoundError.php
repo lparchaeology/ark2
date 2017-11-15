@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK HTTP Method Not Allowed Error
+ * ARK API Error.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -21,26 +21,25 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Http\Error;
+namespace ARK\Api\JsonApi\Error;
 
 use ARK\Error\Error;
 
-class MethodNotAllowedError extends Error
+class NotFoundError extends Error
 {
-    public function __construct(/*string*/ $method)
+    public function __construct(/*string*/ $type, /*string*/ $id)
     {
         parent::__construct(
-            'METHOD_NOT_ALLOWED',
-            'Method Not Allowed',
-            'The '.$method.' method is not allowed.',
-            405
+            'NOT_FOUND',
+            'Not Found',
+            'No resource found for type '.$type.' id '.$id.'.',
+            404
         );
     }
 }

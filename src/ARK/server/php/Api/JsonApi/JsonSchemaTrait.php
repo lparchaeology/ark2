@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK JSON:API Schema Trait
+ * ARK JSON:API Schema Trait.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -21,17 +21,16 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Api\JsonApi;
 
+use ARK\Api\JsonApi\Error\InternalServerError;
 use ARK\Error\ErrorBag;
-use ARK\Http\Error\InternalServerError;
 use ARK\Serializer\JsonSchema\ValidationError;
 use League\JsonGuard\Dereferencer;
 use League\JsonGuard\Validator;
@@ -39,7 +38,7 @@ use Seld\JsonLint\JsonParser;
 
 trait JsonSchemaTrait
 {
-    public function lintJson(/*string*/ $json, ErrorBag $errors)
+    public function lintJson(/*string*/ $json, ErrorBag $errors) : void
     {
         try {
             (new JsonParser())->lint($json);
@@ -63,12 +62,12 @@ trait JsonSchemaTrait
         return $schema;
     }
 
-    public function validateJsonString(/*string*/ $jsonString, $schema, ErrorBag $errors)
+    public function validateJsonString(/*string*/ $jsonString, $schema, ErrorBag $errors) : void
     {
         $this->validateJsonDecode(json_decode($jsonString), $schema, $errors);
     }
 
-    public function validateJsonDecode($jsonDecode, $schema, ErrorBag $errors)
+    public function validateJsonDecode($jsonDecode, $schema, ErrorBag $errors) : void
     {
         $validator = new Validator($jsonDecode, $schema);
         if ($validator->fails()) {

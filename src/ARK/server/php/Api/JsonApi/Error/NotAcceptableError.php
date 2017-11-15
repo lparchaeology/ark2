@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Error Bag Exception.
+ * ARK API Error.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,29 +27,19 @@
  * @since      2.0
  */
 
-namespace ARK\Error;
+namespace ARK\Api\JsonApi\Error;
 
-use Exception;
+use ARK\Error\Error;
 
-class ErrorBagException extends Exception
+class NotAcceptableError extends Error
 {
-    protected $bag;
-
-    public function __construct(ErrorBag $bag)
+    public function __construct(/*string*/ $mediaType)
     {
-        parent::_construct();
-        $this->bag = $bag;
-        $this->code = $bag->code();
-        $this->message = 'ErrorBagException';
-    }
-
-    public function statusCode() : int
-    {
-        return $this->bag->statusCode();
-    }
-
-    public function bag() : ErrorBag
-    {
-        return $this->bag;
+        parent::__construct(
+            'NOT_ACCEPTABLE',
+            'Not Acceptable',
+            'Required Accept Header = application/vnd.api+json. Provided Accept Header = '.$mediaType,
+            406
+        );
     }
 }

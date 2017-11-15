@@ -29,6 +29,7 @@
 
 namespace ARK\Database;
 
+use ARK\Http\Exception\InternalServerHttpException;
 use Doctrine\DBAL\Connection as DBALConnection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 
@@ -150,12 +151,12 @@ class Connection extends DBALConnection
                         'idx',
                 ];
                 $rows = [
-                        [
-                                $module,
-                                $parent,
-                                $sequence,
-                                1,
-                        ],
+                    [
+                        $module,
+                        $parent,
+                        $sequence,
+                        1,
+                    ],
                 ];
                 $this->insertRows('ark_sequence', $fields, $rows);
                 $this->insertRows('ark_sequence_lock', $fields, $rows);
@@ -164,11 +165,17 @@ class Connection extends DBALConnection
                 return 1;
             } catch (Exception $e) {
                 $this->rollback();
-                throw new ErrorException(new InternalServerError('DB_SEQUENCE_CREATE', 'Creating index sequence failed', "Creating the index sequence for Module $module Parent $parent Sequence $sequence failed"));
+                throw new InternalServerHttpException(
+                    'DB_SEQUENCE_CREATE',
+                    "Creating the index sequence for Module $module Parent $parent Sequence $sequence failed"
+                );
             }
         }
         if ($seq['max'] && $seq['idx'] >= $seq['max']) {
-            throw new ErrorException(new InternalServerError('DB_SEQUENCE_EXHASTED', 'Index sequence exhausted', "The index sequence for Module $module Parent $parent Sequence $sequence has reached maximum"));
+            throw new InternalServerHttpException(
+                'DB_SEQUENCE_EXHASTED',
+                "The index sequence for Module $module Parent $parent Sequence $sequence has reached maximum"
+            );
         }
         try {
             $sql = '
@@ -199,7 +206,10 @@ class Connection extends DBALConnection
             return $seq['idx'] + 1;
         } catch (Exception $e) {
             $this->data()->rollback();
-            throw new ErrorException(new InternalServerError('DB_SEQUENCE_INCREMENT', 'Increment index sequence failed', "Incrementing the index sequence failed for Module $module Parent $parent Sequence $sequence"));
+            throw new InternalServerHttpException(
+                'DB_SEQUENCE_INCREMENT',
+                "Incrementing the index sequence failed for Module $module Parent $parent Sequence $sequence"
+            );
         }
     }
 }

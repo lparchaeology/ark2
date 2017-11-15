@@ -36,6 +36,7 @@ use ARK\View\Page;
 use ARK\Workflow\Exception\WorkflowException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 abstract class PageController extends Controller
@@ -88,6 +89,7 @@ abstract class PageController extends Controller
         $forms = $page->createFormViews($forms);
         $response = new Response($page->renderView($context, $forms));
         //dump($response);
+        throw new HttpException(500, 'test 500');
         return $response;
     }
 

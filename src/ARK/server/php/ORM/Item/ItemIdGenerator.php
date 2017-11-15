@@ -31,8 +31,7 @@
 
 namespace ARK\ORM\Item;
 
-use ARK\Error\ErrorException;
-use ARK\Http\Error\InternalServerError;
+use ARK\Http\Exception\InternalServerHttpException;
 use ARK\Model\Item;
 use ARK\Service;
 use Doctrine\ORM\EntityManager as DoctrineEntityManager;
@@ -43,11 +42,10 @@ class ItemIdGenerator extends AbstractIdGenerator
     public function generate(DoctrineEntityManager $em, $entity)
     {
         if (!$entity instanceof Item) {
-            throw new ErrorException(new InternalServerError(
+            throw new InternalServerHttpException(
                 'ORM_INVALID_ENTITY',
-                'Invalid Entity for Generator',
                 'Only objects of class Item can use the ItemSequenceGenerator'
-            ));
+            );
         }
         $strategy = $entity->schema()->generator();
         if ($strategy === 'assigned') {
@@ -60,7 +58,10 @@ class ItemIdGenerator extends AbstractIdGenerator
             $parentId = $entity->parent()->id();
             $parent = $this->makeIdentifier($parentModule, '.', $parentId);
         }
-        $index = Service::database()->data()->generateSequence($entity->schema()->module()->id(), $parent, $entity->schema()->sequence());
+        $index = Service::database()->data()->generateSequence(
+            $entity->schema()->module()->id(),
+            $parent, $entity->schema()->sequence()
+        );
         $id = $this->makeIdentifier($parent, '.', $index);
         $label = $this->makeIdentifier($parentId, '_', $index);
         $entity->setId($id, $index, $label);
