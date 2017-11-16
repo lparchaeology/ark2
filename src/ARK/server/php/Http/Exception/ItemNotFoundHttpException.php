@@ -36,6 +36,6 @@ class ItemNotFoundHttpException extends NotFoundHttpException
 {
     public function __construct(string $class, string $id, \Exception $previous = null, $code = 0)
     {
-        parent::__construct("Item $id of class $class not found", $previous, [], $code);
+        parent::__construct("Item $id of class $class not found", $previous, $code);
     }
 }
