@@ -43,6 +43,9 @@ abstract class PageController extends Controller
     public function handleRequest(Request $request) : Response
     {
         $page = $this->buildPage($request);
+        if ($page->pageMode(Service::workflow()->actor()) === 'deny') {
+            throw new AccessDeniedException('core.error.access.denied');
+        }
         $parent = $this->buildView($request);
         $view = $page->buildView($parent);
         if ($view['state']['mode'] === 'deny') {

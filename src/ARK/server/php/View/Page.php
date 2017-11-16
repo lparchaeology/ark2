@@ -85,6 +85,17 @@ class Page extends Element
         return $this->footer;
     }
 
+    public function pageMode(Actor $actor) : string
+    {
+        if ($this->visibility === 'public' || $actor->hasPermission($this->updatePermission())) {
+            return 'edit';
+        }
+        if ($actor->hasPermission($this->readPermission())) {
+            return 'read';
+        }
+        return 'deny';
+    }
+
     public function buildView(iterable $parent = []) : iterable
     {
         //dump('BUILD PAGE VIEW : '.get_class($this).' '.$this->id().' '.$this->name().' '.$this->keyword());
@@ -142,14 +153,9 @@ class Page extends Element
         $state = parent::buildState($data, $state);
 
         $mode = $state['workflow']['mode'];
-        if ($this->visibility !== 'public') {
-            $actor = $state['actor'];
-            if ($mode === 'edit' && !$actor->hasPermission($this->updatePermission())) {
-                $mode = 'view';
-            }
-            if ($mode === 'view' && !$actor->hasPermission($this->readPermission())) {
-                $mode = 'deny';
-            }
+        $actor = $state['actor'];
+        if ($mode === 'edit' && !$actor->hasPermission($this->updatePermission())) {
+            $mode = 'view';
         }
         $state['mode'] = $mode;
         $state['page'] = $this;

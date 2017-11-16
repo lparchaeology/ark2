@@ -14,10 +14,11 @@ class Image extends File
 {
     public function sourcePath(string $preset = null) : string
     {
-        $path = Service::path('img', ['image' => $this->id()]);
+        $paramaters = [];
         if ($preset) {
-            return $path.'?p='.$preset;
+            $paramaters['p'] = $preset;
         }
+        $path = Service::imagePath('file', $this->id(), $paramaters);
         return $path;
     }
 }
