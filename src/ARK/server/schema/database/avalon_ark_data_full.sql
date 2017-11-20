@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6deb4
+-- version 4.7.5
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Oct 15, 2017 at 09:53 PM
--- Server version: 10.1.26-MariaDB-0+deb9u1
--- PHP Version: 7.1.10-1+0~20170929170818.9+stretch~1.gbp501135
+-- Host: localhost
+-- Generation Time: Nov 20, 2017 at 08:01 PM
+-- Server version: 10.2.10-MariaDB
+-- PHP Version: 7.1.11
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -51,7 +51,6 @@ CREATE TABLE `ark_association` (
 
 CREATE TABLE `ark_fragment_blob` (
   `fid` int(11) NOT NULL,
-  `object` int(11) DEFAULT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -59,8 +58,9 @@ CREATE TABLE `ark_fragment_blob` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parameter` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `value` longblob NOT NULL,
-  `span` tinyint(1) NOT NULL DEFAULT '0',
-  `extent` longblob,
+  `span` tinyint(1) NOT NULL DEFAULT 0,
+  `extent` longblob DEFAULT NULL,
+  `object` int(11) DEFAULT NULL,
   `modifier` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `modified` datetime NOT NULL,
   `creator` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -76,7 +76,6 @@ CREATE TABLE `ark_fragment_blob` (
 
 CREATE TABLE `ark_fragment_boolean` (
   `fid` int(11) NOT NULL,
-  `object` int(11) DEFAULT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -84,8 +83,9 @@ CREATE TABLE `ark_fragment_boolean` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parameter` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `value` tinyint(1) NOT NULL,
-  `span` tinyint(1) NOT NULL DEFAULT '0',
+  `span` tinyint(1) NOT NULL DEFAULT 0,
   `extent` tinyint(1) DEFAULT NULL,
+  `object` int(11) DEFAULT NULL,
   `modifier` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `modified` datetime NOT NULL,
   `creator` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -108,7 +108,7 @@ CREATE TABLE `ark_fragment_date` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parameter` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `value` date NOT NULL,
-  `span` tinyint(1) NOT NULL DEFAULT '0',
+  `span` tinyint(1) NOT NULL DEFAULT 0,
   `extent` date DEFAULT NULL,
   `object` int(11) DEFAULT NULL,
   `modifier` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -126,7 +126,6 @@ CREATE TABLE `ark_fragment_date` (
 
 CREATE TABLE `ark_fragment_datetime` (
   `fid` int(11) NOT NULL,
-  `object` int(11) DEFAULT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -134,38 +133,15 @@ CREATE TABLE `ark_fragment_datetime` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parameter` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `value` datetime NOT NULL,
-  `span` tinyint(1) NOT NULL DEFAULT '0',
+  `span` tinyint(1) NOT NULL DEFAULT 0,
   `extent` datetime DEFAULT NULL,
+  `object` int(11) DEFAULT NULL,
   `modifier` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `modified` datetime NOT NULL,
   `creator` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created` datetime NOT NULL,
   `version` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `ark_fragment_datetime`
---
-
-INSERT INTO `ark_fragment_datetime` (`fid`, `object`, `module`, `item`, `attribute`, `datatype`, `format`, `parameter`, `value`, `span`, `extent`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
-(1, 8, 'file', '4', 'created', 'datetime', NULL, 'UTC', '2017-09-27 08:20:58', 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
-(2, 8, 'file', '4', 'modified', 'datetime', NULL, 'UTC', '2017-09-27 08:20:58', 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
-(3, NULL, 'event', '1', 'occurred', 'datetime', NULL, 'UTC', '2017-09-27 08:20:59', 0, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
-(4, NULL, 'message', '1', 'sent', 'datetime', NULL, 'UTC', '2017-09-27 08:20:59', 0, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
-(5, NULL, 'event', '3', 'occurred', 'datetime', NULL, 'UTC', '2017-10-09 19:54:35', 0, NULL, 'sysadmin', '2017-10-09 19:54:35', 'sysadmin', '2017-10-09 19:54:35', ''),
-(6, NULL, 'message', '3', 'sent', 'datetime', NULL, 'UTC', '2017-10-09 19:54:35', 0, NULL, 'sysadmin', '2017-10-09 19:54:35', 'sysadmin', '2017-10-09 19:54:35', ''),
-(7, NULL, 'event', '4', 'occurred', 'datetime', NULL, 'UTC', '2017-10-09 19:56:12', 0, NULL, 'sysadmin', '2017-10-09 19:56:12', 'sysadmin', '2017-10-09 19:56:12', ''),
-(8, NULL, 'message', '4', 'sent', 'datetime', NULL, 'UTC', '2017-10-09 19:56:12', 0, NULL, 'sysadmin', '2017-10-09 19:56:12', 'sysadmin', '2017-10-09 19:56:12', ''),
-(9, NULL, 'event', '5', 'occurred', 'datetime', NULL, 'UTC', '2017-10-09 19:56:24', 0, NULL, 'sysadmin', '2017-10-09 19:56:24', 'sysadmin', '2017-10-09 19:56:24', ''),
-(10, NULL, 'message', '5', 'sent', 'datetime', NULL, 'UTC', '2017-10-09 19:56:24', 0, NULL, 'sysadmin', '2017-10-09 19:56:24', 'sysadmin', '2017-10-09 19:56:24', ''),
-(11, 16, 'file', '7', 'created', 'datetime', NULL, 'UTC', '2017-10-09 20:01:37', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
-(12, 16, 'file', '7', 'modified', 'datetime', NULL, 'UTC', '2017-10-09 20:01:37', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
-(13, NULL, 'event', '6', 'occurred', 'datetime', NULL, 'UTC', '2017-10-09 20:01:37', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
-(14, NULL, 'message', '6', 'sent', 'datetime', NULL, 'UTC', '2017-10-09 20:01:37', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
-(15, NULL, 'event', '7', 'occurred', 'datetime', NULL, 'UTC', '2017-10-09 20:23:34', 0, NULL, 'sysadmin', '2017-10-09 20:23:34', 'sysadmin', '2017-10-09 20:23:34', ''),
-(16, NULL, 'message', '7', 'sent', 'datetime', NULL, 'UTC', '2017-10-09 20:23:34', 0, NULL, 'sysadmin', '2017-10-09 20:23:34', 'sysadmin', '2017-10-09 20:23:34', ''),
-(17, NULL, 'event', '8', 'occurred', 'datetime', NULL, 'UTC', '2017-10-09 20:23:56', 0, NULL, 'sysadmin', '2017-10-09 20:23:56', 'sysadmin', '2017-10-09 20:23:56', ''),
-(18, NULL, 'message', '8', 'sent', 'datetime', NULL, 'UTC', '2017-10-09 20:23:56', 0, NULL, 'sysadmin', '2017-10-09 20:23:56', 'sysadmin', '2017-10-09 20:23:56', '');
 
 -- --------------------------------------------------------
 
@@ -175,7 +151,6 @@ INSERT INTO `ark_fragment_datetime` (`fid`, `object`, `module`, `item`, `attribu
 
 CREATE TABLE `ark_fragment_decimal` (
   `fid` int(11) NOT NULL,
-  `object` int(11) DEFAULT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -183,8 +158,9 @@ CREATE TABLE `ark_fragment_decimal` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parameter` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `value` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `span` tinyint(1) NOT NULL DEFAULT '0',
+  `span` tinyint(1) NOT NULL DEFAULT 0,
   `extent` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `object` int(11) DEFAULT NULL,
   `modifier` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `modified` datetime NOT NULL,
   `creator` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -200,7 +176,6 @@ CREATE TABLE `ark_fragment_decimal` (
 
 CREATE TABLE `ark_fragment_float` (
   `fid` int(11) NOT NULL,
-  `object` int(11) DEFAULT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -208,8 +183,9 @@ CREATE TABLE `ark_fragment_float` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parameter` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `value` double NOT NULL,
-  `span` tinyint(1) NOT NULL DEFAULT '0',
+  `span` tinyint(1) NOT NULL DEFAULT 0,
   `extent` double DEFAULT NULL,
+  `object` int(11) DEFAULT NULL,
   `modifier` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `modified` datetime NOT NULL,
   `creator` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -225,7 +201,6 @@ CREATE TABLE `ark_fragment_float` (
 
 CREATE TABLE `ark_fragment_integer` (
   `fid` int(11) NOT NULL,
-  `object` int(11) DEFAULT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -233,22 +208,15 @@ CREATE TABLE `ark_fragment_integer` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parameter` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `value` bigint(20) NOT NULL,
-  `span` tinyint(1) NOT NULL DEFAULT '0',
+  `span` tinyint(1) NOT NULL DEFAULT 0,
   `extent` bigint(20) DEFAULT NULL,
+  `object` int(11) DEFAULT NULL,
   `modifier` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `modified` datetime NOT NULL,
   `creator` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created` datetime NOT NULL,
   `version` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `ark_fragment_integer`
---
-
-INSERT INTO `ark_fragment_integer` (`fid`, `object`, `module`, `item`, `attribute`, `datatype`, `format`, `parameter`, `value`, `span`, `extent`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
-(1, 8, 'file', '4', 'sequence', 'integer', NULL, NULL, 20170927082058, 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
-(2, 16, 'file', '7', 'sequence', 'integer', NULL, NULL, 20171009200137, 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', '');
 
 -- --------------------------------------------------------
 
@@ -258,7 +226,6 @@ INSERT INTO `ark_fragment_integer` (`fid`, `object`, `module`, `item`, `attribut
 
 CREATE TABLE `ark_fragment_item` (
   `fid` int(11) NOT NULL,
-  `object` int(11) DEFAULT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -266,49 +233,15 @@ CREATE TABLE `ark_fragment_item` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parameter` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `value` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `span` tinyint(1) NOT NULL DEFAULT '0',
+  `span` tinyint(1) NOT NULL DEFAULT 0,
   `extent` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `object` int(11) DEFAULT NULL,
   `modifier` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `modified` datetime NOT NULL,
   `creator` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created` datetime NOT NULL,
   `version` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `ark_fragment_item`
---
-
-INSERT INTO `ark_fragment_item` (`fid`, `object`, `module`, `item`, `attribute`, `datatype`, `format`, `parameter`, `value`, `span`, `extent`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
-(1, NULL, 'actor', 'sysadmin', 'avatar', 'item', NULL, 'file', '4', 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
-(2, NULL, 'event', '1', 'agents', 'item', NULL, 'actor', 'anonymous', 0, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
-(3, NULL, 'event', '1', 'subject', 'item', NULL, 'actor', 'sysadmin', 0, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
-(4, NULL, 'message', '1', 'sender', 'item', NULL, 'actor', 'anonymous', 0, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
-(5, NULL, 'message', '1', 'event', 'item', NULL, 'event', '1', 0, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
-(6, NULL, 'event', '3', 'agents', 'item', NULL, 'actor', 'sysadmin', 0, NULL, 'sysadmin', '2017-10-09 19:54:35', 'sysadmin', '2017-10-09 19:54:35', ''),
-(7, NULL, 'event', '3', 'subject', 'item', NULL, 'context', '4', 0, NULL, 'sysadmin', '2017-10-09 19:54:35', 'sysadmin', '2017-10-09 19:54:35', ''),
-(8, NULL, 'message', '3', 'sender', 'item', NULL, 'actor', 'sysadmin', 0, NULL, 'sysadmin', '2017-10-09 19:54:35', 'sysadmin', '2017-10-09 19:54:35', ''),
-(9, NULL, 'message', '3', 'event', 'item', NULL, 'event', '3', 0, NULL, 'sysadmin', '2017-10-09 19:54:35', 'sysadmin', '2017-10-09 19:54:35', ''),
-(10, NULL, 'event', '4', 'agents', 'item', NULL, 'actor', 'sysadmin', 0, NULL, 'sysadmin', '2017-10-09 19:56:12', 'sysadmin', '2017-10-09 19:56:12', ''),
-(11, NULL, 'event', '4', 'subject', 'item', NULL, 'context', '4', 0, NULL, 'sysadmin', '2017-10-09 19:56:12', 'sysadmin', '2017-10-09 19:56:12', ''),
-(12, NULL, 'message', '4', 'sender', 'item', NULL, 'actor', 'sysadmin', 0, NULL, 'sysadmin', '2017-10-09 19:56:12', 'sysadmin', '2017-10-09 19:56:12', ''),
-(13, NULL, 'message', '4', 'event', 'item', NULL, 'event', '4', 0, NULL, 'sysadmin', '2017-10-09 19:56:12', 'sysadmin', '2017-10-09 19:56:12', ''),
-(14, NULL, 'event', '5', 'agents', 'item', NULL, 'actor', 'sysadmin', 0, NULL, 'sysadmin', '2017-10-09 19:56:24', 'sysadmin', '2017-10-09 19:56:24', ''),
-(15, NULL, 'event', '5', 'subject', 'item', NULL, 'context', '4', 0, NULL, 'sysadmin', '2017-10-09 19:56:24', 'sysadmin', '2017-10-09 19:56:24', ''),
-(16, NULL, 'message', '5', 'sender', 'item', NULL, 'actor', 'sysadmin', 0, NULL, 'sysadmin', '2017-10-09 19:56:24', 'sysadmin', '2017-10-09 19:56:24', ''),
-(17, NULL, 'message', '5', 'event', 'item', NULL, 'event', '5', 0, NULL, 'sysadmin', '2017-10-09 19:56:24', 'sysadmin', '2017-10-09 19:56:24', ''),
-(19, NULL, 'event', '6', 'agents', 'item', NULL, 'actor', 'sysadmin', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
-(20, NULL, 'event', '6', 'subject', 'item', NULL, 'context', '4', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
-(21, NULL, 'message', '6', 'sender', 'item', NULL, 'actor', 'sysadmin', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
-(22, NULL, 'message', '6', 'event', 'item', NULL, 'event', '6', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
-(23, NULL, 'event', '7', 'agents', 'item', NULL, 'actor', 'sysadmin', 0, NULL, 'sysadmin', '2017-10-09 20:23:34', 'sysadmin', '2017-10-09 20:23:34', ''),
-(24, NULL, 'event', '7', 'subject', 'item', NULL, 'context', '4', 0, NULL, 'sysadmin', '2017-10-09 20:23:34', 'sysadmin', '2017-10-09 20:23:34', ''),
-(25, NULL, 'message', '7', 'sender', 'item', NULL, 'actor', 'sysadmin', 0, NULL, 'sysadmin', '2017-10-09 20:23:34', 'sysadmin', '2017-10-09 20:23:34', ''),
-(26, NULL, 'message', '7', 'event', 'item', NULL, 'event', '7', 0, NULL, 'sysadmin', '2017-10-09 20:23:34', 'sysadmin', '2017-10-09 20:23:34', ''),
-(27, NULL, 'event', '8', 'agents', 'item', NULL, 'actor', 'sysadmin', 0, NULL, 'sysadmin', '2017-10-09 20:23:56', 'sysadmin', '2017-10-09 20:23:56', ''),
-(28, NULL, 'event', '8', 'subject', 'item', NULL, 'context', '4', 0, NULL, 'sysadmin', '2017-10-09 20:23:56', 'sysadmin', '2017-10-09 20:23:56', ''),
-(29, NULL, 'message', '8', 'sender', 'item', NULL, 'actor', 'sysadmin', 0, NULL, 'sysadmin', '2017-10-09 20:23:56', 'sysadmin', '2017-10-09 20:23:56', ''),
-(30, NULL, 'message', '8', 'event', 'item', NULL, 'event', '8', 0, NULL, 'sysadmin', '2017-10-09 20:23:56', 'sysadmin', '2017-10-09 20:23:56', '');
 
 -- --------------------------------------------------------
 
@@ -318,7 +251,6 @@ INSERT INTO `ark_fragment_item` (`fid`, `object`, `module`, `item`, `attribute`,
 
 CREATE TABLE `ark_fragment_object` (
   `fid` int(11) NOT NULL,
-  `object` int(11) DEFAULT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -326,8 +258,9 @@ CREATE TABLE `ark_fragment_object` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parameter` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `value` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `span` tinyint(1) NOT NULL DEFAULT '0',
+  `span` tinyint(1) NOT NULL DEFAULT 0,
   `extent` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `object` int(11) DEFAULT NULL,
   `modifier` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `modified` datetime NOT NULL,
   `creator` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -339,12 +272,8 @@ CREATE TABLE `ark_fragment_object` (
 -- Dumping data for table `ark_fragment_object`
 --
 
-INSERT INTO `ark_fragment_object` (`fid`, `object`, `module`, `item`, `attribute`, `datatype`, `format`, `parameter`, `value`, `span`, `extent`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
-(7, NULL, 'actor', 'sysadmin', 'address', 'object', NULL, NULL, '', 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
-(8, NULL, 'file', '4', 'versions', 'object', NULL, NULL, '', 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
-(9, NULL, 'message', '1', 'recipients', 'object', NULL, NULL, '', 0, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
-(10, NULL, 'message', '1', 'recipients', 'object', NULL, NULL, '', 0, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
-(16, NULL, 'file', '7', 'versions', 'object', NULL, NULL, '', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', '');
+INSERT INTO `ark_fragment_object` (`fid`, `module`, `item`, `attribute`, `datatype`, `format`, `parameter`, `value`, `span`, `extent`, `object`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
+(7, 'actor', 'sysadmin', 'address', 'object', NULL, NULL, '', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', '');
 
 -- --------------------------------------------------------
 
@@ -354,7 +283,6 @@ INSERT INTO `ark_fragment_object` (`fid`, `object`, `module`, `item`, `attribute
 
 CREATE TABLE `ark_fragment_spatial` (
   `fid` int(11) NOT NULL,
-  `object` int(11) DEFAULT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -362,8 +290,9 @@ CREATE TABLE `ark_fragment_spatial` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'wkt',
   `parameter` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '4326',
   `value` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `span` tinyint(1) NOT NULL DEFAULT '0',
-  `extent` longtext COLLATE utf8mb4_unicode_ci,
+  `span` tinyint(1) NOT NULL DEFAULT 0,
+  `extent` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `object` int(11) DEFAULT NULL,
   `modifier` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `modified` datetime NOT NULL,
   `creator` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -379,7 +308,6 @@ CREATE TABLE `ark_fragment_spatial` (
 
 CREATE TABLE `ark_fragment_string` (
   `fid` int(11) NOT NULL,
-  `object` int(11) DEFAULT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -387,8 +315,9 @@ CREATE TABLE `ark_fragment_string` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parameter` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `value` varchar(4000) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `span` tinyint(1) NOT NULL DEFAULT '0',
+  `span` tinyint(1) NOT NULL DEFAULT 0,
   `extent` varchar(4000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `object` int(11) DEFAULT NULL,
   `modifier` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `modified` datetime NOT NULL,
   `creator` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -400,76 +329,18 @@ CREATE TABLE `ark_fragment_string` (
 -- Dumping data for table `ark_fragment_string`
 --
 
-INSERT INTO `ark_fragment_string` (`fid`, `object`, `module`, `item`, `attribute`, `datatype`, `format`, `parameter`, `value`, `span`, `extent`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
-(1, NULL, 'actor', 'anonymous', 'id', 'string', NULL, NULL, 'anonymous', 0, NULL, 'core', '2017-09-06 00:00:00', 'core', '2017-09-06 00:00:00', NULL),
-(2, NULL, 'actor', 'anonymous', 'class', 'string', NULL, 'core.actor.class', 'person', 0, NULL, 'core', '2017-09-06 00:00:00', 'core', '2017-09-06 00:00:00', NULL),
-(3, NULL, 'actor', 'sysadmin', 'class', 'string', NULL, 'core.actor.class', 'person', 0, NULL, 'anonymous', '2017-09-27 08:20:57', 'anonymous', '2017-09-27 08:20:57', ''),
-(4, 7, 'actor', 'sysadmin', 'city', 'string', NULL, NULL, 'London', 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
-(5, 7, 'actor', 'sysadmin', 'country', 'string', NULL, 'country', 'GB', 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
-(6, 7, 'actor', 'sysadmin', 'postcode', 'string', NULL, NULL, 'E1 6QL', 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
-(7, 7, 'actor', 'sysadmin', 'street', 'string', NULL, NULL, '1 Brick Lane', 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
-(8, NULL, 'actor', 'sysadmin', 'telephone', 'string', NULL, NULL, '123456', 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
-(9, NULL, 'file', '4', 'class', 'string', NULL, 'core.file.class', 'image', 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
-(10, NULL, 'file', '4', 'mediatype', 'string', NULL, 'mediatype', 'image/png', 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
-(11, NULL, 'file', '4', 'id', 'string', NULL, NULL, '4', 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
-(12, 8, 'file', '4', 'path', 'string', NULL, NULL, 'image/0/4.20170927082058.png', 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
-(13, 8, 'file', '4', 'name', 'string', NULL, NULL, 'Screen Shot 2017-09-06 at 09.52.15.png', 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
-(14, 8, 'file', '4', 'extension', 'string', NULL, NULL, 'png', 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
-(15, 8, 'file', '4', 'version', 'string', NULL, NULL, '2017-09-27 08:20:58', 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
-(16, 8, 'file', '4', 'creator', 'string', NULL, NULL, 'anonymous', 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
-(17, 8, 'file', '4', 'modifier', 'string', NULL, NULL, 'anonymous', 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
-(18, NULL, 'actor', 'sysadmin', 'id', 'string', NULL, NULL, 'sysadmin', 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
-(19, NULL, 'actor', 'sysadmin', 'email', 'string', NULL, NULL, 'sysadmin@lparchaeology.com', 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
-(20, NULL, 'event', '1', 'class', 'string', NULL, 'core.event.class', 'registered', 0, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
-(21, NULL, 'event', '1', 'id', 'string', NULL, NULL, '1', 0, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
-(22, NULL, 'actor', 'sysadmin', 'status', 'string', NULL, 'core.security.status', 'registered', 0, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
-(23, NULL, 'message', '1', 'class', 'string', NULL, 'core.message.class', 'notification', 0, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
-(24, 9, 'message', '1', 'status', 'string', NULL, 'core.message.recipient.status', 'unread', 0, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
-(25, 10, 'message', '1', 'role', 'string', NULL, NULL, 'admin', 0, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
-(26, NULL, 'message', '1', 'id', 'string', NULL, NULL, '1', 0, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
-(27, NULL, 'context', '3', 'class', 'string', NULL, 'arch.context.class', 'cut', 0, NULL, 'sysadmin', '2017-10-09 19:43:25', 'sysadmin', '2017-10-09 19:43:25', ''),
-(28, NULL, 'context', '3', 'id', 'string', NULL, NULL, '3', 0, NULL, 'sysadmin', '2017-10-09 19:43:25', 'sysadmin', '2017-10-09 19:43:25', ''),
-(33, NULL, 'event', '3', 'class', 'string', NULL, 'core.event.class', 'edited', 0, NULL, 'sysadmin', '2017-10-09 19:54:35', 'sysadmin', '2017-10-09 19:54:35', ''),
-(34, NULL, 'event', '3', 'id', 'string', NULL, NULL, '3', 0, NULL, 'sysadmin', '2017-10-09 19:54:35', 'sysadmin', '2017-10-09 19:54:35', ''),
-(35, NULL, 'message', '3', 'class', 'string', NULL, 'core.message.class', 'notification', 0, NULL, 'sysadmin', '2017-10-09 19:54:35', 'sysadmin', '2017-10-09 19:54:35', ''),
-(36, NULL, 'message', '3', 'id', 'string', NULL, NULL, '3', 0, NULL, 'sysadmin', '2017-10-09 19:54:35', 'sysadmin', '2017-10-09 19:54:35', ''),
-(39, NULL, 'event', '4', 'class', 'string', NULL, 'core.event.class', 'edited', 0, NULL, 'sysadmin', '2017-10-09 19:56:12', 'sysadmin', '2017-10-09 19:56:12', ''),
-(40, NULL, 'event', '4', 'id', 'string', NULL, NULL, '4', 0, NULL, 'sysadmin', '2017-10-09 19:56:12', 'sysadmin', '2017-10-09 19:56:12', ''),
-(41, NULL, 'message', '4', 'class', 'string', NULL, 'core.message.class', 'notification', 0, NULL, 'sysadmin', '2017-10-09 19:56:12', 'sysadmin', '2017-10-09 19:56:12', ''),
-(42, NULL, 'message', '4', 'id', 'string', NULL, NULL, '4', 0, NULL, 'sysadmin', '2017-10-09 19:56:12', 'sysadmin', '2017-10-09 19:56:12', ''),
-(45, NULL, 'event', '5', 'class', 'string', NULL, 'core.event.class', 'edited', 0, NULL, 'sysadmin', '2017-10-09 19:56:24', 'sysadmin', '2017-10-09 19:56:24', ''),
-(46, NULL, 'event', '5', 'id', 'string', NULL, NULL, '5', 0, NULL, 'sysadmin', '2017-10-09 19:56:24', 'sysadmin', '2017-10-09 19:56:24', ''),
-(47, NULL, 'message', '5', 'class', 'string', NULL, 'core.message.class', 'notification', 0, NULL, 'sysadmin', '2017-10-09 19:56:24', 'sysadmin', '2017-10-09 19:56:24', ''),
-(48, NULL, 'message', '5', 'id', 'string', NULL, NULL, '5', 0, NULL, 'sysadmin', '2017-10-09 19:56:24', 'sysadmin', '2017-10-09 19:56:24', ''),
-(51, NULL, 'file', '7', 'class', 'string', NULL, 'core.file.class', 'image', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
-(52, NULL, 'file', '7', 'mediatype', 'string', NULL, 'mediatype', 'image/jpeg', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
-(53, NULL, 'file', '7', 'id', 'string', NULL, NULL, '7', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
-(54, 16, 'file', '7', 'path', 'string', NULL, NULL, 'image/0/7.20171009200137.JPG', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
-(55, 16, 'file', '7', 'name', 'string', NULL, NULL, 'IMG_0629.JPG', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
-(56, 16, 'file', '7', 'extension', 'string', NULL, NULL, 'JPG', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
-(57, 16, 'file', '7', 'version', 'string', NULL, NULL, '2017-10-09 20:01:37', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
-(58, 16, 'file', '7', 'creator', 'string', NULL, NULL, 'sysadmin', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
-(59, 16, 'file', '7', 'modifier', 'string', NULL, NULL, 'sysadmin', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
-(60, NULL, 'event', '6', 'class', 'string', NULL, 'core.event.class', 'edited', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
-(61, NULL, 'event', '6', 'id', 'string', NULL, NULL, '6', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
-(62, NULL, 'message', '6', 'class', 'string', NULL, 'core.message.class', 'notification', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
-(63, NULL, 'message', '6', 'id', 'string', NULL, NULL, '6', 0, NULL, 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
-(66, NULL, 'event', '7', 'class', 'string', NULL, 'core.event.class', 'edited', 0, NULL, 'sysadmin', '2017-10-09 20:23:34', 'sysadmin', '2017-10-09 20:23:34', ''),
-(67, NULL, 'event', '7', 'id', 'string', NULL, NULL, '7', 0, NULL, 'sysadmin', '2017-10-09 20:23:34', 'sysadmin', '2017-10-09 20:23:34', ''),
-(68, NULL, 'message', '7', 'class', 'string', NULL, 'core.message.class', 'notification', 0, NULL, 'sysadmin', '2017-10-09 20:23:34', 'sysadmin', '2017-10-09 20:23:34', ''),
-(69, NULL, 'message', '7', 'id', 'string', NULL, NULL, '7', 0, NULL, 'sysadmin', '2017-10-09 20:23:34', 'sysadmin', '2017-10-09 20:23:34', ''),
-(70, NULL, 'context', '4', 'id', 'string', NULL, NULL, '4', 0, NULL, 'sysadmin', '2017-10-09 20:23:56', 'sysadmin', '2017-10-09 19:50:01', ''),
-(71, NULL, 'context', '4', 'class', 'string', NULL, 'arch.context.class', 'masonry', 0, NULL, 'sysadmin', '2017-10-09 20:23:56', 'sysadmin', '2017-10-09 19:50:01', ''),
-(72, NULL, 'event', '8', 'class', 'string', NULL, 'core.event.class', 'edited', 0, NULL, 'sysadmin', '2017-10-09 20:23:56', 'sysadmin', '2017-10-09 20:23:56', ''),
-(73, NULL, 'event', '8', 'id', 'string', NULL, NULL, '8', 0, NULL, 'sysadmin', '2017-10-09 20:23:56', 'sysadmin', '2017-10-09 20:23:56', ''),
-(74, NULL, 'message', '8', 'class', 'string', NULL, 'core.message.class', 'notification', 0, NULL, 'sysadmin', '2017-10-09 20:23:56', 'sysadmin', '2017-10-09 20:23:56', ''),
-(75, NULL, 'message', '8', 'id', 'string', NULL, NULL, '8', 0, NULL, 'sysadmin', '2017-10-09 20:23:56', 'sysadmin', '2017-10-09 20:23:56', ''),
-(76, NULL, 'context', '5', 'class', 'string', NULL, 'arch.context.class', 'masonry', 0, NULL, 'sysadmin', '2017-10-09 21:34:10', 'sysadmin', '2017-10-09 21:34:10', ''),
-(77, NULL, 'context', '5', 'id', 'string', NULL, NULL, '5', 0, NULL, 'sysadmin', '2017-10-09 21:34:10', 'sysadmin', '2017-10-09 21:34:10', ''),
-(78, NULL, 'context', '6', 'class', 'string', NULL, 'arch.context.class', 'fill', 0, NULL, 'sysadmin', '2017-10-10 08:54:41', 'sysadmin', '2017-10-10 08:54:41', ''),
-(79, NULL, 'context', '6', 'id', 'string', NULL, NULL, '6', 0, NULL, 'sysadmin', '2017-10-10 08:54:41', 'sysadmin', '2017-10-10 08:54:41', ''),
-(80, NULL, 'context', '7', 'class', 'string', NULL, 'arch.context.class', 'masonry', 0, NULL, 'sysadmin', '2017-10-11 14:21:40', 'sysadmin', '2017-10-11 14:21:40', ''),
-(81, NULL, 'context', '7', 'id', 'string', NULL, NULL, '7', 0, NULL, 'sysadmin', '2017-10-11 14:21:40', 'sysadmin', '2017-10-11 14:21:40', '');
+INSERT INTO `ark_fragment_string` (`fid`, `module`, `item`, `attribute`, `datatype`, `format`, `parameter`, `value`, `span`, `extent`, `object`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
+(1, 'actor', 'anonymous', 'id', 'string', NULL, NULL, 'anonymous', 0, NULL, NULL, 'core', '2017-09-06 00:00:00', 'core', '2017-09-06 00:00:00', NULL),
+(2, 'actor', 'anonymous', 'class', 'string', NULL, 'core.actor.class', 'person', 0, NULL, NULL, 'core', '2017-09-06 00:00:00', 'core', '2017-09-06 00:00:00', NULL),
+(3, 'actor', 'sysadmin', 'class', 'string', NULL, 'core.actor.class', 'person', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:57', 'anonymous', '2017-09-27 08:20:57', ''),
+(4, 'actor', 'sysadmin', 'city', 'string', NULL, NULL, 'London', 0, NULL, 7, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(5, 'actor', 'sysadmin', 'country', 'string', NULL, 'country', 'GB', 0, NULL, 7, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(6, 'actor', 'sysadmin', 'postcode', 'string', NULL, NULL, 'E1 6QL', 0, NULL, 7, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(7, 'actor', 'sysadmin', 'street', 'string', NULL, NULL, '1 Brick Lane', 0, NULL, 7, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(8, 'actor', 'sysadmin', 'telephone', 'string', NULL, NULL, '123456', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(18, 'actor', 'sysadmin', 'id', 'string', NULL, NULL, 'sysadmin', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(19, 'actor', 'sysadmin', 'email', 'string', NULL, NULL, 'sysadmin@lparchaeology.com', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(22, 'actor', 'sysadmin', 'status', 'string', NULL, 'core.security.status', 'registered', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', '');
 
 -- --------------------------------------------------------
 
@@ -479,7 +350,6 @@ INSERT INTO `ark_fragment_string` (`fid`, `object`, `module`, `item`, `attribute
 
 CREATE TABLE `ark_fragment_text` (
   `fid` int(11) NOT NULL,
-  `object` int(11) DEFAULT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -487,8 +357,9 @@ CREATE TABLE `ark_fragment_text` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'text/plain',
   `parameter` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `value` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `span` tinyint(1) NOT NULL DEFAULT '0',
-  `extent` longtext COLLATE utf8mb4_unicode_ci,
+  `span` tinyint(1) NOT NULL DEFAULT 0,
+  `extent` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `object` int(11) DEFAULT NULL,
   `modifier` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `modified` datetime NOT NULL,
   `creator` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -500,21 +371,15 @@ CREATE TABLE `ark_fragment_text` (
 -- Dumping data for table `ark_fragment_text`
 --
 
-INSERT INTO `ark_fragment_text` (`fid`, `object`, `module`, `item`, `attribute`, `datatype`, `format`, `parameter`, `value`, `span`, `extent`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
-(1, NULL, 'actor', 'anonymous', 'fullname', 'text', 'text/plain', 'en', 'Anonymous', 0, NULL, 'core', '2017-09-06 00:00:00', 'core', '2017-09-06 00:00:00', NULL),
-(2, NULL, 'actor', 'anonymous', 'shortname', 'text', 'text/plain', 'en', 'Anon', 0, NULL, 'core', '2017-09-06 00:00:00', 'core', '2017-09-06 00:00:00', NULL),
-(3, NULL, 'actor', 'anonymous', 'initials', 'text', 'text/plain', 'en', 'ANO', 0, NULL, 'core', '2017-09-06 00:00:00', 'core', '2017-09-06 00:00:00', NULL),
-(4, NULL, 'page', 'demo', 'content', 'text', 'text/html', 'en', '<div class=\"container theme-showcase\" role=\"main\">\r\n\r\n<br><br><br><br><br>\r\n\r\n<!-- TEXT STYLING -->\r\n  <div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n      <h3 class=\"panel-title\">Headings &amp; Paragraphs</h3>\r\n    </div>\r\n    <div class=\"panel-body\">\r\n      <div class=\"col-md-6\">\r\n        <h1>Sample heading h1</h1>\r\n        <h2>Sample heading h2</h2>\r\n        <h3>Sample heading h3</h3>\r\n        <h4>Sample heading h4</h4>\r\n        <h5>Sample heading h5</h5>\r\n        <h6>Sample heading h6</h6>\r\n      </div>\r\n\r\n      <div class=\"col-md-6\">\r\n        <p><strong>Paragraph:</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>\r\n        <br>\r\n        <p class=\"small\"><strong>Paragraph Small:</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n<br><br>\r\n<!-- BUTTONS -->\r\n  <div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n      <h3 class=\"panel-title\">BUTTONS</h3>\r\n    </div>\r\n    <div class=\"panel-body\">\r\n      <p>\r\n        <br>\r\n        <button type=\"button\" class=\"btn btn-lg btn-default\">Default</button>\r\n        <button type=\"button\" class=\"btn btn-lg btn-primary\">Primary</button>\r\n        <button type=\"button\" class=\"btn btn-lg btn-danger\">Danger</button>\r\n        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\r\n        <button type=\"button\" class=\"btn btn-lg btn-success\">Success</button>\r\n        <button type=\"button\" class=\"btn btn-lg btn-info\">Info</button>\r\n        <button type=\"button\" class=\"btn btn-lg btn-warning\">Warning</button>\r\n        <button type=\"button\" class=\"btn btn-lg btn-link\">Link</button>\r\n      </p><br>\r\n      <p>\r\n        <button type=\"button\" class=\"btn btn-default\">Default</button>\r\n        <button type=\"button\" class=\"btn btn-primary\">Primary</button>\r\n        <button type=\"button\" class=\"btn btn-danger\">Danger</button>\r\n        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\r\n        <button type=\"button\" class=\"btn btn-success\">Success</button>\r\n        <button type=\"button\" class=\"btn btn-info\">Info</button>\r\n        <button type=\"button\" class=\"btn btn-warning\">Warning</button>\r\n        <button type=\"button\" class=\"btn btn-link\">Link</button>\r\n      </p><br>\r\n      <p>\r\n        <button type=\"button\" class=\"btn btn-sm btn-default\">Default</button>\r\n        <button type=\"button\" class=\"btn btn-sm btn-primary\">Primary</button>\r\n        <button type=\"button\" class=\"btn btn-sm btn-danger\">Danger</button>\r\n        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\r\n        <button type=\"button\" class=\"btn btn-sm btn-success\">Success</button>\r\n        <button type=\"button\" class=\"btn btn-sm btn-info\">Info</button>\r\n        <button type=\"button\" class=\"btn btn-sm btn-warning\">Warning</button>\r\n        <button type=\"button\" class=\"btn btn-sm btn-link\">Link</button>\r\n      </p><br>\r\n    </div>\r\n  </div>\r\n\r\n<br><br>\r\n<!-- TABLE -->\r\n  <div class=\"row\">\r\n    <div class=\"col-md-12\">\r\n      <table class=\"table\">\r\n        <thead>\r\n          <tr>\r\n            <th>Name</th>\r\n            <th>Type</th>\r\n            <th>Registered text</th>\r\n            <th>Subgroup</th>\r\n            <th>Issued to</th>\r\n            <th>Issue date</th>\r\n          </tr>\r\n        </thead>\r\n        <tbody>\r\n          <tr>\r\n            <td><strong>MN012_1</strong></td>\r\n            <td>Deposit</td>\r\n            <td>Ward Boundary-Marker in situ, pre…</td>\r\n            <td>MN012_1421</td>\r\n            <td>Naralie Johnston</td>\r\n            <td>10 Jan, 2016</td>\r\n          </tr>\r\n          <tr>\r\n            <td><strong>MN012_1</strong></td>\r\n            <td>Deposit</td>\r\n            <td>Ward Boundary-Marker in situ, pre…</td>\r\n            <td>MN012_1421</td>\r\n            <td>Naralie Johnston</td>\r\n            <td>10 Jan, 2016</td>\r\n          </tr>\r\n          <tr>\r\n            <td><strong>MN012_1</strong></td>\r\n            <td>Deposit</td>\r\n            <td>Ward Boundary-Marker in situ, pre…</td>\r\n            <td>MN012_1421</td>\r\n            <td>Naralie Johnston</td>\r\n            <td>10 Jan, 2016</td>\r\n          </tr>\r\n          <td><strong>MN012_1</strong></td>\r\n          <td>Deposit</td>\r\n          <td>Ward Boundary-Marker in situ, pre…</td>\r\n          <td>MN012_1421</td>\r\n          <td>Naralie Johnston</td>\r\n          <td>10 Jan, 2016</td>\r\n        </tr>\r\n        <tr>\r\n          <td><strong>MN012_1</strong></td>\r\n          <td>Deposit</td>\r\n          <td>Ward Boundary-Marker in situ, pre…</td>\r\n          <td>MN012_1421</td>\r\n          <td>Naralie Johnston</td>\r\n          <td>10 Jan, 2016</td>\r\n        </tr>\r\n        </tbody>\r\n      </table>\r\n    </div>\r\n  </div>\r\n\r\n<br><br>\r\n<!-- LABELS -->\r\n  <div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n      <h3 class=\"panel-title\">LABELS</h3>\r\n    </div>\r\n    <div class=\"panel-body\">\r\n      <p class=\"text-center\">\r\n        <span class=\"label label-primary\">context</span>\r\n        <span class=\"label label-danger\">find</span>\r\n        <span class=\"label label-warning\">photo</span>\r\n        <span class=\"label label-info\">section</span>\r\n        <span class=\"label label-success\">subgroup</span>\r\n        <span class=\"label label-mustard\">timber</span>\r\n        <span class=\"label label-brown\">sample</span>\r\n        <span class=\"label label-blue\">plan</span>\r\n        <span class=\"label label-default\">default</span>\r\n      </p>\r\n      <br>\r\n      <h4 class=\"text-center\">\r\n        <span class=\"label label-primary\">context</span>\r\n        <span class=\"label label-danger\">find</span>\r\n        <span class=\"label label-warning\">photo</span>\r\n        <span class=\"label label-info\">section</span>\r\n        <span class=\"label label-success\">subgroup</span>\r\n        <span class=\"label label-mustard\">timber</span>\r\n        <span class=\"label label-brown\">sample</span>\r\n        <span class=\"label label-blue\">plan</span>\r\n        <span class=\"label label-default\">default</span>\r\n      </h4>\r\n    </div>\r\n  </div>\r\n\r\n<br><br>\r\n<!-- CARDS -->\r\n  <div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n      <h3 class=\"panel-title\">CARDS</h3>\r\n    </div>\r\n    <div class=\"panel-body\">\r\n      <div class=\"col-md-3\">\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-primary\">context</span>\r\n            <div class=\"image\">\r\n              <img src=\"http://www.dyfedarchaeology.org.uk/nevern/plan.jpg\" class=\"img-responsive\">\r\n            </div>\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">MNO12_1</div>\r\n            <small>\r\n              <p>Type: Deposit</p>\r\n              <p>Registered text: Lorem ipsum dolor sit amet</p>\r\n              <p>Subgroup: MN012_1421</p>\r\n              <p>Issued to: Dan Eddisford</p>\r\n              <p>Issue Date: 14 Jan, 2016</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-info\">section</span>\r\n            <div class=\"image\">\r\n              <img src=\"https://s-media-cache-ak0.pinimg.com/originals/26/1a/5d/261a5dd4c44b81063a9079247455e6f8.jpg\" class=\"img-responsive\" alt=\"\">\r\n            </div>\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">MNO12_1</div>\r\n            <small>\r\n              <p>Registered text: Lorem ipsum dolor sit amet</p>\r\n              <p>Location: TP3</p>\r\n              <p>Context: MNO12_1, MNO12_2, MNO12_4, MNO12_5</p>\r\n              <p>Drawn by: Chriz Harward</p>\r\n              <p>Drawn on: 14 Jan, 2016</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-warning\">photo</span>\r\n            <div class=\"image\">\r\n              <img src=\"http://photos.projects-abroad.co.uk/volunteer-projects/archaeology/archaeology-romania.jpg\" class=\"img-responsive\" alt=\"\">\r\n            </div>\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">MNO12_0001</div>\r\n            <small>\r\n              <p>Type: Deposit</p>\r\n              <p>Registered text: Ward Boundary-Marker in situ, pre demolition 100 Minories</p>\r\n              <p>Subgroup: MN012_1421</p>\r\n              <p>Taken by: Naralie Johnston</p>\r\n              <p>Taken on: 10 Jan, 2016</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"col-md-3\">\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-warning\">photo</span>\r\n            <div class=\"image\">\r\n              <img src=\"http://photos.projects-abroad.co.uk/volunteer-projects/archaeology/archaeology-romania.jpg\" class=\"img-responsive\" alt=\"\">\r\n            </div>\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">MNO12_0001</div>\r\n            <small>\r\n              <p>Type: Deposit</p>\r\n              <p>Registered text: Ward Boundary-Marker in situ, pre demolition 100 Minories</p>\r\n              <p>Subgroup: MN012_1421</p>\r\n              <p>Taken by: Naralie Johnston</p>\r\n              <p>Taken on: 10 Jan, 2016</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-blue\">plan</span>\r\n            <div class=\"image\">\r\n              <img src=\"http://www.sbarch.org.uk/History_SG/Stoke_Park/Stoke_Park_Misc/Rotunda.jpg\" class=\"img-responsive\" alt=\"\">\r\n            </div>\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">MNO12</div>\r\n            <small>\r\n              <p>Type: Object</p>\r\n              <p>Context: MNO12_30</p>\r\n              <p>Register text: Lorem ipusaiydiua dusaydui asyduisay a dsuiyi…</p>\r\n              <p>Object material: N/A</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-danger\">find</span>\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">MNO12_30</div>\r\n            <small>\r\n              <p>Type: Object</p>\r\n              <p>Context: MNO12_30</p>\r\n              <p>Register text: Lorem ipusaiydiua dusaydui asyduisay a dsuiyi…</p>\r\n              <p>Object material: N/A</p>\r\n              <p>Date added: 08 Jan, 2016</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"col-md-3\">\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-success\">subgroup</span>\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">Subgroup Test</div>\r\n            <small>\r\n              <p>Type: Object</p>\r\n              <p>Context: MNO12_30</p>\r\n              <p>Register text: Lorem ipusaiydiua dusaydui asyduisay a dsuiyi…</p>\r\n              <p>Object material: N/A</p>\r\n              <p>Date added: 08 Jan, 2016</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-primary\">context</span>\r\n            <div class=\"image\">\r\n              <img src=\"http://www.dyfedarchaeology.org.uk/nevern/plan.jpg\" class=\"img-responsive\">\r\n            </div>\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">MNO12_1</div>\r\n            <small>\r\n              <p>Type: Deposit</p>\r\n              <p>Registered text: Lorem ipsum dolor sit amet</p>\r\n              <p>Subgroup: MN012_1421</p>\r\n              <p>Issued to: Dan Eddisford</p>\r\n              <p>Issue Date: 14 Jan, 2016</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-warning\">photo</span>\r\n            <div class=\"image\">\r\n              <img src=\"http://photos.projects-abroad.co.uk/volunteer-projects/archaeology/archaeology-romania.jpg\" class=\"img-responsive\" alt=\"\">\r\n            </div>\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">MNO12_0001</div>\r\n            <small>\r\n              <p>Type: Deposit</p>\r\n              <p>Registered text: Ward Boundary-Marker in situ, pre demolition 100 Minories</p>\r\n              <p>Subgroup: MN012_1421</p>\r\n              <p>Taken by: Naralie Johnston</p>\r\n              <p>Taken on: 10 Jan, 2016</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"col-md-3\">\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-brown\">sample</span>\r\n            <img src=\"https://www.york.ac.uk/media/archaeology/images/Colluvial%20deposits%20Mwanga%20smaller.jpg\" class=\"img-responsive\">\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">MNO12_1</div>\r\n            <small>\r\n              <p>Type: Deposit</p>\r\n              <p>Registered text: Lorem ipsum dolor sit amet</p>\r\n              <p>Subgroup: MN012_1421</p>\r\n              <p>Issued to: Dan Eddisford</p>\r\n              <p>Issue Date: 14 Jan, 2016</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-mustard\">timber</span>\r\n            <img src=\"http://www.britannia-archaeology.com/files/9614/3337/3296/North_Fen_Walkway.JPG\" class=\"img-responsive\">\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">MNO12_1</div>\r\n            <small>\r\n              <p>Type: Deposit</p>\r\n              <p>Registered text: Lorem ipsum dolor sit amet</p>\r\n              <p>Subgroup: MN012_1421</p>\r\n              <p>Issued to: Dan Eddisford</p>\r\n              <p>Issue Date: 14 Jan, 2016</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-primary\">context</span>\r\n            <img src=\"https://msu.edu/~aarondan/archaeology_files/image006.jpg\" class=\"img-responsive\">\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">MNO12_1</div>\r\n            <small>\r\n              <p>Type: Deposit</p>\r\n              <p>Registered text: Lorem ipsum dolor sit amet</p>\r\n              <p>Subgroup: MN012_1421</p>\r\n              <p>Issued to: Dan Eddisford</p>\r\n              <p>Issue Date: 14 Jan, 2016</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <div class=\"col-md-12\">\r\n        <p class=\"text-center\">\r\n          <button type=\"button\" class=\"btn btn-lg btn-default\">Load more</button>\r\n          <br><br>\r\n        </p>\r\n\r\n      </div>\r\n\r\n    </div>\r\n  </div>\r\n\r\n<br><br>\r\n<!-- HORIZONTAL PILLS -->\r\n  <div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n      <h3 class=\"panel-title\">Horizontal Pills</h3>\r\n    </div>\r\n    <div class=\"panel-body\">\r\n      <div class=\"col-md-12\">\r\n        <ul class=\"nav nav-pills\">\r\n          <li role=\"presentation\" class=\"active\"><a href=\"#\">Selected Tab</a></li>\r\n          <li role=\"presentation\"><a href=\"#\">Tab Two</a></li>\r\n          <li role=\"presentation\"><a href=\"#\">Tab Three</a></li>\r\n          <li role=\"presentation\"><a href=\"#\">Tab Four</a></li>\r\n          <li role=\"presentation\"><a href=\"#\">Tab Five</a></li>\r\n          <li role=\"presentation\"><a href=\"#\">Tab Six</a></li>\r\n        </ul>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n<!-- VERTICAL PILLS -->\r\n  <div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n      <h3 class=\"panel-title\">Vertical Pills</h3>\r\n    </div>\r\n    <br>\r\n    <div class=\"panel-body\">\r\n      <div class=\"col-md-2\">\r\n        <ul class=\"nav nav-pills nav-stacked nav-pills-stacked-example\">\r\n          <li role=\"presentation\" class=\"active\"><a href=\"#\">All Records</a></li>\r\n          <li role=\"presentation\"><a href=\"#\"><span class=\"label label-primary circle\"></span> &nbsp;Contexts</a></li>\r\n          <li role=\"presentation\"><a href=\"#\"><span class=\"label label-danger circle\"></span> &nbsp;Finds</a></li>\r\n          <li role=\"presentation\"><a href=\"#\"><span class=\"label label-warning circle\"></span> &nbsp;Photos</a></li>\r\n          <li role=\"presentation\"><a href=\"#\"><span class=\"label label-blue circle\"></span>  &nbsp;Plans</a></li>\r\n          <li role=\"presentation\"><a href=\"#\"><span class=\"label label-info circle\"></span> &nbsp;Sections</a></li>\r\n          <li role=\"presentation\"><a href=\"#\"><span class=\"label label-success circle\"></span> &nbsp;Sub-groups</a></li>\r\n          <li role=\"presentation\"><a href=\"#\"><span class=\"label label-mustard circle\"></span>  &nbsp;Timbers</a></li>\r\n          <li role=\"presentation\"><a href=\"#\"><span class=\"label label-brown circle\"></span>  &nbsp;Samples</a></li>\r\n        </ul>\r\n      </div>\r\n      <div class=\"col-md-10\">\r\n        <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\n        </p>\r\n      </div>\r\n    </div>\r\n    <br>\r\n  </div>\r\n\r\n  <div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n      <h3 class=\"panel-title\">Dropdowns & Dropups</h3>\r\n    </div>\r\n    <div class=\"panel-body\">\r\n      <div class=\"col-md-4\">\r\n        <div class=\"dropdown theme-dropdown clearfix\">\r\n          <a id=\"dropdownMenu1\" href=\"#\" class=\"sr-only dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Dropdown <span class=\"caret\"></span></a>\r\n          <ul class=\"dropdown-menu\" aria-labelledby=\"dropdownMenu1\">\r\n            <li class=\"active\"><a href=\"#\">Action</a></li>\r\n            <li><a href=\"#\">Another action</a></li>\r\n            <li><a href=\"#\">Something else here</a></li>\r\n            <li role=\"separator\" class=\"divider\"></li>\r\n            <li><a href=\"#\">Separated link</a></li>\r\n          </ul>\r\n        </div>\r\n\r\n\r\n        <div class=\"dropdown\">\r\n          <button class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"dropdownMenu2\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\r\n            Dropdown\r\n            <span class=\"caret\"></span>\r\n          </button>\r\n          <ul class=\"dropdown-menu\" aria-labelledby=\"dropdownMenu2\">\r\n            <li><a href=\"#\">Action</a></li>\r\n            <li><a href=\"#\">Another action</a></li>\r\n            <li><a href=\"#\">Something else here</a></li>\r\n            <li role=\"separator\" class=\"divider\"></li>\r\n            <li><a href=\"#\">Separated link</a></li>\r\n          </ul>\r\n        </div>\r\n      </div>\r\n      <div class=\"col-md-4\">\r\n        <div class=\"dropdown theme-dropdown clearfix\">\r\n          <a id=\"dropdownMenu1\" href=\"#\" class=\"sr-only dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Dropdown <span class=\"caret\"></span></a>\r\n          <ul class=\"dropdown-menu\" aria-labelledby=\"dropdownMenu1\">\r\n            <li class=\"active\"><a href=\"#\">Action</a></li>\r\n            <li><a href=\"#\">Another action</a></li>\r\n            <li><a href=\"#\">Something else here</a></li>\r\n            <li role=\"separator\" class=\"divider\"></li>\r\n            <li><a href=\"#\">Separated link</a></li>\r\n          </ul>\r\n        </div>\r\n        <div class=\"dropup\">\r\n          <button class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"dropdownMenu2\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\r\n            Dropup\r\n            <span class=\"caret\"></span>\r\n          </button>\r\n          <ul class=\"dropdown-menu\" aria-labelledby=\"dropdownMenu2\">\r\n            <li><a href=\"#\">Action</a></li>\r\n            <li><a href=\"#\">Another action</a></li>\r\n            <li><a href=\"#\">Something else here</a></li>\r\n            <li role=\"separator\" class=\"divider\"></li>\r\n            <li><a href=\"#\">Separated link</a></li>\r\n          </ul>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n\r\n\r\n  <div class=\"page-header\">\r\n    <h1>List groups</h1>\r\n  </div>\r\n  <div class=\"row\">\r\n    <div class=\"col-sm-4\">\r\n      <ul class=\"list-group\">\r\n        <li class=\"list-group-item\">Cras justo odio</li>\r\n        <li class=\"list-group-item\">Dapibus ac facilisis in</li>\r\n        <li class=\"list-group-item\">Morbi leo risus</li>\r\n        <li class=\"list-group-item\">Porta ac consectetur ac</li>\r\n        <li class=\"list-group-item\">Vestibulum at eros</li>\r\n      </ul>\r\n    </div><!-- /.col-sm-4 -->\r\n    <div class=\"col-sm-4\">\r\n      <div class=\"list-group\">\r\n        <a href=\"#\" class=\"list-group-item active\">\r\n          Cras justo odio\r\n        </a>\r\n        <a href=\"#\" class=\"list-group-item\">Dapibus ac facilisis in</a>\r\n        <a href=\"#\" class=\"list-group-item\">Morbi leo risus</a>\r\n        <a href=\"#\" class=\"list-group-item\">Porta ac consectetur ac</a>\r\n        <a href=\"#\" class=\"list-group-item\">Vestibulum at eros</a>\r\n      </div>\r\n    </div><!-- /.col-sm-4 -->\r\n    <div class=\"col-sm-4\">\r\n      <div class=\"list-group\">\r\n        <a href=\"#\" class=\"list-group-item active\">\r\n          <h4 class=\"list-group-item-heading\">List group item heading</h4>\r\n          <p class=\"list-group-item-text\">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>\r\n        </a>\r\n        <a href=\"#\" class=\"list-group-item\">\r\n          <h4 class=\"list-group-item-heading\">List group item heading</h4>\r\n          <p class=\"list-group-item-text\">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>\r\n        </a>\r\n        <a href=\"#\" class=\"list-group-item\">\r\n          <h4 class=\"list-group-item-heading\">List group item heading</h4>\r\n          <p class=\"list-group-item-text\">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>\r\n        </a>\r\n      </div>\r\n    </div><!-- /.col-sm-4 -->\r\n  </div>\r\n\r\n\r\n\r\n  <div class=\"page-header\">\r\n    <h1>Carousel</h1>\r\n  </div>\r\n  <div id=\"carousel-example-generic\" class=\"carousel slide\" data-ride=\"carousel\">\r\n    <ol class=\"carousel-indicators\">\r\n      <li data-target=\"#carousel-example-generic\" data-slide-to=\"0\" class=\"active\"></li>\r\n      <li data-target=\"#carousel-example-generic\" data-slide-to=\"1\"></li>\r\n      <li data-target=\"#carousel-example-generic\" data-slide-to=\"2\"></li>\r\n    </ol>\r\n    <div class=\"carousel-inner\" role=\"listbox\">\r\n      <div class=\"item active\">\r\n        <img src=\"http://anthro.ucsc.edu/images/20091205_CLWHD_arch_dig_0255.jpg?t=0\" alt=\"First slide\">\r\n      </div>\r\n      <div class=\"item\">\r\n        <img src=\"http://anthro.ucsc.edu/images/20091205_CLWHD_arch_dig_0255.jpg?t=0\" alt=\"Second slide\">\r\n      </div>\r\n      <div class=\"item\">\r\n        <img src=\"http://anthro.ucsc.edu/images/20091205_CLWHD_arch_dig_0255.jpg?t=0\" alt=\"Third slide\">\r\n      </div>\r\n    </div>\r\n    <a class=\"left carousel-control\" href=\"#carousel-example-generic\" role=\"button\" data-slide=\"prev\">\r\n      <span class=\"glyphicon glyphicon-chevron-left\" aria-hidden=\"true\"></span>\r\n      <span class=\"sr-only\">Previous</span>\r\n    </a>\r\n    <a class=\"right carousel-control\" href=\"#carousel-example-generic\" role=\"button\" data-slide=\"next\">\r\n      <span class=\"glyphicon glyphicon-chevron-right\" aria-hidden=\"true\"></span>\r\n      <span class=\"sr-only\">Next</span>\r\n    </a>\r\n  </div>\r\n\r\n\r\n</div> <!-- /container -->', 0, NULL, 'core', '2017-09-06 00:00:00', 'core', '2017-09-06 00:00:00', NULL),
-(5, NULL, 'actor', 'sysadmin', 'fullname', 'text', 'text/plain', 'en', 'Sysadmin', 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
-(6, NULL, 'actor', 'sysadmin', 'shortname', 'text', 'text/plain', 'en', 'Sysadmin', 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
-(7, NULL, 'actor', 'sysadmin', 'initials', 'text', 'text/plain', 'en', 'LPA', 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
-(8, NULL, 'actor', 'sysadmin', 'biography', 'text', 'text/plain', 'en', 'Sysadmin', 0, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
-(9, NULL, 'context', '3', 'register', 'text', 'text/plain', 'en', 'A Test Cut', 0, NULL, 'sysadmin', '2017-10-09 19:43:25', 'sysadmin', '2017-10-09 19:43:25', ''),
-(21, NULL, 'context', '4', 'register', 'text', 'text/plain', 'en', 'A skelly mark 234', 0, NULL, 'sysadmin', '2017-10-09 20:23:56', 'sysadmin', '2017-10-09 19:50:01', ''),
-(22, NULL, 'context', '4', 'description', 'text', 'text/plain', 'en', 'fghfghfg', 0, NULL, 'sysadmin', '2017-10-09 20:23:56', 'sysadmin', '2017-10-09 19:54:35', ''),
-(23, NULL, 'context', '5', 'register', 'text', 'text/plain', 'en', 'a mason ry', 0, NULL, 'sysadmin', '2017-10-09 21:34:10', 'sysadmin', '2017-10-09 21:34:10', ''),
-(24, NULL, 'context', '6', 'register', 'text', 'text/plain', 'en', 'fff', 0, NULL, 'sysadmin', '2017-10-10 08:54:41', 'sysadmin', '2017-10-10 08:54:41', ''),
-(25, NULL, 'context', '7', 'register', 'text', 'text/plain', 'en', '123', 0, NULL, 'sysadmin', '2017-10-11 14:21:40', 'sysadmin', '2017-10-11 14:21:40', '');
+INSERT INTO `ark_fragment_text` (`fid`, `module`, `item`, `attribute`, `datatype`, `format`, `parameter`, `value`, `span`, `extent`, `object`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
+(1, 'actor', 'anonymous', 'fullname', 'text', 'text/plain', 'en', 'Anonymous', 0, NULL, NULL, 'core', '2017-09-06 00:00:00', 'core', '2017-09-06 00:00:00', NULL),
+(2, 'actor', 'anonymous', 'shortname', 'text', 'text/plain', 'en', 'Anon', 0, NULL, NULL, 'core', '2017-09-06 00:00:00', 'core', '2017-09-06 00:00:00', NULL),
+(3, 'actor', 'anonymous', 'initials', 'text', 'text/plain', 'en', 'ANO', 0, NULL, NULL, 'core', '2017-09-06 00:00:00', 'core', '2017-09-06 00:00:00', NULL),
+(4, 'page', 'demo', 'content', 'text', 'text/html', 'en', '<div class=\"container theme-showcase\" role=\"main\">\r\n\r\n<br><br><br><br><br>\r\n\r\n<!-- TEXT STYLING -->\r\n  <div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n      <h3 class=\"panel-title\">Headings &amp; Paragraphs</h3>\r\n    </div>\r\n    <div class=\"panel-body\">\r\n      <div class=\"col-md-6\">\r\n        <h1>Sample heading h1</h1>\r\n        <h2>Sample heading h2</h2>\r\n        <h3>Sample heading h3</h3>\r\n        <h4>Sample heading h4</h4>\r\n        <h5>Sample heading h5</h5>\r\n        <h6>Sample heading h6</h6>\r\n      </div>\r\n\r\n      <div class=\"col-md-6\">\r\n        <p><strong>Paragraph:</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>\r\n        <br>\r\n        <p class=\"small\"><strong>Paragraph Small:</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n<br><br>\r\n<!-- BUTTONS -->\r\n  <div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n      <h3 class=\"panel-title\">BUTTONS</h3>\r\n    </div>\r\n    <div class=\"panel-body\">\r\n      <p>\r\n        <br>\r\n        <button type=\"button\" class=\"btn btn-lg btn-default\">Default</button>\r\n        <button type=\"button\" class=\"btn btn-lg btn-primary\">Primary</button>\r\n        <button type=\"button\" class=\"btn btn-lg btn-danger\">Danger</button>\r\n        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\r\n        <button type=\"button\" class=\"btn btn-lg btn-success\">Success</button>\r\n        <button type=\"button\" class=\"btn btn-lg btn-info\">Info</button>\r\n        <button type=\"button\" class=\"btn btn-lg btn-warning\">Warning</button>\r\n        <button type=\"button\" class=\"btn btn-lg btn-link\">Link</button>\r\n      </p><br>\r\n      <p>\r\n        <button type=\"button\" class=\"btn btn-default\">Default</button>\r\n        <button type=\"button\" class=\"btn btn-primary\">Primary</button>\r\n        <button type=\"button\" class=\"btn btn-danger\">Danger</button>\r\n        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\r\n        <button type=\"button\" class=\"btn btn-success\">Success</button>\r\n        <button type=\"button\" class=\"btn btn-info\">Info</button>\r\n        <button type=\"button\" class=\"btn btn-warning\">Warning</button>\r\n        <button type=\"button\" class=\"btn btn-link\">Link</button>\r\n      </p><br>\r\n      <p>\r\n        <button type=\"button\" class=\"btn btn-sm btn-default\">Default</button>\r\n        <button type=\"button\" class=\"btn btn-sm btn-primary\">Primary</button>\r\n        <button type=\"button\" class=\"btn btn-sm btn-danger\">Danger</button>\r\n        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\r\n        <button type=\"button\" class=\"btn btn-sm btn-success\">Success</button>\r\n        <button type=\"button\" class=\"btn btn-sm btn-info\">Info</button>\r\n        <button type=\"button\" class=\"btn btn-sm btn-warning\">Warning</button>\r\n        <button type=\"button\" class=\"btn btn-sm btn-link\">Link</button>\r\n      </p><br>\r\n    </div>\r\n  </div>\r\n\r\n<br><br>\r\n<!-- TABLE -->\r\n  <div class=\"row\">\r\n    <div class=\"col-md-12\">\r\n      <table class=\"table\">\r\n        <thead>\r\n          <tr>\r\n            <th>Name</th>\r\n            <th>Type</th>\r\n            <th>Registered text</th>\r\n            <th>Subgroup</th>\r\n            <th>Issued to</th>\r\n            <th>Issue date</th>\r\n          </tr>\r\n        </thead>\r\n        <tbody>\r\n          <tr>\r\n            <td><strong>MN012_1</strong></td>\r\n            <td>Deposit</td>\r\n            <td>Ward Boundary-Marker in situ, pre…</td>\r\n            <td>MN012_1421</td>\r\n            <td>Naralie Johnston</td>\r\n            <td>10 Jan, 2016</td>\r\n          </tr>\r\n          <tr>\r\n            <td><strong>MN012_1</strong></td>\r\n            <td>Deposit</td>\r\n            <td>Ward Boundary-Marker in situ, pre…</td>\r\n            <td>MN012_1421</td>\r\n            <td>Naralie Johnston</td>\r\n            <td>10 Jan, 2016</td>\r\n          </tr>\r\n          <tr>\r\n            <td><strong>MN012_1</strong></td>\r\n            <td>Deposit</td>\r\n            <td>Ward Boundary-Marker in situ, pre…</td>\r\n            <td>MN012_1421</td>\r\n            <td>Naralie Johnston</td>\r\n            <td>10 Jan, 2016</td>\r\n          </tr>\r\n          <td><strong>MN012_1</strong></td>\r\n          <td>Deposit</td>\r\n          <td>Ward Boundary-Marker in situ, pre…</td>\r\n          <td>MN012_1421</td>\r\n          <td>Naralie Johnston</td>\r\n          <td>10 Jan, 2016</td>\r\n        </tr>\r\n        <tr>\r\n          <td><strong>MN012_1</strong></td>\r\n          <td>Deposit</td>\r\n          <td>Ward Boundary-Marker in situ, pre…</td>\r\n          <td>MN012_1421</td>\r\n          <td>Naralie Johnston</td>\r\n          <td>10 Jan, 2016</td>\r\n        </tr>\r\n        </tbody>\r\n      </table>\r\n    </div>\r\n  </div>\r\n\r\n<br><br>\r\n<!-- LABELS -->\r\n  <div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n      <h3 class=\"panel-title\">LABELS</h3>\r\n    </div>\r\n    <div class=\"panel-body\">\r\n      <p class=\"text-center\">\r\n        <span class=\"label label-primary\">context</span>\r\n        <span class=\"label label-danger\">find</span>\r\n        <span class=\"label label-warning\">photo</span>\r\n        <span class=\"label label-info\">section</span>\r\n        <span class=\"label label-success\">subgroup</span>\r\n        <span class=\"label label-mustard\">timber</span>\r\n        <span class=\"label label-brown\">sample</span>\r\n        <span class=\"label label-blue\">plan</span>\r\n        <span class=\"label label-default\">default</span>\r\n      </p>\r\n      <br>\r\n      <h4 class=\"text-center\">\r\n        <span class=\"label label-primary\">context</span>\r\n        <span class=\"label label-danger\">find</span>\r\n        <span class=\"label label-warning\">photo</span>\r\n        <span class=\"label label-info\">section</span>\r\n        <span class=\"label label-success\">subgroup</span>\r\n        <span class=\"label label-mustard\">timber</span>\r\n        <span class=\"label label-brown\">sample</span>\r\n        <span class=\"label label-blue\">plan</span>\r\n        <span class=\"label label-default\">default</span>\r\n      </h4>\r\n    </div>\r\n  </div>\r\n\r\n<br><br>\r\n<!-- CARDS -->\r\n  <div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n      <h3 class=\"panel-title\">CARDS</h3>\r\n    </div>\r\n    <div class=\"panel-body\">\r\n      <div class=\"col-md-3\">\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-primary\">context</span>\r\n            <div class=\"image\">\r\n              <img src=\"http://www.dyfedarchaeology.org.uk/nevern/plan.jpg\" class=\"img-responsive\">\r\n            </div>\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">MNO12_1</div>\r\n            <small>\r\n              <p>Type: Deposit</p>\r\n              <p>Registered text: Lorem ipsum dolor sit amet</p>\r\n              <p>Subgroup: MN012_1421</p>\r\n              <p>Issued to: Dan Eddisford</p>\r\n              <p>Issue Date: 14 Jan, 2016</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-info\">section</span>\r\n            <div class=\"image\">\r\n              <img src=\"https://s-media-cache-ak0.pinimg.com/originals/26/1a/5d/261a5dd4c44b81063a9079247455e6f8.jpg\" class=\"img-responsive\" alt=\"\">\r\n            </div>\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">MNO12_1</div>\r\n            <small>\r\n              <p>Registered text: Lorem ipsum dolor sit amet</p>\r\n              <p>Location: TP3</p>\r\n              <p>Context: MNO12_1, MNO12_2, MNO12_4, MNO12_5</p>\r\n              <p>Drawn by: Chriz Harward</p>\r\n              <p>Drawn on: 14 Jan, 2016</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-warning\">photo</span>\r\n            <div class=\"image\">\r\n              <img src=\"http://photos.projects-abroad.co.uk/volunteer-projects/archaeology/archaeology-romania.jpg\" class=\"img-responsive\" alt=\"\">\r\n            </div>\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">MNO12_0001</div>\r\n            <small>\r\n              <p>Type: Deposit</p>\r\n              <p>Registered text: Ward Boundary-Marker in situ, pre demolition 100 Minories</p>\r\n              <p>Subgroup: MN012_1421</p>\r\n              <p>Taken by: Naralie Johnston</p>\r\n              <p>Taken on: 10 Jan, 2016</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"col-md-3\">\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-warning\">photo</span>\r\n            <div class=\"image\">\r\n              <img src=\"http://photos.projects-abroad.co.uk/volunteer-projects/archaeology/archaeology-romania.jpg\" class=\"img-responsive\" alt=\"\">\r\n            </div>\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">MNO12_0001</div>\r\n            <small>\r\n              <p>Type: Deposit</p>\r\n              <p>Registered text: Ward Boundary-Marker in situ, pre demolition 100 Minories</p>\r\n              <p>Subgroup: MN012_1421</p>\r\n              <p>Taken by: Naralie Johnston</p>\r\n              <p>Taken on: 10 Jan, 2016</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-blue\">plan</span>\r\n            <div class=\"image\">\r\n              <img src=\"http://www.sbarch.org.uk/History_SG/Stoke_Park/Stoke_Park_Misc/Rotunda.jpg\" class=\"img-responsive\" alt=\"\">\r\n            </div>\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">MNO12</div>\r\n            <small>\r\n              <p>Type: Object</p>\r\n              <p>Context: MNO12_30</p>\r\n              <p>Register text: Lorem ipusaiydiua dusaydui asyduisay a dsuiyi…</p>\r\n              <p>Object material: N/A</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-danger\">find</span>\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">MNO12_30</div>\r\n            <small>\r\n              <p>Type: Object</p>\r\n              <p>Context: MNO12_30</p>\r\n              <p>Register text: Lorem ipusaiydiua dusaydui asyduisay a dsuiyi…</p>\r\n              <p>Object material: N/A</p>\r\n              <p>Date added: 08 Jan, 2016</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"col-md-3\">\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-success\">subgroup</span>\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">Subgroup Test</div>\r\n            <small>\r\n              <p>Type: Object</p>\r\n              <p>Context: MNO12_30</p>\r\n              <p>Register text: Lorem ipusaiydiua dusaydui asyduisay a dsuiyi…</p>\r\n              <p>Object material: N/A</p>\r\n              <p>Date added: 08 Jan, 2016</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-primary\">context</span>\r\n            <div class=\"image\">\r\n              <img src=\"http://www.dyfedarchaeology.org.uk/nevern/plan.jpg\" class=\"img-responsive\">\r\n            </div>\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">MNO12_1</div>\r\n            <small>\r\n              <p>Type: Deposit</p>\r\n              <p>Registered text: Lorem ipsum dolor sit amet</p>\r\n              <p>Subgroup: MN012_1421</p>\r\n              <p>Issued to: Dan Eddisford</p>\r\n              <p>Issue Date: 14 Jan, 2016</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-warning\">photo</span>\r\n            <div class=\"image\">\r\n              <img src=\"http://photos.projects-abroad.co.uk/volunteer-projects/archaeology/archaeology-romania.jpg\" class=\"img-responsive\" alt=\"\">\r\n            </div>\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">MNO12_0001</div>\r\n            <small>\r\n              <p>Type: Deposit</p>\r\n              <p>Registered text: Ward Boundary-Marker in situ, pre demolition 100 Minories</p>\r\n              <p>Subgroup: MN012_1421</p>\r\n              <p>Taken by: Naralie Johnston</p>\r\n              <p>Taken on: 10 Jan, 2016</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"col-md-3\">\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-brown\">sample</span>\r\n            <img src=\"https://www.york.ac.uk/media/archaeology/images/Colluvial%20deposits%20Mwanga%20smaller.jpg\" class=\"img-responsive\">\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">MNO12_1</div>\r\n            <small>\r\n              <p>Type: Deposit</p>\r\n              <p>Registered text: Lorem ipsum dolor sit amet</p>\r\n              <p>Subgroup: MN012_1421</p>\r\n              <p>Issued to: Dan Eddisford</p>\r\n              <p>Issue Date: 14 Jan, 2016</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-mustard\">timber</span>\r\n            <img src=\"http://www.britannia-archaeology.com/files/9614/3337/3296/North_Fen_Walkway.JPG\" class=\"img-responsive\">\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">MNO12_1</div>\r\n            <small>\r\n              <p>Type: Deposit</p>\r\n              <p>Registered text: Lorem ipsum dolor sit amet</p>\r\n              <p>Subgroup: MN012_1421</p>\r\n              <p>Issued to: Dan Eddisford</p>\r\n              <p>Issue Date: 14 Jan, 2016</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-primary\">context</span>\r\n            <img src=\"https://msu.edu/~aarondan/archaeology_files/image006.jpg\" class=\"img-responsive\">\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">MNO12_1</div>\r\n            <small>\r\n              <p>Type: Deposit</p>\r\n              <p>Registered text: Lorem ipsum dolor sit amet</p>\r\n              <p>Subgroup: MN012_1421</p>\r\n              <p>Issued to: Dan Eddisford</p>\r\n              <p>Issue Date: 14 Jan, 2016</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <div class=\"col-md-12\">\r\n        <p class=\"text-center\">\r\n          <button type=\"button\" class=\"btn btn-lg btn-default\">Load more</button>\r\n          <br><br>\r\n        </p>\r\n\r\n      </div>\r\n\r\n    </div>\r\n  </div>\r\n\r\n<br><br>\r\n<!-- HORIZONTAL PILLS -->\r\n  <div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n      <h3 class=\"panel-title\">Horizontal Pills</h3>\r\n    </div>\r\n    <div class=\"panel-body\">\r\n      <div class=\"col-md-12\">\r\n        <ul class=\"nav nav-pills\">\r\n          <li role=\"presentation\" class=\"active\"><a href=\"#\">Selected Tab</a></li>\r\n          <li role=\"presentation\"><a href=\"#\">Tab Two</a></li>\r\n          <li role=\"presentation\"><a href=\"#\">Tab Three</a></li>\r\n          <li role=\"presentation\"><a href=\"#\">Tab Four</a></li>\r\n          <li role=\"presentation\"><a href=\"#\">Tab Five</a></li>\r\n          <li role=\"presentation\"><a href=\"#\">Tab Six</a></li>\r\n        </ul>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n<!-- VERTICAL PILLS -->\r\n  <div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n      <h3 class=\"panel-title\">Vertical Pills</h3>\r\n    </div>\r\n    <br>\r\n    <div class=\"panel-body\">\r\n      <div class=\"col-md-2\">\r\n        <ul class=\"nav nav-pills nav-stacked nav-pills-stacked-example\">\r\n          <li role=\"presentation\" class=\"active\"><a href=\"#\">All Records</a></li>\r\n          <li role=\"presentation\"><a href=\"#\"><span class=\"label label-primary circle\"></span> &nbsp;Contexts</a></li>\r\n          <li role=\"presentation\"><a href=\"#\"><span class=\"label label-danger circle\"></span> &nbsp;Finds</a></li>\r\n          <li role=\"presentation\"><a href=\"#\"><span class=\"label label-warning circle\"></span> &nbsp;Photos</a></li>\r\n          <li role=\"presentation\"><a href=\"#\"><span class=\"label label-blue circle\"></span>  &nbsp;Plans</a></li>\r\n          <li role=\"presentation\"><a href=\"#\"><span class=\"label label-info circle\"></span> &nbsp;Sections</a></li>\r\n          <li role=\"presentation\"><a href=\"#\"><span class=\"label label-success circle\"></span> &nbsp;Sub-groups</a></li>\r\n          <li role=\"presentation\"><a href=\"#\"><span class=\"label label-mustard circle\"></span>  &nbsp;Timbers</a></li>\r\n          <li role=\"presentation\"><a href=\"#\"><span class=\"label label-brown circle\"></span>  &nbsp;Samples</a></li>\r\n        </ul>\r\n      </div>\r\n      <div class=\"col-md-10\">\r\n        <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\n        </p>\r\n      </div>\r\n    </div>\r\n    <br>\r\n  </div>\r\n\r\n  <div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n      <h3 class=\"panel-title\">Dropdowns & Dropups</h3>\r\n    </div>\r\n    <div class=\"panel-body\">\r\n      <div class=\"col-md-4\">\r\n        <div class=\"dropdown theme-dropdown clearfix\">\r\n          <a id=\"dropdownMenu1\" href=\"#\" class=\"sr-only dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Dropdown <span class=\"caret\"></span></a>\r\n          <ul class=\"dropdown-menu\" aria-labelledby=\"dropdownMenu1\">\r\n            <li class=\"active\"><a href=\"#\">Action</a></li>\r\n            <li><a href=\"#\">Another action</a></li>\r\n            <li><a href=\"#\">Something else here</a></li>\r\n            <li role=\"separator\" class=\"divider\"></li>\r\n            <li><a href=\"#\">Separated link</a></li>\r\n          </ul>\r\n        </div>\r\n\r\n\r\n        <div class=\"dropdown\">\r\n          <button class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"dropdownMenu2\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\r\n            Dropdown\r\n            <span class=\"caret\"></span>\r\n          </button>\r\n          <ul class=\"dropdown-menu\" aria-labelledby=\"dropdownMenu2\">\r\n            <li><a href=\"#\">Action</a></li>\r\n            <li><a href=\"#\">Another action</a></li>\r\n            <li><a href=\"#\">Something else here</a></li>\r\n            <li role=\"separator\" class=\"divider\"></li>\r\n            <li><a href=\"#\">Separated link</a></li>\r\n          </ul>\r\n        </div>\r\n      </div>\r\n      <div class=\"col-md-4\">\r\n        <div class=\"dropdown theme-dropdown clearfix\">\r\n          <a id=\"dropdownMenu1\" href=\"#\" class=\"sr-only dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Dropdown <span class=\"caret\"></span></a>\r\n          <ul class=\"dropdown-menu\" aria-labelledby=\"dropdownMenu1\">\r\n            <li class=\"active\"><a href=\"#\">Action</a></li>\r\n            <li><a href=\"#\">Another action</a></li>\r\n            <li><a href=\"#\">Something else here</a></li>\r\n            <li role=\"separator\" class=\"divider\"></li>\r\n            <li><a href=\"#\">Separated link</a></li>\r\n          </ul>\r\n        </div>\r\n        <div class=\"dropup\">\r\n          <button class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"dropdownMenu2\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\r\n            Dropup\r\n            <span class=\"caret\"></span>\r\n          </button>\r\n          <ul class=\"dropdown-menu\" aria-labelledby=\"dropdownMenu2\">\r\n            <li><a href=\"#\">Action</a></li>\r\n            <li><a href=\"#\">Another action</a></li>\r\n            <li><a href=\"#\">Something else here</a></li>\r\n            <li role=\"separator\" class=\"divider\"></li>\r\n            <li><a href=\"#\">Separated link</a></li>\r\n          </ul>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n\r\n\r\n  <div class=\"page-header\">\r\n    <h1>List groups</h1>\r\n  </div>\r\n  <div class=\"row\">\r\n    <div class=\"col-sm-4\">\r\n      <ul class=\"list-group\">\r\n        <li class=\"list-group-item\">Cras justo odio</li>\r\n        <li class=\"list-group-item\">Dapibus ac facilisis in</li>\r\n        <li class=\"list-group-item\">Morbi leo risus</li>\r\n        <li class=\"list-group-item\">Porta ac consectetur ac</li>\r\n        <li class=\"list-group-item\">Vestibulum at eros</li>\r\n      </ul>\r\n    </div><!-- /.col-sm-4 -->\r\n    <div class=\"col-sm-4\">\r\n      <div class=\"list-group\">\r\n        <a href=\"#\" class=\"list-group-item active\">\r\n          Cras justo odio\r\n        </a>\r\n        <a href=\"#\" class=\"list-group-item\">Dapibus ac facilisis in</a>\r\n        <a href=\"#\" class=\"list-group-item\">Morbi leo risus</a>\r\n        <a href=\"#\" class=\"list-group-item\">Porta ac consectetur ac</a>\r\n        <a href=\"#\" class=\"list-group-item\">Vestibulum at eros</a>\r\n      </div>\r\n    </div><!-- /.col-sm-4 -->\r\n    <div class=\"col-sm-4\">\r\n      <div class=\"list-group\">\r\n        <a href=\"#\" class=\"list-group-item active\">\r\n          <h4 class=\"list-group-item-heading\">List group item heading</h4>\r\n          <p class=\"list-group-item-text\">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>\r\n        </a>\r\n        <a href=\"#\" class=\"list-group-item\">\r\n          <h4 class=\"list-group-item-heading\">List group item heading</h4>\r\n          <p class=\"list-group-item-text\">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>\r\n        </a>\r\n        <a href=\"#\" class=\"list-group-item\">\r\n          <h4 class=\"list-group-item-heading\">List group item heading</h4>\r\n          <p class=\"list-group-item-text\">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>\r\n        </a>\r\n      </div>\r\n    </div><!-- /.col-sm-4 -->\r\n  </div>\r\n\r\n\r\n\r\n  <div class=\"page-header\">\r\n    <h1>Carousel</h1>\r\n  </div>\r\n  <div id=\"carousel-example-generic\" class=\"carousel slide\" data-ride=\"carousel\">\r\n    <ol class=\"carousel-indicators\">\r\n      <li data-target=\"#carousel-example-generic\" data-slide-to=\"0\" class=\"active\"></li>\r\n      <li data-target=\"#carousel-example-generic\" data-slide-to=\"1\"></li>\r\n      <li data-target=\"#carousel-example-generic\" data-slide-to=\"2\"></li>\r\n    </ol>\r\n    <div class=\"carousel-inner\" role=\"listbox\">\r\n      <div class=\"item active\">\r\n        <img src=\"http://anthro.ucsc.edu/images/20091205_CLWHD_arch_dig_0255.jpg?t=0\" alt=\"First slide\">\r\n      </div>\r\n      <div class=\"item\">\r\n        <img src=\"http://anthro.ucsc.edu/images/20091205_CLWHD_arch_dig_0255.jpg?t=0\" alt=\"Second slide\">\r\n      </div>\r\n      <div class=\"item\">\r\n        <img src=\"http://anthro.ucsc.edu/images/20091205_CLWHD_arch_dig_0255.jpg?t=0\" alt=\"Third slide\">\r\n      </div>\r\n    </div>\r\n    <a class=\"left carousel-control\" href=\"#carousel-example-generic\" role=\"button\" data-slide=\"prev\">\r\n      <span class=\"glyphicon glyphicon-chevron-left\" aria-hidden=\"true\"></span>\r\n      <span class=\"sr-only\">Previous</span>\r\n    </a>\r\n    <a class=\"right carousel-control\" href=\"#carousel-example-generic\" role=\"button\" data-slide=\"next\">\r\n      <span class=\"glyphicon glyphicon-chevron-right\" aria-hidden=\"true\"></span>\r\n      <span class=\"sr-only\">Next</span>\r\n    </a>\r\n  </div>\r\n\r\n\r\n</div> <!-- /container -->', 0, NULL, NULL, 'core', '2017-09-06 00:00:00', 'core', '2017-09-06 00:00:00', NULL),
+(5, 'actor', 'sysadmin', 'fullname', 'text', 'text/plain', 'en', 'Sysadmin', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(6, 'actor', 'sysadmin', 'shortname', 'text', 'text/plain', 'en', 'Sysadmin', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(7, 'actor', 'sysadmin', 'initials', 'text', 'text/plain', 'en', 'LPA', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(8, 'actor', 'sysadmin', 'biography', 'text', 'text/plain', 'en', 'Sysadmin', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', '');
 
 -- --------------------------------------------------------
 
@@ -524,7 +389,6 @@ INSERT INTO `ark_fragment_text` (`fid`, `object`, `module`, `item`, `attribute`,
 
 CREATE TABLE `ark_fragment_time` (
   `fid` int(11) NOT NULL,
-  `object` int(11) DEFAULT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -532,8 +396,9 @@ CREATE TABLE `ark_fragment_time` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parameter` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `value` time NOT NULL,
-  `span` tinyint(1) NOT NULL DEFAULT '0',
+  `span` tinyint(1) NOT NULL DEFAULT 0,
   `extent` time DEFAULT NULL,
+  `object` int(11) DEFAULT NULL,
   `modifier` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `modified` datetime NOT NULL,
   `creator` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -621,17 +486,6 @@ CREATE TABLE `ark_item_context` (
   `version` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `ark_item_context`
---
-
-INSERT INTO `ark_item_context` (`id`, `module`, `schma`, `class`, `status`, `visibility`, `parent_module`, `parent_id`, `idx`, `label`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
-('3', 'context', 'arch.context', 'cut', 'allocated', 'private', NULL, NULL, '3', '3', 'sysadmin', '2017-10-09 19:43:25', 'sysadmin', '2017-10-09 19:43:25', ''),
-('4', 'context', 'arch.context', 'masonry', 'allocated', 'private', NULL, NULL, '4', '4', 'sysadmin', '2017-10-09 20:23:56', 'sysadmin', '2017-10-09 19:50:01', ''),
-('5', 'context', 'arch.context', 'masonry', 'allocated', 'private', NULL, NULL, '5', '5', 'sysadmin', '2017-10-09 21:34:10', 'sysadmin', '2017-10-09 21:34:10', ''),
-('6', 'context', 'arch.context', 'fill', 'allocated', 'private', NULL, NULL, '6', '6', 'sysadmin', '2017-10-10 08:54:41', 'sysadmin', '2017-10-10 08:54:41', ''),
-('7', 'context', 'arch.context', 'masonry', 'allocated', 'private', NULL, NULL, '7', '7', 'sysadmin', '2017-10-11 14:21:40', 'sysadmin', '2017-10-11 14:21:40', '');
-
 -- --------------------------------------------------------
 
 --
@@ -680,19 +534,6 @@ CREATE TABLE `ark_item_event` (
   `version` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `ark_item_event`
---
-
-INSERT INTO `ark_item_event` (`id`, `module`, `schma`, `class`, `status`, `visibility`, `parent_module`, `parent_id`, `idx`, `label`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
-('1', 'event', 'core.event', 'registered', 'allocated', 'private', 'actor', 'sysadmin', '1', '1', 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
-('3', 'event', 'core.event', 'edited', 'allocated', 'private', 'context', '4', '3', '3', 'sysadmin', '2017-10-09 19:54:35', 'sysadmin', '2017-10-09 19:54:35', ''),
-('4', 'event', 'core.event', 'edited', 'allocated', 'private', 'context', '4', '4', '4', 'sysadmin', '2017-10-09 19:56:12', 'sysadmin', '2017-10-09 19:56:12', ''),
-('5', 'event', 'core.event', 'edited', 'allocated', 'private', 'context', '4', '5', '5', 'sysadmin', '2017-10-09 19:56:24', 'sysadmin', '2017-10-09 19:56:24', ''),
-('6', 'event', 'core.event', 'edited', 'allocated', 'private', 'context', '4', '6', '6', 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
-('7', 'event', 'core.event', 'edited', 'allocated', 'private', 'context', '4', '7', '7', 'sysadmin', '2017-10-09 20:23:34', 'sysadmin', '2017-10-09 20:23:34', ''),
-('8', 'event', 'core.event', 'edited', 'allocated', 'private', 'context', '4', '8', '8', 'sysadmin', '2017-10-09 20:23:56', 'sysadmin', '2017-10-09 20:23:56', '');
-
 -- --------------------------------------------------------
 
 --
@@ -716,14 +557,6 @@ CREATE TABLE `ark_item_file` (
   `created` datetime NOT NULL,
   `version` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `ark_item_file`
---
-
-INSERT INTO `ark_item_file` (`id`, `module`, `schma`, `class`, `status`, `visibility`, `parent_module`, `parent_id`, `idx`, `label`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
-('4', 'file', 'core.file', 'image', 'allocated', 'private', NULL, NULL, '4', '4', 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
-('7', 'file', 'core.file', 'image', 'allocated', 'private', NULL, NULL, '7', '7', 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', '');
 
 -- --------------------------------------------------------
 
@@ -820,19 +653,6 @@ CREATE TABLE `ark_item_message` (
   `created` datetime NOT NULL,
   `version` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `ark_item_message`
---
-
-INSERT INTO `ark_item_message` (`id`, `module`, `schma`, `class`, `status`, `visibility`, `parent_module`, `parent_id`, `idx`, `label`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
-('1', 'message', 'core.message', 'notification', 'allocated', 'private', NULL, NULL, '1', '1', 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
-('3', 'message', 'core.message', 'notification', 'allocated', 'private', NULL, NULL, '3', '3', 'sysadmin', '2017-10-09 19:54:35', 'sysadmin', '2017-10-09 19:54:35', ''),
-('4', 'message', 'core.message', 'notification', 'allocated', 'private', NULL, NULL, '4', '4', 'sysadmin', '2017-10-09 19:56:12', 'sysadmin', '2017-10-09 19:56:12', ''),
-('5', 'message', 'core.message', 'notification', 'allocated', 'private', NULL, NULL, '5', '5', 'sysadmin', '2017-10-09 19:56:24', 'sysadmin', '2017-10-09 19:56:24', ''),
-('6', 'message', 'core.message', 'notification', 'allocated', 'private', NULL, NULL, '6', '6', 'sysadmin', '2017-10-09 20:01:37', 'sysadmin', '2017-10-09 20:01:37', ''),
-('7', 'message', 'core.message', 'notification', 'allocated', 'private', NULL, NULL, '7', '7', 'sysadmin', '2017-10-09 20:23:34', 'sysadmin', '2017-10-09 20:23:34', ''),
-('8', 'message', 'core.message', 'notification', 'allocated', 'private', NULL, NULL, '8', '8', 'sysadmin', '2017-10-09 20:23:56', 'sysadmin', '2017-10-09 20:23:56', '');
 
 -- --------------------------------------------------------
 
@@ -1024,17 +844,6 @@ CREATE TABLE `ark_sequence` (
   `max` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `ark_sequence`
---
-
-INSERT INTO `ark_sequence` (`module`, `parent`, `sequence`, `idx`, `min`, `max`) VALUES
-('context', '', 'id', 7, NULL, NULL),
-('event', '', 'id', 8, NULL, NULL),
-('file', '', 'id', 7, NULL, NULL),
-('message', '', 'id', 8, NULL, NULL),
-('object', '', 'fid', 16, NULL, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -1047,62 +856,10 @@ CREATE TABLE `ark_sequence_lock` (
   `parent` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `sequence` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `idx` int(11) NOT NULL,
-  `recycle` tinyint(1) NOT NULL DEFAULT '0',
+  `recycle` tinyint(1) NOT NULL DEFAULT 0,
   `locked_by` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `locked_on` datetime DEFAULT CURRENT_TIMESTAMP
+  `locked_on` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `ark_sequence_lock`
---
-
-INSERT INTO `ark_sequence_lock` (`id`, `module`, `parent`, `sequence`, `idx`, `recycle`, `locked_by`, `locked_on`) VALUES
-(1, 'object', '', 'fid', 1, 0, NULL, '2017-09-27 09:10:09'),
-(2, 'file', '', 'id', 1, 0, NULL, '2017-09-27 09:10:10'),
-(3, 'object', '', 'fid', 1, 0, NULL, '2017-09-27 09:10:10'),
-(4, 'object', '', 'fid', 1, 0, NULL, '2017-09-27 09:10:56'),
-(5, 'file', '', 'id', 1, 0, NULL, '2017-09-27 09:10:56'),
-(6, 'object', '', 'fid', 1, 0, NULL, '2017-09-27 09:10:56'),
-(7, 'object', '', 'fid', 1, 0, NULL, '2017-09-27 09:12:56'),
-(8, 'file', '', 'id', 1, 0, NULL, '2017-09-27 09:12:57'),
-(9, 'object', '', 'fid', 1, 0, NULL, '2017-09-27 09:12:57'),
-(10, 'object', '', 'fid', 1, 0, NULL, '2017-09-27 09:20:58'),
-(11, 'file', '', 'id', 1, 0, NULL, '2017-09-27 09:20:58'),
-(12, 'object', '', 'fid', 1, 0, NULL, '2017-09-27 09:20:58'),
-(13, 'event', '', 'id', 1, 0, NULL, '2017-09-27 09:20:59'),
-(14, 'object', '', 'fid', 1, 0, NULL, '2017-09-27 09:20:59'),
-(15, 'object', '', 'fid', 1, 0, NULL, '2017-09-27 09:20:59'),
-(16, 'message', '', 'id', 1, 0, NULL, '2017-09-27 09:20:59'),
-(17, 'object', '', 'fid', 1, 0, NULL, '2017-09-27 09:21:59'),
-(18, 'file', '', 'id', 1, 0, NULL, '2017-09-27 09:21:59'),
-(19, 'object', '', 'fid', 1, 0, NULL, '2017-09-27 09:21:59'),
-(20, 'event', '', 'id', 1, 0, NULL, '2017-09-27 09:21:59'),
-(21, 'object', '', 'fid', 1, 0, NULL, '2017-09-27 09:21:59'),
-(22, 'object', '', 'fid', 1, 0, NULL, '2017-09-27 09:21:59'),
-(23, 'message', '', 'id', 1, 0, NULL, '2017-09-27 09:21:59'),
-(24, 'context', '', 'id', 1, 0, NULL, '2017-10-09 20:37:55'),
-(25, 'context', '', 'id', 1, 0, NULL, '2017-10-09 20:38:56'),
-(26, 'context', '', 'id', 1, 0, NULL, '2017-10-09 20:43:25'),
-(27, 'context', '', 'id', 1, 0, NULL, '2017-10-09 20:50:01'),
-(28, 'event', '', 'id', 1, 0, NULL, '2017-10-09 20:54:35'),
-(29, 'message', '', 'id', 1, 0, NULL, '2017-10-09 20:54:35'),
-(30, 'event', '', 'id', 1, 0, NULL, '2017-10-09 20:56:12'),
-(31, 'message', '', 'id', 1, 0, NULL, '2017-10-09 20:56:12'),
-(32, 'event', '', 'id', 1, 0, NULL, '2017-10-09 20:56:24'),
-(33, 'message', '', 'id', 1, 0, NULL, '2017-10-09 20:56:24'),
-(34, 'file', '', 'id', 1, 0, NULL, '2017-10-09 21:00:45'),
-(35, 'object', '', 'fid', 1, 0, NULL, '2017-10-09 21:00:45'),
-(36, 'file', '', 'id', 1, 0, NULL, '2017-10-09 21:01:37'),
-(37, 'object', '', 'fid', 1, 0, NULL, '2017-10-09 21:01:37'),
-(38, 'event', '', 'id', 1, 0, NULL, '2017-10-09 21:01:37'),
-(39, 'message', '', 'id', 1, 0, NULL, '2017-10-09 21:01:37'),
-(40, 'event', '', 'id', 1, 0, NULL, '2017-10-09 21:23:34'),
-(41, 'message', '', 'id', 1, 0, NULL, '2017-10-09 21:23:34'),
-(42, 'event', '', 'id', 1, 0, NULL, '2017-10-09 21:23:56'),
-(43, 'message', '', 'id', 1, 0, NULL, '2017-10-09 21:23:56'),
-(44, 'context', '', 'id', 1, 0, NULL, '2017-10-09 22:34:10'),
-(45, 'context', '', 'id', 1, 0, NULL, '2017-10-10 09:54:41'),
-(46, 'context', '', 'id', 1, 0, NULL, '2017-10-11 15:21:40');
 
 -- --------------------------------------------------------
 
@@ -1130,7 +887,7 @@ CREATE TABLE `ark_workflow_actor_role` (
   `actor` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `role` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `agent_for` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `enabled` tinyint(1) NOT NULL DEFAULT 1,
   `expires_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -1152,7 +909,7 @@ INSERT INTO `ark_workflow_actor_role` (`actor`, `role`, `agent_for`, `enabled`, 
 CREATE TABLE `ark_workflow_actor_user` (
   `actor` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `user` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `enabled` tinyint(1) NOT NULL DEFAULT 1,
   `expires_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -1509,71 +1266,85 @@ ALTER TABLE `ark_workflow_actor_user`
 --
 ALTER TABLE `ark_association`
   MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `ark_fragment_blob`
 --
 ALTER TABLE `ark_fragment_blob`
   MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `ark_fragment_boolean`
 --
 ALTER TABLE `ark_fragment_boolean`
   MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `ark_fragment_date`
 --
 ALTER TABLE `ark_fragment_date`
   MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `ark_fragment_datetime`
 --
 ALTER TABLE `ark_fragment_datetime`
   MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
 --
 -- AUTO_INCREMENT for table `ark_fragment_decimal`
 --
 ALTER TABLE `ark_fragment_decimal`
   MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `ark_fragment_float`
 --
 ALTER TABLE `ark_fragment_float`
   MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `ark_fragment_integer`
 --
 ALTER TABLE `ark_fragment_integer`
   MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
 -- AUTO_INCREMENT for table `ark_fragment_item`
 --
 ALTER TABLE `ark_fragment_item`
   MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
 --
 -- AUTO_INCREMENT for table `ark_fragment_spatial`
 --
 ALTER TABLE `ark_fragment_spatial`
   MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `ark_fragment_string`
 --
 ALTER TABLE `ark_fragment_string`
   MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
+
 --
 -- AUTO_INCREMENT for table `ark_fragment_text`
 --
 ALTER TABLE `ark_fragment_text`
   MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
 --
 -- AUTO_INCREMENT for table `ark_fragment_time`
 --
 ALTER TABLE `ark_fragment_time`
   MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `ark_sequence_lock`
 --
 ALTER TABLE `ark_sequence_lock`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+
 --
 -- Constraints for dumped tables
 --

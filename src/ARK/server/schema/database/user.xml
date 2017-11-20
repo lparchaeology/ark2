@@ -53,6 +53,9 @@
             <key/>
             <notnull/>
         </field>
+        <field name="level" type="string" size="30">
+            <notnull/>
+        </field>
         <field name="username" type="string" size="30">
             <notnull/>
         </field>
@@ -61,14 +64,11 @@
         </field>
         <field name="password" type="string" size="255"/>
         <field name="name" type="string" size="100"/>
-        <field name="level" type="string" size="30">
-            <notnull/>
-        </field>
-        <field name="enabled" type="boolean">
+        <field name="activated" type="boolean">
             <default value="0"/>
             <notnull/>
         </field>
-        <field name="activated" type="boolean">
+        <field name="enabled" type="boolean">
             <default value="0"/>
             <notnull/>
         </field>
