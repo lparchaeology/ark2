@@ -57,7 +57,7 @@ class DIME
         if ($credentials = Service::security()->credentials('kortforsyningen')) {
             $user = $credentials['user'];
             $password = $credentials['password'];
-            $path = "http://services.kortforsyningen.dk/service?request=GetTicket&login=$user&password=$password";
+            $path = "https://services.kortforsyningen.dk/service?request=GetTicket&login=$user&password=$password";
             $ticket = file_get_contents($path);
             if (strlen($ticket) === 32) {
                 return $ticket;
