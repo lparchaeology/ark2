@@ -145,7 +145,18 @@ abstract class Fragment
         $this->object = $object;
     }
 
-    public static function create(string $module, string $item, Attribute $attribute, Actor $creator, DateTime $created, ObjectFragment $object = null) : Fragment
+    public function update(Item $item = null) : void
+    {
+        if ($item) {
+            $this->setItem($item);
+        }
+    }
+
+    public function delete() : void
+    {
+    }
+
+    public static function create(string $module, string $item, Attribute $attribute, Actor $creator, DateTime $created, ObjectFragment $object = null) : self
     {
         $class = $attribute->dataclass()->datatype()->dataEntity();
         $fragment = new $class();
@@ -158,7 +169,7 @@ abstract class Fragment
         return $fragment;
     }
 
-    public static function createFromAttribute(Attribute $attribute, Actor $creator, DateTime $created, ObjectFragment $object = null) : Fragment
+    public static function createFromAttribute(Attribute $attribute, Actor $creator, DateTime $created, ObjectFragment $object = null) : self
     {
         $class = $attribute->dataclass()->datatype()->dataEntity();
         $fragment = new $class();

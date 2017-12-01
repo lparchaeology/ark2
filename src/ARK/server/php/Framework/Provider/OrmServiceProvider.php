@@ -251,6 +251,29 @@ class OrmServiceProvider implements ServiceProviderInterface
                     ],
                 ]
             );
+            $options['spatial'] = array_replace(
+                $container['orm.em.default_options'],
+                [
+                    'connection' => 'spatial',
+                    'types' => [
+                        'GeometryCollection' => 'ARK\Spatial\Doctrine\Types\GeometryCollectionType',
+                        'geometry' => 'ARK\Spatial\Doctrine\Types\GeometryType',
+                        'linestring' => 'ARK\Spatial\Doctrine\Types\LineStringType',
+                        'multilinestring' => 'ARK\Spatial\Doctrine\Types\MultiLineStringType',
+                        'multipoint' => 'ARK\Spatial\Doctrine\Types\MultiPointType',
+                        'multipolygon' => 'ARK\Spatial\Doctrine\Types\MultiPolygonType',
+                        'point' => 'ARK\Spatial\Doctrine\Types\PointType',
+                        'polygon' => 'ARK\Spatial\Doctrine\Types\PolygonType',
+                    ],
+                    'mappings' => [
+                        [
+                            'type' => 'php',
+                            'namespace' => 'ARK\Spatial\Entity',
+                            'path' => $srcDir.'/Spatial/Entity',
+                        ],
+                    ],
+                ]
+            );
 
             foreach ($options as $connection => &$config) {
                 foreach ($config['extensions'] as $extension) {
@@ -393,7 +416,7 @@ class OrmServiceProvider implements ServiceProviderInterface
                     foreach ($options['listeners'] as $listener) {
                         $eventManager->addEventSubscriber(new $listener());
                     }
-                    return new EntityManager($em);
+                    return new EntityManager($em, $name);
                 };
             }
 

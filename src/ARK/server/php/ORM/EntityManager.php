@@ -35,13 +35,21 @@ use ReflectionClass;
 
 class EntityManager extends EntityManagerDecorator
 {
-    public function __construct(EntityManagerInterface $em)
+    protected $name = '';
+
+    public function __construct(EntityManagerInterface $em, string $name)
     {
         parent::__construct($em);
         $refl = new ReflectionClass($em);
         $uow = $refl->getProperty('unitOfWork');
         $uow->setAccessible(true);
         $uow->setValue($em, new UnitOfWork($em));
+        $this->name = $name;
+    }
+
+    public function name() : string
+    {
+        return $this->name;
     }
 
     public function classNames() : iterable

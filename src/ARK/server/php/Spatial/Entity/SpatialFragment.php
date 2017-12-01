@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Geometry Fragment.
+ * ARK Spatial Entity.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,37 +27,33 @@
  * @since      2.0
  */
 
-namespace ARK\Model\Fragment;
+namespace ARK\Spatial\Entity;
 
 use ARK\ORM\ClassMetadata;
+use ARK\ORM\ClassMetadataBuilder;
 
-class SpatialFragment extends Fragment
+class SpatialFragment
 {
-    public function update(Item $item = null) : void
-    {
-        parent::update($item);
-        $this->updateSpatialIndex();
-    }
-
-    public function delete() : void
-    {
-        parent::delete();
-        $this->deleteSpatialIndex();
-    }
-
-    public function updateSpatialIndex() : void
-    {
-        $this->deleteSpatialIndex();
-        // Insert Spatial Index
-    }
+    protected $module;
+    protected $item;
+    protected $attribute;
+    protected $type;
+    protected $geometry;
+    protected $srid;
 
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
-        self::buildSubclassMetadata($metadata, self::class);
-    }
+        // Table
+        $builder = new ClassMetadataBuilder($metadata, 'ark_spatial_fragment');
 
-    protected function deleteSpatialIndex() : void
-    {
-        // Delete Spatial Index
+        // Key
+        $builder->addKey('fid', 'integer');
+
+        // Attributes
+        $builder->addStringField('module', 30);
+        $builder->addStringField('item', 30);
+        $builder->addStringField('attribute', 30);
+        $builder->addStringField('type', 10);
+        $builder->addStringField('srid', 30);
     }
 }

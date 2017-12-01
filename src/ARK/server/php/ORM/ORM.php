@@ -105,13 +105,21 @@ class ORM
                 }
             }
             if (isset($ent)) {
-                self::manager($ent)->flush();
+                $em = self::manager($ent);
+                $em->flush();
+                if ($em->name() === 'data') {
+                    self::manager('spatial')->flush();
+                }
             }
         } else {
             if (is_object($entity) && !self::isScheduled($entity)) {
                 self::persist($entity);
             }
-            self::manager($entity)->flush();
+            $em = self::manager($entity);
+            $em->flush();
+            if ($em->name() === 'data') {
+                self::manager('spatial')->flush();
+            }
         }
     }
 
@@ -119,6 +127,7 @@ class ORM
     {
         Service::entityManager('data')->getConnection()->rollBack();
         Service::entityManager('core')->getConnection()->rollBack();
+        Service::entityManager('spatial')->getConnection()->rollBack();
         Service::entityManager('user')->getConnection()->rollBack();
     }
 

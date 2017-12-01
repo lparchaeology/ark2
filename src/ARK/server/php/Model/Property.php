@@ -121,38 +121,46 @@ class Property
             if ($created->format('Y') < 1) {
                 $created = new DateTime();
             }
-            ORM::remove($this->fragments);
-            $this->fragments->clear();
         } else {
             $creator = Service::workflow()->actor();
             $created = new DateTime();
         }
+        $this->delete();
         $this->fragments = $this->attribute->hydrate($value, $creator, $created);
         if ($this->fragments->isEmpty()) {
             return;
         }
-        $this->updateFragments();
-        ORM::persist($this->fragments);
-        $this->updateItem($value);
+        $this->update();
+        $this->item->refreshVersion();
     }
 
-    // TODO Is there a better way?
-    public function updateFragments() : void
+    public function update() : void
+    {
+        switch ($this->name()) {
+            case 'id':
+                $this->fragments->get(0)->setValue($this->item->id());
+                break;
+            case 'visibility':
+                $this->item->setVisibility($this->fragments->get(0)->value());
+                break;
+            case $this->item->schema()->classAttributeName():
+                $this->item->setClass($this->fragments->get(0)->value());
+                break;
+            default:
+                break;
+        }
+        foreach ($this->fragments as $fragment) {
+            $fragment->update($this->item);
+            ORM::persist($fragment);
+        }
+    }
+
+    public function delete() : void
     {
         foreach ($this->fragments as $fragment) {
-            $fragment->setItem($this->item);
+            $fragment->delete();
+            ORM::remove($fragment);
         }
-    }
-
-    // TODO Is there a better way?
-    protected function updateItem($value) : void
-    {
-        if ($this->name() === $this->item->schema()->classAttributeName()) {
-            $this->item->setClass($this->fragments->get(0)->value());
-        }
-        if ($this->name() === 'visibility') {
-            $this->item->setVisibility($value);
-        }
-        $this->item->refreshVersion();
+        $this->fragments->clear();
     }
 }
