@@ -256,14 +256,14 @@ class OrmServiceProvider implements ServiceProviderInterface
                 [
                     'connection' => 'spatial',
                     'types' => [
-                        'GeometryCollection' => 'ARK\Spatial\Doctrine\Types\GeometryCollectionType',
-                        'geometry' => 'ARK\Spatial\Doctrine\Types\GeometryType',
-                        'linestring' => 'ARK\Spatial\Doctrine\Types\LineStringType',
-                        'multilinestring' => 'ARK\Spatial\Doctrine\Types\MultiLineStringType',
-                        'multipoint' => 'ARK\Spatial\Doctrine\Types\MultiPointType',
-                        'multipolygon' => 'ARK\Spatial\Doctrine\Types\MultiPolygonType',
-                        'point' => 'ARK\Spatial\Doctrine\Types\PointType',
-                        'polygon' => 'ARK\Spatial\Doctrine\Types\PolygonType',
+                        'GeometryCollection' => 'Brick\Geo\Doctrine\Types\GeometryCollectionType',
+                        'geometry' => 'Brick\Geo\Doctrine\Types\GeometryType',
+                        'linestring' => 'Brick\Geo\Doctrine\Types\LineStringType',
+                        'multilinestring' => 'Brick\Geo\Doctrine\Types\MultiLineStringType',
+                        'multipoint' => 'Brick\Geo\Doctrine\Types\MultiPointType',
+                        'multipolygon' => 'Brick\Geo\Doctrine\Types\MultiPolygonType',
+                        'point' => 'Brick\Geo\Doctrine\Types\PointType',
+                        'polygon' => 'Brick\Geo\Doctrine\Types\PolygonType',
                     ],
                     'mappings' => [
                         [
