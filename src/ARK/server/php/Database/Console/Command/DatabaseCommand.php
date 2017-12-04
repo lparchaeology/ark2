@@ -53,8 +53,7 @@ abstract class DatabaseCommand extends AbstractCommand
 
     protected function chooseSiteConnection(string $user = null) : Connection
     {
-        $app = $this->app();
-        $site = $app['ark']['site'] ?? $this->askChoice('Please choose the site:', ARK::sites());
+        $site = $this->askSite();
         $connections = ARK::siteDatabaseConfig($site, true);
         $db = $this->askChoice('Please choose the site database:', array_keys($connections));
         return $this->getSiteConnection($site, $db, $user);

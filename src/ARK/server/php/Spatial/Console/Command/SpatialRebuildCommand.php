@@ -31,6 +31,10 @@ namespace ARK\Spatial\Console\Command;
 
 use ARK\ARK;
 use ARK\Database\Console\Command\DatabaseCommand;
+use ARK\Model\Fragment\SpatialFragment;
+use ARK\ORM\ORM;
+use ARK\Spatial\Entity\FragmentGeometry;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\DBALException;
 
 class SpatialRebuildCommand extends DatabaseCommand
@@ -43,8 +47,8 @@ class SpatialRebuildCommand extends DatabaseCommand
 
     protected function doExecute() : void
     {
-        $conn = $this->chooseSiteConnection('root');
-        if (!$this->confirmCommand($conn, 'All data in the database will be deleted!')) {
+        $conn = $this->getSiteConnection($this->askSite(), 'spatial', 'root');
+        if (!$this->confirmCommand($conn, 'All data in the spatial index will be deleted!')) {
             return;
         }
         $conn->disableForeignKeyChecks();
@@ -52,6 +56,13 @@ class SpatialRebuildCommand extends DatabaseCommand
             $conn->beginTransaction();
             $conn->truncateTable('ark_spatial_fragment');
             $conn->commit();
+            $geoms = new ArrayCollection();
+            $fragments = ORM::findAll(SpatialFragment::class);
+            foreach ($fragments as $fragment) {
+                $geoms->add(new FragmentGeometry($fragment));
+            }
+            ORM::persist($geoms);
+            ORM::flush('spatial');
             $this->write('SUCCESS: Spatial index rebuilt.');
         } catch (DBALException $e) {
             $conn->rollBack();

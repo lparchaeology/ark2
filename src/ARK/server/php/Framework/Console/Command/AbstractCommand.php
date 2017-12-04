@@ -29,6 +29,7 @@
 
 namespace ARK\Framework\Console\Command;
 
+use ARK\ARK;
 use ARK\Framework\Console\Helper\FileFilter;
 use Exception;
 use RecursiveDirectoryIterator;
@@ -111,12 +112,12 @@ abstract class AbstractCommand extends Command
         return $this->result;
     }
 
-    protected function addRequiredArgument(string $argument, string $description = '') : AbstractCommand
+    protected function addRequiredArgument(string $argument, string $description = '') : self
     {
         return $this->addArgument($argument, InputArgument::REQUIRED, $description);
     }
 
-    protected function addOptionalArgument(string $argument, string $description = '') : AbstractCommand
+    protected function addOptionalArgument(string $argument, string $description = '') : self
     {
         return $this->addArgument($argument, InputArgument::OPTIONAL, $description);
     }
@@ -197,6 +198,12 @@ abstract class AbstractCommand extends Command
             $question->setAutocompleterValues($choices);
         }
         return $this->ask($question);
+    }
+
+    protected function askSite() : string
+    {
+        $app = $this->app();
+        return $app['ark']['site'] ?? $this->askChoice('Please choose the site:', ARK::sites());
     }
 
     protected function askFilePath(string $text, string $default = null) : string

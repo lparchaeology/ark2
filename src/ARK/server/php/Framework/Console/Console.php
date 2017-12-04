@@ -49,6 +49,7 @@ use ARK\Security\Console\Command\UserPasswordSetCommand;
 use ARK\Security\Console\Command\UserRoleAddCommand;
 use ARK\Security\Console\Command\UserRoleDeleteCommand;
 use ARK\Security\Console\Command\UserVerifyCommand;
+use ARK\Spatial\Console\Command\SpatialRebuildCommand;
 use ARK\Translation\Console\Command\TranslationAddCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand;
@@ -92,6 +93,9 @@ class Console extends AbstractConsole
 
         // ORM Commands
         $this->add(new GenerateItemEntityCommand());
+
+        // Spatial Commands
+        $this->add(new SpatialRebuildCommand());
 
         // Doctrine Migrations Commands, just the ones needed for production
         //$this->getHelperSet()->set(new ConnectionHelper($this->app['db']), 'db');
