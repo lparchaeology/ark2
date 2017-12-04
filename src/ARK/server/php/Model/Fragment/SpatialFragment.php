@@ -33,31 +33,13 @@ use ARK\ORM\ClassMetadata;
 
 class SpatialFragment extends Fragment
 {
-    public function update(Item $item = null) : void
+    public function srid() : int
     {
-        parent::update($item);
-        $this->updateSpatialIndex();
-    }
-
-    public function delete() : void
-    {
-        parent::delete();
-        $this->deleteSpatialIndex();
-    }
-
-    public function updateSpatialIndex() : void
-    {
-        $this->deleteSpatialIndex();
-        // Insert Spatial Index
+        return $this->parameter;
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
         self::buildSubclassMetadata($metadata, self::class);
-    }
-
-    protected function deleteSpatialIndex() : void
-    {
-        // Delete Spatial Index
     }
 }

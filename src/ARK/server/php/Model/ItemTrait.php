@@ -87,7 +87,11 @@ trait ItemTrait
         $this->idx = ($index !== null ? $index : $id);
         $this->label = ($label !== null ? $label : $id);
         foreach ($this->properties() as $property) {
-            $property->update();
+            if ($property->name() === 'id') {
+                $property->setValue($this->id);
+            } else {
+                $property->update();
+            }
         }
     }
 

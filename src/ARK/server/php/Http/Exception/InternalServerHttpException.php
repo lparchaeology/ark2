@@ -41,6 +41,6 @@ class InternalServerHttpException extends HttpException
         Exception $previous = null,
         int $code = 0
     ) {
-        parent::__construct($key, 500, $message, $previous, [], $code);
+        parent::__construct($key, 500, $message, $previous, $code);
     }
 }

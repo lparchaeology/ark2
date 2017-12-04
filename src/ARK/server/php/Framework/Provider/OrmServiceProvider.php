@@ -406,7 +406,7 @@ class OrmServiceProvider implements ServiceProviderInterface
                     $config = $container['orm.ems.config'][$name];
                 }
 
-                $ems[$name] = function ($ems) use ($container, $options, $config) {
+                $ems[$name] = function ($ems) use ($container, $options, $config, $name) {
                     $em = DoctrineEntityManager::create(
                         $container['dbs'][$options['connection']],
                         $config,

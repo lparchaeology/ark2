@@ -47,6 +47,9 @@ class ORM
         if ($class === 'core' || Service::entityManager('core')->manages($class)) {
             return Service::entityManager('core');
         }
+        if ($class === 'spatial' || Service::entityManager('spatial')->manages($class)) {
+            return Service::entityManager('spatial');
+        }
         if ($class === 'user' || Service::entityManager('user')->manages($class)) {
             return Service::entityManager('user');
         }

@@ -32,6 +32,7 @@ namespace ARK\Model;
 use ARK\Model\Fragment\Fragment;
 use ARK\ORM\ORM;
 use ARK\Service;
+use ARK\Spatial\Entity\FragmentGeometry;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -51,11 +52,7 @@ class Property
         $this->attribute = $attribute;
         $this->parent = $parent;
         $this->children = new ArrayCollection();
-        $key = [
-           'module' => $item->schema()->module()->id(),
-           'item' => $item->id(),
-           'attribute' => $attribute->name(),
-        ];
+        $key = $this->key();
         if ($parent) {
             $key['object'] = $parent->id();
         }
@@ -70,6 +67,15 @@ class Property
             }
             $this->children->set($fragment->id(), $properties);
         }
+    }
+
+    public function key() : iterable
+    {
+        return [
+           'module' => $this->item->schema()->module()->id(),
+           'item' => $this->item->id(),
+           'attribute' => $this->attribute->name(),
+        ];
     }
 
     public function name() : string
@@ -114,6 +120,9 @@ class Property
 
     public function setValue($value) : void
     {
+        dump($this->attribute);
+        dump('setValue');
+        dump($value);
         if (!$this->fragments->isEmpty()) {
             $frag = $this->fragments->get(0);
             $creator = $frag->creator() ?? Service::workflow()->actor();
@@ -136,27 +145,41 @@ class Property
 
     public function update() : void
     {
-        switch ($this->name()) {
-            case 'id':
-                $this->fragments->get(0)->setValue($this->item->id());
-                break;
-            case 'visibility':
-                $this->item->setVisibility($this->fragments->get(0)->value());
-                break;
-            case $this->item->schema()->classAttributeName():
-                $this->item->setClass($this->fragments->get(0)->value());
-                break;
-            default:
-                break;
+        dump('Update');
+        dump($this->attribute->dataclass());
+        if (!$this->fragments->isEmpty()) {
+            switch ($this->name()) {
+                case 'visibility':
+                    $this->item->setVisibility($this->fragments->get(0)->value());
+                    break;
+                case $this->item->schema()->classAttributeName():
+                    $this->item->setClass($this->fragments->get(0)->value());
+                    break;
+                default:
+                    break;
+            }
         }
+        dump($this->fragments);
         foreach ($this->fragments as $fragment) {
             $fragment->update($this->item);
             ORM::persist($fragment);
+            if ($this->attribute->dataclass()->datatype() === 'spatial') {
+                dump('Create Spatial');
+                $index = new FragmentGeometry($fragment);
+                dump($index);
+                ORM::persist($index);
+            }
         }
     }
 
     public function delete() : void
     {
+        if ($this->attribute->dataclass()->datatype() === 'spatial') {
+            dump('Remove Spatial');
+            $index = ORM::findAll(FragmentGeometry::class, $this->key());
+            dump($index);
+            ORM::remove($index);
+        }
         foreach ($this->fragments as $fragment) {
             $fragment->delete();
             ORM::remove($fragment);
