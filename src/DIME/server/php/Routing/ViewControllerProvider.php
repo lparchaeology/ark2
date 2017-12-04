@@ -113,12 +113,10 @@ class ViewControllerProvider implements ControllerProviderInterface
         $controllers->match($routes['login']['paths'][$locale], 'DIME\Controller\View\UserLoginController')
             ->method('GET')
             ->bind($routes['login']['route']);
-        $controllers->match($routes['check']['paths'][$locale], function () : void {
-        })
+        $controllers->match($routes['check']['paths'][$locale], function () : void {})
             ->method('GET|POST')
             ->bind($routes['check']['route']);
-        $controllers->match($routes['logout']['paths'][$locale], function () : void {
-        })
+        $controllers->match($routes['logout']['paths'][$locale], function () : void {})
             ->method('GET')
             ->bind($routes['logout']['route']);
 
