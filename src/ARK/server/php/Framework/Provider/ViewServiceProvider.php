@@ -42,6 +42,8 @@ use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Provider\AssetServiceProvider;
 use Silex\Provider\TwigServiceProvider;
+use Symfony\Bridge\Twig\Extension\HttpKernelRuntime;
+use Symfony\Component\Form\FormRenderer;
 use Twig_Extensions_Extension_Date;
 use Twig_Extensions_Extension_Intl;
 
@@ -82,6 +84,12 @@ class ViewServiceProvider implements ServiceProviderInterface
             $twig->addExtension(new TranslateExtension($app['translator']));
             $twig->addExtension(new ViewExtension());
             return $twig;
+        });
+        $container->extend('twig.runtimes', function ($twig, $app) {
+            return [
+                HttpKernelRuntime::class => 'twig.runtime.httpkernel',
+                FormRenderer::class => 'twig.form.renderer',
+            ];
         });
         $container['twig.path'] = [
             $container['dir.site'].'/templates/'.$container['ark']['web']['frontend'],
