@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.5
+-- version 4.7.6
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 20, 2017 at 08:09 PM
--- Server version: 10.2.10-MariaDB
--- PHP Version: 7.1.11
+-- Generation Time: Dec 06, 2017 at 01:18 PM
+-- Server version: 10.2.11-MariaDB
+-- PHP Version: 7.1.12
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -4929,11 +4929,12 @@ CREATE TABLE `ark_view_table` (
   `footer` tinyint(1) NOT NULL DEFAULT 0,
   `sortable` tinyint(1) NOT NULL DEFAULT 1,
   `searchable` tinyint(1) NOT NULL DEFAULT 1,
-  `row` tinyint(1) NOT NULL DEFAULT 1,
-  `list` tinyint(1) NOT NULL DEFAULT 0,
+  `list` tinyint(1) NOT NULL DEFAULT 1,
+  `detail` tinyint(1) NOT NULL DEFAULT 0,
+  `expand` tinyint(1) NOT NULL DEFAULT 0,
   `card` tinyint(1) NOT NULL DEFAULT 0,
-  `thumbnail` tinyint(1) NOT NULL DEFAULT 0,
-  `view` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT 'row',
+  `thumb` tinyint(1) NOT NULL DEFAULT 0,
+  `view` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT 'list',
   `image` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `export` tinyint(1) NOT NULL DEFAULT 1,
   `columns` tinyint(1) NOT NULL DEFAULT 1,
@@ -4949,14 +4950,14 @@ CREATE TABLE `ark_view_table` (
 -- Dumping data for table `ark_view_table`
 --
 
-INSERT INTO `ark_view_table` (`element`, `mode`, `caption`, `header`, `footer`, `sortable`, `searchable`, `row`, `list`, `card`, `thumbnail`, `view`, `image`, `export`, `columns`, `pagination`, `selection`, `keyword`, `classes`, `template`, `url`) VALUES
-('arch_table_context', 'view', 0, 1, 0, 1, 1, 1, 0, 1, 0, 'row', NULL, 1, 1, 10, NULL, NULL, 'table bootstrap-table table-hover', NULL, NULL),
-('arch_table_find', 'view', 0, 1, 0, 1, 1, 1, 0, 1, 0, 'row', NULL, 1, 1, 10, NULL, NULL, 'table bootstrap-table table-hover', NULL, NULL),
-('core_table_actor', 'view', 0, 1, 0, 1, 1, 1, 0, 1, 0, 'row', 'avatar', 1, 1, 10, NULL, NULL, 'table bootstrap-table table-hover', NULL, NULL),
-('core_table_file', 'view', 0, 1, 0, 1, 1, 1, 0, 1, 0, 'row', NULL, 1, 1, 10, NULL, NULL, 'table bootstrap-table table-hover', NULL, NULL),
-('core_table_message', 'view', 0, 1, 0, 1, 1, 1, 0, 0, 0, 'row', NULL, 1, 1, 10, NULL, NULL, 'table bootstrap-table table-hover', NULL, NULL),
-('core_table_profile', 'view', 0, 1, 0, 1, 1, 1, 0, 1, 0, 'row', 'avatar', 1, 1, 10, NULL, 'core.profiles', 'table bootstrap-table table-hover', NULL, NULL),
-('core_table_user', 'view', 0, 1, 0, 1, 1, 1, 0, 0, 0, 'row', NULL, 1, 1, 10, 'multiple', NULL, 'table bootstrap-table table-hover', NULL, NULL);
+INSERT INTO `ark_view_table` (`element`, `mode`, `caption`, `header`, `footer`, `sortable`, `searchable`, `list`, `detail`, `expand`, `card`, `thumb`, `view`, `image`, `export`, `columns`, `pagination`, `selection`, `keyword`, `classes`, `template`, `url`) VALUES
+('arch_table_context', 'view', 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 'list', NULL, 1, 1, 10, NULL, NULL, 'table bootstrap-table table-hover', NULL, NULL),
+('arch_table_find', 'view', 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 'list', NULL, 1, 1, 10, NULL, NULL, 'table bootstrap-table table-hover', NULL, NULL),
+('core_table_actor', 'view', 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 'list', 'avatar', 1, 1, 10, NULL, NULL, 'table bootstrap-table table-hover', NULL, NULL),
+('core_table_file', 'view', 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 'list', NULL, 1, 1, 10, NULL, NULL, 'table bootstrap-table table-hover', NULL, NULL),
+('core_table_message', 'view', 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 'list', NULL, 1, 1, 10, NULL, NULL, 'table bootstrap-table table-hover', NULL, NULL),
+('core_table_profile', 'view', 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 'list', 'avatar', 1, 1, 10, NULL, 'core.profiles', 'table bootstrap-table table-hover', NULL, NULL),
+('core_table_user', 'view', 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 'list', NULL, 1, 1, 10, 'multiple', NULL, 'table bootstrap-table table-hover', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -5230,6 +5231,7 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `ro
 ('arch.group.class', 'group', '', 0, 0, 1, 0, NULL, ''),
 ('arch.landuse.class', 'landuse', '', 0, 0, 1, 0, NULL, ''),
 ('arch.photo.class', 'photo', '', 0, 0, 1, 0, NULL, ''),
+('arch.photo.class', 'snapshot', '', 0, 0, 1, 0, NULL, ''),
 ('arch.project.class', 'project', '', 0, 0, 1, 0, NULL, ''),
 ('arch.sample.class', 'sample', '', 0, 0, 1, 0, NULL, ''),
 ('arch.section.class', 'section', '', 0, 0, 1, 0, NULL, ''),
@@ -5951,9 +5953,9 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `ro
 ('language', 'mr', 'marathi', 0, 0, 1, 0, 'language.marathi', ''),
 ('language', 'mrj', 'mari.western', 0, 0, 1, 0, 'language.mari.western', ''),
 ('language', 'ms', 'malay', 0, 0, 1, 0, 'language.malay', ''),
-('language', 'mt', 'maltese', 0, 0, 1, 0, 'language.maltese', ''),
-('language', 'mua', 'mundang', 0, 0, 1, 0, 'language.mundang', '');
+('language', 'mt', 'maltese', 0, 0, 1, 0, 'language.maltese', '');
 INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+('language', 'mua', 'mundang', 0, 0, 1, 0, 'language.mundang', ''),
 ('language', 'mul', 'multiple', 0, 0, 1, 0, 'language.multiple', ''),
 ('language', 'mus', 'creek', 0, 0, 1, 0, 'language.creek', ''),
 ('language', 'mwl', 'mirandese', 0, 0, 1, 0, 'language.mirandese', ''),

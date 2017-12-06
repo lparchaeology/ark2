@@ -1754,11 +1754,15 @@
             <default value="1"/>
             <notnull/>
         </field>
-        <field name="row" type="boolean">
+        <field name="list" type="boolean">
             <default value="1"/>
             <notnull/>
         </field>
-        <field name="list" type="boolean">
+        <field name="detail" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="expand" type="boolean">
             <default value="0"/>
             <notnull/>
         </field>
@@ -1766,12 +1770,12 @@
             <default value="0"/>
             <notnull/>
         </field>
-        <field name="thumbnail" type="boolean">
+        <field name="thumb" type="boolean">
             <default value="0"/>
             <notnull/>
         </field>
         <field name="view" type="string" size="10">
-            <default value="row"/>
+            <default value="list"/>
         </field>
         <field name="image" type="string" size="30"/>
         <field name="export" type="boolean">

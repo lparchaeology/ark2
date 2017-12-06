@@ -18,6 +18,12 @@
         data-export-data-type="all"
         data-export-types="['csv', 'txt']"
         data-switchcardview="{{ element.canToggleView }}"
+        data-view-list="{{ element.enableListView }}"
+        data-view-detail="{{ element.enableDetailView }}"
+        data-view-expand="{{ element.enableExpandListView }}"
+        data-view-card="{{ element.enableCardView }}"
+        data-view-thumb="{{ element.enableThumbnailView }}"
+        data-view-default="{{ element.defaultView }}"
         data-click-to-select="true"
         {% if element.dataUrl %}
             data-url="{{ element.dataUrl }}"

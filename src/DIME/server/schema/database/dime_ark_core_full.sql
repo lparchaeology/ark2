@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.5
+-- version 4.7.6
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 30, 2017 at 11:51 AM
--- Server version: 10.2.10-MariaDB
--- PHP Version: 7.1.11
+-- Generation Time: Dec 06, 2017 at 12:42 PM
+-- Server version: 10.2.11-MariaDB
+-- PHP Version: 7.1.12
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -6757,11 +6757,12 @@ CREATE TABLE `ark_view_table` (
   `footer` tinyint(1) NOT NULL DEFAULT 0,
   `sortable` tinyint(1) NOT NULL DEFAULT 1,
   `searchable` tinyint(1) NOT NULL DEFAULT 1,
-  `row` tinyint(1) NOT NULL DEFAULT 1,
-  `list` tinyint(1) NOT NULL DEFAULT 0,
+  `list` tinyint(1) NOT NULL DEFAULT 1,
+  `detail` tinyint(1) NOT NULL DEFAULT 0,
+  `expand` tinyint(1) NOT NULL DEFAULT 0,
   `card` tinyint(1) NOT NULL DEFAULT 0,
-  `thumbnail` tinyint(1) NOT NULL DEFAULT 0,
-  `view` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT 'row',
+  `thumb` tinyint(1) NOT NULL DEFAULT 0,
+  `view` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT 'list',
   `image` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `export` tinyint(1) NOT NULL DEFAULT 1,
   `columns` tinyint(1) NOT NULL DEFAULT 1,
@@ -6777,14 +6778,14 @@ CREATE TABLE `ark_view_table` (
 -- Dumping data for table `ark_view_table`
 --
 
-INSERT INTO `ark_view_table` (`element`, `mode`, `caption`, `header`, `footer`, `sortable`, `searchable`, `row`, `list`, `card`, `thumbnail`, `view`, `image`, `export`, `columns`, `pagination`, `selection`, `keyword`, `classes`, `template`, `url`) VALUES
-('core_actor_table', 'view', 0, 1, 0, 1, 1, 1, 0, 0, 0, 'row', 'avatar', 1, 1, 10, '1', NULL, 'table-hover dime-table', NULL, NULL),
-('core_file_table', NULL, 0, 1, 0, 1, 1, 1, 0, 0, 0, 'row', NULL, 1, 1, 10, '1', NULL, 'table-hover dime-table', NULL, NULL),
-('core_message_table', 'view', 0, 1, 0, 1, 1, 1, 0, 0, 0, 'row', NULL, 1, 1, 10, '1', NULL, 'table-hover dime-table', 'layouts/messagelist.html.twig', NULL),
-('core_profile_table', 'view', 0, 1, 0, 1, 1, 1, 0, 0, 0, 'row', 'avatar', 1, 1, 10, NULL, 'core.profiles', 'table-hover dime-table', NULL, NULL),
-('dime_find_front_table', NULL, 0, 1, 0, 1, 1, 1, 0, 0, 0, 'row', 'image', 1, 1, NULL, NULL, NULL, 'table-hover dime-table', NULL, NULL),
-('dime_find_table', NULL, 0, 1, 0, 1, 1, 1, 0, 0, 0, 'row', 'image', 1, 1, 10, '1', NULL, 'table-hover dime-table', NULL, NULL),
-('dime_profile_table', NULL, 0, 1, 0, 1, 1, 1, 0, 0, 0, 'row', 'avatar', 1, 1, 10, NULL, 'dime.profiles', 'table-hover dime-table', NULL, NULL);
+INSERT INTO `ark_view_table` (`element`, `mode`, `caption`, `header`, `footer`, `sortable`, `searchable`, `list`, `detail`, `expand`, `card`, `thumb`, `view`, `image`, `export`, `columns`, `pagination`, `selection`, `keyword`, `classes`, `template`, `url`) VALUES
+('core_actor_table', 'view', 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 'list', 'avatar', 1, 1, 10, '1', NULL, 'table-hover dime-table', NULL, NULL),
+('core_file_table', NULL, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 'list', NULL, 1, 1, 10, '1', NULL, 'table-hover dime-table', NULL, NULL),
+('core_message_table', 'view', 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 'list', NULL, 1, 1, 10, '1', NULL, 'table-hover dime-table', 'layouts/messagelist.html.twig', NULL),
+('core_profile_table', 'view', 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 'card', 'avatar', 1, 1, 10, NULL, 'core.profiles', 'table-hover dime-table', NULL, NULL),
+('dime_find_front_table', NULL, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 'card', 'image', 1, 1, 10, NULL, NULL, 'table-hover dime-table', NULL, NULL),
+('dime_find_table', NULL, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 'card', 'image', 1, 1, 10, '1', NULL, 'table-hover dime-table', NULL, NULL),
+('dime_profile_table', NULL, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 'list', 'avatar', 1, 1, 10, NULL, 'dime.profiles', 'table-hover dime-table', NULL, NULL);
 
 -- --------------------------------------------------------
 

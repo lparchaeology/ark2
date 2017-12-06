@@ -41,10 +41,11 @@ class Table extends Element
     protected $footer;
     protected $sortable;
     protected $searchable;
-    protected $row;
     protected $list;
+    protected $detail;
+    protected $expand;
     protected $card;
-    protected $thumbnail;
+    protected $thumb;
     protected $view;
     protected $image;
     protected $export;
@@ -97,7 +98,37 @@ class Table extends Element
 
     public function canToggleView() : bool
     {
-        return $this->row + $this->list + $this->card + $this->thumbnail;
+        return ($this->list + $this->card + $this->thumb) > 1;
+    }
+
+    public function enableListView() : bool
+    {
+        return $this->list;
+    }
+
+    public function enableDetailView() : bool
+    {
+        return $this->detail;
+    }
+
+    public function enableExpandListView() : bool
+    {
+        return $this->list && $this->detail && $this->expand;
+    }
+
+    public function enableCardView() : bool
+    {
+        return $this->card;
+    }
+
+    public function enableThumbnailView() : bool
+    {
+        return $this->thumb;
+    }
+
+    public function defaultView() : string
+    {
+        return $this->view ?? 'list';
     }
 
     public function selection() : string
@@ -171,10 +202,11 @@ class Table extends Element
         $builder->addField('footer', 'boolean');
         $builder->addField('sortable', 'boolean');
         $builder->addField('searchable', 'boolean');
-        $builder->addField('row', 'boolean');
         $builder->addField('list', 'boolean');
+        $builder->addField('detail', 'boolean');
+        $builder->addField('expand', 'boolean');
         $builder->addField('card', 'boolean');
-        $builder->addField('thumbnail', 'boolean');
+        $builder->addField('thumb', 'boolean');
         $builder->addStringField('view', 10);
         $builder->addStringField('image', 30);
         $builder->addField('export', 'boolean');
