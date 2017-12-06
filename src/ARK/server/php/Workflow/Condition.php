@@ -55,6 +55,11 @@ class Condition
         $this->value = $value;
     }
 
+    public function action() : Action
+    {
+        return $this->action;
+    }
+
     public function group() : int
     {
         return $this->grp;

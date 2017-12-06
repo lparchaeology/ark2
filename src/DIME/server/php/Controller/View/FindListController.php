@@ -193,27 +193,45 @@ class FindListController extends DimeFormController
         $advanced = ($request->attributes->get('_route') === 'dime.home.finds');
 
         if ($advanced) {
+            // Enable find list actions if we have finds and a single status is selected
+            $haveFinds = count($data['finds']['items']) > 0;
+            $haveStatus = count($query['status'] ?? []) === 1;
+            $canAction = $actor->hasPermission('dime.find.workflow.action') && $haveFinds && $haveStatus;
+
             // Enable Treasure Claim processing iff search is for Evaluated finds with Pending treasure status
             // for a single Finder and a single Museum the user is an Agent for.
             // If the user can do Treasure Claim processing
-            $claim = $actor->hasPermission('dime.find.treasure.claim')
-                && count($data['finds']['items']) > 0
-                && isset($query['museum']) && count($query['museum']) === 1
+            $canClaim = $actor->hasPermission('dime.find.treasure.claim')
+                && $haveFinds
+                && $haveStatus
+                && count($query['finder'] ?? []) === 1
+                && isset($query['museum'])
+                && count($query['museum']) === 1
                 && ORM::find(Museum::class, $query['museum'][0])
-                && $actor->isAgentFor(ORM::find(Museum::class, $query['museum'][0]))
-                && isset($query['finder']) && count($query['finder']) === 1
-                && isset($query['status']) && count($query['status']) === 1;
+                && $actor->isAgentFor(ORM::find(Museum::class, $query['museum'][0]));
 
-            if ($claim) {
-                $state['workflow']['mode'] = 'edit';
-                $state['actions'] = Service::workflow()->updateActions($actor, $data['finds']['items'][0]);
+            if ($canAction || $canClaim) {
+                if ($canAction) {
+                    $statusAttribute = $data['finds']['items']->first()->schema()->attribute('process');
+                    $actions = Service::workflow()->attributeActions($statusAttribute, $query['status']);
+                } else {
+                    $actions = new ArrayCollection();
+                }
+                if ($canClaim) {
+                    $claim = ORM::find(Action::class, ['schma' => 'dime.find', 'action' => 'claim']);
+                    $actions->add($claim);
+                }
                 //$state['actions'] = [ORM::find(Action::class, ['schma' => 'dime.find', 'action' => 'claim'])];
-                $state['select']['actions']['choices'] = $state['actions'];
-                $state['select']['actions']['choice_value'] = 'name';
-                $state['select']['actions']['choice_name'] = 'name';
-                $state['select']['actions']['choice_label'] = 'keyword';
-                $state['select']['actions']['multiple'] = false;
-                $state['select']['actions']['placeholder'] = Service::translate('core.placeholder');
+                if (count($actions) > 0) {
+                    $state['workflow']['mode'] = 'edit';
+                    $state['actions'] = $actions;
+                    $state['select']['actions']['choices'] = $state['actions'];
+                    $state['select']['actions']['choice_value'] = 'name';
+                    $state['select']['actions']['choice_name'] = 'name';
+                    $state['select']['actions']['choice_label'] = 'keyword';
+                    $state['select']['actions']['multiple'] = false;
+                    $state['select']['actions']['placeholder'] = Service::translate('core.placeholder');
+                }
             }
 
             $select['choice_value'] = 'id';

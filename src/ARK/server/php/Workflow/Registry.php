@@ -75,6 +75,19 @@ class Registry extends SymfonyRegistry
         return $this->actions[$schema->name()];
     }
 
+    public function attributeActions(Attribute $attribute, $value) : Collection
+    {
+        $conditions = ORM::findBy(Condition::class, ['attribute' => $attribute, 'value' => $value]);
+        $actions = new ArrayCollection();
+        foreach ($conditions as $condition) {
+            $action = $condition->action();
+            if ($action->isActionable() && !$actions->contains($action)) {
+                $actions[$action->name()] = $action;
+            }
+        }
+        return $actions;
+    }
+
     public function updateActions(Actor $actor, Item $item) : Collection
     {
         $schema = $item->schema()->name();
