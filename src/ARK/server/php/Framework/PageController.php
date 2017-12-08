@@ -89,6 +89,8 @@ abstract class PageController extends Controller
 
         $context = $this->buildContext($request, $view);
         $forms = $page->createFormViews($forms);
+        dump($context);
+        dump($forms);
         $response = new Response($page->renderView($context, $forms));
         //dump($response);
         return $response;

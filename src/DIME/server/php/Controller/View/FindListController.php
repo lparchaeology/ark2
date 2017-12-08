@@ -221,16 +221,16 @@ class FindListController extends DimeFormController
                     $claim = ORM::find(Action::class, ['schma' => 'dime.find', 'action' => 'claim']);
                     $actions->add($claim);
                 }
-                //$state['actions'] = [ORM::find(Action::class, ['schma' => 'dime.find', 'action' => 'claim'])];
                 if (count($actions) > 0) {
                     $state['workflow']['mode'] = 'edit';
                     $state['actions'] = $actions;
-                    $state['select']['actions']['choices'] = $state['actions'];
-                    $state['select']['actions']['choice_value'] = 'name';
-                    $state['select']['actions']['choice_name'] = 'name';
-                    $state['select']['actions']['choice_label'] = 'keyword';
-                    $state['select']['actions']['multiple'] = false;
-                    $state['select']['actions']['placeholder'] = Service::translate('core.placeholder');
+                    $select['choices'] = $state['actions'];
+                    $select['choice_value'] = 'name';
+                    $select['choice_name'] = 'name';
+                    $select['choice_label'] = 'keyword';
+                    $select['multiple'] = false;
+                    $select['placeholder'] = Service::translate('core.placeholder');
+                    $state['select']['actions'] = $select;
                 }
             }
 
@@ -288,14 +288,11 @@ class FindListController extends DimeFormController
         Service::view()->clearFlashes();
         $clicked = $form->getClickedButton()->getName();
         if ($clicked === 'apply') {
-            //$selected = $form['finds']['selected']->getData();
             $actor = Service::workflow()->actor();
             $data = $form->getData();
-            $finds = $data['items'];
+            $items = $data['selected'] ?? [];
+            $finds = ORM::findBy(Find::class, ['id' => $items]);
             $action = $data['actions'];
-            //$subject = $data['actors'];
-            //$date = $data['date'];
-            //$text = $data['textarea'];
             foreach ($finds as $find) {
                 $action->apply($actor, $find);
                 ORM::persist($find);
@@ -338,7 +335,7 @@ class FindListController extends DimeFormController
                     $find->property('claim')->setValue($file);
                 }
             }
-            ORM::flush($find);
+            ORM::flush('data');
             if (isset($file)) {
                 $request->attributes->set('_file', $file->id());
             } else {

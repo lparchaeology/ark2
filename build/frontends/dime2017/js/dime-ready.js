@@ -184,7 +184,7 @@ $(document).ready(function () {
 
     $("body").on("click", function (e) {
         // unless clicking a tooptip
-        if ($(e.target).hasClass("tooltip") == false && $(e.target).hasClass("help") == false) {
+        if ($(e.target).hasClass("tooltip") === false && $(e.target).hasClass("help") === false) {
             $('[data-toggle="tooltip"]').tooltip('hide');
         }
     })
@@ -198,5 +198,16 @@ $(document).ready(function () {
         if ($(this).closest("form")[0].checkValidity()) {
             window.onbeforeunload = null;
         }
-    })
+    });
+    // Apply actions to tables
+    $('form#action').find('#action_apply').click(function (e) {
+        var table = $(this).closest('form#action').siblings('.table-wrapper-div').find('table.bootstrap-table');
+        var selected = table.find('tr.selected');
+        var items = [];
+        selected.each(function () {
+            var item = $(this).attr('data-unique-id');
+            items.push(item);
+        });
+        $(this).closest('form#action').find('#action_selected').val(items);
+    });
 });

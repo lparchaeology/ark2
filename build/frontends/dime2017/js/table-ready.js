@@ -1,5 +1,6 @@
 $('document').ready(function () {
 
+    /* Currently unused, probably obsolete
     var getAvailableActions = function (itemkey, itemvalue) {
         return JSON.parse(JSON.stringify(window.itemAvailableActions[itemvalue]));
     };
@@ -34,5 +35,6 @@ $('document').ready(function () {
         }
         $('#chooseActionSelectHolder').append(dropdown);
     });
+    */
 
 });

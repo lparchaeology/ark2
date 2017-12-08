@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 06, 2017 at 12:42 PM
+-- Generation Time: Dec 08, 2017 at 05:05 PM
 -- Server version: 10.2.11-MariaDB
 -- PHP Version: 7.1.12
 
@@ -6038,8 +6038,9 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('core_workflow_action', '', 0, 2, 0, 'core_widget_actor', NULL, NULL, 'actors', NULL, 0, 0, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, 'active', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('core_workflow_action', '', 0, 2, 2, 'core_widget_date', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, 'active', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('core_workflow_action', '', 0, 4, 0, 'core_widget_textarea', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, 'active', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_workflow_action_form', '', 0, 0, 0, 'core_widget_choice', NULL, NULL, 'actions', NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_workflow_action_form', '', 0, 0, 2, 'core_widget_submit', NULL, NULL, 'apply', NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.apply', NULL, NULL),
+('core_workflow_action_form', '', 0, 0, 0, 'core_widget_choice', NULL, NULL, 'actions', NULL, 1, 0, NULL, 1, 1, NULL, NULL, NULL, NULL, 'edit', 'redact', 1, NULL, NULL, 'active', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_workflow_action_form', '', 0, 0, 2, 'core_widget_selected', NULL, NULL, 'selected', NULL, 0, 0, NULL, NULL, 1, NULL, NULL, NULL, NULL, 'edit', 'redact', 1, NULL, NULL, 'active', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_workflow_action_form', '', 0, 0, 4, 'core_widget_submit', NULL, NULL, 'apply', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, 'edit', 'redact', 1, NULL, NULL, 'active', NULL, NULL, NULL, 1, 0, 'core.button.apply', NULL, NULL),
 ('dime_admin_register_page', '', 0, 0, 0, 'core_user_credentials', NULL, NULL, NULL, 6, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_admin_register_page', '', 0, 0, 2, 'dime_user_register_actor', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_admin_register_page', '', 0, 0, 4, 'core_user_role', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
@@ -6100,8 +6101,7 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('dime_find_item', '', 0, 1, 6, 'dime_find_clone', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_list', '', 0, 0, 0, 'dime_find_table', NULL, NULL, 'items', NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_list_action', '', 0, 0, 0, 'dime_find_table', NULL, NULL, 'items', NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('dime_find_list_action', '', 0, 0, 2, 'dime_workflow_action', NULL, NULL, NULL, NULL, 0, 0, 1, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('dime_find_list_action', '', 0, 0, 6, 'core_widget_selected', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('dime_find_list_action', '', 0, 0, 2, 'core_workflow_action_form', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_list_public', '', 0, 0, 0, 'dime_find_front_table', NULL, NULL, 'items', NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_map', '', 0, 0, 0, 'dime_find_id', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_map', '', 0, 0, 1, 'dime_find_location', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, 'readonly', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
@@ -6138,7 +6138,7 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('dime_front_page', '', 0, 0, 6, 'dime_find_municipality', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_home_find_search', '', 0, 0, 0, 'dime_home_action', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_home_find_search', '', 1, 0, 0, 'dime_find_filter', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('dime_home_find_search', '', 2, 0, 0, 'dime_find_list_action', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('dime_home_find_search', '', 2, 0, 0, 'dime_find_list_action', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.actions', NULL, NULL),
 ('dime_home_find_search', '', 2, 1, 0, 'dime_find_map', 'dime_map_user', NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_home_page', '', 0, 0, 0, 'dime_home_action', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_home_page', '', 1, 0, 0, 'dime_home_dashboard', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
@@ -6562,7 +6562,7 @@ INSERT INTO `ark_view_form` (`element`, `name`, `mode`, `method`, `action`, `key
 ('core_user_register', NULL, NULL, NULL, NULL, NULL, 'user/layouts/register.html.twig', NULL),
 ('core_user_reset', NULL, NULL, NULL, NULL, NULL, 'user/layouts/reset.html.twig', NULL),
 ('core_user_role_add', 'role_add', NULL, NULL, NULL, 'core.user.role.add', NULL, NULL),
-('core_workflow_action_form', 'action', NULL, NULL, NULL, 'core.workflow.action', 'layouts/action.html.twig', NULL),
+('core_workflow_action_form', 'action', NULL, NULL, NULL, 'core.workflow.action', NULL, NULL),
 ('dime_admin_register_page', NULL, NULL, NULL, NULL, 'core.admin.user.register', NULL, NULL),
 ('dime_find_add', 'find', NULL, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_filter', 'filters', NULL, NULL, NULL, NULL, 'layouts/filters.html.twig', NULL),
@@ -6885,7 +6885,7 @@ INSERT INTO `ark_view_widget` (`element`, `name`, `choices`, `keyword`, `templat
 ('core_widget_monthday', 'monthday', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\BirthdayType', ''),
 ('core_widget_password', '_password', NULL, 'core.user.password', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\PasswordType', ''),
 ('core_widget_password_confirm', 'password', NULL, 'core.user.password', NULL, 'ARK\\Form\\Type\\RepeatedPasswordType', ''),
-('core_widget_selected', 'selected', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\HiddenType', ''),
+('core_widget_selected', 'selected', NULL, NULL, NULL, 'ARK\\Form\\Type\\HiddenMultipleType', ''),
 ('core_widget_static', 'static', NULL, NULL, NULL, 'ARK\\Form\\Type\\StaticType', ''),
 ('core_widget_submit', 'submit', NULL, 'core.widget.submit', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\SubmitType', ''),
 ('core_widget_submit_recaptcha', 'submit', NULL, 'core.widget.submit', NULL, 'ARK\\Form\\Type\\RecaptchaSubmitType', ''),
@@ -9523,6 +9523,7 @@ INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
 ('registrar', 'dime.find.update.owner'),
 ('registrar', 'dime.find.update.process'),
 ('registrar', 'dime.find.update.treasure'),
+('registrar', 'dime.find.workflow.action'),
 ('researcher', 'core.actor.read'),
 ('researcher', 'core.actor.update'),
 ('researcher', 'core.file.read'),
@@ -9661,7 +9662,8 @@ INSERT INTO `ark_workflow_permission` (`permission`, `keyword`, `enabled`, `desc
 ('dime.find.update.museum_id', NULL, 1, NULL),
 ('dime.find.update.owner', NULL, 1, NULL),
 ('dime.find.update.process', NULL, 1, NULL),
-('dime.find.update.treasure', NULL, 1, NULL);
+('dime.find.update.treasure', NULL, 1, NULL),
+('dime.find.workflow.action', NULL, 1, NULL);
 
 -- --------------------------------------------------------
 
