@@ -33,6 +33,7 @@ use ARK\Actor\Actor;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\ORM\ORM;
 use ARK\Vocabulary\Term;
 use ARK\Workflow\Permission;
 

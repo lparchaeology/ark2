@@ -35,7 +35,6 @@ use ARK\Database\Console\Command\DatabaseImportCommand;
 use ARK\Database\Console\Command\DatabaseTruncateCommand;
 use ARK\Framework\Application;
 use ARK\Framework\Console\Command\CacheClearCommand;
-use ARK\Framework\Console\Command\NavAddCommand;
 use ARK\Framework\Console\Command\RouteDumpCommand;
 use ARK\Framework\Console\Command\SiteAboutCommand;
 use ARK\ORM\Console\Command\GenerateItemEntityCommand;
@@ -51,6 +50,7 @@ use ARK\Security\Console\Command\UserRoleDeleteCommand;
 use ARK\Security\Console\Command\UserVerifyCommand;
 use ARK\Spatial\Console\Command\SpatialRebuildCommand;
 use ARK\Translation\Console\Command\TranslationAddCommand;
+use ARK\View\Console\Command\ViewPageDumpCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\StatusCommand;
@@ -84,7 +84,7 @@ class Console extends AbstractConsole
         $this->add(new UserVerifyCommand());
 
         // View Commands
-        //$this->add(new NavAddCommand());
+        $this->add(new ViewPageDumpCommand());
 
         // Database Commands
         $this->add(new DatabaseDropCommand());

@@ -127,6 +127,11 @@ abstract class AbstractCommand extends Command
         return $this->input->getArgument($argument);
     }
 
+    protected function setArgument(string $argument, $value)
+    {
+        return $this->input->setArgument($argument, $value);
+    }
+
     protected function write(string $message) : void
     {
         if ($this->progress->getProgress() !== $this->progress->getMaxSteps()) {
@@ -231,10 +236,14 @@ abstract class AbstractCommand extends Command
         return $password;
     }
 
-    protected function askArgument($argument, $text) : void
+    protected function askArgument($argument, $text, iterable $choices = null, $default = null, bool $auto = true) : void
     {
         if (!$this->input->getArgument($argument)) {
-            $value = $this->askQuestion($text);
+            if ($choices = null) {
+                $value = $this->askQuestion($text);
+            } else {
+                $value = askChoice($text, $choices, $default, $auto);
+            }
             $this->input->setArgument($argument, $value);
         }
     }
