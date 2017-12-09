@@ -36,6 +36,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class Table extends Element
 {
+    use GridTrait;
+
     protected $caption;
     protected $header;
     protected $footer;

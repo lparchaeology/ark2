@@ -52,8 +52,10 @@ class ViewPageDumpCommand extends AbstractCommand
         $this->write('');
         $this->write('Mode             : '.$page->mode());
         $this->write('Visibility       : '.$page->visibility()->name());
-        $this->write('Read Permission  : '.$page->readPermission()->id());
-        $this->write('Write Permission : '.$page->updatePermission()->id());
+        $read = $page->readPermission() ? $page->readPermission()->id() : '';
+        $this->write('Read Permission  : '.$read);
+        $write = $page->updatePermission() ? $page->updatePermission()->id() : '';
+        $this->write('Write Permission : '.$write);
         $this->write('');
         $this->write('Header   : '.$page->header()->id());
         $this->write('Sidebar  : '.$page->sidebar()->id());
