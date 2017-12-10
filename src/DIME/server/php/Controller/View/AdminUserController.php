@@ -33,8 +33,9 @@ use ARK\Actor\Museum;
 use ARK\Actor\Person;
 use ARK\Model\Item;
 use ARK\ORM\ORM;
+use ARK\Security\User;
 use ARK\Service;
-use ARK\Vocabulary\Term;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -60,13 +61,12 @@ class AdminUserController extends DimeFormController
         $query = $request->query->all();
 
         if (isset($query['status'])) {
-            $status = ORM::findOneBy(Term::class, [
-                'concept' => 'core.security.status',
-                'term' => $query['status'],
-            ]);
-            $data['filter']['status'] = $status;
-            $items = Service::database()->userSearch($query);
-            $data['actors']['items'] = ORM::findBy(Person::class, ['id' => $items]);
+            $actors = [];
+            $users = User::findByStatus($query['status']);
+            foreach ($users as $user) {
+                $actors = array_merge($actors, $user->actors()->toArray());
+            }
+            $data['actors']['items'] = new ArrayCollection($actors);
         } else {
             $data['actors']['items'] = ORM::findAll(Person::class);
         }
@@ -93,9 +93,9 @@ class AdminUserController extends DimeFormController
         if ($submitted === 'actions') {
             $action = $form['actions']->getData();
             $agent = Service::workflow()->actor();
-            //Service::workflow()->apply($agent, $action, $actor);
-            //ORM::persist($actor);
-            //ORM::flush($actor);
+            Service::workflow()->apply($agent, $action, $actor);
+            ORM::persist($actor);
+            ORM::flush($actor);
             return;
         }
     }

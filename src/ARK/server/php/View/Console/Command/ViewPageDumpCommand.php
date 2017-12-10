@@ -67,17 +67,18 @@ class ViewPageDumpCommand extends AbstractCommand
         $this->write('');
     }
 
-    protected function writeElement(Element $element, int $depth = 0) : void
+    protected function writeElement(Element $element, int $depth = 0, string $name = null) : void
     {
         $pre = $depth > 0 ? str_repeat('-', $depth).' ' : '';
         $type = str_pad('['.$element->type()->id().']', 10);
-        $name = str_pad($element->name() ? '"'.$element->name().'"' : '', 30);
+        $name = $name ?? $element->name() ?? '';
+        $name = str_pad($name ? '"'.$name.'"' : '', 30);
         $this->write(str_pad($pre.$type.$element->id(), 40).$name);
         if (method_exists($element, 'grid')) {
             foreach ($element->grid() as $rdx => $row) {
                 foreach ($row as $cdx => $col) {
                     foreach ($col as $seq => $cell) {
-                        $this->writeElement($cell->element(), $depth + 1);
+                        $this->writeElement($cell->element(), $depth + 1, $cell->name());
                     }
                 }
             }
