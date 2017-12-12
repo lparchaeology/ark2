@@ -92,19 +92,19 @@ abstract class DimeFormController extends PageController
             ],
             'sidelinks' => [
                 [
-                    'name' => 'mine',
-                    'active' => false,
-                    'role' => 'ROLE_USER',
-                    'links' => [
-                        ['name' => 'dime.search.finds.mine', 'active' => false, 'target' => 'dime.home.finds'],
-                    ],
-                ],
-                [
                     'name' => 'add',
                     'active' => false,
                     'role' => 'ROLE_USER',
                     'links' => [
                         ['name' => 'dime.find.add', 'active' => false, 'target' => 'dime.finds.add'],
+                    ],
+                ],
+                [
+                    'name' => 'mine',
+                    'active' => false,
+                    'role' => 'ROLE_USER',
+                    'links' => [
+                        ['name' => 'dime.search.finds.mine', 'active' => false, 'target' => 'dime.home.finds'],
                     ],
                 ],
                 [

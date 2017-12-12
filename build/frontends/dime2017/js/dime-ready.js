@@ -4,6 +4,8 @@ $(document).ready(function () {
         language: lang,
     });
 
+    $('.filters-toggle').toggle(".filters");
+
     $('.datepicker').datetimepicker({
         language: lang,
         minView: 2,

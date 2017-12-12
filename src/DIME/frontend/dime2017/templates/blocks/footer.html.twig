@@ -1,4 +1,7 @@
 {# Define the footer block #}
+
+{% use "blocks/loginmodal.html.twig" %}
+
 {% block footer %}
 
     <footer class="footer">
@@ -9,5 +12,7 @@
             {{ 'dime.supportedby' | translate }} <span class="funder">{{ 'dime.krogager' | translate }}</span>
         </div>
     </footer>
+
+    {{ block('loginmodal') }}
 
 {% endblock footer %}
