@@ -70,6 +70,7 @@
             $("#modalWindow").modal();
             $('#modalWindow').on('hidden.bs.modal', function () {
                 $('tbody tr').removeClass('selected');
+                mapcollection.clear();
             });
         };
 
@@ -177,8 +178,8 @@
         var sortSelection = function (clickfunc) {
             var ark_id = '';
 
-            $('tbody tr').off("click");
-            $('tbody tr').on("click", null, { "target": this }, clickfunc);
+            $('tbody').off("click",'tr');
+            $('tbody').on("click", 'tr', { "target": this }, clickfunc);
 
             if (typeof mapcollection !== 'undefined') {
                 mapcollection.forEach(function (e, i, a) {
@@ -237,7 +238,9 @@
 
         $(document).ready(function () {
 
-            if (window.itemkey === 'find') {
+
+            console.log($('#map').length);
+            if ($('#map').length) {
                 window.tableclick = mapclick;
             } else {
                 window.tableclick = formclick;
@@ -314,8 +317,8 @@
 
             $('th').on('click', function (e) {
                 window.setTimeout(function () {
-                    $('tbody tr').off("click");
-                    $('tbody tr').on("click", { "target": this }, window.tableclick);
+                    $('tbody').off("click",'tr');
+                    $('tbody').on("click", 'tr', { "target": this }, window.tableclick);
 
                     if (typeof mapcollection !== 'undefined') {
                         mapcollection.forEach(function (e, i, a) {

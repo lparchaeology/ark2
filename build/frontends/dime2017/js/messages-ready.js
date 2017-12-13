@@ -1,8 +1,7 @@
 $('document').ready(function () {
 
-    $('tr').on("click", { "target": this }, messageclick);
-
     if (typeof window.message_id !== 'undefined') {
+        $('tr').on("click", { "target": this }, messageclick);
         $(".dime-table tr[data-unique-id='" + window.message_id + "']").click();
     }
 
