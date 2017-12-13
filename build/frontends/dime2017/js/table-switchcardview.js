@@ -55,8 +55,8 @@
                 html += '<div class="field">';
                 if (fields[field].field !== 'checked') {
                     if (fields[field].field === 'image') {
-                        //html += item[fields[field].field].replace('/img/thumb.','/img/');
-                        html += item[fields[field].field];
+                        html += item[fields[field].field].replace('/img/thumb.','/img/');
+                        //html += item[fields[field].field];
                     } else {
                         html += item[fields[field].field];
                     }
@@ -159,7 +159,7 @@
 
         };
 
-        var thumbclick = function thumbclick(evt) {
+        window.thumbclick = function (evt) {
             var self = '';
 
             if ($(evt.target).is('tr')) {
@@ -170,7 +170,7 @@
 
             window.tableclick(evt);
 
-            createItemModal(that.data[self[0].rowIndex - 1], that.columns);
+            createItemModal(that.data[self.data('index')], that.columns);
 
         };
 
@@ -178,7 +178,7 @@
             var ark_id = '';
 
             $('tbody tr').off("click");
-            $('tbody tr').on("click", { "target": this }, clickfunc);
+            $('tbody tr').on("click", null, { "target": this }, clickfunc);
 
             if (typeof mapcollection !== 'undefined') {
                 mapcollection.forEach(function (e, i, a) {
