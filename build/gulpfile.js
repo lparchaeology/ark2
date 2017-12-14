@@ -120,12 +120,7 @@ function installAssets(group) {
         map = makeMap('frontends/' + manifest.frontend + '/', manifest.assets[group].custom[sub], dest + '/' + sub);
         maps = maps.concat(map);
     }
-    console.log('');
-    console.log(maps);
-    console.log('');
     for (map in maps) {
-        console.log(maps[map].src);
-        console.log('');
         ret = copyFiles(maps[map].src, maps[map].dest);
     }
     return util.noop();
