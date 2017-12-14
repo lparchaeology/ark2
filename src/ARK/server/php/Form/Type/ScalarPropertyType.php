@@ -208,11 +208,10 @@ class ScalarPropertyType extends AbstractPropertyType
     {
         $display = $value;
         if ($display instanceof Item) {
-            if ($property) {
-                $display = $display->property($property)->value();
-            } else {
+            if ($property === null || $display->property($property) === null) {
                 return $display->id();
             }
+            $display = $display->property($property)->value();
         }
         if ($display instanceof Term) {
             return $display->keyword();
@@ -228,9 +227,5 @@ class ScalarPropertyType extends AbstractPropertyType
             return $display[$valueName];
         }
         return $display;
-        if ($display) {
-            return $display;
-        }
-        return Service::translate('core.placeholder');
     }
 }
