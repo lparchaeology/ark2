@@ -32,6 +32,7 @@ namespace ARK\Form\Type;
 use ARK\Model\LocalText;
 use ARK\Service;
 use ARK\Vocabulary\Term;
+use Brick\Geo\Geometry;
 use DateTime;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataTransformerInterface;
@@ -88,6 +89,9 @@ class StaticType extends AbstractType implements DataTransformerInterface
             return $value->keyword();
         }
         if ($value instanceof LocalText) {
+            return $value->content();
+        }
+        if ($value instanceof Geometry) {
             return $value->content();
         }
         if ($value) {

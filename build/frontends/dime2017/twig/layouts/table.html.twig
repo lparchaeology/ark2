@@ -1,43 +1,45 @@
 {# Standard table layout using only HTML5/Bootstrap #}
 
+{% set table = element %}
+
 <div class='table-wrapper-div'>
 
     <table
-        id="{{element.id}}"
-        class="{{ 'table bootstrap-table ' ~ element.classes }}"
+        id="{{ table.id }}"
+        class="{{ 'table bootstrap-table ' ~ table.classes }}"
         data-toggle="table"
-        data-classes="{{ 'table bootstrap-table ' ~ element.classes }}"
+        data-classes="{{ 'table bootstrap-table ' ~ table.classes }}"
         data-sort-name="id"
-        data-show-refresh="{{ element.canRefresh }}"
-        data-show-toggle="{{ element.canToggleView }}"
-        data-show-columns="{{ element.canChooseColumns }}"
-        data-pagination="{{ element.pagination }}"
-        data-page-size="{{ element.pageSize }}"
+        data-show-refresh="{{ table.canRefresh }}"
+        data-show-toggle="{{ table.canToggleView }}"
+        data-show-columns="{{ table.canChooseColumns }}"
+        data-pagination="{{ table.pagination }}"
+        data-page-size="{{ table.pageSize }}"
         data-mobile-responsive="true"
-        data-show-export="{{ element.canExportData }}"
+        data-show-export="{{ table.canExportData }}"
         data-export-data-type="all"
         data-export-types="['csv', 'txt']"
-        data-switchcardview="{{ element.canToggleView }}"
-        data-view-list="{{ element.enableListView }}"
-        data-view-detail="{{ element.enableDetailView }}"
-        data-view-expand="{{ element.enableExpandListView }}"
-        data-view-card="{{ element.enableCardView }}"
-        data-view-thumb="{{ element.enableThumbnailView }}"
-        data-view-default="{{ element.defaultView }}"
+        data-switchcardview="{{ table.canToggleView }}"
+        data-view-list="{{ table.enableListView }}"
+        data-view-detail="{{ table.enableDetailView }}"
+        data-view-expand="{{ table.enableExpandListView }}"
+        data-view-card="{{ table.enableCardView }}"
+        data-view-thumb="{{ table.enableThumbnailView }}"
+        data-view-default="{{ table.defaultView }}"
         data-click-to-select="true"
-        {% if element.dataUrl %}
-            data-url="{{ element.dataUrl }}"
+        {% if table.dataUrl %}
+            data-url="{{ table.dataUrl }}"
         {% endif %}
         icons="{ columns: 'glyphicon-th-list icon-th-list' }">
 
-        {% if element.showCaption %}
-            <caption>{{ element.keyword | translate('caption') }}</caption>
+        {% if table.showCaption %}
+            <caption>{{ table.keyword | translate('caption') }}</caption>
         {% endif %}
 
-        {% if element.showHeader %}
+        {% if table.showHeader %}
             <thead>
                 <tr>
-                    {% if element.selection %}
+                    {% if table.selection %}
                         <th class="checkedhead"
                             data-field="checked"
                             data-sortable="false"
@@ -45,10 +47,10 @@
                             data-card-visible="false"
                             data-tableexport-display="none"></th>
                     {% endif %}
-                    {% if element.image %}
+                    {% if table.image %}
                         <th class="thumbimagehead"
-                            data-field="{{element.image}}"
-                            data-title="{{element.image}}"
+                            data-field="{{ table.image }}"
+                            data-title="{{ table.image }}"
                             data-sortable="false"
                             data-tableexport-display="none"></th>
                     {% endif %}
@@ -77,20 +79,20 @@
         <tbody>
             {% for item in data %}
                 <tr data-unique-id="{{ item.id }}">
-                    {% if element.selection %}
+                    {% if table.selection %}
                         <td class="not-card-visible"
                             data-field="checked"
                             data-tableexport-display="none">
                             <span class="tablecheckbox glyphicon glyphicon-unchecked"></span>
                         </td>
                     {% endif %}
-                    {% if element.image %}
+                    {% if table.image %}
                         <td class="thumbimage"
-                            data-field="{{element.image}}"
+                            data-field="{{ table.image }}"
                             data-tableexport-display="none">
-                            {% set image = item.property(element.image).value() %}
+                            {% set image = item.property(table.image).value() %}
                             {% if image is not empty %}
-                                {% if item.property(element.image).attribute.hasMultipleOccurrences %}
+                                {% if item.property(table.image).attribute.hasMultipleOccurrences %}
                                     {% set image = image[0] %}
                                 {% endif %}
                                 <img src="{{ imagePath('file', image.id, {'p': 'thumb'}) }}" alt=''/>
@@ -107,16 +109,16 @@
                         {% endif %}
                         {% set child = child | merge({'data' : val }) %}
                         {% set childId = child.state.name ? child.element.id ~ '_' ~ child.state.name : child.element.id %}
-                        <td data-field="{{ childId }}"
-                            data-tableexport-value="{{ child.element.renderValue(child, forms, form) | raw }}">
+                        {% set childValue = child.element.renderValue(child, forms, form) | raw %}
+                        <td data-field="{{ childId }}" data-tableexport-value="{{ childValue }}">
                             <span class="cell-label">{{ child.state.keyword | translate }}</span>
-                            {{ child.element.renderView(child, forms, form) | raw }}
+                            {{ childValue }}
                         </td>
                     {% endfor %}
                     <td class="controls"
                         data-field="controls"
                         data-tableexport-display="none">
-                        <span class="cell-label">{{ 'dime.controls'|trans }}</span>
+                        <span class="cell-label">{{ 'dime.controls' | translate }}</span>
                         {% if state.controls.actor is defined and state.controls.actor %}
                             <a href="#" class="open-focus">
                                 <span class="dime-icon icon-user-focus small"></span>
@@ -130,7 +132,7 @@
             {% endfor %}
         </tbody>
 
-        {% if element.showFooter %}
+        {% if table.showFooter %}
             <tfoot>
             </tfoot>
         {% endif %}

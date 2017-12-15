@@ -129,16 +129,12 @@ class Action
             foreach ($conditions as $condition) {
                 $vote = $condition->isMet($item);
                 if (!$vote) {
-                    dump($condition);
                     continue 2;
                 }
             }
             if ($vote) {
                 return true;
             }
-        }
-        if (!$vote) {
-            dump('FAILED');
         }
         return $vote;
     }

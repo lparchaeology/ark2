@@ -31,18 +31,38 @@ namespace ARK\Model\Dataclass;
 
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use Brick\Geo\CoordinateSystem;
+use Brick\Geo\Geometry;
+use Brick\Geo\LineString;
+use Brick\Geo\MultiLineString;
 use Brick\Geo\MultiPoint;
+use Brick\Geo\MultiPolygon;
 use Brick\Geo\Point;
+use Brick\Geo\Polygon;
+use Doctrine\Common\Collections\Collection;
 
 class SpatialDataclass extends Dataclass
 {
-    protected $srid;
-    protected $format;
-    protected $extent;
+    protected $geometry;
+    protected $hasZ = true;
+    protected $hasM = false;
+    protected $format = 'wkt';
+    protected $srid = 0;
+    protected $envelope;
 
-    public function srid() : int
+    public function geomtryType() : string
     {
-        return $this->srid;
+        return $this->geometry;
+    }
+
+    public function hasZ() : bool
+    {
+        return $this->hasZ;
+    }
+
+    public function hasM() : bool
+    {
+        return $this->hasM;
     }
 
     public function format() : string
@@ -50,27 +70,78 @@ class SpatialDataclass extends Dataclass
         return $this->format;
     }
 
-    public function extent() : ?MultiPoint
+    public function srid() : int
     {
-        return MultiPoint::fromText($this->extent, $this->srid);
+        return $this->srid;
+    }
+
+    public function crs() : CoordinateSystem
+    {
+        if ($this->hasZ) {
+            return $this->hasM ? CoordinateSystem::xyzm($this->srid) : CoordinateSystem::xyz($this->srid);
+        }
+        return $this->hasM ? CoordinateSystem::xym($this->srid) : CoordinateSystem::xy($this->srid);
+    }
+
+    public function envelope() : ?MultiPoint
+    {
+        return MultiPoint::fromText($this->envelope, $this->srid);
     }
 
     public function minimum() : ?Point
     {
-        return $this->extent()[0];
+        return $this->envelope()[0];
     }
 
     public function maximum() : ?Point
     {
-        return $this->extent()[1];
+        return $this->envelope()[1];
+    }
+
+    public function emptyValue()
+    {
+        if ($this->hasMultipleValues()) {
+            return [];
+        }
+        switch ($this->geometry) {
+            case 'Point':
+                return new Point($this->crs());
+            case 'LineString':
+                return new LineString($this->crs());
+            case 'Polygon':
+                return new Polygon($this->crs());
+            case 'MultiPoint':
+                return new MultiPoint($this->crs());
+            case 'MultiLineString':
+                return new MultiLineString($this->crs());
+            case 'MultiPolygon':
+                return new MultiPolygon($this->crs());
+            default:
+                return new Point($this->crs());
+        }
+        return null;
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_dataclass_spatial');
-        $builder->addStringField('preset', 1431655765);
-        $builder->addField('srid', 'integer');
+        $builder->addStringField('geometry', 20);
         $builder->addStringField('format', 30);
-        $builder->addStringField('extent', 100);
+        $builder->addMappedField('has_z', 'hasZ', 'integer');
+        $builder->addMappedField('has_m', 'hasM', 'integer');
+        $builder->addField('srid', 'integer');
+        $builder->addStringField('envelope', 100);
+        $builder->addStringField('preset', 1431655765);
+    }
+
+    protected function fragmentValue($fragment, Collection $properties = null)
+    {
+        if ($fragment instanceof Fragment) {
+            return $fragment->geometry();
+        }
+        if ($fragment instanceof Collection && count($fragment) > 0) {
+            return $fragment->last()->geometry();
+        }
+        return $this->emptyValue();
     }
 }

@@ -30,9 +30,21 @@
 namespace ARK\Model\Fragment;
 
 use ARK\ORM\ClassMetadata;
+use Brick\Geo\Geometry;
 
 class SpatialFragment extends Fragment
 {
+    public function geometry() : Geometry
+    {
+        if ($this->format === 'wkt') {
+            return Geometry::fromText($this->value, $this->parameter);
+        }
+        if ($this->format === 'wkb') {
+            return Geometry::fromBinary($this->value, $this->parameter);
+        }
+        return null;
+    }
+
     public function srid() : int
     {
         return $this->parameter;

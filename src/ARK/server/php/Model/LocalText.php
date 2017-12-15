@@ -43,6 +43,11 @@ class LocalText
         }
     }
 
+    public function __toString() : string
+    {
+        return $this->content();
+    }
+
     public function languages() : iterable
     {
         return array_keys($this->content);

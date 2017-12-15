@@ -33,6 +33,7 @@ namespace DIME\Form\Type;
 use ARK\Form\Type\AbstractPropertyType;
 use ARK\Model\Property;
 use ARK\Service;
+use Brick\Geo\Geometry;
 use Brick\Geo\Point;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -66,17 +67,16 @@ class LocationPropertyType extends AbstractPropertyType
         }
         $options = $this->propertyOptions($forms);
         $forms = iterator_to_array($forms);
-        $value = $property->value();
-        if ($value['geometry']) {
-            $point = Point::fromText($value['geometry'], (int) $value['srid']);
+        $point = $property->value();
+        if ($point instanceof Geometry) {
             $forms['easting']->setData($point->x());
             $forms['northing']->setData($point->y());
             $utm = Service::spatial()->transform($point, 32632);
             $forms['utmEasting']->setData($utm->x());
             $forms['utmNorthing']->setData($utm->y());
-            $forms['geometry']->setData($value['geometry']);
+            $forms['geometry']->setData($point->asText());
             $forms['srid']->setData($point->SRID());
-            $forms['format']->setData($value['format']);
+            $forms['format']->setData($property->attribute()->dataclass()->format());
             if (isset($options['state']['display'])) {
                 $forms[$options['state']['display']['name']]->setData($point->asText());
             }
