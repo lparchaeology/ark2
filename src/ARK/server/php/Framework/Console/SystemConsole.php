@@ -42,6 +42,8 @@ use ARK\Framework\Console\Command\SiteMigrateLoadCommand;
 use ARK\Framework\Console\Command\SiteMigrateMapCommand;
 use ARK\Framework\Console\Command\SystemAboutCommand;
 use ARK\Framework\SystemApplication;
+use SensioLabs\Security\Command\SecurityCheckerCommand;
+use SensioLabs\Security\SecurityChecker;
 
 class SystemConsole extends AbstractConsole
 {
@@ -52,6 +54,7 @@ class SystemConsole extends AbstractConsole
         // System Commands
         $this->add(new SystemAboutCommand());
         $this->add(new CacheClearCommand());
+        $this->add(new SecurityCheckerCommand(new SecurityChecker()));
 
         // Database Commands
         $this->add(new DatabaseServerAddCommand());
