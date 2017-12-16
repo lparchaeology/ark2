@@ -38,6 +38,12 @@ abstract class AbstractApplication extends Application
 {
     protected static $dbg = false;
 
+    public function __construct(string $site)
+    {
+        mb_internal_encoding('UTF-8');
+        parent::__construct();
+    }
+
     abstract public function cacheDir() : string;
 
     abstract public function logDir() : string;

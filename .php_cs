@@ -17,6 +17,7 @@ $rules = [
     'combine_consecutive_unsets' => true,
     'declare_strict_types' => false,
     'is_null' => ['use_yoda_style' => false],
+    'mb_str_functions' => true,
     'no_null_property_initialization' => true,
     'no_short_echo_tag' => true,
     'no_unreachable_default_argument_value' => false,
