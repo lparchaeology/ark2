@@ -27,8 +27,11 @@
  * @since      2.0
  */
 
-namespace ARK\Translation\Twig;
+namespace ARK\Twig\Extension;
 
+use ARK\Twig\Node\TranslateNodeVisitor;
+use ARK\Twig\TokenParser\TranslateChoiceTokenParser;
+use ARK\Twig\TokenParser\TranslateTokenParser;
 use Symfony\Component\Translation\TranslatorInterface;
 use Twig_Extension;
 use Twig_Filter;

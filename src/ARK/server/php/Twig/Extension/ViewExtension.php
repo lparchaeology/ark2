@@ -27,7 +27,7 @@
  * @since      2.0
  */
 
-namespace ARK\View\Twig;
+namespace ARK\Twig\Extension;
 
 use ARK\Service;
 use Twig_Extension;

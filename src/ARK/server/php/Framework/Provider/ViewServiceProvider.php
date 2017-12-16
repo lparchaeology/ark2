@@ -31,10 +31,10 @@
 namespace ARK\Framework\Provider;
 
 use ARK\ARK;
-use ARK\Translation\Twig\TranslateExtension;
+use ARK\Twig\Extension\TranslateExtension;
+use ARK\Twig\Extension\ViewExtension;
 use ARK\View\Bus\NavAddHandler;
 use ARK\View\Bus\NavAddMessage;
-use ARK\View\Twig\ViewExtension;
 use ARK\View\View;
 use Knp\Snappy\Image;
 use Knp\Snappy\Pdf;

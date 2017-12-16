@@ -33,7 +33,7 @@
  * (c) Fabien Potencier <fabien@symfony.com>
  */
 
-namespace ARK\Translation\Twig;
+namespace ARK\Twig\Node;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
