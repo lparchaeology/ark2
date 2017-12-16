@@ -177,10 +177,10 @@ class Application extends AbstractApplication
         // TODO Use kernel event instead???
         if ($request === null) {
             $path = ($_SERVER['PATH_INFO'] ?? $_SERVER['REQUEST_URI'] ?? '');
-            $pos = strpos($path, $this['path.api']);
+            $pos = mb_strpos($path, $this['path.api']);
             if ($pos === 0) {
                 $request = JsonApiRequest::createFromGlobals();
-                $request->setResourcePath(substr($path, strlen($path) - $pos));
+                $request->setResourcePath(mb_substr($path, mb_strlen($path) - $pos));
             }
         }
         parent::run($request);

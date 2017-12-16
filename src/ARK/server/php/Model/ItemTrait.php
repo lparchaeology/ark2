@@ -252,7 +252,7 @@ trait ItemTrait
 
     protected function makeSubclass() : string
     {
-        return strtolower(substr(strrchr(get_class($this), '\\'), 1));
+        return mb_strtolower(mb_substr(mb_strrchr(get_class($this), '\\'), 1));
     }
 
     protected function makeIdentifier(string $parentId, string $sep, string $index) : string

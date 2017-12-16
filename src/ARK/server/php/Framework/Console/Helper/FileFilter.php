@@ -149,7 +149,7 @@ class FileFilter
                 $filePath .= DIRECTORY_SEPARATOR;
             }
             if (DIRECTORY_SEPARATOR === $path && DIRECTORY_SEPARATOR === $partialPath) {
-                $filePath = substr($filePath, 1);
+                $filePath = mb_substr($filePath, 1);
             }
             $paths[] = preg_replace('#'.preg_quote(DIRECTORY_SEPARATOR, '#').'+#', DIRECTORY_SEPARATOR, $filePath);
         }

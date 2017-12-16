@@ -78,7 +78,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
         $this->source->beginTransaction();
         $this->sourcePath = $source['path'];
 
-        $this->site = strtolower($this->askChoice('Please choose the destination ARK instance', ARK::sites()));
+        $this->site = mb_strtolower($this->askChoice('Please choose the destination ARK instance', ARK::sites()));
         if ($this->site === $this->errorCode()) {
             return;
         }
@@ -215,7 +215,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
                     $this->core->insert('ark_vocabulary', $vocab);
                     $term['concept'] = $typeVocabulary;
                     foreach ($modtypes as $modtype) {
-                        $term['term'] = strtolower($modtype[$mod.'type']);
+                        $term['term'] = mb_strtolower($modtype[$mod.'type']);
                         $term['keyword'] = $term['concept'].'.'.$term['term'];
                         $this->addTranslation($term['keyword'], $term['term']);
                         $this->core->insert('ark_vocabulary_term', $term);
@@ -245,7 +245,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
         // * ATTRIBUTE TYPES TO VOCABULARY TYPES * //
         $types = $this->source->fetchAllTable('cor_lut_attributetype');
         foreach ($types as $type) {
-            $vocab['concept'] = strtolower($this->siteKey.'.'.$type['attributetype']);
+            $vocab['concept'] = mb_strtolower($this->siteKey.'.'.$type['attributetype']);
             $vocab['type'] = 'list';
             $vocab['source'] = 'ARK 1.2';
             $vocab['keyword'] = $vocab['concept'];
@@ -259,7 +259,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
         ';
         $attributes = $this->source->fetchAll($sql);
         foreach ($attributes as $attribute) {
-            $term['concept'] = strtolower($this->siteKey.'.'.$attribute['attributetype']);
+            $term['concept'] = mb_strtolower($this->siteKey.'.'.$attribute['attributetype']);
             $term['term'] = $this->makeAttribute($attribute['attribute']);
             $term['keyword'] = $term['concept'].'.'.$term['term'];
             $this->addTranslation($term['keyword'], $term['term']);
@@ -301,7 +301,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
                     $newItem = $this->makeItemKey($item['itemkey']);
                     $newItem['module'] = $module['module'];
                     $newItem['schma'] = $module['schema'];
-                    $newItem['type'] = (isset($item['modtype']) ? strtolower($item['modtype']) : '');
+                    $newItem['type'] = (isset($item['modtype']) ? mb_strtolower($item['modtype']) : '');
                     $newItem['creator'] = $this->item['creator'][$item['cre_by']];
                     $newItem['created'] = $item['cre_on'];
                     $this->data->insert($module['config']['tbl'], $newItem);
@@ -372,7 +372,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
                 $row['filetype'] = 'image';
             }
             $frag = [
-                'module' => $mapping[substr($row['itemkey'], 0, 3)]['module'],
+                'module' => $mapping[mb_substr($row['itemkey'], 0, 3)]['module'],
                 'item' => $key['item'],
                 'attribute' => $row['filetype'],
                 'parameter' => 'file',
@@ -435,12 +435,12 @@ class SiteMigrateLoadCommand extends DatabaseCommand
             }
             foreach ($frags as $frag) {
                 $this->progress->advance();
-                if (substr($frag['itemkey'], 0, 11) === 'cor_tbl_map') {
+                if (mb_substr($frag['itemkey'], 0, 11) === 'cor_tbl_map') {
                     $this->write('Skipping map frag : '.$frag['id'].' : '.$frag['itemkey'].' : '.$frag['itemvalue']);
                     continue;
                 }
                 // Skip if parent is a lut
-                if (substr($frag['itemkey'], 0, 8) === 'cor_lut_') {
+                if (mb_substr($frag['itemkey'], 0, 8) === 'cor_lut_') {
                     $this->write('Skipping lut frag : '.$frag['id'].' : '.$frag['itemkey'].' : '.$frag['itemvalue']);
                     continue;
                 }
@@ -459,7 +459,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
                     //$this->write('Skipping frag for invalid mod_cd : '.$frag['itemkey']);
                     continue;
                 }
-                $module = $mapping[substr($frag['itemkey'], 0, 3)]['module'];
+                $module = $mapping[mb_substr($frag['itemkey'], 0, 3)]['module'];
                 if ($dataclass === 'attribute') {
                     $frag['parameter'] = $this->siteKey.'.'.$frag['attributetype'];
                     $frag['value'] = $this->makeAttribute($frag['attribute']);
@@ -478,7 +478,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
                     $frag['module'] = $module;
                 }
                 if (isset($frag['actor_itemkey'])) {
-                    $frag['parameter'] = $mapping[substr($frag['actor_itemkey'], 0, 3)]['module'];
+                    $frag['parameter'] = $mapping[mb_substr($frag['actor_itemkey'], 0, 3)]['module'];
                     $key = $this->makeItemKey($frag['actor_itemvalue']);
                     $frag['value'] = $key['item'];
                     unset($frag['actor_itemkey'], $frag['actor_itemvalue']);
@@ -535,7 +535,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
             if (!in_array($row['itemkey'], $modCodes, true)) {
                 continue;
             }
-            $module = $mapping[substr($row['itemkey'], 0, 3)]['module'];
+            $module = $mapping[mb_substr($row['itemkey'], 0, 3)]['module'];
             $key = $this->makeItemKey($row['itemvalue']);
             $item = $key['item'];
             $key = $this->makeItemKey($row['beg']);
@@ -575,10 +575,10 @@ class SiteMigrateLoadCommand extends DatabaseCommand
             if (!in_array($row['itemkey'], $modCodes, true) || !in_array($row['xmi_itemkey'], $modCodes, true)) {
                 continue;
             }
-            $module1 = $mapping[substr($row['itemkey'], 0, 3)]['module'];
+            $module1 = $mapping[mb_substr($row['itemkey'], 0, 3)]['module'];
             $key = $this->makeItemKey($row['itemvalue']);
             $item1 = $key['item'];
-            $module2 = $mapping[substr($row['xmi_itemkey'], 0, 3)]['module'];
+            $module2 = $mapping[mb_substr($row['xmi_itemkey'], 0, 3)]['module'];
             $key = $this->makeItemKey($row['xmi_itemvalue']);
             $item2 = $key['item'];
             $association = [
@@ -859,7 +859,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
         $attribute = str_replace(':', 'to', $attribute);
         $attribute = str_replace('%', 'pcnt', $attribute);
 
-        return strtolower($attribute);
+        return mb_strtolower($attribute);
     }
 
     protected function makeItemKey($itemvalue)

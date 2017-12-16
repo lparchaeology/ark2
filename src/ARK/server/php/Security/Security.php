@@ -338,6 +338,6 @@ class Security
     protected function getGravatarUrl(string $email, int $size = 80) : string
     {
         // See https://en.gravatar.com/site/implement/images/ for available options.
-        return '//www.gravatar.com/avatar/'.md5(strtolower(trim($email))).'?s='.$size.'&d=identicon';
+        return '//www.gravatar.com/avatar/'.md5(mb_strtolower(trim($email))).'?s='.$size.'&d=identicon';
     }
 }

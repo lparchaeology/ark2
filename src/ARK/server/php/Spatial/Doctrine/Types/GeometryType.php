@@ -43,7 +43,7 @@ class GeometryType extends Type
             return 'GEOMETRY';
         }
 
-        return strtoupper($this->getName());
+        return mb_strtoupper($this->getName());
     }
 
     /**

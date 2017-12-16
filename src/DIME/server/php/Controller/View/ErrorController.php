@@ -41,8 +41,8 @@ class ErrorController
         $dir = $app['dir.site'].'/templates/'.$config['web']['frontend'].'/errors/';
         $templates = [
             $dir.$code.'.html.twig',
-            $dir.substr($code, 0, 2).'x.html.twig',
-            $dir.substr($code, 0, 1).'xx.html.twig',
+            $dir.mb_substr($code, 0, 2).'x.html.twig',
+            $dir.mb_substr($code, 0, 1).'xx.html.twig',
             $dir.'default.html.twig',
         ];
         return new Response($app['twig']->resolveTemplate($templates)->render(['code' => $code]), $code);

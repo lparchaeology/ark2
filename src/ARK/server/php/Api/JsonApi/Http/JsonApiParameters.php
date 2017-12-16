@@ -244,8 +244,8 @@ class JsonApiParameters
         if ($param && is_string($param)) {
             $fields = explode(',', $param);
             foreach ($fields as $field) {
-                if (substr($field, 0, 1) === '-') {
-                    $field = substr($field, 1);
+                if (mb_substr($field, 0, 1) === '-') {
+                    $field = mb_substr($field, 1);
                     $order = 'desc';
                 } else {
                     $order = 'asc';

@@ -102,7 +102,7 @@ class SiteFrontendCommand extends AbstractCommand
             $fs->remove($assetsDir);
         }
 
-        if (strtolower($symlink) === 'copy') {
+        if (mb_strtolower($symlink) === 'copy') {
             $fs->mirror($srcDir.'/templates', $templatesDir);
             $fs->mirror($srcDir.'/translations', $translationsDir);
             $fs->mirror($srcDir.'/assets', $assetsDir);

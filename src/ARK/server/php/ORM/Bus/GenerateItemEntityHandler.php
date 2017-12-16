@@ -90,9 +90,9 @@ class <entity> extends <extends>
         // TODO File base type
         foreach ($subclasses as $class) {
             $classname = $class['entity'];
-            $pos = strrpos($classname, '\\');
-            $namespace = substr($classname, 0, $pos);
-            $entity = substr($classname, $pos + 1);
+            $pos = mb_strrpos($classname, '\\');
+            $namespace = mb_substr($classname, 0, $pos);
+            $entity = mb_substr($classname, $pos + 1);
             $subclass = $this->generateEntitySubclass($namespace, $entity, $message->classname(), $message->entity());
             $this->writeEntityFile($message->project(), $class['entity'], $subclass, $class);
         }

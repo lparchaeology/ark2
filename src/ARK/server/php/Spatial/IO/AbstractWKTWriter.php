@@ -61,7 +61,7 @@ abstract class AbstractWKTWriter
      */
     protected function doWrite(Geometry $geometry) : string
     {
-        $type = strtoupper($geometry->geometryType());
+        $type = mb_strtoupper($geometry->geometryType());
 
         $cs = $geometry->coordinateSystem();
 

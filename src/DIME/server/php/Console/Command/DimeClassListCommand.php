@@ -104,7 +104,7 @@ class DimeClassListCommand extends AbstractCommand
     private function translate(string $keyword, int $len = 30) : string
     {
         $tran = Translation::translate($keyword);
-        return strlen($tran) > $len ? substr($tran, 0, $len).'...' : $tran;
+        return mb_strlen($tran) > $len ? mb_substr($tran, 0, $len).'...' : $tran;
     }
 
     private function periodName(Term $term, string $parm = 'period') : string

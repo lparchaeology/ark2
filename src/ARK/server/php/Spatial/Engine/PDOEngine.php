@@ -77,7 +77,7 @@ class PDOEngine extends AbstractDatabaseEngine
 
             $result = $statement->fetch(\PDO::FETCH_NUM);
         } catch (\PDOException $e) {
-            $errorClass = substr($e->getCode(), 0, 2);
+            $errorClass = mb_substr($e->getCode(), 0, 2);
 
             // 42XXX = syntax error or access rule violation; reported on undefined function.
             // 22XXX = data exception; reported by MySQL 5.7 on unsupported geometry.

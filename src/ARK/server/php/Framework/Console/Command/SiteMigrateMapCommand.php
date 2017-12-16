@@ -150,7 +150,7 @@ class SiteMigrateMapCommand extends SiteMigrateInfoCommand
             'Full'
         );
 
-        if (strtolower($migrate) === 'full') {
+        if (mb_strtolower($migrate) === 'full') {
             $this->sourcePath = $this->askFilePath('Please choose the old ARK install folder.');
             include $this->sourcePath.'/config/env_settings.php';
             $sourceConfig['server'] = 'mysql';
@@ -306,7 +306,7 @@ class SiteMigrateMapCommand extends SiteMigrateInfoCommand
             return;
         }
 
-        $instance = strtolower($this->askQuestion('Please enter a default instance name for the schema', 'core'));
+        $instance = mb_strtolower($this->askQuestion('Please enter a default instance name for the schema', 'core'));
 
         // ACTOR MODULE
         $module['module'] = 'actor';

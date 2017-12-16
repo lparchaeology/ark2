@@ -110,9 +110,9 @@ class FilePropertyType extends AbstractPropertyType
 
         $upload = $forms['file']->getData();
 
-        $previous = array_values(array_filter($forms['previous']->getData(), 'strlen'));
+        $previous = array_values(array_filter($forms['previous']->getData(), 'mb_strlen'));
         sort($previous);
-        $existing = array_values(array_filter($forms['existing']->getData(), 'strlen'));
+        $existing = array_values(array_filter($forms['existing']->getData(), 'mb_strlen'));
         sort($existing);
         $removed = array_diff($previous, $existing);
         $additions = array_diff($existing, $previous);

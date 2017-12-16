@@ -55,7 +55,7 @@ class SiteCreateCommand extends DatabaseCommand
         if (!$site) {
             $site = $this->askQuestion("Please enter the new site key (e.g. 'mysite')");
         }
-        $site = strtolower($site);
+        $site = mb_strtolower($site);
 
         $frontends = array_keys(ARK::frontends());
         $frontend = $this->askChoice('Please choose the frontend to use', $frontends, 'ark2');

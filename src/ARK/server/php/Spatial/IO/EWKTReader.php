@@ -18,7 +18,7 @@ class EWKTReader extends AbstractWKTReader
      */
     public function read($ewkt) : Geometry
     {
-        $parser = new EWKTParser(strtoupper($ewkt));
+        $parser = new EWKTParser(mb_strtoupper($ewkt));
         $srid = $parser->getOptionalSRID();
         $geometry = $this->readGeometry($parser, $srid);
 

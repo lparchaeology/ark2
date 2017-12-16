@@ -42,7 +42,7 @@ class WKBBuffer
     public function __construct($wkb)
     {
         $this->wkb = $wkb;
-        $this->length = strlen($wkb);
+        $this->length = mb_strlen($wkb);
         $this->machineByteOrder = WKBTools::getMachineByteOrder();
     }
 
@@ -127,10 +127,10 @@ class WKBBuffer
             $data = '';
 
             for ($i = 0; $i < $words; ++$i) {
-                $data .= strrev(substr($this->wkb, $this->position + $i * $wordLength, $wordLength));
+                $data .= strrev(mb_substr($this->wkb, $this->position + $i * $wordLength, $wordLength));
             }
         } else {
-            $data = substr($this->wkb, $this->position, $length);
+            $data = mb_substr($this->wkb, $this->position, $length);
         }
 
         $this->position += $length;

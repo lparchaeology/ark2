@@ -29,7 +29,6 @@
 
 namespace ARK\Framework\Console\Helper;
 
-use ARK\Framework\Console\Helper\FileFilter;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -67,7 +66,7 @@ class FileChooserHelper extends Helper
         return $this->validateAttempts($interviewer, $output, $filter);
     }
 
-    public function setInputStream($stream)
+    public function setInputStream($stream) : void
     {
         if (!is_resource($stream)) {
             throw new \InvalidArgumentException('Input stream must be a valid resource.');
@@ -87,7 +86,7 @@ class FileChooserHelper extends Helper
         $message = $filter->getQuestion();
         $output->write($message);
         $ret = trim($this->autocomplete($output, $filter, $inputStream));
-        $ret = strlen($ret) > 0 ? $ret : $filter->getDefault();
+        $ret = mb_strlen($ret) > 0 ? $ret : $filter->getDefault();
         if ($normalizer = $filter->getNormalizer()) {
             return $normalizer($ret);
         }
@@ -100,7 +99,7 @@ class FileChooserHelper extends Helper
         $autocomplete = $filter->getResultFor($filter->getDefault());
         $ret = $filter->getDefault();
 
-        $i = strlen($ret);
+        $i = mb_strlen($ret);
         $ofs = 0;
         $matches = $autocomplete;
         $numMatches = count($matches);
@@ -139,7 +138,7 @@ class FileChooserHelper extends Helper
                 }
 
                 // Pop the last character off the end of our string
-                $ret = substr($ret, 0, $i);
+                $ret = mb_substr($ret, 0, $i);
             } elseif ("\033" === $c) {
                 // Did we read an escape sequence?
                 $c .= fread($inputStream, 2);
@@ -162,8 +161,8 @@ class FileChooserHelper extends Helper
                     if ($numMatches > 0 && -1 !== $ofs) {
                         $ret = $matches[$ofs];
                         // Echo out remaining chars for current match
-                        $output->write(substr($ret, $i));
-                        $i = strlen($ret);
+                        $output->write(mb_substr($ret, $i));
+                        $i = mb_strlen($ret);
                         $this->searchCompletion($ret, $filter, $ofs, $matches, $numMatches);
                     }
 
@@ -193,10 +192,10 @@ class FileChooserHelper extends Helper
         return $ret;
     }
 
-    private function searchCompletion(string $partial = null, FileFilter $filter, int &$ofs, array &$matches, int &$numMatches)
+    private function searchCompletion(string $partial = null, FileFilter $filter, int &$ofs, array &$matches, int &$numMatches) : void
     {
         $ret = $partial;
-        $i = strlen($ret);
+        $i = mb_strlen($ret);
 
         $numMatches = 0;
         $matches = [];
@@ -206,13 +205,13 @@ class FileChooserHelper extends Helper
 
         foreach ($autocomplete as $value) {
             // If typed characters match the beginning chunk of value (e.g. [AcmeDe]moBundle)
-            if (0 === strpos($value, $ret) && $i !== strlen($value)) {
+            if (0 === mb_strpos($value, $ret) && $i !== mb_strlen($value)) {
                 $matches[$numMatches++] = $value;
             }
         }
     }
 
-    private function displaySuggestion(OutputInterface $output, array $matches, int $numMatches, int $ofs, int $partialLength)
+    private function displaySuggestion(OutputInterface $output, array $matches, int $numMatches, int $ofs, int $partialLength) : void
     {
         $output->write("\033[K");
 
@@ -220,7 +219,7 @@ class FileChooserHelper extends Helper
             // Save cursor position
             $output->write("\0337");
             // Write highlighted text
-            $output->write('<hl>'.substr($matches[$ofs], $partialLength).'</hl>');
+            $output->write('<hl>'.mb_substr($matches[$ofs], $partialLength).'</hl>');
             // Restore cursor position
             $output->write("\0338");
         }

@@ -47,7 +47,7 @@ class NavAddCommand extends AbstractCommand
         if (!$element) {
             $element = $this->askQuestion("Please enter the new Nav view element key (e.g. 'site_nav_home')");
         }
-        $element = strtolower($element);
+        $element = mb_strtolower($element);
 
         $parent = $this->askQuestion("Please enter the parent Nav view element key (e.g. 'site_nav_home', default none)");
 

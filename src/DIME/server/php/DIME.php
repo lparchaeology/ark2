@@ -59,7 +59,7 @@ class DIME
             $password = $credentials['password'];
             $path = "https://services.kortforsyningen.dk/service?request=GetTicket&login=$user&password=$password";
             $ticket = file_get_contents($path);
-            if (strlen($ticket) === 32) {
+            if (mb_strlen($ticket) === 32) {
                 return $ticket;
             }
         }
