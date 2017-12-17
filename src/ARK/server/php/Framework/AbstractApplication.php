@@ -38,7 +38,7 @@ abstract class AbstractApplication extends Application
 {
     protected static $dbg = false;
 
-    public function __construct(string $site)
+    public function __construct()
     {
         mb_internal_encoding('UTF-8');
         parent::__construct();

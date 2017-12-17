@@ -40,17 +40,30 @@ class FilePostController
     public function __invoke(Request $request) : Response
     {
         $ids = [];
-        foreach ($request->files as $upload) {
-            // TODO Make generic, file widget should set properly
-            $uploadFile = $upload['image']['file'][0] ?? $upload['avatar']['file'] ?? null;
-
-            if ($file = File::createFromUploadedFile($uploadFile)) {
+        // TODO Make generic, file widget should set properly
+        $files = $this->flatten($request->files->all());
+        foreach ($files as $upload) {
+            $file = File::createFromUploadedFile($upload);
+            if ($file) {
                 ORM::persist($file);
                 $ids[] = $file->id();
             }
         }
         ORM::flush(File::class);
-
         return new JsonResponse($ids);
+    }
+
+    private function flatten($input) : array
+    {
+        if (!is_array($input)) {
+            return [$input];
+        }
+        return array_reduce(
+            $input,
+            function ($c, $a) {
+                return array_merge($c, $this->flatten($a));
+            },
+            []
+        );
     }
 }

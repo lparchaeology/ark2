@@ -158,9 +158,7 @@ class Property
             $fragment->update($this->item);
             ORM::persist($fragment);
             if ($this->attribute->dataclass()->datatype()->id() === 'spatial') {
-                dump('Create Spatial');
                 $index = new FragmentGeometry($fragment);
-                dump($index);
                 ORM::persist($index);
             }
         }
