@@ -73,13 +73,13 @@
         "frontend": "dime2017"
     },
     "routes": {
-        "/api/v2": "DIME\\Routing\\ApiControllerProvider",
-        "/": "DIME\\Routing\\ViewControllerProvider"
+        "/api/v2": "DIME\\Framework\\Routing\\ApiControllerProvider",
+        "/": "DIME\\Framework\\Routing\\ViewControllerProvider"
     },
     "console": {
         "commands": [
-            "DIME\\Console\\Command\\DimeTranslationCommand",
-            "DIME\\Console\\Command\\DimeClassListCommand"
+            "DIME\\Framework\\Console\\Command\\DimeTranslationCommand",
+            "DIME\\Framework\\Console\\Command\\DimeClassListCommand"
         ]
     },
     "security": {
