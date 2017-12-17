@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 15, 2017 at 04:41 PM
--- Server version: 10.2.11-MariaDB
+-- Generation Time: Dec 17, 2017 at 06:20 PM
+-- Server version: 10.2.10-MariaDB
 -- PHP Version: 7.1.12
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -883,6 +883,7 @@ INSERT INTO `ark_model_class` (`schma`, `class`, `vocabulary`, `namespace`, `ent
 ('dime.find', 'metal', 'dime.find.class', 'DIME\\Entity', 'Find', 'DIME\\Entity\\Find', 0, 1, 1, 0),
 ('dime.find', 'military', 'dime.find.class', 'DIME\\Entity', 'Find', 'DIME\\Entity\\Find', 0, 1, 1, 0),
 ('dime.find', 'tool', 'dime.find.class', 'DIME\\Entity', 'Find', 'DIME\\Entity\\Find', 0, 1, 1, 0),
+('dime.find', 'unassessed', 'dime.find.class', 'DIME\\Entity', 'Find', 'DIME\\Entity\\Find', 0, 1, 1, 0),
 ('dime.find', 'unknown', 'dime.find.class', 'DIME\\Entity', 'Find', 'DIME\\Entity\\Find', 0, 1, 1, 0);
 
 -- --------------------------------------------------------
