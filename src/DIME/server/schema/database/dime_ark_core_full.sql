@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 17, 2017 at 06:20 PM
+-- Generation Time: Dec 17, 2017 at 08:23 PM
 -- Server version: 10.2.10-MariaDB
 -- PHP Version: 7.1.12
 
@@ -779,7 +779,7 @@ INSERT INTO `ark_model_attribute` (`schma`, `class`, `attribute`, `dataclass`, `
 ('dime.find', 'coin', 'issuer', 'shorttext', NULL, NULL, NULL, NULL, 0, 0, 1, 1, 0, 'public', 1, 0, 'dime.find.issuer'),
 ('dime.find', 'coin', 'mint', 'shorttext', NULL, NULL, NULL, NULL, 0, 0, 1, 1, 0, 'public', 1, 0, 'dime.find.mint'),
 ('dime.find', 'find', 'case', 'identifier', NULL, NULL, NULL, NULL, 0, 0, 1, 1, 0, 'public', 1, 0, 'dime.find.case'),
-('dime.find', 'find', 'claim', 'file', NULL, NULL, NULL, NULL, 0, 0, 1, 1, 1, 'restricted', 1, 0, 'dime.find.claim'),
+('dime.find', 'find', 'claim', 'file', NULL, NULL, 'dime.find.treasure.claim', 'dime.find.treasure.claim', 0, 0, 1, 1, 1, 'restricted', 1, 0, 'dime.find.claim'),
 ('dime.find', 'find', 'class', 'term', 'dime.find.class', NULL, NULL, NULL, 0, 1, 1, 1, 0, 'public', 1, 0, 'dime.find.class'),
 ('dime.find', 'find', 'classification', 'classification', NULL, NULL, NULL, NULL, 0, 0, 1, 1, 0, 'public', 1, 0, 'dime.find.classification'),
 ('dime.find', 'find', 'condition', 'term', 'dime.find.condition', NULL, NULL, NULL, 0, 0, 1, 1, 0, 'public', 1, 0, 'dime.find.condition'),
@@ -976,7 +976,7 @@ INSERT INTO `ark_model_schema` (`schma`, `module`, `subclasses`, `entities`, `at
 ('core.file', 'file', 1, 1, 'class', 'core.file.class', 'sequence', 'id', NULL, 'restricted', 'core.file.create', 'core.event.read', 'core.file.delete', 'core.file.update', 1, 0, 'core.file'),
 ('core.message', 'message', 1, 1, 'class', 'core.message.class', 'sequence', 'id', NULL, 'restricted', 'core.message.create', 'core.message.read', 'core.message.delete', 'core.message.update', 1, 0, 'core.message'),
 ('core.page', 'page', 0, 0, NULL, NULL, 'assigned', NULL, NULL, 'public', 'core.page.create', NULL, 'core.page.delete', 'core.page.update', 1, 0, 'core.page'),
-('dime.find', 'find', 1, 0, 'class', 'dime.find.class', 'sequence', 'id', NULL, 'private', 'dime.find.create', 'dime.find.read', 'dime.find.delete', 'dime.find.update', 1, 0, 'dime.find');
+('dime.find', 'find', 1, 0, 'class', 'dime.find.class', 'sequence', 'id', NULL, 'public', 'dime.find.create', 'dime.find.read', 'dime.find.delete', 'dime.find.update', 1, 0, 'dime.find');
 
 -- --------------------------------------------------------
 
@@ -9484,6 +9484,7 @@ INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
 ('anonymous', 'core.user.login'),
 ('anonymous', 'core.user.register'),
 ('anonymous', 'core.user.reset'),
+('anonymous', 'dime.find.read'),
 ('appraiser', 'core.actor.read'),
 ('appraiser', 'core.actor.update'),
 ('appraiser', 'core.message.read'),
