@@ -270,57 +270,80 @@ class Database
         return $this->spatial()->fetchAll($sql, $params);
     }
 
-    public function getActorMessages(string $actor) : ?iterable
+    public function getRoleMessages(string $role, string $status = null) : ?iterable
     {
-        $sql = '
-            SELECT item
-            FROM ark_fragment_item
-            WHERE module = :module
-            AND attribute = :attribute
-            AND value = :value
-        ';
-        $params = [
-            ':module' => 'message',
-            ':attribute' => 'recipient',
-            ':value' => $actor,
-        ];
+        if ($status) {
+            // TODO Optimise!!!
+            $sql = "
+                SELECT ark_fragment_string.item
+                FROM ark_fragment_string, ark_fragment_string AS s1
+                WHERE ark_fragment_string.module = 'message'
+                AND   ark_fragment_string.attribute = 'role'
+                AND   ark_fragment_string.value = :role
+                AND   ark_fragment_string.module = s1.module
+                AND   ark_fragment_string.item = s1.item
+                AND   ark_fragment_string.object = s1.object
+                AND   s1.attribute = 'status'
+                AND   s1.value = :status
+            ";
+            $params = [
+                ':role' => $role,
+                ':status' => $status,
+            ];
+        } else {
+            $sql = "
+                SELECT item
+                FROM ark_fragment_string
+                WHERE module = 'message'
+                AND attribute = 'role'
+                AND value = :role
+            ";
+            $params = [
+                ':role' => $role,
+            ];
+        }
 
         return $this->data()->fetchAllColumn($sql, 'item', $params);
     }
 
-    public function getRoleMessages(string $role) : ?iterable
+    public function getActorMessages(string $actor, string $status = null) : ?iterable
     {
-        $sql = '
-            SELECT item
-            FROM ark_fragment_string
-            WHERE module = :module
-            AND attribute = :attribute
-            AND value = :value
-        ';
-        $params = [
-            ':module' => 'message',
-            ':attribute' => 'role',
-            ':value' => $role,
-        ];
+        if ($status) {
+            // TODO Optimise!!!
+            $sql = "
+                SELECT ark_fragment_item.item
+                FROM ark_fragment_item, ark_fragment_string
+                WHERE ark_fragment_item.module = 'message'
+                AND   ark_fragment_item.attribute = 'recipient'
+                AND   ark_fragment_item.value = :actor
+                AND   ark_fragment_item.module = ark_fragment_string.module
+                AND   ark_fragment_item.item = ark_fragment_string.item
+                AND   ark_fragment_item.object = ark_fragment_string.object
+                AND   ark_fragment_string.attribute = 'status'
+                AND   ark_fragment_string.value = :status
+            ";
+            $params = [
+                ':actor' => $actor,
+                ':status' => $status,
+            ];
+        } else {
+            $sql = "
+                SELECT item
+                FROM ark_fragment_item
+                WHERE module = 'message'
+                AND attribute = 'recipient'
+                AND value = :actor
+            ";
+            $params = [
+                ':actor' => $actor,
+            ];
+        }
 
         return $this->data()->fetchAllColumn($sql, 'item', $params);
     }
 
-    // TODO Optimise!!!
     public function getUnreadMessages(string $actor) : ?iterable
     {
-        $sql = "
-            SELECT ark_fragment_item.item
-            FROM ark_fragment_item, ark_fragment_datetime
-            WHERE ark_fragment_item.module = 'message'
-            AND   ark_fragment_item.attribute = 'recipient'
-            AND   ark_fragment_item.value = :actor
-            AND   ark_fragment_item.module = ark_fragment_datetime.module
-            AND   ark_fragment_item.item = ark_fragment_datetime.item
-            AND   ark_fragment_item.object = ark_fragment_datetime.object
-            AND   ark_fragment_datetime.attribute = 'status'
-            AND   ark_fragment_datetime.value = 'unread'
-        ";
         $params = [
             ':actor' => $actor,
         ];

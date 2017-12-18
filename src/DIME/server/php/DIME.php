@@ -66,37 +66,19 @@ class DIME
         return null;
     }
 
-    public static function getNotifications(Actor $actor = null) : ArrayCollection
+    public static function getNotifications(Actor $actor, string $status = null) : ArrayCollection
     {
-        if ($actor === null) {
-            $actor = Service::workflow()->actor();
-        }
-        if ($actor === null || $actor->id() === 'anonymous') {
+        if ($actor->id() === 'anonymous') {
             return new ArrayCollection();
         }
-        $msgIds = Service::database()->getActorMessages($actor->id());
+        $msgIds = Service::database()->getActorMessages($actor->id(), $status);
         foreach ($actor->roles() as $role) {
-            $msgIds = array_merge($msgIds, Service::database()->getRoleMessages($role->role()->id()));
+            $msgIds = array_merge($msgIds, Service::database()->getRoleMessages($role->role()->id(), $status));
             if ($role->isAgent()) {
-                $msgIds = array_merge($msgIds, Service::database()->getActorMessages($role->agentFor()->id()));
+                $msgIds = array_merge($msgIds, Service::database()->getActorMessages($role->agentFor()->id(), $status));
             }
         }
         return ORM::findBy(Notification::class, ['id' => $msgIds], ['created' => 'DESC']);
-    }
-
-    public static function getUnreadNotifications(Actor $actor = null) : ArrayCollection
-    {
-        if ($actor === null) {
-            $actor = Service::workflow()->actor();
-        }
-        $messages = self::getNotifications($actor);
-        $unread = new ArrayCollection();
-        foreach ($messages as $message) {
-            if (!$message->wasReadBy($actor)) {
-                $unread[] = $message;
-            }
-        }
-        return $unread;
     }
 
     public static function findMunicipality(string $wkt) : ?Term

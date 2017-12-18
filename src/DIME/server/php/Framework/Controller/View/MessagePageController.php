@@ -46,7 +46,9 @@ class MessagePageController extends DimeFormController
 
     public function buildData(Request $request)
     {
-        $data['messages'] = DIME::getNotifications();
+        $actor = Service::workflow()->actor();
+        $status = $request->query->get('status');
+        $data['messages'] = DIME::getNotifications($actor, $status);
         $msg = $request->query->get('id');
         if ($msg) {
             $message = ORM::find(Message::class, $msg);

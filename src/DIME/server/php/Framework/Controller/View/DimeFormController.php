@@ -41,7 +41,7 @@ abstract class DimeFormController extends PageController
     {
         $state = parent::buildState($request, $data);
 
-        $state['notifications'] = DIME::getUnreadNotifications();
+        $state['notifications'] = DIME::getNotifications(Service::workflow()->actor(), 'unread');
         $state['image'] = 'image';
 
         // FIXME Routes to pass into JS, temp hardcode for now, do properly later!
