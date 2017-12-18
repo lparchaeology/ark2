@@ -33,7 +33,7 @@ namespace DIME\Framework\Routing;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 
-class ViewControllerProvider implements ControllerProviderInterface
+class DimeControllerProvider implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
@@ -57,6 +57,17 @@ class ViewControllerProvider implements ControllerProviderInterface
         $news = $app->translate('dime.news', 'resource');
 
         $controllers = $app['controllers_factory'];
+
+        // JSON API Routes
+        $controllers->match('/api/v2/messages/{message}', 'DIME\Framework\Controller\Api\MessageGetController')
+            ->method('GET')
+            ->bind('api.messages.get');
+        $controllers->match('/api/v2/events/{event}', 'DIME\Framework\Controller\Api\EventGetController')
+            ->method('GET')
+            ->bind('api.events.get');
+        $controllers->match('/api/v2/actors/{actor}', 'DIME\Framework\Controller\Api\ActorGetController')
+            ->method('GET')
+            ->bind('api.actors.get');
 
         // Internal API routes
         $controllers->match('/api/internal/translations/{keyword}/languages/{language}',

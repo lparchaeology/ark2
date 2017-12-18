@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK JSON:API Controller
+ * ARK JSON:API Controller.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,19 +28,19 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace DIME\Framework\Controller\JsonApi;
+namespace DIME\Framework\Controller\Api;
 
 use ARK\Api\JsonApi\Action\AbstractGetAction;
 use ARK\Api\JsonApi\Http\JsonApiRequest;
-use ARK\Actor\Actor;
+use ARK\Workflow\Event;
 
-class ActorGetController extends AbstractGetAction
+class EventGetController extends AbstractGetAction
 {
-    public function __invoke(JsonApiRequest $request, $actorSlug = null)
+    public function __invoke(JsonApiRequest $request, $event = null)
     {
-        $this->id = $actorSlug;
-        $this->class = Actor::class;
-        $this->resource = 'actors';
+        $this->id = $event;
+        $this->class = Event::class;
+        $this->resource = 'events';
         return parent::__invoke($request);
     }
 }

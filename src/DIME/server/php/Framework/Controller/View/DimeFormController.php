@@ -45,23 +45,18 @@ abstract class DimeFormController extends PageController
         $state['image'] = 'image';
 
         // FIXME Routes to pass into JS, temp hardcode for now, do properly later!
-        $state['modules']['find']['api'] = Service::url('api.finds.collection');
         $state['modules']['find']['view'] = Service::url('dime.finds.list');
         $state['modules']['find']['route'] = 'dime.finds.view';
         $state['modules']['find']['resource'] = Service::translate('dime.find', 'resource');
-        $state['modules']['event']['api'] = Service::url('api.events.collection');
         $state['modules']['event']['view'] = null;
         $state['modules']['event']['route'] = null;
         $state['modules']['event']['resource'] = Service::translate('core.event', 'resource');
-        $state['modules']['message']['api'] = Service::url('api.messages.collection');
         $state['modules']['message']['view'] = null;
         $state['modules']['message']['route'] = null;
         $state['modules']['message']['resource'] = Service::translate('core.message', 'resource');
-        $state['modules']['actor']['api'] = Service::url('api.actors.collection');
         $state['modules']['actor']['view'] = Service::url('dime.profiles.list');
         $state['modules']['actor']['route'] = 'dime.profiles.view';
         $state['modules']['actor']['resource'] = Service::translate('core.actor', 'resource');
-        $state['modules']['file']['api'] = Service::url('api.files.collection');
         $state['modules']['file']['view'] = null;
         $state['modules']['file']['route'] = null;
         $state['modules']['file']['resource'] = Service::translate('core.file', 'resource');

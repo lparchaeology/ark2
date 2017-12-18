@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK JSON:API Controller
+ * ARK JSON:API Controller.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,19 +28,19 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace DIME\Framework\Controller\JsonApi;
+namespace DIME\Framework\Controller\Api;
 
 use ARK\Api\JsonApi\Action\AbstractGetAction;
 use ARK\Api\JsonApi\Http\JsonApiRequest;
-use DIME\Entity\Find;
+use ARK\Message\Message;
 
-class FindGetController extends AbstractGetAction
+class MessageGetController extends AbstractGetAction
 {
-    public function __invoke(JsonApiRequest $request, $findSlug = null)
+    public function __invoke(JsonApiRequest $request, $message = null)
     {
-        $this->id = $findSlug;
-        $this->class = Find::class;
-        $this->resource = 'finds';
+        $this->id = $message;
+        $this->class = Message::class;
+        $this->resource = 'messages';
         return parent::__invoke($request);
     }
 }

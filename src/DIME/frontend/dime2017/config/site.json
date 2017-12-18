@@ -73,8 +73,7 @@
         "frontend": "dime2017"
     },
     "routes": {
-        "/api/v2": "DIME\\Framework\\Routing\\ApiControllerProvider",
-        "/": "DIME\\Framework\\Routing\\ViewControllerProvider"
+        "/": "DIME\\Framework\\Routing\\DimeControllerProvider"
     },
     "console": {
         "commands": [
