@@ -236,13 +236,13 @@ abstract class AbstractCommand extends Command
         return $password;
     }
 
-    protected function askArgument($argument, $text, iterable $choices = null, $default = null, bool $auto = true) : void
+    protected function askArgument($argument, $text, iterable $choices = [], $default = null, bool $auto = true) : void
     {
         if (!$this->input->getArgument($argument)) {
-            if ($choices = null) {
+            if ($choices === []) {
                 $value = $this->askQuestion($text);
             } else {
-                $value = askChoice($text, $choices, $default, $auto);
+                $value = $this->askChoice($text, $choices, $default, $auto);
             }
             $this->input->setArgument($argument, $value);
         }
