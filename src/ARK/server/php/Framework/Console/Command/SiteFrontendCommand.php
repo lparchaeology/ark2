@@ -84,13 +84,13 @@ class SiteFrontendCommand extends AbstractCommand
             $fs->mkdir($siteDir.'/files/data');
             $fs->mkdir($siteDir.'/files/cache');
             $fs->mkdir($siteDir.'/schema');
-            $fs->mkdir($siteDir.'/web');
+            $fs->mkdir($siteDir.'/public');
             $fs->mirror($srcDir.'/bin', $siteDir.'/bin');
             $fs->mirror($srcDir.'/config', $siteDir.'/config');
-            $fs->mirror($srcDir.'/web', $siteDir.'/web');
+            $fs->mirror($srcDir.'/public', $siteDir.'/public');
         } elseif ($refresh) {
             $fs->mirror($srcDir.'/bin', $siteDir.'/bin');
-            $fs->mirror($srcDir.'/web', $siteDir.'/web');
+            $fs->mirror($srcDir.'/public', $siteDir.'/public');
         }
         if ($fs->exists($templatesDir)) {
             $fs->remove($templatesDir);

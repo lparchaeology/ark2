@@ -129,7 +129,7 @@ class ARK
 
     public static function assetsDir(string $site, string $frontend) : string
     {
-        return self::siteDir($site).'/web/assets/'.$frontend;
+        return self::siteDir($site).'/public/assets/'.$frontend;
     }
 
     public static function dirList(string $dir, bool $fullPath = false) : iterable

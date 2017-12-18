@@ -178,15 +178,15 @@
             "xliff/**/.*"
         ]
     },
-    "web": {
+    "public": {
         "vendor": [],
         "core": [
-            "web/**/*",
-            "web/**/.*"
+            "public/**/*",
+            "public/**/.*"
         ],
         "custom": [
-            "web/**/*",
-            "web/**/.*"
+            "public/**/*",
+            "public/**/.*"
         ]
     }
 }

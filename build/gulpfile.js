@@ -14,7 +14,7 @@ var baseTasks = [
     'config',
     'templates',
     'translations',
-    'web',
+    'public',
 ];
 
 var assetTasks = [
@@ -138,7 +138,7 @@ gulp.task('core', function () {
     console.log('  "assets" - Build just Frontend assets');
     console.log('  "bin" - Build just bin directory');
     console.log('  "config" - Build just config directory');
-    console.log('  "web" - Build just web directory');
+    console.log('  "public" - Build just public directory');
     console.log('  "translations" - Build just translations');
     console.log('  "fonts" - Build just font assets');
     console.log('  "images" - Build just image assets');
@@ -211,10 +211,10 @@ gulp.task('translations', function () {
 });
 
 /*
- * Task to install required web files into the frontend
+ * Task to install required public files into the frontend
  */
-gulp.task('web', function () {
-    return installFiles('web');
+gulp.task('public', function () {
+    return installFiles('public');
 });
 
 /*

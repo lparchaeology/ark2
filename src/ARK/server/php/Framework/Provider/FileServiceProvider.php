@@ -50,7 +50,7 @@ class FileServiceProvider implements ServiceProviderInterface
         $container['dir.site'] = ARK::siteDir($container['ark']['site']);
         $container['dir.config'] = $container['dir.site'].'/config';
         $container['dir.files'] = $container['dir.site'].$container['ark']['file']['root'];
-        $container['dir.web'] = $container['dir.site'].'/web';
+        $container['dir.web'] = $container['dir.site'].'/public';
         $container['dir.assets'] = $container['dir.web'].'/assets/'.$container['ark']['web']['frontend'];
 
         $container->register(new FlysystemServiceProvider());
