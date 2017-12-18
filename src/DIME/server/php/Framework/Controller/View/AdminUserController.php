@@ -30,7 +30,6 @@
 namespace DIME\Framework\Controller\View;
 
 use ARK\Actor\Museum;
-use ARK\Actor\Person;
 use ARK\Model\Item;
 use ARK\ORM\ORM;
 use ARK\Security\User;
@@ -61,15 +60,15 @@ class AdminUserController extends DimeFormController
         $query = $request->query->all();
 
         if (isset($query['status'])) {
-            $actors = [];
             $users = User::findByStatus($query['status']);
-            foreach ($users as $user) {
-                $actors = array_merge($actors, $user->actors()->toArray());
-            }
-            $data['actors']['items'] = new ArrayCollection($actors);
         } else {
-            $data['actors']['items'] = ORM::findAll(Person::class);
+            $users = ORM::findAll(User::class);
         }
+        $actors = [];
+        foreach ($users as $user) {
+            $actors = array_merge($actors, $user->actors()->toArray());
+        }
+        $data['actors']['items'] = new ArrayCollection($actors);
 
         $data['actor'] = null;
         $data['user'] = null;
