@@ -34,7 +34,6 @@ use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\View\Bus\NavAddMessage;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Gedmo\Tree\Entity\Repository\ClosureTreeRepository;
@@ -69,7 +68,7 @@ class Nav extends Element
         $this->children = new ArrayCollection();
     }
 
-    public function parent() : Nav
+    public function parent() : self
     {
         return $this->parent;
     }
@@ -120,19 +119,6 @@ class Nav extends Element
     public function isSeperator() : bool
     {
         return $this->seperator;
-    }
-
-    public static function fromMessage(NavAddMessage $msg) : Nav
-    {
-        return new self(
-            $msg->nav(),
-            $msg->parent(),
-            $msg->sequence(),
-            $msg->separator(),
-            $msg->route(),
-            $msg->uri(),
-            $msg->icon()
-        );
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void

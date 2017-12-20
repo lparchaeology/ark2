@@ -33,8 +33,6 @@ namespace ARK\Framework\Provider;
 use ARK\ARK;
 use ARK\Service;
 use ARK\Twig\Extension\TranslateExtension;
-use ARK\View\Bus\NavAddHandler;
-use ARK\View\Bus\NavAddMessage;
 use ARK\View\ViewService;
 use Knp\Snappy\Image;
 use Knp\Snappy\Pdf;
@@ -56,11 +54,6 @@ class ViewServiceProvider implements ServiceProviderInterface
         $container['view'] = function ($app) {
             return new ViewService($app);
         };
-
-        $commands = [
-            NavAddMessage::class => NavAddHandler::class,
-        ];
-        $container['bus.command.handlers'] = array_merge($container['bus.command.handlers'], $commands);
 
         // Enable the Assets
         $container['path.assets'] = '/assets/'.$container['ark']['web']['frontend'];
