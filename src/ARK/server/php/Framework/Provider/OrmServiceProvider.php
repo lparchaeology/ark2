@@ -35,8 +35,6 @@ namespace ARK\Framework\Provider;
  * (c) Dragonfly Development Inc.
  */
 
-use ARK\ORM\Command\GenerateItemEntityHandler;
-use ARK\ORM\Command\GenerateItemEntityMessage;
 use ARK\ORM\Driver\StaticPHPDriver;
 use ARK\ORM\EntityManager;
 use ARK\ORM\Item\ItemMappingDriver;
@@ -62,11 +60,6 @@ class OrmServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $container) : void
     {
-        $commands = [
-            GenerateItemEntityMessage::class => GenerateItemEntityHandler::class,
-        ];
-        $container['bus.command.handlers'] = array_merge($container['bus.command.handlers'], $commands);
-
         $container['orm.proxies_dir'] = $container['dir.cache'].'/doctrine/proxies';
 
         $container['orm.default_cache'] = ['driver' => 'array'];

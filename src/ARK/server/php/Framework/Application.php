@@ -32,7 +32,6 @@ namespace ARK\Framework;
 use ARK\Api\JsonApi\Http\JsonApiRequest;
 use ARK\ARK;
 use ARK\Framework\Provider\ApiServiceProvider;
-use ARK\Framework\Provider\BusServiceProvider;
 use ARK\Framework\Provider\DbalServiceProvider;
 use ARK\Framework\Provider\DebugServiceProvider;
 use ARK\Framework\Provider\FileServiceProvider;
@@ -100,10 +99,6 @@ class Application extends AbstractApplication
         $this->register(new MailerServiceProvider());
         $this->register(new ServiceControllerServiceProvider());
         $this->register(new SessionServiceProvider());
-
-        // Enable the Message Bus and Event Bus
-        // - Required on Use: Logger
-        $this->register(new BusServiceProvider());
 
         // Enable the Database
         // - Optional on Use: Logger, Stopwatch

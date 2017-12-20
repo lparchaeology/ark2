@@ -102,7 +102,7 @@ class SiteCreateCommand extends DatabaseCommand
         $this->write("\nFAILED: ARK site database not created.");
     }
 
-    // TODO Make a Command via the Command Bus
+    // TODO Make a Command / Service / etc
     private function createInstance($site, $config)
     {
         $admin = $this->getConnection($config['admin']);

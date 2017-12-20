@@ -41,7 +41,6 @@ use League\Glide\Server;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Seld\JsonLint\JsonParser;
-use SimpleBus\Message\Bus\MessageBus;
 use Swift_Mailer;
 use Swift_Message;
 use Symfony\Component\Form\FormFactory;
@@ -223,11 +222,6 @@ class Service
     public static function jsonLinter() : JsonParser
     {
         return self::$app['json.linter'];
-    }
-
-    public static function bus() : MessageBus
-    {
-        return self::$app['bus'];
     }
 
     public static function database() : Database

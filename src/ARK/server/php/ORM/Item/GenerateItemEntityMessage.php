@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Command Handler.
+ * ARK Command Message.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,16 +27,47 @@
  * @since      2.0
  */
 
-namespace ARK\ORM\Bus;
+namespace ARK\ORM\Item;
 
-use ARK\Entity\Message\Notification;
-use ARK\ORM\ORM;
-
-class SendNotifcationHandler
+class GenerateItemEntityMessage
 {
-    public function __invoke(SendNotifcationMessage $message) : void
+    protected $project = '';
+    protected $namespace = '';
+    protected $entity = '';
+    protected $classname = '';
+    protected $schema = '';
+
+    public function __construct(string $project, string $namespace, string $entity, string $classname, string $schema)
     {
-        $notification = new Notification($message->sender(), $message->recipients(), $message->event());
-        ORM::persist($notification);
+        $this->project = $project;
+        $this->namespace = $namespace;
+        $this->entity = $entity;
+        $this->classname = $classname;
+        $this->schema = $schema;
+    }
+
+    public function project() : string
+    {
+        return $this->project;
+    }
+
+    public function namespace() : string
+    {
+        return $this->namespace;
+    }
+
+    public function entity() : string
+    {
+        return $this->entity;
+    }
+
+    public function classname() : string
+    {
+        return $this->classname;
+    }
+
+    public function schema() : string
+    {
+        return $this->schema;
     }
 }

@@ -30,7 +30,6 @@
 namespace ARK\Framework;
 
 use ARK\ARK;
-use ARK\Framework\Provider\BusServiceProvider;
 use ARK\Framework\Provider\LoggerServiceProvider;
 use Silex\Application;
 use Silex\Application\MonologTrait;
@@ -47,7 +46,6 @@ class SystemApplication extends AbstractApplication
         $this->setDebugMode(true);
 
         $this->register(new LoggerServiceProvider('system'));
-        $this->register(new BusServiceProvider());
         $this->register(new VarDumperServiceProvider());
     }
 

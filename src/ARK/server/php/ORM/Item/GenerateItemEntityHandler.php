@@ -27,13 +27,10 @@
  * @since      2.0
  */
 
-namespace ARK\ORM\Bus;
+namespace ARK\ORM\Item;
 
 use ARK\ARK;
 use ARK\ORM\ClassMetadata;
-use ARK\ORM\Command\GenerateItemEntityMessage;
-use ARK\ORM\ItemEntityGenerator;
-use ARK\ORM\ItemEntityMappingDriver;
 use ARK\Service;
 
 class GenerateItemEntityHandler
@@ -100,7 +97,7 @@ class <entity> extends <extends>
         TODO Make this work properly!!!
         $generator = new ItemEntityGenerator;
         $metadata = new ClassMetadata($message->classname());
-        $driver = new ItemEntityMappingDriver($message->namespace());
+        $driver = new ItemMappingDriver($message->namespace());
         $driver->loadMetadataForGenerator($message->classname(), $metadata);
         $generator->writeEntityClass($metadata, ARK::autoloadDir($message->project()), $message->project());
         */

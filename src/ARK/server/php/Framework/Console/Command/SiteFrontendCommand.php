@@ -64,7 +64,7 @@ class SiteFrontendCommand extends AbstractCommand
             $refresh = $this->askConfirmation('Site folder already exists, refresh the site?', false);
         }
 
-        // TODO Move to Bus Command
+        // TODO Make a Command / Service / etc
         // Inputs: Site, Frontend, Symlink = link, Refresh = false
         $siteDir = ARK::siteDir($site);
         $templatesDir = ARK::templatesDir($site, $frontend);
