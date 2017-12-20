@@ -30,7 +30,7 @@
 
 namespace ARK\Framework\Provider;
 
-use ARK\Workflow\Registry;
+use ARK\Workflow\WorkflowService;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
@@ -38,8 +38,8 @@ class WorkflowServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $container) : void
     {
-        $container['workflow.registry'] = function () {
-            return new Registry();
+        $container['workflow'] = function () {
+            return new WorkflowService();
         };
     }
 }

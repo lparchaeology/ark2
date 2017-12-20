@@ -85,7 +85,7 @@ class ViewServiceProvider implements ServiceProviderInterface
             $twig->addExtension(new TranslateExtension($app['translator']));
             $twig->addFunction(new Twig_Function('imagePath', Service::class.'::imagePath'));
             $twig->addGlobal('security', $app['security']);
-            $twig->addGlobal('workflow', $app['workflow.registry']);
+            $twig->addGlobal('workflow', $app['workflow']);
             return $twig;
         });
         $container->extend('twig.runtimes', function ($twig, $app) {

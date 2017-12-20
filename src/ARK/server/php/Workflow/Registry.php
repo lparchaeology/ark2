@@ -29,19 +29,9 @@
 
 namespace ARK\Workflow;
 
-use ARK\Actor\Actor;
-use ARK\Actor\Person;
 use ARK\Model\Attribute;
-use ARK\Model\Item;
 use ARK\Model\ItemPropertyMarkingStore;
-use ARK\Model\Schema\Schema;
 use ARK\ORM\ORM;
-use ARK\Security\User;
-use ARK\Service;
-use ARK\Workflow\Exception\WorkflowException;
-use ARK\Workflow\Security\ActorUser;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Workflow\Exception\InvalidArgumentException;
 use Symfony\Component\Workflow\Registry as SymfonyRegistry;
 use Symfony\Component\Workflow\StateMachine;
@@ -49,140 +39,19 @@ use Symfony\Component\Workflow\Workflow;
 
 class Registry extends SymfonyRegistry
 {
-    protected $actions = [];
-
-    public function actor(User $user = null) : ?Actor
+    public function get($subject, $workflowName = null) : Workflow
     {
-        if ($user === null) {
-            $user = Service::security()->user();
-        }
-        if (!$user instanceof User) {
-            return ORM::find(Actor::class, 'anonymous');
-        }
-        $au = ORM::findOneBy(ActorUser::class, ['user' => $user->id()]);
-        return $au ? $au->actor() : null;
-    }
-
-    public function user(Actor $actor) : ?User
-    {
-        $au = ORM::findOneBy(ActorUser::class, ['actor' => $actor->id()]);
-        return $au ? $au->user() : null;
-    }
-
-    public function schemaActions(Schema $schema) : Collection
-    {
-        $this->init($schema->name());
-        return $this->actions[$schema->name()];
-    }
-
-    public function attributeActions(Attribute $attribute, $value) : Collection
-    {
-        $conditions = ORM::findBy(Condition::class, ['attribute' => $attribute, 'value' => $value]);
-        $actions = new ArrayCollection();
-        foreach ($conditions as $condition) {
-            $action = $condition->action();
-            if ($action->isActionable() && !$actions->contains($action)) {
-                $actions[$action->name()] = $action;
+        $workflow = null;
+        try {
+            $workflow = parent::get($subject, $workflowName);
+        } catch (InvalidArgumentException $e) {
+            $workflow = ORM::find(Workflow::class, $workflowName);
+            if (!$workflow) {
+                throw new InvalidArgumentException(sprintf('Unable to find a workflow for class "%s".', get_class($subject)));
             }
+            $this->add($workflow, get_class($subject));
         }
-        return $actions;
-    }
-
-    public function updateActions(Actor $actor, Item $item) : Collection
-    {
-        $schema = $item->schema()->name();
-        $this->init($schema);
-        $actions = new ArrayCollection();
-        foreach ($this->actions[$schema] as $action) {
-            try {
-                if ($action->isUpdate() && $action->isGranted($actor, $item)) {
-                    $actions[$action->name()] = $action;
-                }
-            } catch (WorkflowException $e) {
-                // noop
-                //dump($e->getMessage());
-            }
-        }
-        return $actions;
-    }
-
-    public function actionable(Actor $actor, Item $item) : Collection
-    {
-        $schema = $item->schema()->name();
-        $this->init($schema);
-        $actions = new ArrayCollection();
-        foreach ($this->actions[$schema] as $action) {
-            try {
-                if ($action->isActionable() && $action->isGranted($actor, $item)) {
-                    $actions[$action->name()] = $action;
-                }
-            } catch (WorkflowException $e) {
-                // noop
-                //dump($e->getMessage());
-            }
-        }
-        return $actions;
-    }
-
-    public function actions(Actor $actor, Item $item) : Collection
-    {
-        $schema = $item->schema()->name();
-        $this->init($schema);
-        $actions = new ArrayCollection();
-        foreach ($this->actions[$schema] as $action) {
-            try {
-                if ($action->isGranted($actor, $item)) {
-                    $actions[$action->name()] = $action;
-                }
-            } catch (WorkflowException $e) {
-                // noop
-            }
-        }
-        return $actions;
-    }
-
-    public function actors(Actor $actor, Item $item) : Collection
-    {
-        $schema = $item->schema()->name();
-        $this->init($schema);
-        // TODO Fiter the list!!! Probably only museum staff?
-        $actors = ORM::findAll(Person::class);
-        return $actors;
-    }
-
-    public function mode(Actor $actor, Item $item) : string
-    {
-        if ($this->can($actor, 'edit', $item)) {
-            return 'edit';
-        }
-        if ($item->visibility()->name() === 'public' || $this->can($actor, 'view', $item)) {
-            return 'view';
-        }
-        return 'deny';
-    }
-
-    public function can(Actor $actor, $action, Item $item, $attribute = null) : bool
-    {
-        //dump('Workflow::can('.$actor->id().' '.$action.' '.$item->schema()->module()->id().')');
-        if (is_string($action)) {
-            $action = $this->action($item->schema()->name(), $action);
-        }
-        if ($action instanceof Action) {
-            try {
-                return $action->isGranted($actor, $item, $attribute);
-            } catch (WorkflowException $e) {
-                // noop
-            }
-        }
-        return false;
-    }
-
-    public function apply(Actor $actor, string $action, Item $item, Actor $subject = null) : void
-    {
-        $action = $this->action($item->schema()->name(), $action);
-        if ($action) {
-            $action->apply($actor, $item, $subject);
-        }
+        return $workflow;
     }
 
     public function getStateMachine(Attribute $attribute) : StateMachine
@@ -194,37 +63,5 @@ class Registry extends SymfonyRegistry
         $markingStore = new ItemPropertyMarkingStore($attribute);
         $machine = new StateMachine($definition, $markingStore);
         return $machine;
-    }
-
-    public function get($subject, $workflowName = null) : Workflow
-    {
-        $workflow = null;
-        try {
-            $workflow = parent::get($subject, $workflowName);
-        } catch (InvalidArgumentException $e) {
-            if (!$workflow = ORM::find(Workflow::class, $workflowName)) {
-                throw new InvalidArgumentException(sprintf('Unable to find a workflow for class "%s".', get_class($subject)));
-            }
-            $this->add($workflow, get_class($subject));
-        }
-        return $workflow;
-    }
-
-    protected function init(string $schema) : void
-    {
-        if (isset($this->actions[$schema])) {
-            return;
-        }
-        $this->actions[$schema] = new ArrayCollection();
-        $actions = ORM::findBy(Action::class, ['schma' => $schema]);
-        foreach ($actions as $action) {
-            $this->actions[$schema][$action->name()] = $action;
-        }
-    }
-
-    private function action(string $schema, string $action) : ?Action
-    {
-        $this->init($schema);
-        return $this->actions[$schema][$action] ?? null;
     }
 }

@@ -31,6 +31,7 @@ namespace DIME\Framework\Controller\View;
 
 use ARK\Message\Message;
 use ARK\ORM\ORM;
+use ARK\Service;
 use ARK\Vocabulary\Vocabulary;
 use DIME\DIME;
 use Symfony\Component\HttpFoundation\Request;

@@ -34,6 +34,7 @@ use ARK\Framework\Application;
 use ARK\Security\Security;
 use ARK\Spatial\Spatial;
 use ARK\View\View;
+use ARK\Workflow\WorkflowService;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\Filesystem;
 use League\Glide\Server;
@@ -48,7 +49,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Workflow\Registry;
 
 class Service
 {
@@ -260,8 +260,8 @@ class Service
         return self::$app['view'];
     }
 
-    public static function workflow() : Registry
+    public static function workflow() : WorkflowService
     {
-        return self::$app['workflow.registry'];
+        return self::$app['workflow'];
     }
 }
