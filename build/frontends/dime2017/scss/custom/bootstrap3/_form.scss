@@ -5,24 +5,24 @@
 }
 
 .select2-container--default .select2-selection--single {
-    border: 1px solid black;
-    border-radius: 10px;
+    border: 1px solid grey;
+    border-radius: 4px;
     height: 1.4em;
     line-height: 1.4em;
     vertical-align: middle;
-    padding: 0 10px;
+    padding: 0 4px;
 }
 
 .select2-container--default .select2-selection--multiple {
     border: 1px solid black;
-    border-radius: 10px;
+    border-radius: 4px;
     vertical-align: middle;
     padding: 0 10px;
 }
 
 .select2-container--open .select2-dropdown--below {
     border: 1px solid black;
-    border-radius: 0 0 10px 10px;
+    border-radius: 0 0 4px 4px;
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__rendered,
@@ -37,7 +37,7 @@
 
 .select2-container--default .select2-results__option--highlighted[aria-selected],
 .select2-results__option[aria-selected] {
-    border-radius: 10px;
+    border-radius: 4px;
     line-height: 1em;
 }
 
@@ -74,7 +74,7 @@
 }
 
 .form-group .kv-fileinput-caption {
-    border: 1px solid black;
+    border: 1px solid grey;
     height: 1.6em;
     padding: 0 5px;
     border-radius: 0;

@@ -68,10 +68,12 @@
 
             $("#thumbModal").html(html);
             $("#modalWindow").modal();
+            /*
             $('#modalWindow').on('hidden.bs.modal', function () {
                 $('tbody tr').removeClass('selected');
                 mapcollection.clear();
             });
+            */
         };
 
         var formclick = function (evt) {
@@ -101,7 +103,79 @@
 
         };
 
+        var mapselect = function (item, ark_id){
+
+            if (typeof mapcollection === 'undefined') {
+                if (item.hasClass('selected')) {
+                    item.removeClass('selected');
+                    item.find('.tablecheckbox').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
+                } else {
+                    item.addClass('selected');
+                    item.find('.tablecheckbox').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+                }
+                return true;
+            }
+
+            map.getLayers().forEach(function (i, e, a) {
+                if (i.get('name') === 'finds') {
+                    if (typeof i.getSource().getFeatures === 'function') {
+                        i.getSource().getFeatures().forEach(function (i, e, a) {
+                            if (i.get('ark_id').toUpperCase() === ark_id) {
+                                if (item.hasClass('selected')) {
+                                    mapcollection.remove(i);
+                                } else {
+                                    mapcollection.push(i);
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
         var mapclick = function (evt, row, $element) {
+            var self = '';
+            var ark_id = '';
+
+            removeTextSelection();
+            if ($(evt.target).is('a')) {
+                return true;
+            }
+
+            if ($(evt.target).hasClass('icon-user-focus')) {
+                return true;
+            }
+
+            if ($(evt.target).is('tr')) {
+                self = $(evt.target);
+            } else {
+                self = $(evt.target).closest('tr');
+            }
+
+            ark_id = self.attr('data-unique-id');
+
+            if (typeof window.selected === 'undefined') {
+                window.selected = [];
+            }
+
+            if (self.hasClass('selected')) {
+                window.selected = window.selected.filter(function (e) { return e !== ark_id; });
+            } else {
+                window.selected.push(ark_id);
+            }
+            mapselect(self, ark_id);
+
+        };
+
+        window.thumbclick = function (evt) {
+            var self = '';
+
+            if ($(evt.target).is('tr')) {
+                self = $(evt.target);
+            } else {
+                self = $(evt.target).closest('tr');
+            }
+
             var self = '';
             var ark_id = '';
 
@@ -125,52 +199,12 @@
                 window.selected = [];
             }
 
-            if (self.hasClass('selected')) {
-                window.selected = window.selected.filter(function (e) { return e !== ark_id; });
-            } else {
+            if ( self.hasClass('selected') != true ) {
                 window.selected.push(ark_id);
-            }
-
-            if (typeof mapcollection === 'undefined') {
-                if (self.hasClass('selected')) {
-                    self.removeClass('selected');
-                    self.find('.tablecheckbox').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
-                } else {
-                    self.addClass('selected');
-                    self.find('.tablecheckbox').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
-                }
-                return true;
-            }
-
-            map.getLayers().forEach(function (i, e, a) {
-                if (i.get('name') === 'finds') {
-                    if (typeof i.getSource().getFeatures === 'function') {
-                        i.getSource().getFeatures().forEach(function (i, e, a) {
-                            if (i.get('ark_id').toUpperCase() === ark_id) {
-                                if (self.hasClass('selected')) {
-                                    mapcollection.remove(i);
-                                } else {
-                                    mapcollection.push(i);
-                                }
-                            }
-                        });
-                    }
-                }
-            });
-
-        };
-
-        window.thumbclick = function (evt) {
-            var self = '';
-
-            if ($(evt.target).is('tr')) {
-                self = $(evt.target);
+                mapselect(self, ark_id);
             } else {
-                self = $(evt.target).closest('tr');
+                window.selected = window.selected.filter(function (e) { return e !== ark_id; });
             }
-
-            window.tableclick(evt);
-
             createItemModal(that.data[self.data('index')], that.columns);
 
         };

@@ -3,16 +3,16 @@
 }
 
 .form-group textarea {
-    border: 1px solid black;
-    border-radius: 10px;
+    border: 1px solid grey;
+    border-radius: 4px;
 }
 
 .form-group input[type="email"],
 .form-group input[type="password"],
 .form-group input[type="text"],
 .form-group input[type="number"] {
-    border: 1px solid black;
-    border-radius: 10px;
+    border: 1px solid grey;
+    border-radius: 4px;
     height: 1.4em;
     line-height: 1.4em;
     width: 50%;
@@ -33,6 +33,11 @@
     width: 100%;
 }
 
+input#find_length_value,
+input#find_weight_value {
+    max-width: 100%;
+}
+
 .form-group-widget span.help {
     position: absolute;
     left: 102%;
@@ -41,7 +46,7 @@
 .input-group-addon:last-child {
     padding: 0 10px 0 5px;
     height: 5px;
-    border: 1px solid black;
+    border: 1px solid grey;
     border-left: none;
     line-height: 5px;
     border-radius: 10px;
@@ -56,6 +61,10 @@
     padding: 0 10px;
     text-transform: uppercase;
     border-radius: 0;
+    -webkit-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.6);
+    -moz-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.6);
+
 }
 
 /* CHECKBOXES */
@@ -72,7 +81,7 @@ input[type=checkbox] {
 
 .checkbox label {
     background: #fff none repeat scroll 0 0;
-    border: 1px solid black;
+    border: 1px solid grey;
     border-radius: 3px;
     cursor: pointer;
     height: 1.6em;

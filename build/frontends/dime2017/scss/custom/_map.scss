@@ -106,6 +106,14 @@ a.layer-select.selected:hover {
 
 .form-horizontal .control-label {
     padding-top: 0;
+    color: grey;
+    font-weight: normal;
+}
+
+.form-horizontal .control-label.required {
+    text-transform: uppercase;
+    color: black;
+    font-weight: normal;
 }
 
 .form-horizontal .form-control {
