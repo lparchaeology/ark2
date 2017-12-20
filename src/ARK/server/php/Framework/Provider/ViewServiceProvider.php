@@ -31,8 +31,8 @@
 namespace ARK\Framework\Provider;
 
 use ARK\ARK;
+use ARK\Service;
 use ARK\Twig\Extension\TranslateExtension;
-use ARK\Twig\Extension\ViewExtension;
 use ARK\View\Bus\NavAddHandler;
 use ARK\View\Bus\NavAddMessage;
 use ARK\View\View;
@@ -46,6 +46,7 @@ use Symfony\Bridge\Twig\Extension\HttpKernelRuntime;
 use Symfony\Component\Form\FormRenderer;
 use Twig_Extensions_Extension_Date;
 use Twig_Extensions_Extension_Intl;
+use Twig_Function;
 
 class ViewServiceProvider implements ServiceProviderInterface
 {
@@ -82,7 +83,9 @@ class ViewServiceProvider implements ServiceProviderInterface
             $twig->addExtension(new Twig_Extensions_Extension_Intl());
             $twig->addExtension(new Twig_Extensions_Extension_Date($app['translator']));
             $twig->addExtension(new TranslateExtension($app['translator']));
-            $twig->addExtension(new ViewExtension());
+            $twig->addFunction(new Twig_Function('imagePath', Service::class.'::imagePath'));
+            $twig->addGlobal('security', $app['security']);
+            $twig->addGlobal('workflow', $app['workflow.registry']);
             return $twig;
         });
         $container->extend('twig.runtimes', function ($twig, $app) {

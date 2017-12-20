@@ -10,7 +10,7 @@
         <ul class="list-group dime-navlist">
             {% if menus.sidelinks is defined %}
                 {% for group in menus.sidelinks %}
-                    {% if is_granted(group.role) %}
+                    {% if security.user.hasPermission(group.permission) %}
                         {% if group.active %}
                             <li class="list-group-item dime-listhead normal">
                                 <span class="dime-icon icon-{{ group.name }} normal"></span>

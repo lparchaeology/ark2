@@ -41,9 +41,5 @@ class WorkflowServiceProvider implements ServiceProviderInterface
         $container['workflow.registry'] = function () {
             return new Registry();
         };
-        $container->extend('twig', function ($twig, $app) {
-            $twig->addGlobal('workflow', $app['workflow.registry']);
-            return $twig;
-        });
     }
 }

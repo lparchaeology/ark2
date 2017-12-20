@@ -76,7 +76,7 @@ abstract class DimeFormController extends PageController
     protected function menuConfig(string $route = null) : iterable
     {
         // TODO Use visibility / permissions
-        $homeTarget = (Service::security()->isGranted('ROLE_USER') ? 'dime.home' : 'dime.front');
+        $homeTarget = (Service::security()->user()->hasPermission('dime.find.home') ? 'dime.home' : 'dime.front');
         $config = [
             'navlinks' => [
                 ['name' => 'dime.home', 'dropdown' => false, 'target' => $homeTarget],
@@ -89,7 +89,7 @@ abstract class DimeFormController extends PageController
                 [
                     'name' => 'add',
                     'active' => false,
-                    'role' => 'ROLE_USER',
+                    'permission' => 'dime.find.create',
                     'links' => [
                         ['name' => 'dime.find.add', 'active' => false, 'target' => 'dime.finds.add'],
                     ],
@@ -97,7 +97,7 @@ abstract class DimeFormController extends PageController
                 [
                     'name' => 'mine',
                     'active' => false,
-                    'role' => 'ROLE_USER',
+                    'permission' => 'dime.find.home',
                     'links' => [
                         ['name' => 'dime.search.finds.mine', 'active' => false, 'target' => 'dime.home.finds'],
                     ],
@@ -105,7 +105,7 @@ abstract class DimeFormController extends PageController
                 [
                     'name' => 'search',
                     'active' => false,
-                    'role' => 'IS_AUTHENTICATED_ANONYMOUSLY',
+                    'permission' => null,
                     'links' => [
                         ['name' => 'dime.find.search', 'active' => false, 'target' => 'dime.finds.list'],
                     ],
@@ -113,7 +113,7 @@ abstract class DimeFormController extends PageController
                 [
                     'name' => 'admin.users',
                     'active' => false,
-                    'role' => 'ROLE_ADMIN',
+                    'permission' => 'core.admin.user',
                     'links' => [
                         ['name' => 'dime.admin.users', 'active' => false, 'target' => 'dime.admin.users'],
                     ],
@@ -121,7 +121,7 @@ abstract class DimeFormController extends PageController
                 [
                     'name' => 'admin.users.register',
                     'active' => false,
-                    'role' => 'ROLE_ADMIN',
+                    'permission' => 'core.admin.user',
                     'links' => [
                         ['name' => 'dime.admin.users.register', 'active' => false, 'target' => 'dime.admin.users.register'],
                     ],

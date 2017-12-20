@@ -139,13 +139,12 @@ class Application extends AbstractApplication
         // - Optional on Use: Validator, Form
         $this->register(new TranslationServiceProvider());
 
-        // Enable View
-        // - Optional on Use: Security, Translation, Fragment, Assets, Form, Dumper
-        $this->register(new ViewServiceProvider());
-
         // Enable Workflow
-        // - On Register: Twig
         $this->register(new WorkflowServiceProvider());
+
+        // Enable View
+        // - Optional on Use: Security, Translation, Fragment, Assets, Form, Dumper, Workflow
+        $this->register(new ViewServiceProvider());
 
         $this->register(new JsonSchemaServiceProvider());
 

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6deb4
+-- version 4.7.6
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Dec 19, 2017 at 02:27 PM
--- Server version: 10.1.26-MariaDB-0+deb9u1
--- PHP Version: 7.1.11-1+0~20171027135525.10+stretch~1.gbp2e638d
+-- Host: localhost
+-- Generation Time: Dec 20, 2017 at 02:52 PM
+-- Server version: 10.2.11-MariaDB
+-- PHP Version: 7.1.12
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -2144,7 +2144,6 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.kommune.vordingborg', 'vocabulary', 0, 0),
 ('dime.krogager', 'dime', 0, 0),
 ('dime.map.layer.foraar', 'dime', 0, 0),
-('dime.map.layer.hb', 'dime', 0, 0),
 ('dime.map.layer.skaermkort', 'dime', 0, 0),
 ('dime.map.public', 'core', 0, 0),
 ('dime.map.user', 'core', 0, 0),
@@ -3132,7 +3131,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'core.actor.initials', 'default', 'Initialer', NULL),
 ('da', 'core.actor.institution', 'default', 'Institution', NULL),
 ('da', 'core.actor.module', 'default', 'Aktør', NULL),
-('da', 'core.actor.person', 'default', 'Person', NULL),
+('da', 'core.actor.person', 'default', 'actor_person(Rolle)', NULL),
 ('da', 'core.actor.schema', 'default', 'Aktør', NULL),
 ('da', 'core.actor.shortname', 'default', 'Kort navn', NULL),
 ('da', 'core.actor.telephone', 'default', 'Telefon', NULL),
@@ -3211,10 +3210,10 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'core.user.password.set', 'default', 'Adgangskode', ''),
 ('da', 'core.user.profile', 'default', 'Brugerprofil', NULL),
 ('da', 'core.user.register', 'default', 'Opret bruger', ''),
-('da', 'core.user.register', 'success', 'Din registrering er nu afsendt. Tjek din mail og godkend oprettelsen af din DIME-brugerprofil.', NULL),
+('da', 'core.user.register', 'success', 'Din registrering er nu afsendt. Tjek din mail og godkend oprettelsen af DIME-profilen???', NULL),
 ('da', 'core.user.register.existing', 'default', 'Har du allerede en konto?', NULL),
 ('da', 'core.user.register.heading', 'default', 'Opret bruger', ''),
-('da', 'core.user.register.loggedin', 'default', 'Hej \"%name%\" - du er allerede oprettet som bruger.', NULL),
+('da', 'core.user.register.loggedin', 'default', 'Hej \"%name%\" - du er allerede oprettet som bruger???', NULL),
 ('da', 'core.user.register.login', 'default', 'Login her', ''),
 ('da', 'core.user.register.logout', 'default', 'Log ud', NULL),
 ('da', 'core.user.reset', 'default', 'Reset', NULL),
@@ -3280,7 +3279,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.detector', 'resource', 'detektering', NULL),
 ('da', 'dime.dropdown.undef', 'default', 'UNDERKATEGORI', ''),
 ('da', 'dime.exhibits', 'default', 'Digitale udstillinger', NULL),
-('da', 'dime.exhibits', 'resource', 'udstiller', NULL),
+('da', 'dime.exhibits', 'resource', 'ddstiller', NULL),
 ('da', 'dime.exhibits.forests', 'default', 'Guld og Grønne Skove', NULL),
 ('da', 'dime.exhibits.weapons', 'default', 'Våben i bronzealderen', NULL),
 ('da', 'dime.find', 'default', 'Fund', NULL),
@@ -3303,13 +3302,13 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.find.condition.whole', 'default', 'Hel', NULL),
 ('da', 'dime.find.coordinates', 'default', 'Koordinater', NULL),
 ('da', 'dime.find.custodian', 'default', 'Fundansvarlig', ''),
-('da', 'dime.find.custody', 'default', 'Genstands status', ''),
+('da', 'dime.find.custody', 'default', 'I transit (Ja/ Nej)', ''),
 ('da', 'dime.find.custody.destroyed', 'default', 'Ødelagt', NULL),
 ('da', 'dime.find.custody.discarded', 'default', 'Kasseret', NULL),
-('da', 'dime.find.custody.held', 'default', 'Opbevaret af fundansvarlig', ''),
+('da', 'dime.find.custody.held', 'default', 'Nej', ''),
 ('da', 'dime.find.custody.lost', 'default', 'Mistet', NULL),
 ('da', 'dime.find.custody.requested', 'default', 'Anmodet', NULL),
-('da', 'dime.find.custody.sent', 'default', 'Afsendt til modtager', NULL),
+('da', 'dime.find.custody.sent', 'default', 'Ja', NULL),
 ('da', 'dime.find.dating', 'default', 'Datering fra', NULL),
 ('da', 'dime.find.dating', 'help', 'Her har du to indtastningsmuligheder:\n\n1) I dropdown menuen kan du angive en dateringsramme (f.eks. vikingetid) eller vælge \"udateret\", hvis du er usikker på dateringen.\n2) I den avancerede dateringsmenu kan du angive en start- og en slutdatering både som periode og i årstal. Det er vigtigt, at du angiver BÅDE start- og slutdatering. OBS! Hvis du f.eks. har fundet en mønt fra 1687, angiver du 1687 i begge felter.', NULL),
 ('da', 'dime.find.description', 'default', 'Beskrivelse', NULL),
@@ -3850,7 +3849,6 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.kommune.vordingborg', 'official', 'Vordingborg Kommune', NULL),
 ('da', 'dime.krogager', 'default', 'Krogagerfonden', NULL),
 ('da', 'dime.map.layer.foraar', 'default', 'Luftfoto', ''),
-('da', 'dime.map.layer.hb', 'default', 'Høje_målebordsblade', NULL),
 ('da', 'dime.map.layer.skaermkort', 'default', 'Skærmkort', NULL),
 ('da', 'dime.mappick.invalidpointlocation', 'default', 'Du kan ikke angive dette fundsted. Kun fundsteder indenfor Danmarks grænser og på land kan gemmes i DIME.', NULL),
 ('da', 'dime.mappick.newpointconfirmmessage', 'default', 'Tryk \"OK\" hvis DIME skal gemme dette. fundstedet for dit fund. N.B. fundstedet er kun synligt for dig og det ansvarshavende museum', ''),
@@ -4503,10 +4501,10 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.finder_place', 'default', 'Find spot', NULL),
 ('en', 'dime.find.finder_place', 'help', 'Enter the site / find site name, either what you or the museum uses.', NULL),
 ('en', 'dime.find.id', 'default', 'DIME ID', NULL),
-('en', 'dime.find.images', 'default', 'Photos', '');
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.find.images', 'default', 'Photos', ''),
 ('en', 'dime.find.images', 'help', 'To be useful to others:\r\n1) The finds have been cleaned (take care of the item!)\r\n2) There must be a scale next to the find (e.g., a ruler)\r\nTo see how to look here: // link to tutorial //', ''),
-('en', 'dime.find.issuer', 'default', 'Issuer', ''),
+('en', 'dime.find.issuer', 'default', 'Issuer', '');
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'dime.find.length', 'default', 'Maximum Dimension', NULL),
 ('en', 'dime.find.location', 'default', 'Location', NULL),
 ('en', 'dime.find.location.decimal', 'default', 'Decimal (WGS84)', NULL),
@@ -5015,7 +5013,6 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.kommune.vordingborg', 'official', 'Vordingborg Municipality', NULL),
 ('en', 'dime.krogager', 'default', 'KrogagerFonden', NULL),
 ('en', 'dime.map.layer.foraar', 'default', 'Foraar Layer', NULL),
-('en', 'dime.map.layer.hb', 'default', 'Hoje_maalebordsblade', NULL),
 ('en', 'dime.map.layer.skaermkort', 'default', 'Skaermkort', NULL),
 ('en', 'dime.material', 'default', 'Material', ''),
 ('en', 'dime.material.aluminium', 'default', 'Aluminium', NULL),
@@ -5142,15 +5139,15 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'find.gotofind', 'default', 'View Find Record', NULL),
 ('en', 'form.select.optional', 'default', 'optional', NULL),
 ('en', 'form.select.required', 'default', 'required', NULL),
-('en', 'format.address', 'default', 'Address Format', NULL);
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'format.address', 'default', 'Address Format', NULL),
 ('en', 'format.blob', 'default', 'Blob Format', NULL),
 ('en', 'format.boolean', 'default', 'Boolean Format', NULL),
 ('en', 'format.colour', 'default', 'Colour Format', NULL),
 ('en', 'format.date', 'default', 'Date Format', NULL),
 ('en', 'format.datetime', 'default', 'DateTime Format', NULL),
 ('en', 'format.decimal', 'default', 'Decimal Format', NULL),
-('en', 'format.email', 'default', 'Email Format', NULL),
+('en', 'format.email', 'default', 'Email Format', NULL);
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'format.float', 'default', 'Float Format', NULL),
 ('en', 'format.html', 'default', 'HTML Format', NULL),
 ('en', 'format.identifier', 'default', 'Identifier Format', NULL),
@@ -6742,11 +6739,11 @@ INSERT INTO `ark_view_page` (`element`, `mode`, `header`, `sidebar`, `content`, 
 ('dime_page_admin_user', 'edit', 'dime_site_header', 'dime_site_sidebar', 'dime_admin_user_page', 'dime_site_footer', 'restricted', 'core.admin.user', 'core.admin.user', NULL, NULL),
 ('dime_page_claim', 'edit', 'dime_site_header', 'dime_site_sidebar', 'dime_treasure_header', 'dime_site_footer', 'restricted', 'dime.find.treasure.claim', 'dime.find.treasure.claim', NULL, NULL),
 ('dime_page_find', 'edit', 'dime_site_header', 'dime_site_sidebar', 'dime_find_view', 'dime_site_footer', 'restricted', 'dime.find.read', 'dime.find.update', NULL, 'pages/map.html.twig'),
-('dime_page_find_add', 'edit', 'dime_site_header', 'dime_site_sidebar', 'dime_find_add', 'dime_site_footer', 'restricted', 'dime.find.read', 'dime.find.update', NULL, 'pages/map.html.twig'),
+('dime_page_find_add', 'edit', 'dime_site_header', 'dime_site_sidebar', 'dime_find_add', 'dime_site_footer', 'restricted', 'dime.find.create', 'dime.find.create', NULL, 'pages/map.html.twig'),
 ('dime_page_find_list', 'edit', 'dime_site_header', 'dime_site_sidebar', 'dime_find_search', 'dime_site_footer', 'public', 'dime.find.read', 'dime.find.update', NULL, 'pages/map.html.twig'),
 ('dime_page_front', 'view', 'dime_site_header', 'dime_site_sidebar', 'dime_front_page', 'dime_site_footer', 'public', NULL, NULL, NULL, NULL),
-('dime_page_home', 'view', 'dime_site_header', 'dime_site_sidebar', 'dime_home_page', 'dime_site_footer', 'restricted', 'core.actor.read', NULL, NULL, NULL),
-('dime_page_home_find_list', 'edit', 'dime_site_header', 'dime_site_sidebar', 'dime_home_find_search', 'dime_site_footer', 'restricted', 'dime.find.read', 'dime.find.update', NULL, 'pages/map.html.twig'),
+('dime_page_home', 'view', 'dime_site_header', 'dime_site_sidebar', 'dime_home_page', 'dime_site_footer', 'restricted', 'dime.find.home', NULL, NULL, NULL),
+('dime_page_home_find_list', 'edit', 'dime_site_header', 'dime_site_sidebar', 'dime_home_find_search', 'dime_site_footer', 'restricted', 'dime.find.home', 'dime.find.update', NULL, 'pages/map.html.twig'),
 ('dime_page_message', 'view', 'dime_site_header', 'dime_site_sidebar', 'dime_message_page', 'dime_site_footer', 'restricted', 'core.message.read', NULL, NULL, NULL),
 ('dime_page_news', 'view', 'dime_site_header', 'dime_site_sidebar', 'dime_find_news', 'dime_site_footer', 'public', NULL, NULL, NULL, NULL),
 ('dime_page_profile', 'view', 'dime_site_header', 'dime_site_sidebar', 'dime_profile_page', 'dime_site_footer', 'public', NULL, NULL, NULL, NULL),
@@ -9463,6 +9460,7 @@ INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
 ('admin', 'dime.find.create'),
 ('admin', 'dime.find.filter.finder'),
 ('admin', 'dime.find.filter.museum'),
+('admin', 'dime.find.home'),
 ('admin', 'dime.find.read'),
 ('admin', 'dime.find.read.custody'),
 ('admin', 'dime.find.read.finddate'),
@@ -9495,12 +9493,17 @@ INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
 ('appraiser', 'core.page.read'),
 ('appraiser', 'dime.find.filter.finder'),
 ('appraiser', 'dime.find.filter.museum'),
+('appraiser', 'dime.find.home'),
+('appraiser', 'dime.find.read'),
+('appraiser', 'dime.find.update'),
+('appraiser', 'dime.find.update.treasure'),
 ('curator', 'core.actor.read'),
 ('curator', 'core.actor.update'),
 ('curator', 'core.message.read'),
 ('curator', 'core.message.update'),
 ('curator', 'core.page.read'),
 ('curator', 'dime.find.filter.finder'),
+('curator', 'dime.find.home'),
 ('detectorist', 'core.actor.read'),
 ('detectorist', 'core.actor.update'),
 ('detectorist', 'core.message.read'),
@@ -9508,6 +9511,7 @@ INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
 ('detectorist', 'core.page.read'),
 ('detectorist', 'dime.find.create'),
 ('detectorist', 'dime.find.filter.museum'),
+('detectorist', 'dime.find.home'),
 ('detectorist', 'dime.find.read'),
 ('detectorist', 'dime.find.read.process'),
 ('detectorist', 'dime.find.read.treasure'),
@@ -9520,6 +9524,7 @@ INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
 ('registrar', 'core.message.update'),
 ('registrar', 'dime.find.create'),
 ('registrar', 'dime.find.filter.finder'),
+('registrar', 'dime.find.home'),
 ('registrar', 'dime.find.read'),
 ('registrar', 'dime.find.read.custody'),
 ('registrar', 'dime.find.read.finddate'),
@@ -9546,6 +9551,7 @@ INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
 ('researcher', 'core.message.read'),
 ('researcher', 'core.message.update'),
 ('researcher', 'core.page.read'),
+('researcher', 'dime.find.home'),
 ('researcher', 'dime.find.read'),
 ('researcher', 'dime.find.read.finddate'),
 ('researcher', 'dime.find.read.location'),
@@ -9660,6 +9666,7 @@ INSERT INTO `ark_workflow_permission` (`permission`, `keyword`, `enabled`, `desc
 ('dime.find.delete', NULL, 1, NULL),
 ('dime.find.filter.finder', NULL, 1, NULL),
 ('dime.find.filter.museum', NULL, 1, NULL),
+('dime.find.home', NULL, 1, NULL),
 ('dime.find.read', NULL, 1, NULL),
 ('dime.find.read.custody', NULL, 1, NULL),
 ('dime.find.read.finddate', NULL, 1, NULL),
@@ -10333,11 +10340,13 @@ ALTER TABLE `ark_workflow_update`
 --
 ALTER TABLE `ark_view_tree`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
 --
 -- AUTO_INCREMENT for table `ark_workflow_notify`
 --
 ALTER TABLE `ark_workflow_notify`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+
 --
 -- Constraints for dumped tables
 --

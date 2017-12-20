@@ -476,6 +476,19 @@ class User implements AdvancedUserInterface, Serializable
         return false;
     }
 
+    public function hasPermission($permission = null) : bool
+    {
+        if ($permission === null) {
+            return true;
+        }
+        foreach ($this->actors() as $actor) {
+            if ($actor->hasPermission($permission)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public function serialize() : string
     {
         return serialize([$this->id, $this->username, $this->email]);
@@ -491,29 +504,25 @@ class User implements AdvancedUserInterface, Serializable
         if (is_string($status)) {
             $status = Vocabulary::findTerm('core.security.user.status', $status);
         }
-        if (!$status instanceof Term) {
+        if (!$status instanceof Term || $status->concept()->concept() !== 'core.security.user.status') {
             return new ArrayCollection();
         }
         $status = $status->name();
-        if ($status === 'disabled') {
-            return ORM::findBy(self::class, ['enabled' => false, 'activated' => true]);
-        }
-        if ($status === 'expired') {
-            // TODO What about past expiry but not expired???
-            return ORM::findBy(self::class, ['expired' => true]);
-        }
-        if ($status === 'locked') {
-            return ORM::findBy(self::class, ['locked' => true]);
-        }
-        if ($status === 'enabled') {
-            // TODO What about past expiry but not expired???
-            return ORM::findBy(self::class, ['enabled' => true, 'activated' => true]);
-        }
-        if ($status === 'verified') {
-            return ORM::findBy(self::class, ['verified' => true, 'activated' => false]);
-        }
-        if ($status === 'registered') {
-            return ORM::findBy(self::class, ['activated' => false, 'verified' => false]);
+        switch ($status->name()) {
+            case 'disabled':
+                return ORM::findBy(self::class, ['enabled' => false, 'activated' => true]);
+            case 'expired':
+                // TODO What about past expiry but not expired???
+                return ORM::findBy(self::class, ['expired' => true]);
+            case 'locked':
+                return ORM::findBy(self::class, ['locked' => true]);
+            case 'enabled':
+                // TODO What about past expiry but not expired???
+                return ORM::findBy(self::class, ['enabled' => true, 'activated' => true]);
+            case 'verified':
+                return ORM::findBy(self::class, ['verified' => true, 'activated' => false]);
+            case 'registered':
+                return ORM::findBy(self::class, ['activated' => false, 'verified' => false]);
         }
         return new ArrayCollection();
     }
