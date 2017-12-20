@@ -29,7 +29,7 @@
 
 namespace ARK\Framework\Provider;
 
-use ARK\Security\Security;
+use ARK\Security\SecurityService;
 use ARK\Security\UserProvider;
 use ARK\Security\Validator\PasswordStrength;
 use ARK\Security\Validator\PasswordStrengthValidator;
@@ -50,7 +50,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
         // ARK Security Service
         $container['security'] = function ($app) {
-            return new Security($app);
+            return new SecurityService($app);
         };
 
         // Site specific settings

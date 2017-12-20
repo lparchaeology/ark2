@@ -38,7 +38,7 @@ use proj4php\Point as ProjPoint;
 use proj4php\Proj;
 use proj4php\Proj4php;
 
-class Spatial
+class SpatialService
 {
     protected $app;
     protected $parms = [];

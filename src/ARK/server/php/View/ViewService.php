@@ -41,7 +41,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Twig_Environment;
 
-class View
+class ViewService
 {
     protected $app;
 

@@ -31,9 +31,9 @@ namespace ARK;
 
 use ARK\Database\Database;
 use ARK\Framework\Application;
-use ARK\Security\Security;
-use ARK\Spatial\Spatial;
-use ARK\View\View;
+use ARK\Security\SecurityService;
+use ARK\Spatial\SpatialService;
+use ARK\View\ViewService;
 use ARK\Workflow\WorkflowService;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\Filesystem;
@@ -235,7 +235,7 @@ class Service
         return self::$app['database'];
     }
 
-    public static function security() : Security
+    public static function security() : SecurityService
     {
         return self::$app['security'];
     }
@@ -250,12 +250,12 @@ class Service
         return self::$app['session'];
     }
 
-    public static function spatial() : Spatial
+    public static function spatial() : SpatialService
     {
         return self::$app['spatial'];
     }
 
-    public static function view() : View
+    public static function view() : ViewService
     {
         return self::$app['view'];
     }

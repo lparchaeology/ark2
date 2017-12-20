@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Spatial Service Provider
+ * Spatial Service Provider.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -30,7 +30,7 @@
 
 namespace ARK\Framework\Provider;
 
-use ARK\Spatial\Spatial;
+use ARK\Spatial\SpatialService;
 use Brick\Geo\Doctrine\Functions\AreaFunction;
 use Brick\Geo\Doctrine\Functions\BufferFunction;
 use Brick\Geo\Doctrine\Functions\CentroidFunction;
@@ -51,24 +51,23 @@ use Brick\Geo\Doctrine\Functions\SymDifferenceFunction;
 use Brick\Geo\Doctrine\Functions\TouchesFunction;
 use Brick\Geo\Doctrine\Functions\UnionFunction;
 use Brick\Geo\Doctrine\Functions\WithinFunction;
-use Brick\Geo\Engine\GeometryEngineRegistry;
-use Brick\Geo\Doctrine\Types\GeometryType;
 use Brick\Geo\Doctrine\Types\GeometryCollectionType;
+use Brick\Geo\Doctrine\Types\GeometryType;
+use Brick\Geo\Engine\GeometryEngineRegistry;
 use Brick\Geo\Engine\GEOSEngine;
 use Brick\Geo\Engine\PDOEngine;
-use Doctrine\DBAL\Types\Type;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use proj4php\Proj4php;
 
 class SpatialServiceProvider implements ServiceProviderInterface
 {
-    public function register(Container $container)
+    public function register(Container $container) : void
     {
         if (!isset($container['ark']['spatial'])) {
             return;
         }
-        if ($container['ark']['spatial']['driver'] == 'geos') {
+        if ($container['ark']['spatial']['driver'] === 'geos') {
             GeometryEngineRegistry::set(new GEOSEngine());
         } else {
             GeometryEngineRegistry::set(new PDOEngine($container['dbs']['spatial']->getWrappedConnection()));
@@ -106,7 +105,7 @@ class SpatialServiceProvider implements ServiceProviderInterface
         };
 
         $container['spatial'] = function ($app) {
-            return new Spatial($app);
+            return new SpatialService($app);
         };
     }
 }

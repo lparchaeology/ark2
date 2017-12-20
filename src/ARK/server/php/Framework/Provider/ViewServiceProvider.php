@@ -35,7 +35,7 @@ use ARK\Service;
 use ARK\Twig\Extension\TranslateExtension;
 use ARK\View\Bus\NavAddHandler;
 use ARK\View\Bus\NavAddMessage;
-use ARK\View\View;
+use ARK\View\ViewService;
 use Knp\Snappy\Image;
 use Knp\Snappy\Pdf;
 use Pimple\Container;
@@ -54,7 +54,7 @@ class ViewServiceProvider implements ServiceProviderInterface
     {
         // ARK View Service
         $container['view'] = function ($app) {
-            return new View($app);
+            return new ViewService($app);
         };
 
         $commands = [
