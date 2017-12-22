@@ -37,6 +37,7 @@ use ARK\Service;
 use ARK\Workflow\Action;
 use ARK\Workflow\Permission;
 use ARK\Workflow\Security\ActorRole;
+use ARK\Workflow\Security\ActorUser;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -62,7 +63,7 @@ class Actor implements Item
         $this->property('fullname')->setValue($fullname);
     }
 
-    public function isAgentFor(Actor $actor) : bool
+    public function isAgentFor(self $actor) : bool
     {
         return $this->agencies()->contains($actor);
     }
@@ -91,11 +92,22 @@ class Actor implements Item
     public function roles() : Collection
     {
         $roles = ORM::findBy(ActorRole::class, ['actor' => $this->id(), 'enabled' => true]);
-        // Check for expired
         $enabled = new ArrayCollection();
         foreach ($roles as $role) {
             if ($role->isEnabled()) {
                 $enabled->add($role);
+            }
+        }
+        return $enabled;
+    }
+
+    public function users() : Collection
+    {
+        $aus = ORM::findBy(ActorUser::class, ['actor' => $this->id(), 'enabled' => true]);
+        $enabled = new ArrayCollection();
+        foreach ($aus as $au) {
+            if ($au->isEnabled()) {
+                $enabled->add($au);
             }
         }
         return $enabled;

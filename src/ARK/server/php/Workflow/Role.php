@@ -53,7 +53,7 @@ class Role
     public function __construct($role, string $level = 'ROLE_USER')
     {
         $this->role = ($role instanceof Term ? $role->name() : $role);
-        $level = $level;
+        $this->level = $level;
         $this->actors = new ArrayCollection();
         $this->permissions = new ArrayCollection();
     }
@@ -147,6 +147,11 @@ class Role
             $this->permissions->removeElement($permission);
             ORM::persist($this);
         }
+    }
+
+    public static function find(string $id) : ?self
+    {
+        return ORM::find(self::class, $id);
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void

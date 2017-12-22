@@ -62,7 +62,7 @@ class ActorUser
     public function user() : User
     {
         if ($this->userEntity === null) {
-            $this->userEntity = Service::user($this->user);
+            $this->userEntity = Service::security()->userProvider()->loadUserByUsername($this->user);
         }
         return $this->userEntity;
     }

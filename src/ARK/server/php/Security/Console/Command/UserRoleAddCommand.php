@@ -49,7 +49,7 @@ class UserRoleAddCommand extends AbstractCommand
     protected function doExecute() : void
     {
         $username = $this->input->getArgument('username');
-        $user = Service::security()->userProvider()->loadUserByUsername($username);
+        $user = Service::security()->user($username);
         if ($user) {
             $roles = [];
             foreach (ORM::findAll(Role::class) as $role) {
@@ -59,7 +59,7 @@ class UserRoleAddCommand extends AbstractCommand
             $role = $roles[$role];
             $actor = ORM::find(Actor::class, $user->id());
             $actorRole = Service::security()->createActorRole($actor, $role);
-            ORM::flush($actorRole);
+            ORM::flush();
             $this->write('SUCCESS: User role added');
         } else {
             $this->write('FAILURE: User does not exist!');

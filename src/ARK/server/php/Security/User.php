@@ -407,6 +407,19 @@ class User implements AdvancedUserInterface, Serializable
         $this->levels = null;
     }
 
+    public function resetLevel() : void
+    {
+        $levels = [];
+        dump($this->roles());
+        foreach ($this->roles() as $role) {
+            $levels[$role->level()] = $role->level();
+        }
+        dump($levels);
+        $this->level = $levels['ROLE_SUPER_ADMIN'] ?? $levels['ROLE_ADMIN'] ?? $levels['ROLE_USER'] ?? 'ROLE_ANON';
+        $this->levels = null;
+        dump($this->level);
+    }
+
     public function accounts() : iterable
     {
         return $this->accounts;

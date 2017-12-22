@@ -92,8 +92,11 @@ class SecurityService
         return Service::session()->get('_security.last_username');
     }
 
-    public function user()
+    public function user($username = null)
     {
+        if ($username) {
+            return $this->userProvider()->loadUserByUsername($username);
+        }
         if ($token = $this->tokenStorage()->getToken()) {
             if (!$token instanceof AnonymousToken) {
                 return $token->getUser();
@@ -248,19 +251,30 @@ class SecurityService
         $actorUser->enable();
         $actorUser->expireAt($expiry);
         ORM::persist($actorUser);
+        ORM::persist($actor);
+        $user->resetLevel();
+        ORM::persist($user);
         return $actorUser;
     }
 
     public function createActorRole(Actor $actor, Role $role = null, Actor $agentFor = null, \DateTime $expiry = null) : ActorRole
     {
         if (!$role) {
-            $role = ORM::find(Role::class, $this->options['default_role']);
+            $role = Role::find($this->options['default_role']);
         }
         $actorRole = new ActorRole($actor, $role, $agentFor);
         // TODO Always enable for now, need to think if any reason why you wouldn't?
         $actorRole->enable();
         $actorRole->expireAt($expiry);
         ORM::persist($actorRole);
+        ORM::persist($actor);
+        dump($actor->roles());
+        foreach ($actor->users() as $user) {
+            dump($user->user());
+            $user->user()->resetLevel();
+            dump($user->user());
+            ORM::persist($user->user());
+        }
         return $actorRole;
     }
 
@@ -283,9 +297,8 @@ class SecurityService
     {
         $aus = ORM::findBy(ActorUser::class, ['user' => $user->id()]);
         ORM::remove($aus);
-        ORM::flush($aus);
         ORM::remove($user);
-        ORM::flush($user);
+        ORM::flush();
     }
 
     public function requestPassword(User $user) : void

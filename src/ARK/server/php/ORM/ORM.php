@@ -99,27 +99,43 @@ class ORM
         return self::manager($entity)->getUnitOfWork()->isEntityScheduled($entity);
     }
 
-    public static function flush($entity) : void
+    public static function flush($entity = null) : void
     {
+        // By default, flush everything
+        if ($entity === null) {
+            // TODO manage rollback on failure?
+            Service::entityManager('data')->flush();
+            Service::entityManager('spatial')->flush();
+            Service::entityManager('user')->flush();
+            Service::entityManager('core')->flush();
+            return;
+        }
+        // If an array or Collection, process each item
         if (is_array($entity) || $entity instanceof Collection) {
             foreach ($entity as $ent) {
+                // If an object, check is persisted first
                 if (is_object($ent) && !self::isScheduled($ent)) {
                     self::persist($ent);
                 }
             }
             if (isset($ent)) {
+                // Flush the object or classname
                 $em = self::manager($ent);
                 $em->flush();
+                // If a data object or class, flush the spatial index as well
                 if ($em->name() === 'data') {
                     self::manager('spatial')->flush();
                 }
             }
         } else {
+            // If an object, check is persisted first
             if (is_object($entity) && !self::isScheduled($entity)) {
                 self::persist($entity);
             }
+            // Flush the object or classname
             $em = self::manager($entity);
             $em->flush();
+            // If a data object or class, flush the spatial index as well
             if ($em->name() === 'data') {
                 self::manager('spatial')->flush();
             }
