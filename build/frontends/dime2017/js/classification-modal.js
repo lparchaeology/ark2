@@ -9,7 +9,6 @@ var initTimeline = function () {
     // this script is initiated on the response from that
     for (var period_id in window.periodvocabulary) {
         var period = window.periodvocabulary[period_id];
-
         // get the end - or the current date
         try {
             if (isNaN(period.parameters.year_end.value)) {
@@ -20,7 +19,7 @@ var initTimeline = function () {
             end = new Date().getFullYear();
         }
 
-        // get the start - or 10,000BC- the begining of archaeology ;-)
+        // get the start - or 10,000BC- the beginning of archaeology ;-)
         try {
             if (isNaN(period.parameters.year_start.value)) {
                 throw 'year start is NaN';
@@ -39,7 +38,6 @@ var initTimeline = function () {
             end: vis.moment(end, "Y").endOf("year"),
         });
     }
-
 
     // order by length - so longer periods go at the top
     function customOrder(a, b) {
@@ -96,12 +94,23 @@ var initTimeline = function () {
         },
     };
 
+    var getYearsFromTarget = function(target){
+        if(target.parameters.hasOwnProperty("period")){
+            return {
+                "start": window.periodvocabulary[target.parameters.period.value].parameters.year_start.value,
+                "end": window.periodvocabulary[target.parameters.period.value].parameters.year_end.value
+            };
+
+        }
+        return { "start": -10000, "end": new Date().getFullYear()};
+    }
+
     //this adds start and end lines to the timeline
-    var updateTimeline = function (target) {
+    var updateTimelineToPeriod = function (target) {
+
         // if there is a target use that
-        console.log({ "target": target });
         if (target !== 'undefined' && target !== null) {
-            if (typeof window.subtypevocabulary[target].parameters !== 'undefined') {
+            if (typeof target.parameters !== 'undefined') {
                 try {
                     var target_years = getYearsFromTarget(target);
                     console.log(target_years);
@@ -211,38 +220,47 @@ var initTimeline = function () {
             var target = $(this).val();
             level1.empty();
             level2.empty();
-            for (var subtype in window.subtypevocabulary) {
-                if (target === subtype.split('.')[0] && subtype.split('.').length === 2) {
-                    $(window.subtypevocabulary[subtype].optionelement).clone().appendTo(level1);
-                }
+
+            subtypevocabulary = window.typevocabulary[target].taxonomy;
+
+            for (var term in subtypevocabulary) {
+                var subtype = subtypevocabulary[term]['name'];
+                $('#' + window.subtype_id + ' option[value="' + subtype + '"]').clone().appendTo('#find_subtype_level1');
             }
+
+            // set the main page selcet, and activate the select2
             $('#find_class_term').val(target);
             $('#find_class_term').select2(select2Options);
             $('#find_class_term').trigger('select2:select');
+
+            // # init the level1 classi as Unknowwn
             level1.val(target.split('.')[0] + '.unknown');
             level1.trigger('select2:select');
+
+            updateTimelineToPeriod(target);
         });
 
         // Change the level2 Klassification if the Klassification1 changes
         level1.on("select2:select select2:unselecting", function () {
+            var parentclass = $('#'+window.type_id).val();
             var target = $(this).val();
-            updateTimeline(target);
             level2.empty();
-            for (var subtype in window.subtypevocabulary) {
-                if (target !== null) {
-                    if (target.split('.')[0] === subtype.split('.')[0]
-                        && target.split('.')[1] === subtype.split('.')[1]
-                        && subtype.split('.').length === 3) {
-                        $(window.subtypevocabulary[subtype].optionelement).clone().appendTo(level2);
-                    }
-                }
+            parenttaxonomy = window.typevocabulary[parentclass].taxonomy;
+            level1klassification = parenttaxonomy[target];
+            for (descendent in level1klassification['taxonomy']){
+                level2option =  level1klassification['taxonomy'][descendent];
+                $('#' + window.subtype_id + ' option[value="' + level2option['name'] + '"]').clone().appendTo(level2);
             }
+            updateTimelineToPeriod(level1klassification);
         });
 
         // update the timeline if the Klassification2 changes
         level2.on("select2:select select2:unselecting", function () {
             var target = $(this).val();
-            updateTimeline(target);
+            var parentclass = $('#'+window.type_id).val();
+            var parentsubclass = $('#'+window.subtype_id).val();
+            parenttaxonomy = window.typevocabulary[parentclass].taxonomy[parentsubclass].taxonomy;
+            updateTimelineToPeriod(parenttaxonomy[target]);
         });
 
         // set the initial values and set it up

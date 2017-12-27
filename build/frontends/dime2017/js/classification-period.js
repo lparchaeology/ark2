@@ -16,6 +16,8 @@ var initPeriod = function () {
             initTimeline();
         });
 
+        /*
+
     var getPeriodFromYear = function (year) {
 
         // Null period covers all potential dates
@@ -192,4 +194,5 @@ var initPeriod = function () {
     });
 
     $('.dating-button').removeClass('inactive');
+    */
 }
