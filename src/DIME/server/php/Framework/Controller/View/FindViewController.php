@@ -61,12 +61,18 @@ class FindViewController extends DimeFormController
 
     public function processForm(Request $request, Form $form) : void
     {
+        dump('processForm');
+        dump($request);
+        dump($form);
         $clicked = $form->getClickedButton()->getName();
+        dump($clicked);
         $data = $form->getData();
+        dump($data);
         $find = $this->item($data);
         $parameters['id'] = $find->id();
         $request->attributes->set('parameters', $parameters);
         if ($clicked === 'clone') {
+            dump('clone');
             $request->attributes->set('redirect', 'dime.finds.add');
             return;
         }

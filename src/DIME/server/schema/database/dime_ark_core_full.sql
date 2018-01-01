@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 20, 2017 at 02:52 PM
+-- Generation Time: Jan 01, 2018 at 08:26 PM
 -- Server version: 10.2.11-MariaDB
--- PHP Version: 7.1.12
+-- PHP Version: 7.2.0
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -1001,7 +1001,7 @@ CREATE TABLE `ark_model_subschema` (
 
 CREATE TABLE `ark_route` (
   `route` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `path` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `collection` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'view',
   `can_get` tinyint(1) NOT NULL DEFAULT 1,
   `can_post` tinyint(1) NOT NULL DEFAULT 0,
   `page` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -1013,30 +1013,44 @@ CREATE TABLE `ark_route` (
 -- Dumping data for table `ark_route`
 --
 
-INSERT INTO `ark_route` (`route`, `path`, `can_get`, `can_post`, `page`, `redirect`, `controller`) VALUES
-('dime.about', '/about', 1, 0, 'dime_page_static', NULL, 'DIME\\Controller\\View\\PageViewController'),
-('dime.admin', '/admin', 1, 0, 'dime_page_admin', NULL, 'DIME\\Controller\\View\\AdminHomeController'),
-('dime.admin.users', '/admin/users', 1, 1, 'dime_page_admin_user', NULL, 'DIME\\Controller\\View\\AdminUserController'),
-('dime.admin.users.register', '/admin/users/register', 1, 1, 'dime_page_admin_register', 'dime.admin.users', 'DIME\\Contoller\\UserRegisterController'),
-('dime.detector', '/detector', 1, 0, 'dime_page_static', NULL, 'DIME\\Controller\\View\\PageViewController'),
-('dime.finds.add', '/finds/add', 1, 1, 'dime_page_find_add', 'dime.finds.view', 'DIME\\Controller\\View\\FindAddController'),
-('dime.finds.list', '/finds', 1, 0, 'dime_page_find_list', NULL, 'DIME\\Controller\\View\\FindListController'),
-('dime.finds.view', '/finds/{find}', 1, 1, 'dime_page_find', NULL, 'DIME\\Controller\\View\\FindViewController'),
-('dime.front', '/', 1, 0, 'dime_page_front', NULL, 'DIME\\Controller\\View\\FrontPageController'),
-('dime.home', '/home', 1, 0, 'dime_page_home', NULL, 'DIME\\Controller\\View\\HomePageController'),
-('dime.home.finds', '/home/finds', 1, 1, 'dime_page_home_find_list', NULL, 'DIME\\Controller\\View\\FindListController'),
-('dime.home.messages', '/home/messages', 1, 0, 'dime_page_message', NULL, 'DIME\\Controller\\View\\MessagePageController'),
-('dime.home.profile', '/home/profile', 1, 1, 'dime_page_user_profile', NULL, 'DIME\\Controller\\View\\UserProfileController'),
-('dime.news', '/news', 1, 0, 'dime_page_news', NULL, 'DIME\\Controller\\View\\NewsPageController'),
-('dime.profiles.list', '/profiles', 1, 0, 'dime_page_profile_list', NULL, 'DIME\\Controller\\View\\ProfileListController'),
-('dime.profiles.view', '/profiles/{id}', 1, 0, 'dime_page_profile', NULL, 'DIME\\Controller\\View\\ProfileViewController'),
-('dime.research', '/research', 1, 0, 'dime_page_static', NULL, 'DIME\\Controller\\View\\PageViewController'),
-('dime.user.confirm', '/users/confirm', 1, 0, 'core_page_user_confirm', NULL, 'DIME\\Controller\\View\\UserConfirmController'),
-('dime.user.login', '/users/login', 1, 0, 'core_page_user_login', NULL, 'DIME\\Controller\\View\\UserLoginController'),
-('dime.user.register', '/users/register', 1, 1, 'dime_page_user_register', 'dime.front', 'DIME\\Contoller\\UserRegisterController'),
-('dime.user.reset', '/users/reset', 1, 1, 'core_page_user_reset', NULL, 'DIME\\Controller\\View\\UserResetController'),
-('user.check', '/users/check', 1, 1, NULL, NULL, ''),
-('user.logout', '/users/logout', 1, 1, NULL, NULL, '');
+INSERT INTO `ark_route` (`route`, `collection`, `can_get`, `can_post`, `page`, `redirect`, `controller`) VALUES
+('core.api.image', 'api', 1, 0, NULL, NULL, 'ARK\\Framework\\ImageController'),
+('dime.about', 'view', 1, 0, 'dime_page_static', NULL, 'DIME\\Controller\\View\\PageViewController'),
+('dime.admin', 'view', 1, 0, 'dime_page_admin', NULL, 'DIME\\Controller\\View\\AdminHomeController'),
+('dime.admin.users', 'view', 1, 1, 'dime_page_admin_user', NULL, 'DIME\\Controller\\View\\AdminUserController'),
+('dime.admin.users.register', 'view', 1, 1, 'dime_page_admin_register', 'dime.admin.users', 'DIME\\Contoller\\UserRegisterController'),
+('dime.api.actor.item', 'api', 1, 1, NULL, NULL, 'DIME\\Framework\\Controller\\Api\\ActorController'),
+('dime.api.actor.role.add', 'api', 0, 1, NULL, NULL, 'DIME\\Framework\\Controller\\Api\\ActorRoleAddController'),
+('dime.api.actors.get', 'api', 1, 0, NULL, NULL, 'DIME\\Framework\\Controller\\Api\\ActorGetController'),
+('dime.api.events.get', 'api', 1, 0, NULL, NULL, 'DIME\\Framework\\Controller\\Api\\EventGetController'),
+('dime.api.file.add', 'api', 0, 1, NULL, NULL, 'DIME\\Framework\\Controller\\Api\\FilePostController'),
+('dime.api.file.get', 'api', 1, 0, NULL, NULL, 'DIME\\Framework\\Controller\\Api\\FileGetController'),
+('dime.api.geo.choropleth', 'api', 0, 1, NULL, NULL, 'DIME\\Framework\\Controller\\Api\\ChoroplethController'),
+('dime.api.geo.find', 'api', 0, 1, NULL, NULL, 'DIME\\Framework\\Controller\\Api\\GeoFindController'),
+('dime.api.message.read', 'api', 0, 1, NULL, NULL, 'DIME\\Framework\\Controller\\Api\\MessageReadController'),
+('dime.api.messages.get', 'api', 1, 0, NULL, NULL, 'DIME\\Framework\\Controller\\Api\\MessageGetController'),
+('dime.api.translation.message', 'api', 1, 1, NULL, NULL, 'DIME\\Framework\\Controller\\Api\\TranslationMessageController'),
+('dime.api.user.password.set', 'api', 0, 1, NULL, NULL, 'DIME\\Framework\\Controller\\Api\\UserPasswordSetController'),
+('dime.api.vocabulary', 'api', 0, 1, NULL, NULL, 'DIME\\Framework\\Controller\\Api\\VocabularyController'),
+('dime.detector', 'view', 1, 0, 'dime_page_static', NULL, 'DIME\\Controller\\View\\PageViewController'),
+('dime.finds.add', 'view', 1, 1, 'dime_page_find_add', 'dime.finds.view', 'DIME\\Controller\\View\\FindAddController'),
+('dime.finds.list', 'view', 1, 0, 'dime_page_find_list', NULL, 'DIME\\Controller\\View\\FindListController'),
+('dime.finds.view', 'view', 1, 1, 'dime_page_find', NULL, 'DIME\\Controller\\View\\FindViewController'),
+('dime.front', 'view', 1, 0, 'dime_page_front', NULL, 'DIME\\Controller\\View\\FrontPageController'),
+('dime.home', 'view', 1, 0, 'dime_page_home', NULL, 'DIME\\Controller\\View\\HomePageController'),
+('dime.home.finds', 'view', 1, 1, 'dime_page_home_find_list', NULL, 'DIME\\Controller\\View\\FindListController'),
+('dime.home.messages', 'view', 1, 0, 'dime_page_message', NULL, 'DIME\\Controller\\View\\MessagePageController'),
+('dime.home.profile', 'view', 1, 1, 'dime_page_user_profile', NULL, 'DIME\\Controller\\View\\UserProfileController'),
+('dime.news', 'view', 1, 0, 'dime_page_news', NULL, 'DIME\\Controller\\View\\NewsPageController'),
+('dime.profiles.list', 'view', 1, 0, 'dime_page_profile_list', NULL, 'DIME\\Controller\\View\\ProfileListController'),
+('dime.profiles.view', 'view', 1, 0, 'dime_page_profile', NULL, 'DIME\\Controller\\View\\ProfileViewController'),
+('dime.research', 'view', 1, 0, 'dime_page_static', NULL, 'DIME\\Controller\\View\\PageViewController'),
+('dime.user.confirm', 'view', 1, 0, 'core_page_user_confirm', NULL, 'DIME\\Controller\\View\\UserConfirmController'),
+('dime.user.login', 'view', 1, 0, 'core_page_user_login', NULL, 'DIME\\Controller\\View\\UserLoginController'),
+('dime.user.register', 'view', 1, 1, 'dime_page_user_register', 'dime.front', 'DIME\\Contoller\\UserRegisterController'),
+('dime.user.reset', 'view', 1, 1, 'core_page_user_reset', NULL, 'DIME\\Controller\\View\\UserResetController'),
+('user.check', 'security', 1, 1, NULL, NULL, ''),
+('user.logout', 'security', 1, 1, NULL, NULL, '');
 
 -- --------------------------------------------------------
 
@@ -1048,6 +1062,70 @@ CREATE TABLE `ark_route_parameter` (
   `route` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `parameter` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_route_path`
+--
+
+CREATE TABLE `ark_route_path` (
+  `route` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `language` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'en',
+  `path` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ark_route_path`
+--
+
+INSERT INTO `ark_route_path` (`route`, `language`, `path`) VALUES
+('dime.about', 'da', '/om'),
+('dime.about', 'en', '/about'),
+('dime.admin', 'da', '/admin'),
+('dime.admin', 'en', '/admin'),
+('dime.admin.users', 'da', '/admin/brugere'),
+('dime.admin.users', 'en', '/admin/users'),
+('dime.admin.users.register', 'da', '/admin/brugere/register'),
+('dime.admin.users.register', 'en', '/admin/users/register'),
+('dime.detector', 'da', '/detektering'),
+('dime.detector', 'en', '/detector'),
+('dime.finds.add', 'da', '/fund/add'),
+('dime.finds.add', 'en', '/finds/add'),
+('dime.finds.list', 'da', '/fund'),
+('dime.finds.list', 'en', '/finds'),
+('dime.finds.view', 'da', '/fund/{find}'),
+('dime.finds.view', 'en', '/finds/{find}'),
+('dime.front', 'da', '/'),
+('dime.front', 'en', '/'),
+('dime.home', 'da', '/hjem'),
+('dime.home', 'en', '/home'),
+('dime.home.finds', 'da', '/hjem/fund'),
+('dime.home.finds', 'en', '/home/finds'),
+('dime.home.messages', 'da', '/hjem/beskeder'),
+('dime.home.messages', 'en', '/home/messages'),
+('dime.home.profile', 'da', '/hjem/brugerprofil'),
+('dime.home.profile', 'en', '/home/profile'),
+('dime.news', 'da', '/nyheder'),
+('dime.news', 'en', '/news'),
+('dime.profiles.list', 'da', '/brugerprofiler'),
+('dime.profiles.list', 'en', '/profiles'),
+('dime.profiles.view', 'da', '/brugerprofiler/{id}'),
+('dime.profiles.view', 'en', '/profiles/{id}'),
+('dime.research', 'da', '/forskning'),
+('dime.research', 'en', '/research'),
+('dime.user.confirm', 'da', '/brugere/confirm'),
+('dime.user.confirm', 'en', '/users/confirm'),
+('dime.user.login', 'da', '/brugere/login'),
+('dime.user.login', 'en', '/users/login'),
+('dime.user.register', 'da', '/brugere/register'),
+('dime.user.register', 'en', '/users/register'),
+('dime.user.reset', 'da', '/brugere/reset'),
+('dime.user.reset', 'en', '/users/reset'),
+('user.check', 'da', '/brugere/check'),
+('user.check', 'en', '/users/check'),
+('user.logout', 'da', '/brugere/logout'),
+('user.logout', 'en', '/users/logout');
 
 -- --------------------------------------------------------
 
@@ -10055,6 +10133,13 @@ ALTER TABLE `ark_route_parameter`
   ADD PRIMARY KEY (`route`,`parameter`);
 
 --
+-- Indexes for table `ark_route_path`
+--
+ALTER TABLE `ark_route_path`
+  ADD PRIMARY KEY (`route`,`language`),
+  ADD KEY `language_foreign` (`language`) USING BTREE;
+
+--
 -- Indexes for table `ark_schema_item`
 --
 ALTER TABLE `ark_schema_item`
@@ -10572,6 +10657,13 @@ ALTER TABLE `ark_route`
 --
 ALTER TABLE `ark_route_parameter`
   ADD CONSTRAINT `route_constraint` FOREIGN KEY (`route`) REFERENCES `ark_route` (`route`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `ark_route_path`
+--
+ALTER TABLE `ark_route_path`
+  ADD CONSTRAINT `ark_route_path_language_constraint` FOREIGN KEY (`language`) REFERENCES `ark_translation_language` (`language`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `ark_route_path_route_constraint` FOREIGN KEY (`route`) REFERENCES `ark_route` (`route`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_schema_item`
