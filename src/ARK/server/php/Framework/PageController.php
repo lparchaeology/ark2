@@ -52,18 +52,12 @@ abstract class PageController extends Controller
             throw new AccessDeniedException('core.error.access.denied');
         }
         $forms = $page->buildForms($view);
-        dump($forms);
         if ($forms && $request->getMethod() === 'POST') {
-            dump($request);
             $parms = $request->request->all();
             $parms = $this->fixStaticFields($parms);
             $request->request->replace($parms);
-            dump($request);
             try {
                 $posted = $this->postedForm($request, $forms);
-                dump('Posted');
-                dump($posted);
-                dump($request);
                 if ($posted !== null && $posted->isValid()) {
                     $this->processForm($request, $posted);
                     if ($file = $request->attributes->get('_file')) {
@@ -74,8 +68,6 @@ abstract class PageController extends Controller
                     return Service::redirectPath($redirect, $parameters);
                 }
                 Service::view()->addErrorFlash('core.error.form.invalid');
-                dump($posted);
-                dump($posted->getErrors(true));
                 foreach ($posted->getErrors(true) as $error) {
                     $cause = $error->getCause();
                     $msg = $error->getMessage();

@@ -31,26 +31,43 @@ namespace ARK\Framework\Routing;
 
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\Service;
 use ARK\View\Page;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class Route
 {
     protected $route = '';
-    protected $path = '';
+    protected $collection = '';
     protected $get = false;
     protected $post = false;
     protected $page;
     protected $redirect;
     protected $controller;
+    protected $paths;
+    protected $pathIndex;
+
+    public function __construct()
+    {
+        $this->paths = new ArrayCollection();
+    }
 
     public function id() : string
     {
         return $this->route;
     }
 
-    public function pattern() : string
+    public function pattern($language = null) : string
     {
-        return $this->path;
+        if ($this->pathIndex === null) {
+            foreach ($this->paths as $path) {
+                $this->pathIndex[$path->language()->code()] = $path->pattern();
+            }
+        }
+        if ($language instanceof Language) {
+            return $this->pathIndex[$language->language];
+        }
+        return $this->pathIndex[$language] ?? $this->pathIndex[Service::locale()] ?? $this->paths[0]->path() ?? '';
     }
 
     public function canGet() : bool
@@ -78,7 +95,7 @@ class Route
         return $this->page;
     }
 
-    public function redirect() : ?Route
+    public function redirect() : ?self
     {
         return $this->redirect;
     }
@@ -98,7 +115,7 @@ class Route
         $builder->addStringKey('route', 30);
 
         // Fields
-        $builder->addStringField('path', 10);
+        $builder->addStringField('collection', 30);
         $builder->addMappedField('can_get', 'get', 'boolean');
         $builder->addMappedField('can_post', 'post', 'boolean');
         $builder->addStringField('controller', 100);
@@ -106,5 +123,6 @@ class Route
         // Associations
         $builder->addManyToOneField('page', Page::class, 'page', 'element');
         $builder->addManyToOneField('redirect', self::class, 'redirect', 'route');
+        $builder->addOneToManyField('paths', Path::class, 'route');
     }
 }

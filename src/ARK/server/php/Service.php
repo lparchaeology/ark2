@@ -115,7 +115,7 @@ class Service
     {
         $parameters['server'] = $server;
         $parameters['image'] = $image;
-        return self::path('img', $parameters);
+        return self::path('core.api.image', $parameters);
     }
 
     public static function forms() : FormFactory

@@ -29,6 +29,7 @@
 
 namespace ARK\Framework\Provider;
 
+use ARK\Framework\Routing\ControllerProvider;
 use ARK\Framework\Routing\SilexRouter;
 use ARK\Service;
 use Exception;
@@ -61,9 +62,7 @@ class RoutingServiceProvider extends SilexRoutingServiceProvider
             return $chain;
         };
 
-        foreach ($container['ark']['routes'] as $path => $provider) {
-            $container->mount($path, new $provider());
-        }
+        $container->mount('/', new ControllerProvider());
 
         // TODO Proper error handling
         $container->error(function (Exception $e, Request $request, $code) use ($container) {

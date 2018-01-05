@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.6
+-- version 4.7.7
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 01, 2018 at 08:26 PM
--- Server version: 10.2.11-MariaDB
--- PHP Version: 7.2.0
+-- Generation Time: Jan 05, 2018 at 01:23 AM
+-- Server version: 10.2.12-MariaDB
+-- PHP Version: 7.1.12
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -1014,11 +1014,12 @@ CREATE TABLE `ark_route` (
 --
 
 INSERT INTO `ark_route` (`route`, `collection`, `can_get`, `can_post`, `page`, `redirect`, `controller`) VALUES
+('core.api.file', 'api', 1, 1, NULL, NULL, 'DIME\\Framework\\Controller\\API\\FileGetController'),
 ('core.api.image', 'api', 1, 0, NULL, NULL, 'ARK\\Framework\\ImageController'),
-('dime.about', 'view', 1, 0, 'dime_page_static', NULL, 'DIME\\Controller\\View\\PageViewController'),
-('dime.admin', 'view', 1, 0, 'dime_page_admin', NULL, 'DIME\\Controller\\View\\AdminHomeController'),
-('dime.admin.users', 'view', 1, 1, 'dime_page_admin_user', NULL, 'DIME\\Controller\\View\\AdminUserController'),
-('dime.admin.users.register', 'view', 1, 1, 'dime_page_admin_register', 'dime.admin.users', 'DIME\\Contoller\\UserRegisterController'),
+('dime.about', 'view', 1, 0, 'dime_page_static', NULL, 'DIME\\Framework\\Controller\\View\\PageViewController'),
+('dime.admin', 'view', 1, 0, 'dime_page_admin', NULL, 'DIME\\Framework\\Controller\\View\\AdminHomeController'),
+('dime.admin.users', 'view', 1, 1, 'dime_page_admin_user', NULL, 'DIME\\Framework\\Controller\\View\\AdminUserController'),
+('dime.admin.users.register', 'view', 1, 1, 'dime_page_admin_register', 'dime.admin.users', 'DIME\\Framework\\Controller\\View\\UserRegisterController'),
 ('dime.api.actor.item', 'api', 1, 1, NULL, NULL, 'DIME\\Framework\\Controller\\Api\\ActorController'),
 ('dime.api.actor.role.add', 'api', 0, 1, NULL, NULL, 'DIME\\Framework\\Controller\\Api\\ActorRoleAddController'),
 ('dime.api.actors.get', 'api', 1, 0, NULL, NULL, 'DIME\\Framework\\Controller\\Api\\ActorGetController'),
@@ -1032,23 +1033,23 @@ INSERT INTO `ark_route` (`route`, `collection`, `can_get`, `can_post`, `page`, `
 ('dime.api.translation.message', 'api', 1, 1, NULL, NULL, 'DIME\\Framework\\Controller\\Api\\TranslationMessageController'),
 ('dime.api.user.password.set', 'api', 0, 1, NULL, NULL, 'DIME\\Framework\\Controller\\Api\\UserPasswordSetController'),
 ('dime.api.vocabulary', 'api', 0, 1, NULL, NULL, 'DIME\\Framework\\Controller\\Api\\VocabularyController'),
-('dime.detector', 'view', 1, 0, 'dime_page_static', NULL, 'DIME\\Controller\\View\\PageViewController'),
-('dime.finds.add', 'view', 1, 1, 'dime_page_find_add', 'dime.finds.view', 'DIME\\Controller\\View\\FindAddController'),
-('dime.finds.list', 'view', 1, 0, 'dime_page_find_list', NULL, 'DIME\\Controller\\View\\FindListController'),
-('dime.finds.view', 'view', 1, 1, 'dime_page_find', NULL, 'DIME\\Controller\\View\\FindViewController'),
-('dime.front', 'view', 1, 0, 'dime_page_front', NULL, 'DIME\\Controller\\View\\FrontPageController'),
-('dime.home', 'view', 1, 0, 'dime_page_home', NULL, 'DIME\\Controller\\View\\HomePageController'),
-('dime.home.finds', 'view', 1, 1, 'dime_page_home_find_list', NULL, 'DIME\\Controller\\View\\FindListController'),
-('dime.home.messages', 'view', 1, 0, 'dime_page_message', NULL, 'DIME\\Controller\\View\\MessagePageController'),
-('dime.home.profile', 'view', 1, 1, 'dime_page_user_profile', NULL, 'DIME\\Controller\\View\\UserProfileController'),
-('dime.news', 'view', 1, 0, 'dime_page_news', NULL, 'DIME\\Controller\\View\\NewsPageController'),
-('dime.profiles.list', 'view', 1, 0, 'dime_page_profile_list', NULL, 'DIME\\Controller\\View\\ProfileListController'),
-('dime.profiles.view', 'view', 1, 0, 'dime_page_profile', NULL, 'DIME\\Controller\\View\\ProfileViewController'),
-('dime.research', 'view', 1, 0, 'dime_page_static', NULL, 'DIME\\Controller\\View\\PageViewController'),
-('dime.user.confirm', 'view', 1, 0, 'core_page_user_confirm', NULL, 'DIME\\Controller\\View\\UserConfirmController'),
-('dime.user.login', 'view', 1, 0, 'core_page_user_login', NULL, 'DIME\\Controller\\View\\UserLoginController'),
-('dime.user.register', 'view', 1, 1, 'dime_page_user_register', 'dime.front', 'DIME\\Contoller\\UserRegisterController'),
-('dime.user.reset', 'view', 1, 1, 'core_page_user_reset', NULL, 'DIME\\Controller\\View\\UserResetController'),
+('dime.detector', 'view', 1, 0, 'dime_page_static', NULL, 'DIME\\Framework\\Controller\\View\\PageViewController'),
+('dime.finds.add', 'view', 1, 1, 'dime_page_find_add', 'dime.finds.view', 'DIME\\Framework\\Controller\\View\\FindAddController'),
+('dime.finds.list', 'view', 1, 0, 'dime_page_find_list', NULL, 'DIME\\Framework\\Controller\\View\\FindListController'),
+('dime.finds.view', 'view', 1, 1, 'dime_page_find', NULL, 'DIME\\Framework\\Controller\\View\\FindViewController'),
+('dime.front', 'view', 1, 0, 'dime_page_front', NULL, 'DIME\\Framework\\Controller\\View\\FrontPageController'),
+('dime.home', 'view', 1, 0, 'dime_page_home', NULL, 'DIME\\Framework\\Controller\\View\\HomePageController'),
+('dime.home.finds', 'view', 1, 1, 'dime_page_home_find_list', NULL, 'DIME\\Framework\\Controller\\View\\FindListController'),
+('dime.home.messages', 'view', 1, 0, 'dime_page_message', NULL, 'DIME\\Framework\\Controller\\View\\MessagePageController'),
+('dime.home.profile', 'view', 1, 1, 'dime_page_user_profile', NULL, 'DIME\\Framework\\Controller\\View\\UserProfileController'),
+('dime.news', 'view', 1, 0, 'dime_page_news', NULL, 'DIME\\Framework\\Controller\\View\\NewsPageController'),
+('dime.profiles.list', 'view', 1, 0, 'dime_page_profile_list', NULL, 'DIME\\Framework\\Controller\\View\\ProfileListController'),
+('dime.profiles.view', 'view', 1, 0, 'dime_page_profile', NULL, 'DIME\\Framework\\Controller\\View\\ProfileViewController'),
+('dime.research', 'view', 1, 0, 'dime_page_static', NULL, 'DIME\\Framework\\Controller\\View\\PageViewController'),
+('dime.user.confirm', 'view', 1, 0, 'core_page_user_confirm', NULL, 'DIME\\Framework\\Controller\\View\\UserConfirmController'),
+('dime.user.login', 'view', 1, 0, 'core_page_user_login', NULL, 'DIME\\Framework\\Controller\\View\\UserLoginController'),
+('dime.user.register', 'view', 1, 1, 'dime_page_user_register', 'dime.front', 'DIME\\Framework\\Controller\\View\\UserRegisterController'),
+('dime.user.reset', 'view', 1, 1, 'core_page_user_reset', NULL, 'DIME\\Framework\\Controller\\View\\UserResetController'),
 ('user.check', 'security', 1, 1, NULL, NULL, ''),
 ('user.logout', 'security', 1, 1, NULL, NULL, '');
 
@@ -1072,7 +1073,7 @@ CREATE TABLE `ark_route_parameter` (
 CREATE TABLE `ark_route_path` (
   `route` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `language` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'en',
-  `path` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
+  `path` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -1080,6 +1081,10 @@ CREATE TABLE `ark_route_path` (
 --
 
 INSERT INTO `ark_route_path` (`route`, `language`, `path`) VALUES
+('core.api.file', 'da', '/filer/{id}'),
+('core.api.file', 'en', '/files/{id}'),
+('core.api.image', 'da', '/img/{server}/{image}'),
+('core.api.image', 'en', '/img/{server}/{image}'),
 ('dime.about', 'da', '/om'),
 ('dime.about', 'en', '/about'),
 ('dime.admin', 'da', '/admin'),
@@ -1088,14 +1093,27 @@ INSERT INTO `ark_route_path` (`route`, `language`, `path`) VALUES
 ('dime.admin.users', 'en', '/admin/users'),
 ('dime.admin.users.register', 'da', '/admin/brugere/register'),
 ('dime.admin.users.register', 'en', '/admin/users/register'),
+('dime.api.actor.item', 'da', '/api/internal/actors/{id}'),
+('dime.api.actor.role.add', 'da', '/api/internal/actors/{id}/roles/add'),
+('dime.api.actors.get', 'da', '/api/v2/actors/{actor}'),
+('dime.api.events.get', 'da', '/api/v2/events/{event}'),
+('dime.api.file.add', 'da', '/api/internal/file'),
+('dime.api.file.get', 'da', '/api/internal/file/{id}'),
+('dime.api.geo.choropleth', 'da', '/api/geo/choropleth'),
+('dime.api.geo.find', 'da', '/api/geo/find'),
+('dime.api.message.read', 'da', '/api/internal/message/read'),
+('dime.api.messages.get', 'da', '/api/v2/messages/{message}'),
+('dime.api.translation.message', 'da', '/api/internal/translations/{keyword}/languages/{language}'),
+('dime.api.user.password.set', 'da', '/api/internal/users/{id}/password/set'),
+('dime.api.vocabulary', 'da', '/api/internal/vocabulary'),
 ('dime.detector', 'da', '/detektering'),
 ('dime.detector', 'en', '/detector'),
 ('dime.finds.add', 'da', '/fund/add'),
 ('dime.finds.add', 'en', '/finds/add'),
 ('dime.finds.list', 'da', '/fund'),
 ('dime.finds.list', 'en', '/finds'),
-('dime.finds.view', 'da', '/fund/{find}'),
-('dime.finds.view', 'en', '/finds/{find}'),
+('dime.finds.view', 'da', '/fund/{id}'),
+('dime.finds.view', 'en', '/finds/{id}'),
 ('dime.front', 'da', '/'),
 ('dime.front', 'en', '/'),
 ('dime.home', 'da', '/hjem'),
