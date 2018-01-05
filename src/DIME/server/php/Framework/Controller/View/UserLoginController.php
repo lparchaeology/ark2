@@ -34,7 +34,7 @@ use DIME\DIME;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class UserLoginController extends DimeFormController
+class UserLoginController extends DimePageController
 {
     public function __invoke(Request $request) : Response
     {

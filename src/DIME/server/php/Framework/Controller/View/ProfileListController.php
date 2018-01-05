@@ -33,7 +33,7 @@ use ARK\Actor\Person;
 use ARK\ORM\ORM;
 use Symfony\Component\HttpFoundation\Request;
 
-class ProfileListController extends DimeFormController
+class ProfileListController extends DimePageController
 {
     public function buildState(Request $request, $data) : iterable
     {

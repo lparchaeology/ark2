@@ -49,7 +49,7 @@ class TranslationServiceProvider implements ServiceProviderInterface
                 $translator->addResource('actor', $container['database'], $language);
             }
             $this->loadTranslationFiles($translator, $container['locale_fallbacks'], $container['dir.site'].'/translations');
-            $this->loadTranslationFiles($translator, $container['locale_fallbacks'], $container['dir.site'].'/translations/'.$container['ark']['web']['frontend']);
+            $this->loadTranslationFiles($translator, $container['locale_fallbacks'], $container['dir.site'].'/translations/'.$container['ark']['view']['frontend']);
             return $translator;
         });
     }

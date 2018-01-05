@@ -38,7 +38,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 
-class AdminUserController extends DimeFormController
+class AdminUserController extends DimePageController
 {
     public function buildState(Request $request, $data) : iterable
     {

@@ -46,7 +46,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 
-class FindListController extends DimeFormController
+class FindListController extends DimePageController
 {
     public function buildData(Request $request)
     {

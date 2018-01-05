@@ -53,6 +53,7 @@
         }
     },
     "view": {
+        "frontend": "dime2017",
         "renderer": {
             "pdf": "vendor/h4cc/bin/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64",
             "image": "vendor/h4cc/bin/wkhtmltoimage-amd64/bin/wkhtmltoimage-amd64"
@@ -63,17 +64,6 @@
             "verify_host": true,
             "ajax": true
         }
-    },
-    "api": {
-        "enable": true,
-        "path": "/api/v2"
-    },
-    "web": {
-        "enable": true,
-        "frontend": "dime2017"
-    },
-    "routes": {
-        "/": "DIME\\Framework\\Routing\\DimeControllerProvider"
     },
     "console": {
         "commands": [
@@ -113,77 +103,6 @@
             "user_register": true,
             "default_role": "detectorist",
             "reset_ttl": 86400
-        },
-        "routes": {
-            "admin": {
-                "route": "dime.admin",
-                "paths": {
-                    "da": "/admin",
-                    "en": "/admin"
-                }
-            },
-            "user": {
-                "paths": {
-                    "da": "/brugere",
-                    "en": "/users"
-                }
-            },
-            "target": {
-                "route": "dime.home",
-                "paths": {
-                    "da": "/hjem",
-                    "en": "/home"
-                }
-            },
-            "check": {
-                "route": "user.check",
-                "paths": {
-                    "da": "/brugere/check",
-                    "en": "/users/check"
-                }
-            },
-            "confirm": {
-                "route": "dime.user.confirm",
-                "paths": {
-                    "da": "/brugere/confirm",
-                    "en": "/users/confirm"
-                }
-            },
-            "login": {
-                "route": "dime.user.login",
-                "paths": {
-                    "da": "/brugere/login",
-                    "en": "/users/login"
-                }
-            },
-            "logout": {
-                "route": "user.logout",
-                "paths": {
-                    "da": "/brugere/logout",
-                    "en": "/users/logout"
-                }
-            },
-            "register": {
-                "route": "dime.user.register",
-                "paths": {
-                    "da": "/brugere/register",
-                    "en": "/users/register"
-                }
-            },
-            "reset": {
-                "route": "dime.user.reset",
-                "paths": {
-                    "da": "/brugere/reset",
-                    "en": "/users/reset"
-                }
-            },
-            "verify": {
-                "route": "dime.user.verify",
-                "paths": {
-                    "da": "/brugere/verify",
-                    "en": "/users/verify"
-                }
-            }
         }
     }
 }

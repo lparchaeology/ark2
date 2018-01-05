@@ -56,7 +56,7 @@ class ViewServiceProvider implements ServiceProviderInterface
         };
 
         // Enable the Assets
-        $container['path.assets'] = '/assets/'.$container['ark']['web']['frontend'];
+        $container['path.assets'] = '/assets/'.$container['ark']['view']['frontend'];
         $container->register(
             new AssetServiceProvider(),
             [
@@ -88,7 +88,7 @@ class ViewServiceProvider implements ServiceProviderInterface
             ];
         });
         $container['twig.path'] = [
-            $container['dir.site'].'/templates/'.$container['ark']['web']['frontend'],
+            $container['dir.site'].'/templates/'.$container['ark']['view']['frontend'],
         ];
         $container['twig.form.templates'] = [
             'blocks/forms.html.twig',

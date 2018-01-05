@@ -51,7 +51,7 @@ class FileServiceProvider implements ServiceProviderInterface
         $container['dir.config'] = $container['dir.site'].'/config';
         $container['dir.files'] = $container['dir.site'].$container['ark']['file']['root'];
         $container['dir.web'] = $container['dir.site'].'/public';
-        $container['dir.assets'] = $container['dir.web'].'/assets/'.$container['ark']['web']['frontend'];
+        $container['dir.assets'] = $container['dir.web'].'/assets/'.$container['ark']['view']['frontend'];
 
         $container->register(new FlysystemServiceProvider());
         $data = $container['ark']['file']['data'];

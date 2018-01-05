@@ -37,7 +37,7 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class PageViewController extends DimeFormController
+class PageViewController extends DimePageController
 {
     public function buildData(Request $request)
     {

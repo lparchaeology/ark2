@@ -2716,7 +2716,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.treasure.treasure', 'default', 'Treasure Trove', NULL),
 ('en', 'dime.user.actor.museum', 'default', 'Associated Museum', ''),
 ('en', 'dime.user.detectorist.id', 'default', 'Detectorist ID', ''),
-('en', 'dime.user.login', 'default', 'Login', NULL),
+('en', 'core.user.login', 'default', 'Login', NULL),
 ('en', 'dime.user.name', 'default', 'User Name', NULL),
 ('en', 'dime.user.password', 'default', 'Password', NULL),
 ('en', 'dime.user.password.forgot', 'default', 'Forgotten Password?', NULL),
@@ -5040,7 +5040,7 @@ INSERT INTO `ark_workflow_permission` (`permission`, `keyword`, `enabled`, `desc
 ('core.page.update', NULL, 1, NULL),
 ('core.user.confirm', NULL, 1, NULL),
 ('core.user.login', NULL, 1, NULL),
-('core.user.logout', NULL, 1, NULL),
+('core.core.user.logout', NULL, 1, NULL),
 ('core.user.register', NULL, 1, NULL),
 ('core.user.reset', NULL, 1, NULL);
 

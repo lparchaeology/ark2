@@ -62,7 +62,7 @@ class SecurityControllerProvider implements ControllerProviderInterface
 
         $controllers->match('/user/logout', function (){})
             ->method('GET')
-            ->bind('user.logout');
+            ->bind('core.user.logout');
 
         $controllers->match('/admin/users/{id}', 'UserViewController')
             ->method('GET|POST')

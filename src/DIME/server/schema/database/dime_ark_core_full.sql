@@ -1,10 +1,10 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.7
+-- version 4.7.6
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 05, 2018 at 01:23 AM
--- Server version: 10.2.12-MariaDB
+-- Generation Time: Jan 05, 2018 at 07:25 PM
+-- Server version: 10.2.11-MariaDB
 -- PHP Version: 7.1.12
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1014,12 +1014,20 @@ CREATE TABLE `ark_route` (
 --
 
 INSERT INTO `ark_route` (`route`, `collection`, `can_get`, `can_post`, `page`, `redirect`, `controller`) VALUES
+('core.admin', 'admin', 1, 0, 'dime_page_admin', NULL, 'DIME\\Framework\\Controller\\View\\AdminHomeController'),
+('core.admin.users', 'admin', 1, 1, 'dime_page_admin_user', NULL, 'DIME\\Framework\\Controller\\View\\AdminUserController'),
+('core.admin.users.register', 'admin', 1, 1, 'dime_page_admin_register', 'core.admin.users', 'DIME\\Framework\\Controller\\View\\UserRegisterController'),
 ('core.api.file', 'api', 1, 1, NULL, NULL, 'DIME\\Framework\\Controller\\API\\FileGetController'),
 ('core.api.image', 'api', 1, 0, NULL, NULL, 'ARK\\Framework\\ImageController'),
+('core.user', 'user', 1, 1, NULL, NULL, ''),
+('core.user.check', 'user', 1, 1, NULL, NULL, ''),
+('core.user.confirm', 'user', 1, 0, 'core_page_user_confirm', NULL, 'DIME\\Framework\\Controller\\View\\UserConfirmController'),
+('core.user.login', 'user', 1, 0, 'core_page_user_login', NULL, 'DIME\\Framework\\Controller\\View\\UserLoginController'),
+('core.user.logout', 'user', 1, 1, NULL, NULL, ''),
+('core.user.register', 'user', 1, 1, 'dime_page_user_register', 'dime.front', 'DIME\\Framework\\Controller\\View\\UserRegisterController'),
+('core.user.reset', 'user', 1, 1, 'core_page_user_reset', NULL, 'DIME\\Framework\\Controller\\View\\UserResetController'),
+('core.user.target', 'user', 1, 0, 'dime_page_home', NULL, 'DIME\\Framework\\Controller\\View\\HomePageController'),
 ('dime.about', 'view', 1, 0, 'dime_page_static', NULL, 'DIME\\Framework\\Controller\\View\\PageViewController'),
-('dime.admin', 'view', 1, 0, 'dime_page_admin', NULL, 'DIME\\Framework\\Controller\\View\\AdminHomeController'),
-('dime.admin.users', 'view', 1, 1, 'dime_page_admin_user', NULL, 'DIME\\Framework\\Controller\\View\\AdminUserController'),
-('dime.admin.users.register', 'view', 1, 1, 'dime_page_admin_register', 'dime.admin.users', 'DIME\\Framework\\Controller\\View\\UserRegisterController'),
 ('dime.api.actor.item', 'api', 1, 1, NULL, NULL, 'DIME\\Framework\\Controller\\Api\\ActorController'),
 ('dime.api.actor.role.add', 'api', 0, 1, NULL, NULL, 'DIME\\Framework\\Controller\\Api\\ActorRoleAddController'),
 ('dime.api.actors.get', 'api', 1, 0, NULL, NULL, 'DIME\\Framework\\Controller\\Api\\ActorGetController'),
@@ -1045,13 +1053,7 @@ INSERT INTO `ark_route` (`route`, `collection`, `can_get`, `can_post`, `page`, `
 ('dime.news', 'view', 1, 0, 'dime_page_news', NULL, 'DIME\\Framework\\Controller\\View\\NewsPageController'),
 ('dime.profiles.list', 'view', 1, 0, 'dime_page_profile_list', NULL, 'DIME\\Framework\\Controller\\View\\ProfileListController'),
 ('dime.profiles.view', 'view', 1, 0, 'dime_page_profile', NULL, 'DIME\\Framework\\Controller\\View\\ProfileViewController'),
-('dime.research', 'view', 1, 0, 'dime_page_static', NULL, 'DIME\\Framework\\Controller\\View\\PageViewController'),
-('dime.user.confirm', 'view', 1, 0, 'core_page_user_confirm', NULL, 'DIME\\Framework\\Controller\\View\\UserConfirmController'),
-('dime.user.login', 'view', 1, 0, 'core_page_user_login', NULL, 'DIME\\Framework\\Controller\\View\\UserLoginController'),
-('dime.user.register', 'view', 1, 1, 'dime_page_user_register', 'dime.front', 'DIME\\Framework\\Controller\\View\\UserRegisterController'),
-('dime.user.reset', 'view', 1, 1, 'core_page_user_reset', NULL, 'DIME\\Framework\\Controller\\View\\UserResetController'),
-('user.check', 'security', 1, 1, NULL, NULL, ''),
-('user.logout', 'security', 1, 1, NULL, NULL, '');
+('dime.research', 'view', 1, 0, 'dime_page_static', NULL, 'DIME\\Framework\\Controller\\View\\PageViewController');
 
 -- --------------------------------------------------------
 
@@ -1081,18 +1083,34 @@ CREATE TABLE `ark_route_path` (
 --
 
 INSERT INTO `ark_route_path` (`route`, `language`, `path`) VALUES
+('core.admin', 'da', '/admin'),
+('core.admin', 'en', '/admin'),
+('core.admin.users', 'da', '/admin/brugere'),
+('core.admin.users', 'en', '/admin/users'),
+('core.admin.users.register', 'da', '/admin/brugere/register'),
+('core.admin.users.register', 'en', '/admin/users/register'),
 ('core.api.file', 'da', '/filer/{id}'),
 ('core.api.file', 'en', '/files/{id}'),
 ('core.api.image', 'da', '/img/{server}/{image}'),
 ('core.api.image', 'en', '/img/{server}/{image}'),
+('core.user', 'da', '/brugere'),
+('core.user', 'en', '/users'),
+('core.user.check', 'da', '/brugere/check'),
+('core.user.check', 'en', '/users/check'),
+('core.user.confirm', 'da', '/brugere/confirm'),
+('core.user.confirm', 'en', '/users/confirm'),
+('core.user.login', 'da', '/brugere/login'),
+('core.user.login', 'en', '/users/login'),
+('core.user.logout', 'da', '/brugere/logout'),
+('core.user.logout', 'en', '/users/logout'),
+('core.user.register', 'da', '/brugere/register'),
+('core.user.register', 'en', '/users/register'),
+('core.user.reset', 'da', '/brugere/reset'),
+('core.user.reset', 'en', '/users/reset'),
+('core.user.target', 'da', '/hjem'),
+('core.user.target', 'en', '/home'),
 ('dime.about', 'da', '/om'),
 ('dime.about', 'en', '/about'),
-('dime.admin', 'da', '/admin'),
-('dime.admin', 'en', '/admin'),
-('dime.admin.users', 'da', '/admin/brugere'),
-('dime.admin.users', 'en', '/admin/users'),
-('dime.admin.users.register', 'da', '/admin/brugere/register'),
-('dime.admin.users.register', 'en', '/admin/users/register'),
 ('dime.api.actor.item', 'da', '/api/internal/actors/{id}'),
 ('dime.api.actor.role.add', 'da', '/api/internal/actors/{id}/roles/add'),
 ('dime.api.actors.get', 'da', '/api/v2/actors/{actor}'),
@@ -1131,19 +1149,7 @@ INSERT INTO `ark_route_path` (`route`, `language`, `path`) VALUES
 ('dime.profiles.view', 'da', '/brugerprofiler/{id}'),
 ('dime.profiles.view', 'en', '/profiles/{id}'),
 ('dime.research', 'da', '/forskning'),
-('dime.research', 'en', '/research'),
-('dime.user.confirm', 'da', '/brugere/confirm'),
-('dime.user.confirm', 'en', '/users/confirm'),
-('dime.user.login', 'da', '/brugere/login'),
-('dime.user.login', 'en', '/users/login'),
-('dime.user.register', 'da', '/brugere/register'),
-('dime.user.register', 'en', '/users/register'),
-('dime.user.reset', 'da', '/brugere/reset'),
-('dime.user.reset', 'en', '/users/reset'),
-('user.check', 'da', '/brugere/check'),
-('user.check', 'en', '/users/check'),
-('user.logout', 'da', '/brugere/logout'),
-('user.logout', 'en', '/users/logout');
+('dime.research', 'en', '/research');
 
 -- --------------------------------------------------------
 
@@ -6664,7 +6670,7 @@ INSERT INTO `ark_view_form` (`element`, `name`, `mode`, `method`, `action`, `key
 ('core_message_item', 'message', 'view', NULL, NULL, NULL, 'layouts/message.html.twig', NULL),
 ('core_profile_view', 'actor', NULL, NULL, NULL, 'core.profile', NULL, NULL),
 ('core_user_filter', 'filter', NULL, NULL, NULL, NULL, NULL, NULL),
-('core_user_login', NULL, NULL, 'POST', 'user.check', NULL, 'user/layouts/login.html.twig', NULL),
+('core_user_login', NULL, NULL, 'POST', 'core.user.check', NULL, 'user/layouts/login.html.twig', NULL),
 ('core_user_password_change', 'password_change', NULL, NULL, NULL, 'core.user.password.change', NULL, NULL),
 ('core_user_password_set', 'password_set', NULL, NULL, NULL, 'core.user.password.set', NULL, NULL),
 ('core_user_register', NULL, NULL, NULL, NULL, NULL, 'user/layouts/register.html.twig', NULL),
@@ -10667,8 +10673,8 @@ ALTER TABLE `ark_model_subschema`
 -- Constraints for table `ark_route`
 --
 ALTER TABLE `ark_route`
-  ADD CONSTRAINT `route_page_constraint` FOREIGN KEY (`page`) REFERENCES `ark_view_page` (`element`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `route_redirect_constraint` FOREIGN KEY (`redirect`) REFERENCES `ark_route` (`route`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `route_page_constraint` FOREIGN KEY (`page`) REFERENCES `ark_view_page` (`element`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `route_redirect_constraint` FOREIGN KEY (`redirect`) REFERENCES `ark_route` (`route`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_route_parameter`

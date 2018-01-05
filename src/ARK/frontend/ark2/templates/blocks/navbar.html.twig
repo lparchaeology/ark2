@@ -27,16 +27,16 @@
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
                     {% for navlink in navlinks %}
-                        <li 
+                        <li
                         {% if global.request.getBaseUrl ~ global.request.pathInfo == path(navlink.target)%}
                             class ="active">
                         {% else %}
                             >
                         {% endif %}
-                        
+
                         {% include "blocks/link.html.twig" with {'link':navlink} %}
                         </li>
-                    
+
                     {% endfor %}
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -51,11 +51,11 @@
                             {% endfor %}
                             <li role="separator" class="divider"></li>
                             {% if global.user %}
-                            <li class="dropdown-header">{{ global.user.username | translate }}</li>
-                                {% set userlink ={'target':'users_logout','name':'ark.logout'} %}
+                                <li class="dropdown-header">{{ global.user.username | translate }}</li>
+                                {% set userlink ={'target':'core.user.logout', 'name':'core.user.logout'} %}
                             {% else %}
                                 <li class="dropdown-header">{{ 'anon' | translate }}</li>
-                                {% set userlink ={'target':'user.login','name':'ark.login'} %}
+                                {% set userlink ={'target':'core.user.login', 'name':'core.user.login'} %}
                             {% endif %}
                             <li>
                                 {% include "blocks/link.html.twig" with {'link':userlink} %}

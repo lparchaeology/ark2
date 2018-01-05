@@ -63,6 +63,7 @@ class RoutingServiceProvider extends SilexRoutingServiceProvider
         };
 
         $container->mount('/', new ControllerProvider());
+        $container->flush();
 
         // TODO Proper error handling
         $container->error(function (Exception $e, Request $request, $code) use ($container) {

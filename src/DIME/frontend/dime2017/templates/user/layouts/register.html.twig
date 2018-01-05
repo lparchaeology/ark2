@@ -2,7 +2,7 @@
 {% if global.user %}
 
     <p>{{ 'core.user.register.loggedin' | trans({ '%name%': global.user.displayName }) }}</p>
-    <p><a href="{{ path('user.logout') }}">{{ 'core.user.register.logout' | translate }}</a></p>
+    <p><a href="{{ path('core.user.logout') }}">{{ 'core.user.register.logout' | translate }}</a></p>
 
 {% else %}
 
@@ -10,7 +10,7 @@
 
     <div class="col-md-12 text-muted lead">
         {{ 'core.user.register.existing' | translate }}
-        <a href="{{ path('dime.user.login') }}">{{ 'core.user.register.login' | translate() }}</a>
+        <a href="{{ path('core.user.login') }}">{{ 'core.user.register.login' | translate() }}</a>
     </div>
 
     <div class="row">

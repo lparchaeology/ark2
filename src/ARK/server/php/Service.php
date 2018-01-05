@@ -41,6 +41,7 @@ use League\Glide\Server;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Seld\JsonLint\JsonParser;
+use Silex\Route;
 use Swift_Mailer;
 use Swift_Message;
 use Symfony\Component\Form\FormFactory;
@@ -71,6 +72,11 @@ class Service
     public static function routes() : iterable
     {
         return self::$app['routes'];
+    }
+
+    public static function route(string $name) : Route
+    {
+        return self::$app['routes']->get($name);
     }
 
     public static function path(string $name, iterable $parameters = [], bool $relative = false) : string

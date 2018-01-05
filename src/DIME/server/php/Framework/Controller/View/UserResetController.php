@@ -36,7 +36,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-class UserResetController extends DimeFormController
+class UserResetController extends DimePageController
 {
     public function __invoke(Request $request, $token = null) : Response
     {
@@ -57,22 +57,22 @@ class UserResetController extends DimeFormController
                     Service::security()->resetPassword($user, $password);
                     if ($user->passwordRequestToken() === '') {
                         Service::security()->loginAsUser($user, 'secured', $request);
-                        Service::view()->addSuccessFlash('dime.user.reset.success');
+                        Service::view()->addSuccessFlash('core.user.reset.success');
                         return Service::redirectPath('dime.home');
                     }
-                    Service::view()->addErrorFlash('dime.user.reset.expired');
+                    Service::view()->addErrorFlash('core.user.reset.expired');
                 } else {
-                    Service::view()->addErrorFlash('dime.user.reset.matching');
+                    Service::view()->addErrorFlash('core.user.reset.matching');
                 }
             } else {
                 $username = $request->request->get('_username');
                 $user = ORM::find(User::class, $username);
                 if ($user) {
                     Service::security()->requestPassword($user);
-                    Service::view()->addSuccessFlash('dime.user.reset.sent');
+                    Service::view()->addSuccessFlash('core.user.reset.sent');
                     return Service::redirectPath('dime.front');
                 }
-                Service::view()->addErrorFlash('dime.user.reset.unknown');
+                Service::view()->addErrorFlash('core.user.reset.unknown');
             }
         }
 

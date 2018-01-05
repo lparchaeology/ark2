@@ -56,26 +56,24 @@ class SecurityServiceProvider implements ServiceProviderInterface
         // Site specific settings
         $settings = $container['ark']['security'];
 
-        // TODO Replace with Routes/Paths tables
-        // Can't use translation here :-(
+        // Get the current routes
         $locale = $container['locale'];
-        $admin = $settings['routes']['admin']['paths'][$locale];
-        $user = $settings['routes']['user']['paths'][$locale];
-        $login = $settings['routes']['login']['paths'][$locale];
-        $check = $settings['routes']['check']['paths'][$locale];
-        $confirm = $settings['routes']['confirm']['paths'][$locale];
-        $verify = $settings['routes']['verify']['paths'][$locale];
-        $target = $settings['routes']['target']['paths'][$locale];
-        $logout = $settings['routes']['logout']['paths'][$locale];
-        $register = $settings['routes']['register']['paths'][$locale];
-        $reset = $settings['routes']['reset']['paths'][$locale];
+        $admin = $container['routes']->get('core.admin')->getPath();
+        $user = $container['routes']->get('core.user')->getPath();
+        $check = $container['routes']->get('core.user.check')->getPath();
+        $confirm = $container['routes']->get('core.user.confirm')->getPath();
+        $login = $container['routes']->get('core.user.login')->getPath();
+        $logout = $container['routes']->get('core.user.logout')->getPath();
+        $register = $container['routes']->get('core.user.register')->getPath();
+        $reset = $container['routes']->get('core.user.reset')->getPath();
+        $target = $container['routes']->get('core.user.target')->getPath();
 
         // Configure Symfony Security Firewalls
         // See https://silex.symfony.com/doc/2.0/providers/security.html
         $container['security.firewalls'] = [
             // unsecured firewall: anyone can login/register/reset
             'unsecured' => [
-                'pattern' => "(^$login$)|(^$register$)|(^$reset$)|(^$confirm$)|(^$verify$)",
+                'pattern' => "(^$login$)|(^$register$)|(^$reset$)|(^$confirm$)",
                 'anonymous' => true,
             ],
             // TODO API firewall: all api calls controlled by access_rules and tokens
@@ -106,7 +104,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
             // First ensure anyone can access login area
             [
                 [
-                    "(^$login$)|(^$register$)|(^$reset$)|(^$check$)|(^$confirm$)|(^$verify$)",
+                    "(^$login$)|(^$register$)|(^$reset$)|(^$check$)|(^$confirm$)",
                     'IS_AUTHENTICATED_ANONYMOUSLY',
                     $channel,
                 ],

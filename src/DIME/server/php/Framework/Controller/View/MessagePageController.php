@@ -36,7 +36,7 @@ use ARK\Vocabulary\Vocabulary;
 use DIME\DIME;
 use Symfony\Component\HttpFoundation\Request;
 
-class MessagePageController extends DimeFormController
+class MessagePageController extends DimePageController
 {
     public function buildState(Request $request, $data) : iterable
     {

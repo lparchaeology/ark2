@@ -29,9 +29,8 @@
 
 namespace ARK\Framework\Routing;
 
-use ARK\Model\Model;
 use ARK\ORM\ORM;
-use Silex\API\ControllerProviderInterface;
+use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 use Silex\ControllerCollection;
 
@@ -41,9 +40,6 @@ class ControllerProvider implements ControllerProviderInterface
     {
         $controllers = $app['controllers_factory'];
         $routes = ORM::findAll(Route::class);
-
-        $model = $app['ark']['site'];
-        $instances = ORM::find(Model::class, $model);
 
         foreach ($routes as $route) {
             $this->addRoute($controllers, $route);

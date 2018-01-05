@@ -38,7 +38,7 @@ class ApiServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $container) : void
     {
-        $path = $container['ark']['api']['path'];
+        $path = '/api/v2';
         $container['path.api'] = $path;
         $container->register(new JsonApiServiceProvider());
         // FIXME Unsecured API access, secure with OAUTH2

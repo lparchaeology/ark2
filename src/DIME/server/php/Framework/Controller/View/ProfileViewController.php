@@ -36,7 +36,7 @@ use DIME\DIME;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
-class ProfileViewController extends DimeFormController
+class ProfileViewController extends DimePageController
 {
     public function buildState(Request $request, $data) : iterable
     {

@@ -67,7 +67,7 @@ class Route
         if ($language instanceof Language) {
             return $this->pathIndex[$language->language];
         }
-        return $this->pathIndex[$language] ?? $this->pathIndex[Service::locale()] ?? $this->paths[0]->path() ?? '';
+        return $this->pathIndex[$language] ?? $this->pathIndex[Service::locale()] ?? $this->paths[0]->pattern() ?? '';
     }
 
     public function canGet() : bool

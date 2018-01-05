@@ -40,7 +40,7 @@ use DIME\DIME;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 
-class UserRegisterController extends DimeFormController
+class UserRegisterController extends DimePageController
 {
     public function buildState(Request $request, $data) : iterable
     {

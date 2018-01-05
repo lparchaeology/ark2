@@ -35,7 +35,7 @@ use DIME\DIME;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class UserConfirmController extends DimeFormController
+class UserConfirmController extends DimePageController
 {
     public function __invoke(Request $request, $token = null) : Response
     {
@@ -43,12 +43,12 @@ class UserConfirmController extends DimeFormController
         $token = $query['token'] ?? null;
         if (!$token) {
             Service::view()->addErrorFlash('dime.user.verify.missing');
-            return Service::redirectPath('dime.user.login');
+            return Service::redirectPath('core.user.login');
         }
         $user = Service::security()->userProvider()->findByVerificationToken($token);
         if (!$user) {
             Service::view()->addErrorFlash('dime.user.verify.unknown');
-            return Service::redirectPath('dime.user.login');
+            return Service::redirectPath('core.user.login');
         }
         Service::security()->verifyUser($user);
         if ($user->isEnabled()) {
@@ -58,6 +58,6 @@ class UserConfirmController extends DimeFormController
         } else {
             Service::view()->addErrorFlash('dime.user.verify.expired');
         }
-        return Service::redirectPath('dime.user.login');
+        return Service::redirectPath('core.user.login');
     }
 }

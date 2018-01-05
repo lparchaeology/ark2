@@ -29,6 +29,6 @@
 
 namespace DIME\Framework\Controller\View;
 
-class AdminHomeController extends DimeFormController
+class AdminHomeController extends DimePageController
 {
 }

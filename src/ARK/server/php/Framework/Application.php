@@ -123,8 +123,11 @@ class Application extends AbstractApplication
         // - Optional on Use:
         $this->register(new DoctrineOrmManagerRegistryProvider());
 
+        // Define the routes
+        $this->register(new RoutingServiceProvider());
+
         // Enable Security
-        // - On Register: Forms, Validator, Mailer, DBAL/ORM
+        // - On Register: Forms, Validator, Mailer, DBAL/ORM, Routing
         // - Required on Use: Logger
         // - Optional on Use: Session, Twig, Mailer, URL Generator, Translator, Console, ORM
         $this->register(new SecurityServiceProvider());
@@ -148,9 +151,6 @@ class Application extends AbstractApplication
 
         // Enable the Debug Profiler
         $this->register(new DebugServiceProvider());
-
-        // Define the routes
-        $this->register(new RoutingServiceProvider());
     }
 
     public function boot() : void
@@ -168,7 +168,8 @@ class Application extends AbstractApplication
 
     public function run(Request $request = null) : void
     {
-        // TODO Use kernel event instead???
+        // FIXME This whole thing is very hacky, find a better way
+        // Use kernel event instead? Define Request class to use in route table?
         if ($request === null) {
             $path = ($_SERVER['PATH_INFO'] ?? $_SERVER['REQUEST_URI'] ?? '');
             $pos = mb_strpos($path, $this['path.api']);

@@ -8,16 +8,16 @@
                 <span class="dime-title">
                     &nbsp;
                 </span>
-                <form method="POST" action="{{ path('user.check') }}" data-async>
+                <form method="POST" action="{{ path('core.user.check') }}" data-async>
                     <input id="inputEmail" class="form-control" name="_username" placeholder="{{ 'dime.user.name' | translate }}" required="" value="" type="text">
                     <input id="inputPassword" class="form-control" name="_password" required="" placeholder="{{ 'dime.user.password' | translate }}" type="password">
                     <input type="submit" name="login" class="login loginmodal-submit" value="Login">
                 </form>
 
                 <div class="login-help">
-                    <a href="{{ path('dime.user.reset') }}">{{ 'dime.user.password.forgot' | translate }}</a>
+                    <a href="{{ path('core.user.reset') }}">{{ 'dime.user.password.forgot' | translate }}</a>
                         -
-                    <a href="{{ path('dime.user.register') }}">{{ 'dime.user.register' | translate }}</a>
+                    <a href="{{ path('core.user.register') }}">{{ 'dime.user.register' | translate }}</a>
                 </div>
             </div>
         </div>

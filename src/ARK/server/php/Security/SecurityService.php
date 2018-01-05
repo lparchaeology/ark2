@@ -48,14 +48,12 @@ class SecurityService
 {
     protected $app;
     protected $options;
-    protected $routes;
     protected $anon;
 
     public function __construct(Application $app)
     {
         $this->app = $app;
         $this->options = $app['user.options'];
-        $this->routes = $app['ark']['security']['routes'];
     }
 
     public static function credentials($key)
@@ -336,14 +334,14 @@ class SecurityService
 
     protected function sendVerificationMessage(User $user) : void
     {
-        $url = Service::url($this->routes['confirm']['route'], ['token' => $user->verificationToken()]);
+        $url = Service::url('core.user.confirm', ['token' => $user->verificationToken()]);
         $context = ['user' => $user, 'url' => $url];
         Service::sendEmail($this->options['email'], $user->email(), $this->options['verify_email_template'], $context);
     }
 
     protected function sendResetMessage(User $user) : void
     {
-        $url = Service::url($this->routes['reset']['route'], ['token' => $user->passwordRequestToken()]);
+        $url = Service::url('core.user.reset', ['token' => $user->passwordRequestToken()]);
         $context = ['user' => $user, 'url' => $url];
         Service::sendEmail($this->options['email'], $user->email(), $this->options['reset_email_template'], $context);
     }

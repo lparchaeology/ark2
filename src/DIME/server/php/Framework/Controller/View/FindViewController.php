@@ -38,7 +38,7 @@ use DIME\Entity\Find;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 
-class FindViewController extends DimeFormController
+class FindViewController extends DimePageController
 {
     public function buildData(Request $request)
     {
