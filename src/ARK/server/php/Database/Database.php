@@ -30,12 +30,11 @@
 namespace ARK\Database;
 
 use ARK\ARK;
+use ARK\Service;
 use Doctrine\DBAL\Connection;
-use Silex\Application;
 
 class Database
 {
-    private $app;
     private $entities;
     private $subclasses;
     private $classnames;
@@ -43,34 +42,29 @@ class Database
     private $datatypes;
     private $fragmentTables;
 
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
-    }
-
     public function data() : Connection
     {
-        return $this->app['dbs']['data'];
+        return Service::connection('data');
     }
 
     public function sequence() : Connection
     {
-        return $this->app['dbs']['data'];
+        return Service::connection('data');
     }
 
     public function core() : Connection
     {
-        return $this->app['dbs']['core'];
+        return Service::connection('core');
     }
 
     public function spatial() : Connection
     {
-        return $this->app['dbs']['spatial'];
+        return Service::connection('spatial');
     }
 
     public function user() : Connection
     {
-        return $this->app['dbs']['user'];
+        return Service::connection('user');
     }
 
     public function getEntityForClassName(string $classname) : ?iterable

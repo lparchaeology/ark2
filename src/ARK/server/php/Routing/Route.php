@@ -27,7 +27,7 @@
  * @since      2.0
  */
 
-namespace ARK\Framework\Routing;
+namespace ARK\Routing;
 
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;

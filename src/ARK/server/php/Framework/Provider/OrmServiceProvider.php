@@ -153,8 +153,8 @@ class OrmServiceProvider implements ServiceProviderInterface
                         ],
                         [
                             'type' => 'php',
-                            'namespace' => 'ARK\Framework\Routing',
-                            'path' => $srcDir.'/Framework/Routing',
+                            'namespace' => 'ARK\Routing',
+                            'path' => $srcDir.'/Routing',
                         ],
                         [
                             'type' => 'php',

@@ -30,7 +30,7 @@
 namespace DIME\Framework\Controller\View;
 
 use ARK\Framework\PageController;
-use ARK\Framework\Routing\Route;
+use ARK\Routing\Route;
 use ARK\Service;
 use DIME\DIME;
 use Symfony\Component\HttpFoundation\Request;

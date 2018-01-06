@@ -29,8 +29,8 @@
 
 namespace ARK\Framework;
 
-use ARK\Framework\Routing\Route;
 use ARK\ORM\ORM;
+use ARK\Routing\Route;
 use ARK\Service;
 use ARK\View\Page;
 use ARK\Workflow\Exception\WorkflowException;

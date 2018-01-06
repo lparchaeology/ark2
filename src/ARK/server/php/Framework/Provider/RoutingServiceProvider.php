@@ -29,8 +29,8 @@
 
 namespace ARK\Framework\Provider;
 
-use ARK\Framework\Routing\ControllerProvider;
-use ARK\Framework\Routing\SilexRouter;
+use ARK\Framework\ControllerProvider;
+use ARK\Routing\Router;
 use ARK\Service;
 use Exception;
 use Pimple\Container;
@@ -58,7 +58,7 @@ class RoutingServiceProvider extends SilexRoutingServiceProvider
 
         $container['routers'] = function (Container $container) {
             $chain = new ChainRouter($container['logger']);
-            $chain->add(new SilexRouter($container));
+            $chain->add(new Router());
             return $chain;
         };
 

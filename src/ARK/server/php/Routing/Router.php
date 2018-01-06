@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Route Service Provider.
+ * ARK Router.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,48 +27,52 @@
  * @since      2.0
  */
 
-namespace ARK\Framework\Routing;
+namespace ARK\Routing;
 
-use Pimple\Container;
+use ARK\Service;
 use Silex\Provider\Routing\RedirectableUrlMatcher;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouterInterface;
 
-class SilexRouter implements RouterInterface
+class Router implements RouterInterface
 {
-    protected $container;
     protected $context;
-
-    public function __construct(Container $container)
-    {
-        $this->container = $container;
-    }
+    protected $generator;
+    protected $matcher;
 
     public function setContext(RequestContext $context) : void
     {
         $this->context = $context;
     }
 
-    public function getContext()
+    public function getContext() : RequestContext
     {
-        return $this->context ?: $this->container['request_context'];
+        return $this->context ?: Service::context();
     }
 
-    public function getRouteCollection()
+    public function getRouteCollection() : iterable
     {
-        return $this->container['routes'];
+        return Service::routes();
     }
 
     public function generate($name, $parameters = [], $referenceType = self::ABSOLUTE_PATH)
     {
-        $generator = new UrlGenerator($this->getRouteCollection(), $this->getContext(), $this->container['logger']);
-        return $generator->generate($name, $parameters, $referenceType);
+        if ($this->generator === null) {
+            $this->generator = new UrlGenerator($this->getRouteCollection(), $this->getContext(), Service::logger());
+        } else {
+            $this->generator->setContext($this->getContext());
+        }
+        return $this->generator->generate($name, $parameters, $referenceType);
     }
 
     public function match($pathinfo)
     {
-        $matcher = new RedirectableUrlMatcher($this->getRouteCollection(), $this->getContext());
-        return $matcher->match($pathinfo);
+        if ($this->matcher === null) {
+            $this->matcher = new RedirectableUrlMatcher($this->getRouteCollection(), $this->getContext());
+        } else {
+            $this->matcher->setContext($this->getContext());
+        }
+        return $this->matcher->match($pathinfo);
     }
 }

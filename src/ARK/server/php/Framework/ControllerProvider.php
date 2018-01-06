@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Ark Route Site Controller Provider.
+ * Ark Route Controller Provider.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,25 +27,20 @@
  * @since      2.0
  */
 
-namespace ARK\Framework\Routing;
+namespace ARK\Framework;
 
-use ARK\Model\Model;
 use ARK\ORM\ORM;
-use ARK\View\Page;
-use Silex\API\ControllerProviderInterface;
+use ARK\Routing\Route;
+use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 use Silex\ControllerCollection;
 
-class ViewControllerProvider implements ControllerProviderInterface
+class ControllerProvider implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
         $controllers = $app['controllers_factory'];
         $routes = ORM::findAll(Route::class);
-        //$pages = ORM::findAll(Page::class);
-
-        $model = $app['ark']['site'];
-        $instances = ORM::find(Model::class, $model);
 
         foreach ($routes as $route) {
             $this->addRoute($controllers, $route);

@@ -29,6 +29,7 @@
 
 namespace ARK;
 
+use ARK\Database\Connection;
 use ARK\Database\Database;
 use ARK\Framework\Application;
 use ARK\Security\SecurityService;
@@ -41,13 +42,14 @@ use League\Glide\Server;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Seld\JsonLint\JsonParser;
-use Silex\Route;
 use Swift_Mailer;
 use Swift_Message;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Routing\Route;
 use Symfony\Component\Serializer\Serializer;
 
 class Service
@@ -67,6 +69,11 @@ class Service
     public static function configDir() : string
     {
         return self::$app['dir.config'];
+    }
+
+    public static function context() : RequestContext
+    {
+        return self::$app['request_context'];
     }
 
     public static function routes() : iterable
@@ -228,6 +235,11 @@ class Service
     public static function jsonLinter() : JsonParser
     {
         return self::$app['json.linter'];
+    }
+
+    public function connection(string $name) : Connection
+    {
+        return self::$app['dbs'][$name];
     }
 
     public static function database() : Database
