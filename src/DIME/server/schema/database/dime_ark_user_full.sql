@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
+-- version 4.7.7
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 04, 2017 at 05:55 PM
--- Server version: 10.2.8-MariaDB
--- PHP Version: 7.1.8
+-- Generation Time: Jan 07, 2018 at 05:19 PM
+-- Server version: 10.2.12-MariaDB
+-- PHP Version: 7.1.13
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -70,11 +70,12 @@ INSERT INTO `ark_security_level` (`level`, `description`, `enabled`) VALUES
 
 CREATE TABLE `ark_security_user` (
   `user` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `level` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `username` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT 'NULL',
-  `name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT 'NULL',
-  `level` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `activated` tinyint(1) NOT NULL DEFAULT 0,
   `enabled` tinyint(1) NOT NULL DEFAULT 0,
   `verified` tinyint(1) NOT NULL DEFAULT 0,
   `locked` tinyint(1) NOT NULL DEFAULT 0,
@@ -93,16 +94,10 @@ CREATE TABLE `ark_security_user` (
 -- Dumping data for table `ark_security_user`
 --
 
-INSERT INTO `ark_security_user` (`user`, `username`, `email`, `password`, `name`, `level`, `enabled`, `verified`, `locked`, `expired`, `expires_at`, `credentials_expired`, `credentials_expire_at`, `verification_token`, `verification_requested_at`, `password_request_token`, `password_requested_at`, `last_login`) VALUES
-('ahavfrue', 'ahavfrue', 'ahavfrue@lparchaeology.com', '$2y$13$VF7niHDAlU4.oUgUIJsx6erd5Esou.yrGq/oJa41giIqex0m8kxSS', 'Ariel Havfrue', 'ROLE_USER', 1, 1, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL),
-('bnchristensen', 'bnchristensen', 'bnchristensen@lparchaeology.com', '$2y$13$i3xBdnXPm8GVmpguVzD40uinba3vje5Q4UXKBYxPLs6ElABOe.1h6', 'Birgitte Nyborg Christensen', 'ROLE_USER', 1, 1, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL),
-('core', 'core', 'core@localhost', NULL, 'Core System', 'ROLE_ANON', 0, 0, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL),
-('dsvendson', 'dsvendson', 'dsvendson@lparchaeology.com', '$2y$13$Bthazyrmo3QlEAeKmHYDk.rA011tJgHjul9zcMLCv6a5w7yaFwa52', 'Dicte Svendsen', 'ROLE_USER', 1, 1, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL),
-('jlayt', 'jlayt', 'john@layt.net', '$2y$13$5bDc.gpJTrnpJmfQt.7MZOz.QaKH/c8blMJtjJAxuoBwju.P88x2q', 'John Layt', 'ROLE_SUPER_ADMIN', 1, 1, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL),
-('mjohnson', 'mjohnson', 'm.johnson@lparchaeology.com', '$2y$13$cVYlJ12yc1dA6CTedS1HtuACE7sbD.gsc5/zHnXCk.ddDOEvRtIiK', 'Mike Johnson', 'ROLE_ADMIN', 1, 1, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL),
-('osød', 'osød', 'osød@lparchaeology.com', '$2y$13$GZV5ZEIMWEZeYyNlYrWv7OvPxeTwFNE8uu6rRwUtgg5eZzA119H2q', 'Ophelia Sød', 'ROLE_USER', 1, 1, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL),
-('slund', 'slund', 'slund@lparchaeology.com', '$2y$13$NLYpJb9o.dG0ipj6sfzArO4IvWPfWETHymxBsi5un8Y97i2sy9PYW', 'Sarah Lund', 'ROLE_USER', 1, 1, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL),
-('stuarteve', 'stuarteve', 'stuarteve@gmail.com', '$2y$13$F70UAv8DPo7LFJSm4y0h.eacYGcJuubZRSSYBUqUbgwl4bBq3w.IK', 'Stuart Eve', 'ROLE_ADMIN', 1, 1, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `ark_security_user` (`user`, `level`, `username`, `email`, `password`, `name`, `activated`, `enabled`, `verified`, `locked`, `expired`, `expires_at`, `credentials_expired`, `credentials_expire_at`, `verification_token`, `verification_requested_at`, `password_request_token`, `password_requested_at`, `last_login`) VALUES
+('admin', 'ROLE_ADMIN', 'admin', 'admin@localhost', '$2y$13$JSrPi1knmwXhjy.tUk1Gqu2TUm4X09gozDgu7U2g8Dl84c5XvOuiO', 'Administrator', 1, 1, 1, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL),
+('anonymous', 'ROLE_ANON', 'anonymous', 'anonymous@localhost', NULL, 'Anonymous', 0, 0, 0, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL),
+('sysadmin', 'ROLE_SUPER_ADMIN', 'sysadmin', 'sysadmin@localhost', '$2y$13$JSrPi1knmwXhjy.tUk1Gqu2TUm4X09gozDgu7U2g8Dl84c5XvOuiO', 'System Administrator', 1, 1, 1, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -113,7 +108,7 @@ INSERT INTO `ark_security_user` (`user`, `username`, `email`, `password`, `name`
 --
 ALTER TABLE `ark_security_account`
   ADD PRIMARY KEY (`user`,`account`),
-  ADD KEY `user_foreign` (`user`) USING BTREE;
+  ADD KEY `user_foreign` (`user`);
 
 --
 -- Indexes for table `ark_security_level`
@@ -126,9 +121,9 @@ ALTER TABLE `ark_security_level`
 --
 ALTER TABLE `ark_security_user`
   ADD PRIMARY KEY (`user`),
-  ADD UNIQUE KEY `email_unique` (`email`) USING BTREE,
-  ADD UNIQUE KEY `username_unique` (`username`) USING BTREE,
-  ADD KEY `level_foreign` (`level`) USING BTREE;
+  ADD UNIQUE KEY `email_unique` (`email`),
+  ADD UNIQUE KEY `username_unique` (`username`),
+  ADD KEY `level_foreign` (`level`);
 
 --
 -- Constraints for dumped tables

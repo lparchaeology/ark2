@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.6
+-- version 4.7.7
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 05, 2018 at 07:25 PM
--- Server version: 10.2.11-MariaDB
--- PHP Version: 7.1.12
+-- Generation Time: Jan 07, 2018 at 05:18 PM
+-- Server version: 10.2.12-MariaDB
+-- PHP Version: 7.1.13
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -9658,6 +9658,13 @@ INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
 ('researcher', 'dime.find.read.finddate'),
 ('researcher', 'dime.find.read.location'),
 ('researcher', 'dime.find.read.treasure'),
+('sysadmin', 'core.actor.read'),
+('sysadmin', 'core.actor.update'),
+('sysadmin', 'core.admin'),
+('sysadmin', 'core.admin.system'),
+('sysadmin', 'core.admin.user'),
+('sysadmin', 'core.message.read'),
+('sysadmin', 'core.message.update'),
 ('sysadmin', 'core.page.read'),
 ('user', 'core.actor.read'),
 ('user', 'core.actor.update'),

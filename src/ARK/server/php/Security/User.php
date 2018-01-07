@@ -520,7 +520,6 @@ class User implements AdvancedUserInterface, Serializable
         if (!$status instanceof Term || $status->concept()->concept() !== 'core.security.user.status') {
             return new ArrayCollection();
         }
-        $status = $status->name();
         switch ($status->name()) {
             case 'disabled':
                 return ORM::findBy(self::class, ['enabled' => false, 'activated' => true]);
