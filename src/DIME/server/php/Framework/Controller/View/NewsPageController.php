@@ -29,16 +29,14 @@
 
 namespace DIME\Framework\Controller\View;
 
-use ARK\ORM\ORM;
 use DIME\DIME;
-use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
 class NewsPageController extends DimePageController
 {
     public function buildData(Request $request)
     {
-        $data['finds']['items'] = ORM::findBy(Find::class, ['visibility' => 'public'], ['id' => 'DESC']);
+        $data['finds']['items'] = DIME::getFeaturedFinds();
         return $data;
     }
 }

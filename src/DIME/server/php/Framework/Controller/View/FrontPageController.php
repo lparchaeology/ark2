@@ -29,29 +29,14 @@
 
 namespace DIME\Framework\Controller\View;
 
-use ARK\ORM\ORM;
 use DIME\DIME;
-use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
 class FrontPageController extends DimePageController
 {
     public function buildData(Request $request)
     {
-        // Get the 25 most recent public Items
-        $finds = ORM::findBy(Find::class, ['visibility' => 'public'], ['id' => 'DESC'], 25);
-        // Then the 5 with images
-        $featured = [];
-        foreach ($finds as $find) {
-            $images = $find->property('image')->value();
-            if ($images && $images[0]->current()->exists()) {
-                $featured[] = $find;
-            }
-            if (count($featured) >= 5) {
-                break;
-            }
-        }
-        $data['finds'] = $featured;
+        $data['finds'] = DIME::getFeaturedFinds(5);
         return $data;
     }
 }

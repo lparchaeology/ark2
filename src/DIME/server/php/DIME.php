@@ -36,7 +36,9 @@ use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
+use DIME\Entity\Find;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Connection;
 
 class DIME
@@ -66,7 +68,7 @@ class DIME
         return null;
     }
 
-    public static function getNotifications(Actor $actor, string $status = null) : ArrayCollection
+    public static function getNotifications(Actor $actor, string $status = null) : Collection
     {
         if ($actor->id() === 'anonymous') {
             return new ArrayCollection();
@@ -141,6 +143,15 @@ class DIME
             AND attribute = 'finder'
         ";
         return Service::database()->data()->fetchAllColumn($sql, 'value');
+    }
+
+    public static function getFeaturedFinds(int $count = 0) : Collection
+    {
+        // Featured Finds must have been through Treasure assessment to ensure quality and have photos
+        $items = self::findSearch(['treasure' => ['dime.treasure.treasue', 'dime.treasure.pending', 'dime.treasure.not']]);
+        // Featured Finds must be public, and the most recent
+        $finds = ORM::findBy(Find::class, ['id' => $items, 'visibility' => 'public'], ['id' => 'DESC'], $count);
+        return $finds;
     }
 
     public static function findSearch(iterable $query) : ?iterable
