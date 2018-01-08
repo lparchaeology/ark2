@@ -88,7 +88,7 @@ abstract class Controller
                 $parms[$key] = $this->fixStaticFields($value);
             }
             if ($key === '_static') {
-                $parms['static'] = $value;
+                $parms['static'] = null;
             }
         }
         return $parms;
