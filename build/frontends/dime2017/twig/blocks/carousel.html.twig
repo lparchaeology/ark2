@@ -1,7 +1,22 @@
 {% block carousel -%}
 
 {% set items = [] %}
-{% if data is empty %}
+
+{% for key, find in data %}
+    {% if find.property('image').value is not empty %}
+        {% set item = {
+            'key': key,
+            'server': 'file',
+            'image': find.property('image').value[0].id,
+            'path': path('dime.finds.view', {'id': find.id}),
+            'find': find
+            }
+        %}
+        {% set items = items|merge([item]) %}
+    {% endif %}
+{% endfor %}
+
+{% if items is empty %}
     {% for seq in [1, 2, 3] %}
         {% set item = {
             'key': seq - 1,
@@ -9,18 +24,6 @@
             'image': 'sample' ~ seq ~ '.jpg',
             'path': '',
             'find': null
-            }
-        %}
-        {% set items = items|merge([item]) %}
-    {% endfor %}
-{% else %}
-    {% for key, find in data %}
-        {% set item = {
-            'key': key,
-            'server': 'file',
-            'image': find.property('image').value[0].id,
-            'path': path('dime.finds.view', {'id': find.id}),
-            'find': find
             }
         %}
         {% set items = items|merge([item]) %}
