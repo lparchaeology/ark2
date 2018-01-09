@@ -34,6 +34,8 @@ use ARK\ORM\ORM;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\Validation;
+use Symfony\Component\Validator\Constraints\Image;
 
 class FilePostController
 {
@@ -42,6 +44,22 @@ class FilePostController
         $ids = [];
         // TODO Make generic, file widget should set properly
         $files = $this->flatten($request->files->all());
+        // TODO Naive error handling, make constraint generic somehow
+        $validator = Validation::createValidator();
+        $constraint = new Image();
+        $errors = [];
+        foreach ($files as $upload) {
+            $violations = $validator->validate($upload, $constraint);
+            foreach ($violations as $violation) {
+                $error['code'] = $violation->getCode();
+                $error['source'] = $upload->getClientOriginalName();
+                $error['detail'] = $violation->getMessage();
+                $errors[] = $error;
+            }
+        }
+        if (count($errors) > 0) {
+            return new JsonResponse(['errors' => $errors]);
+        }
         foreach ($files as $upload) {
             $file = File::createFromUploadedFile($upload);
             if ($file) {
