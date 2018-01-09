@@ -124,12 +124,6 @@ $(document).ready(function () {
                 return false; // abort the thumbnail removal
             }
         }).on('filedeleted', function (event, id) {
-
-            var abort = true;
-            if (confirm(window.confirmfiledelete)) {
-                abort = false;
-            }
-            return abort;
             var form_root_array = $(this).closest(".file-input").find("input[type=file]").attr('id').split("_");
             form_root_array.splice(-1, 1);
             var existing_id_container = form_root_array.join("_") + "_existing";
