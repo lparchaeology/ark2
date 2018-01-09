@@ -47,13 +47,20 @@ use Symfony\Component\Form\FormView;
 
 class Field extends Element
 {
+    protected $attribute;
+    protected $valueModus = 'excluded';
+    protected $parameterModus;
+    protected $formatModus;
+    protected $displayProperty;
+    protected $displayPattern;
+    protected $displayParameter;
+    protected $displayFormat;
+    protected $exportProperty;
+    protected $exportPattern;
+    protected $exportParameter;
+    protected $exportFormat;
     protected $formOptions = '';
     protected $formOptionsArray;
-    protected $display = '';
-    protected $value = 'excluded';
-    protected $parameter = '';
-    protected $format = '';
-    protected $attribute;
 
     public function attribute() : SchemaAttribute
     {
@@ -62,23 +69,63 @@ class Field extends Element
 
     public function valueModus() : string
     {
-        return $this->value;
+        return $this->valueModus;
     }
 
     public function parameterModus() : ?string
     {
-        if (!$this->attribute()->dataclass()->parameterName()) {
-            return null;
+        if ($this->attribute()->dataclass()->parameterName()) {
+            return $this->parameterModus ?? 'hidden';
         }
-        return $this->parameter ?: 'hidden';
+        return null;
     }
 
     public function formatModus() : ?string
     {
-        if (!$this->attribute()->dataclass()->formatName()) {
-            return null;
+        if ($this->attribute()->dataclass()->formatName()) {
+            return $this->formatModus ?? 'hidden';
         }
-        return $this->format ?: 'hidden';
+        return null;
+    }
+
+    public function displayProperty() : ?string
+    {
+        return $this->displayProperty;
+    }
+
+    public function displayPattern() : ?string
+    {
+        return $this->displayPattern;
+    }
+
+    public function displayParameter() : ?string
+    {
+        return $this->displayParameter;
+    }
+
+    public function displayFormat() : ?string
+    {
+        return $this->displayFormat;
+    }
+
+    public function exportProperty() : ?string
+    {
+        return $this->exportProperty;
+    }
+
+    public function exportPattern() : ?string
+    {
+        return $this->exportPattern;
+    }
+
+    public function exportParameter() : ?string
+    {
+        return $this->exportParameter;
+    }
+
+    public function exportFormat() : ?string
+    {
+        return $this->exportFormat;
     }
 
     public function name() : string
@@ -88,13 +135,7 @@ class Field extends Element
 
     public function formType() : string
     {
-        if ($this->formType) {
-            return $this->formType;
-        }
-        if ($this->attribute()->dataclass()->formType()) {
-            return $this->attribute()->dataclass()->formType();
-        }
-        return parent::formType();
+        return $this->formType ?? $this->attribute()->dataclass()->formType() ?? parent::formType();
     }
 
     public function activeFormType() : ?string
@@ -146,10 +187,17 @@ class Field extends Element
         $builder = new ClassMetadataBuilder($metadata, 'ark_view_field');
 
         // Fields
-        $builder->addStringField('display', 30);
-        $builder->addStringField('value', 10);
-        $builder->addStringField('parameter', 10);
-        $builder->addStringField('format', 10);
+        $builder->addMappedStringField('value_modus', 'valueModus', 10);
+        $builder->addMappedStringField('parameter_modus', 'parameterModus', 10);
+        $builder->addMappedStringField('format_modus', 'formatModus', 10);
+        $builder->addMappedStringField('display_property', 'displayProperty', 30);
+        $builder->addMappedStringField('display_pattern', 'displayPattern', 30);
+        $builder->addMappedStringField('display_parameter', 'displayParameter', 30);
+        $builder->addMappedStringField('display_format', 'displayFormat', 30);
+        $builder->addMappedStringField('export_property', 'exportProperty', 30);
+        $builder->addMappedStringField('export_pattern', 'exportPattern', 30);
+        $builder->addMappedStringField('export_parameter', 'exportParameter', 30);
+        $builder->addMappedStringField('export_format', 'exportFormat', 30);
         KeywordTrait::buildKeywordMetadata($builder);
         $builder->addStringField('template', 100);
         $builder->addMappedStringField('form_type', 'formType', 100);
@@ -174,26 +222,30 @@ class Field extends Element
 
     protected function buildState($data, iterable $state) : iterable
     {
+        $state = parent::buildState($data, $state);
+        $state['field'] = $this;
+
+        // The field overrides the parent state for the following
         $state['required'] = $this->attribute()->isRequired();
-        $state['multiple'] = $this->attribute->hasMultipleOccurrences();
-        if (!isset($state['name'])) {
-            $state['name'] = $this->name();
-        }
-        if (!isset($state['display']['property'])) {
-            $state['display']['property'] = $this->display;
-        }
-        if (!isset($state['keyword'])) {
-            $state['keyword'] = $this->keyword();
-        }
-        if (!isset($state['value']['modus'])) {
-            $state['value']['modus'] = $this->valueModus();
-        }
-        if (!isset($state['parameter']['modus'])) {
-            $state['parameter']['modus'] = $this->parameterModus();
-        }
-        if (!isset($state['format']['modus'])) {
-            $state['format']['modus'] = $this->formatModus();
-        }
+        $state['multiple'] = $this->attribute()->hasMultipleOccurrences();
+
+        // The parent state (i.e. cell) overrides the field state for the following
+        $state['display']['property'] = $state['display']['property'] ?? $this->displayProperty();
+        $state['display']['pattern'] = $state['display']['pattern'] ?? $this->displayPattern();
+        $state['display']['parameter'] = $state['display']['parameter'] ?? $this->displayParameter();
+        $state['display']['format'] = $state['display']['format'] ?? $this->displayFormat();
+
+        $state['export']['property'] = $state['export']['property'] ?? $this->exportProperty();
+        $state['export']['pattern'] = $state['export']['pattern'] ?? $this->exportPattern();
+        $state['export']['parameter'] = $state['export']['parameter'] ?? $this->exportParameter();
+        $state['export']['format'] = $state['export']['format'] ?? $this->exportFormat();
+
+        $state['value']['modus'] = $state['value']['modus'] ?? $this->valueModus();
+        $state['parameter']['modus'] = $state['parameter']['modus'] ?? $this->parameterModus();
+        $state['format']['modus'] = $state['format']['modus'] ?? $this->formatModus();
+        //$state['form']['type'] = $state['form']['type'] ?? $this->formType();
+        $state['keyword'] = $state['keyword'] ?? $this->keyword();
+
         if ($state['sanitise'] !== 'redact' && $data instanceof Item) {
             if ($state['mode'] === 'edit' && Service::workflow()->can($state['actor'], 'edit', $data, $this->attribute())) {
                 $state['mode'] = 'edit';
@@ -205,8 +257,7 @@ class Field extends Element
         }
         $state['mode'] = $this->displayMode($state['mode']);
         $state['modus'] = $this->modeToModus($state, ($state['modus'] ?? $this->valueModus()));
-        $state['template'] = $this->template();
-        $state['field'] = $this;
+
         return $state;
     }
 
@@ -489,7 +540,7 @@ class Field extends Element
         $view = parent::buildContext($view, $forms, $form);
         $view['field'] = $this;
         if (!$view['form']) {
-            $builder = $this->formBuilder($view['state']['name'], $view['data'], $view['options']);
+            $builder = $this->formBuilder($view['state']['name'], $this->formType(), $view['data'], $view['options']);
             $view['form'] = $builder->getForm()->createView();
         }
         return $view;

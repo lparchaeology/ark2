@@ -62,7 +62,7 @@ class Form extends Element
         $name = $view['state']['name'] ?? '';
         $options = $view['options'];
         $options['attr']['id'] = $name;
-        $builder = $this->formBuilder($name, $view['data'], $options);
+        $builder = $this->formBuilder($name, $this->formType(), $view['data'], $options);
         if ($this->method) {
             $builder->setMethod($this->method);
         }

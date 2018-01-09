@@ -68,11 +68,17 @@ class Cell implements ElementInterface
     protected $mode;
     protected $sanitise;
     protected $visible = true;
-    protected $pattern;
-    protected $value;
-    protected $parameter;
-    protected $format;
-    protected $display;
+    protected $valueModus;
+    protected $parameterModus;
+    protected $formatModus;
+    protected $displayProperty;
+    protected $displayPattern;
+    protected $displayParameter;
+    protected $displayFormat;
+    protected $exportProperty;
+    protected $exportPattern;
+    protected $exportParameter;
+    protected $exportFormat;
     protected $template;
     protected $options;
 
@@ -126,7 +132,7 @@ class Cell implements ElementInterface
         return $this->width;
     }
 
-    public function showLabel() : bool
+    public function showLabel() : ?bool
     {
         return $this->label;
     }
@@ -181,24 +187,59 @@ class Cell implements ElementInterface
         return $this->sanitise;
     }
 
-    public function pattern() : ?string
-    {
-        return $this->pattern;
-    }
-
     public function valueModus() : ?string
     {
-        return $this->value;
+        return $this->valueModus;
     }
 
     public function parameterModus() : ?string
     {
-        return $this->parameter;
+        return $this->parameterModus;
     }
 
     public function formatModus() : ?string
     {
-        return $this->format;
+        return $this->formatModus;
+    }
+
+    public function displayProperty() : ?string
+    {
+        return $this->displayProperty;
+    }
+
+    public function displayPattern() : ?string
+    {
+        return $this->displayPattern;
+    }
+
+    public function displayParameter() : ?string
+    {
+        return $this->displayParameter;
+    }
+
+    public function displayFormat() : ?string
+    {
+        return $this->displayFormat;
+    }
+
+    public function exportProperty() : ?string
+    {
+        return $this->exportProperty;
+    }
+
+    public function exportPattern() : ?string
+    {
+        return $this->exportPattern;
+    }
+
+    public function exportParameter() : ?string
+    {
+        return $this->exportParameter;
+    }
+
+    public function exportFormat() : ?string
+    {
+        return $this->exportFormat;
     }
 
     public function template() : string
@@ -262,17 +303,23 @@ class Cell implements ElementInterface
         $builder->addField('help', 'boolean');
         $builder->addField('placeholder', 'boolean');
         $builder->addField('choices', 'boolean');
+        $builder->addField('required', 'boolean');
         $builder->addStringField('mode', 10);
         $builder->addStringField('sanitise', 10);
         $builder->addField('visible', 'boolean');
-        $builder->addStringField('pattern', 30);
-        $builder->addStringField('value', 10);
-        $builder->addStringField('parameter', 10);
-        $builder->addStringField('format', 10);
-        $builder->addStringField('display', 30);
+        $builder->addMappedStringField('value_modus', 'valueModus', 10);
+        $builder->addMappedStringField('parameter_modus', 'parameterModus', 10);
+        $builder->addMappedStringField('format_modus', 'formatModus', 10);
+        $builder->addMappedStringField('display_property', 'displayProperty', 30);
+        $builder->addMappedStringField('display_pattern', 'displayPattern', 30);
+        $builder->addMappedStringField('display_parameter', 'displayParameter', 30);
+        $builder->addMappedStringField('display_format', 'displayFormat', 30);
+        $builder->addMappedStringField('export_property', 'exportProperty', 30);
+        $builder->addMappedStringField('export_pattern', 'exportPattern', 30);
+        $builder->addMappedStringField('export_parameter', 'exportParameter', 30);
+        $builder->addMappedStringField('export_format', 'exportFormat', 30);
         $builder->addStringField('template', 100);
         $builder->addStringField('options', 4000);
-        $builder->addField('required', 'boolean');
         EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);
 
@@ -291,61 +338,74 @@ class Cell implements ElementInterface
                 'nullable' => true,
             ],
         ]);
-        $builder->addPermissionField('view', 'viewPermission');
-        $builder->addPermissionField('edit', 'editPermission');
+        $builder->addPermissionField('view_permission', 'viewPermission');
+        $builder->addPermissionField('view_permission', 'editPermission');
     }
 
     protected function buildState(iterable $state, $data) : iterable
     {
+        // Cell state that is always propogated
         $state['name'] = $this->name;
-        if ($this->label !== null) {
-            $state['label'] = $this->label;
-        }
         $state['help'] = $this->help;
         $state['placeholder'] = $this->placeholder;
         $state['choices'] = $this->choices;
         $state['map'] = $this->map;
         $state['vocabulary'] = $this->vocabulary;
+        $state['visible'] = $this->visible ?? true;
+        $state['width'] = $this->width;
+        $state['keyword'] = $this->keyword;
+        $state['action'] = $this->action;
+
+        // TODO check logic on this, implies cell can override schema required field?
         if ($this->required === false) {
             $state['required'] = false;
         }
-        if ($this->sanitise !== null) {
-            $state['sanitise'] = $this->sanitise;
-        }
-        $state['visible'] = $this->visible ?? true;
-        if ($this->pattern !== null) {
-            $state['pattern'] = $this->pattern;
-        }
-        $state['width'] = $this->width;
-        if ($this->display) {
-            $state['display']['name'] = $this->display;
-        }
-        $state['keyword'] = $this->keyword;
+
+        // Cell state that is only propogated if set, otherwise child must set
+        $this->addState($state, 'label', $this->showLabel());
+        $this->addState($state, 'sanitise', $this->sanitise());
+
+        $this->addSubState($state, 'display', 'name', $this->displayProperty());
+        $this->addSubState($state, 'display', 'property', $this->displayProperty());
+        $this->addSubState($state, 'display', 'pattern', $this->displayPattern());
+        $this->addSubState($state, 'display', 'parameter', $this->displayParameter());
+        $this->addSubState($state, 'display', 'format', $this->displayFormat());
+
+        $this->addSubState($state, 'export', 'property', $this->exportProperty());
+        $this->addSubState($state, 'export', 'pattern', $this->exportPattern());
+        $this->addSubState($state, 'export', 'parameter', $this->exportParameter());
+        $this->addSubState($state, 'export', 'format', $this->exportFormat());
+
+        $this->addSubState($state, 'value', 'modus', $this->valueModus());
+        $this->addSubState($state, 'parameter', 'modus', $this->parameterModus());
+        $this->addSubState($state, 'format', 'modus', $this->formatModus());
+
+        // Override the mode if set at Cell level
         $actor = Service::workflow()->actor();
-        if (!$actor->hasPermission($this->editPermission)) {
+        if ($this->action && $data instanceof Item && !$actor->canAction($this->action, $data)) {
+            $state['mode'] = 'deny';
+        } elseif (!$actor->hasPermission($this->viewPermission())) {
+            $state['mode'] = 'deny';
+        } elseif (!$actor->hasPermission($this->editPermission())) {
             $state['mode'] = 'view';
         } elseif ($this->mode === 'view') {
             $state['mode'] = 'view';
         }
-        if (!$actor->hasPermission($this->viewPermission)) {
-            $state['mode'] = 'deny';
-        }
-        $state['action'] = $this->action;
-        if ($this->action && $data instanceof Item && !$actor->canAction($this->action, $data)) {
-            $state['mode'] = 'deny';
-        }
-        if ($this->valueModus() !== null) {
-            $state['value']['modus'] = $this->valueModus();
-        }
-        if ($this->parameterModus() !== null) {
-            $state['parameter']['modus'] = $this->parameterModus();
-        }
-        if ($this->formatModus() !== null) {
-            $state['format']['modus'] = $this->formatModus();
-        }
-        if (!isset($state['sanitise']) || $this->sanitise) {
-            $state['sanitise'] = $this->sanitise;
-        }
+
         return $state;
+    }
+
+    private function addState(iterable &$state, $key, $value) : void
+    {
+        if ($value !== null) {
+            $state[$key] = $value;
+        }
+    }
+
+    private function addSubState(iterable &$state, $key, $subkey, $value) : void
+    {
+        if ($value !== null) {
+            $state[$key][$subkey] = $value;
+        }
     }
 }
