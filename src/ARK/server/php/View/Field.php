@@ -204,7 +204,7 @@ class Field extends Element
             }
         }
         $state['mode'] = $this->displayMode($state['mode']);
-        $state['modus'] = $this->modeToModus($state, ($state['modus'] ?? $this->valueModus()));
+        $state['modus'] = $this->modeToModus($state, ($state['modus'] ?? $state['value']['modus'] ?? $this->valueModus()));
         $state['template'] = $this->template();
         $state['field'] = $this;
         return $state;
