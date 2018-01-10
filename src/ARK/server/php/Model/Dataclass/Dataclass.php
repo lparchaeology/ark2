@@ -90,6 +90,11 @@ abstract class Dataclass
         return $this->valueName ?? $this->datatype->valueName();
     }
 
+    public function hasFormat() : bool
+    {
+        return $this->formatName() !== null;
+    }
+
     public function formatName() : ?string
     {
         return $this->formatName ?? $this->datatype->formatName();
@@ -98,6 +103,11 @@ abstract class Dataclass
     public function formatVocabulary() : ?string
     {
         return $this->formatVocabulary ?? $this->datatype->formatVocabulary();
+    }
+
+    public function hasParameter() : bool
+    {
+        return $this->parameterName() !== null;
     }
 
     public function parameterName() : ?string
@@ -162,7 +172,7 @@ abstract class Dataclass
 
     public function isAtomic() : bool
     {
-        return $this->formatName() === null && $this->parameterName() === null;
+        return $this->hasFormat() === false && $this->hasParameter() === false;
     }
 
     public function constraints() : iterable
@@ -179,10 +189,10 @@ abstract class Dataclass
             return $this->isSpan() ? [null, null] : null;
         }
         $data = [];
-        if ($this->formatName()) {
+        if ($this->hasFormat()) {
             $data[$this->formatName()] = null;
         }
-        if ($this->parameterName()) {
+        if ($this->hasParameter()) {
             $data[$this->parameterName()] = null;
         }
         $data[$this->valueName()] = ($this->isSpan() ? [null, null] : null);
@@ -318,10 +328,10 @@ abstract class Dataclass
             return $fragment->value();
         }
         $data = [];
-        if ($this->formatName()) {
+        if ($this->hasFormat()) {
             $data[$this->formatName()] = $fragment->format();
         }
-        if ($this->parameterName()) {
+        if ($this->hasParameter()) {
             $data[$this->parameterName()] = $fragment->parameter();
         }
         if ($fragment->isSpan() || $this->isSpan()) {
@@ -360,7 +370,7 @@ abstract class Dataclass
         }
         if ($data instanceof Item) {
             $format = null;
-            $parameter = ($this->parameterName() ? $data->schema()->module()->id() : null);
+            $parameter = ($this->hasParameter() ? $data->schema()->module()->id() : null);
             $value = ($this->valueName() ? $data->id() : null);
             $fragment->setValue($value, $parameter, $format);
             return;
@@ -376,8 +386,8 @@ abstract class Dataclass
         if (!is_array($data)) {
             // TODO throw error
         }
-        $format = ($this->formatName() && isset($data[$this->formatName()]) ? $data[$this->formatName()] : null);
-        $parameter = ($this->parameterName() && isset($data[$this->parameterName()]) ? $data[$this->parameterName()] : null);
+        $format = ($this->hasFormat() && isset($data[$this->formatName()]) ? $data[$this->formatName()] : null);
+        $parameter = ($this->hasParameter() && isset($data[$this->parameterName()]) ? $data[$this->parameterName()] : null);
         $value = ($this->valueName() && isset($data[$this->valueName()]) ? $data[$this->valueName()] : null);
         if ($span) {
             $extent = ($this->valueName() ? $extent[$this->valueName()] : null);
