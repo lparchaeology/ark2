@@ -211,11 +211,8 @@ abstract class Element implements ElementInterface
 
     protected function buildState($data, iterable $state) : iterable
     {
-        if (!isset($state['name'])) {
-            $state['name'] = $this->name();
-        }
-        $state['mode'] = $this->displayMode($state['mode']);
-        $state['template'] = $this->template();
+        $this->inheritValue($state, 'name', $this->name());
+        $this->setValue($state, 'template', $this->template());
         return $state;
     }
 
@@ -260,14 +257,9 @@ abstract class Element implements ElementInterface
         return $view;
     }
 
-    protected function formBuilder(string $name, $type, $data, $options = []) : FormBuilderInterface
+    protected function formBuilder(string $name, string $type, $data, iterable $options = []) : FormBuilderInterface
     {
-        return Service::forms()->createNamedBuilder(
-            $name,
-            $type,
-            $data,
-            $options
-        );
+        return Service::forms()->createNamedBuilder($name, $type, $data, $options);
     }
 
     protected function concat(iterable $options, string $option, string $value) : string
@@ -283,5 +275,53 @@ abstract class Element implements ElementInterface
     protected function concatOption(iterable $options, string $option, string $attr, string $value) : string
     {
         return isset($options[$option][$attr]) ? $options[$option][$attr].' '.$value : $value;
+    }
+
+    protected function inheritValue(iterable &$array, $key, $value) : void
+    {
+        $array[$key] = $array[$key] ?? $value;
+    }
+
+    protected function inheritGroupValue(iterable &$array, $group, $key, $value) : void
+    {
+        $array[$group][$key] = $array[$group][$key] ?? $value;
+    }
+
+    protected function inheritOptionalValue(iterable &$array, $key, $value) : void
+    {
+        if ($value !== null) {
+            $array[$key] = $array[$key] ?? $value;
+        }
+    }
+
+    protected function inheritOptionalGroupValue(iterable &$array, $group, $key, $value) : void
+    {
+        if ($value !== null) {
+            $array[$group][$key] = $array[$group][$key] ?? $value;
+        }
+    }
+
+    protected function setValue(iterable &$array, $key, $value) : void
+    {
+        $array[$key] = $value;
+    }
+
+    protected function setGroupValue(iterable &$array, $group, $key, $value) : void
+    {
+        $array[$group][$key] = $value;
+    }
+
+    protected function setOptionalValue(iterable &$array, $key, $value) : void
+    {
+        if ($value !== null) {
+            $array[$key] = $value;
+        }
+    }
+
+    protected function setOptionalGroupValue(iterable &$array, $group, $key, $value) : void
+    {
+        if ($value !== null) {
+            $array[$group][$key] = $value;
+        }
     }
 }

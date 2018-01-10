@@ -125,6 +125,13 @@ trait GridTrait
         }
     }
 
+    protected function buildState($data, iterable $state) : iterable
+    {
+        $state = parent::buildState($data, $state);
+        $state['mode'] = $this->displayMode($state['mode']);
+        return $state;
+    }
+
     protected function buildChildren(iterable $view) : iterable
     {
         $children = [];

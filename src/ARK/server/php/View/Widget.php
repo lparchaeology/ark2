@@ -58,8 +58,9 @@ class Widget extends Element
 
     protected function buildState($data, iterable $state) : iterable
     {
-        $state['label'] = $state['label'] ?? $this->showLabel();
-        $state['name'] = $state['name'] ?? $this->name();
+        $state = parent::buildState($data, $state);
+        $state['widget'] = $this;
+
         if (!isset($state['keyword'])) {
             if ($this->keyword()) {
                 $state['keyword'] = $this->keyword();
@@ -69,12 +70,12 @@ class Widget extends Element
                 $state['keyword'] = null;
             }
         }
+
         $state['mode'] = $this->displayMode($state['mode']);
         if ($state['mode'] === 'view' && $state['value']['modus'] !== 'active') {
             $state['mode'] = 'deny';
         }
-        $state['template'] = $this->template();
-        $state['widget'] = $this;
+
         return $state;
     }
 

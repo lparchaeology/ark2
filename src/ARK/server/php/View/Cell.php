@@ -344,55 +344,69 @@ class Cell implements ElementInterface
 
     protected function buildState(iterable $state, $data) : iterable
     {
+        // Cell state that is always propogated
         $state['name'] = $this->name;
-        if ($this->label !== null) {
-            $state['label'] = $this->label;
-        }
         $state['help'] = $this->help;
         $state['placeholder'] = $this->placeholder;
         $state['choices'] = $this->choices;
         $state['map'] = $this->map;
         $state['vocabulary'] = $this->vocabulary;
+        $state['visible'] = $this->visible ?? true;
+        $state['width'] = $this->width;
+        $state['keyword'] = $this->keyword;
+        $state['template'] = $this->template();
+        $state['action'] = $this->action;
+
+        // TODO check logic on this, implies cell can override schema required field?
         if ($this->required === false) {
             $state['required'] = false;
         }
-        if ($this->sanitise !== null) {
-            $state['sanitise'] = $this->sanitise;
-        }
-        $state['visible'] = $this->visible ?? true;
-        if ($this->displayPattern() !== null) {
-            $state['pattern'] = $this->displayPattern();
-        }
-        $state['width'] = $this->width;
-        if ($this->displayProperty()) {
-            $state['display']['name'] = $this->displayProperty();
-        }
-        $state['keyword'] = $this->keyword;
+
+        // Cell state that is only propogated if set, otherwise child must set
+        $this->addState($state, 'label', $this->showLabel());
+        $this->addState($state, 'sanitise', $this->sanitise());
+
+        $this->addSubState($state, 'display', 'name', $this->displayProperty());
+        $this->addSubState($state, 'display', 'property', $this->displayProperty());
+        $this->addSubState($state, 'display', 'pattern', $this->displayPattern());
+        $this->addSubState($state, 'display', 'parameter', $this->displayParameter());
+        $this->addSubState($state, 'display', 'format', $this->displayFormat());
+
+        $this->addSubState($state, 'export', 'property', $this->exportProperty());
+        $this->addSubState($state, 'export', 'pattern', $this->exportPattern());
+        $this->addSubState($state, 'export', 'parameter', $this->exportParameter());
+        $this->addSubState($state, 'export', 'format', $this->exportFormat());
+
+        $this->addSubState($state, 'value', 'modus', $this->valueModus());
+        $this->addSubState($state, 'parameter', 'modus', $this->parameterModus());
+        $this->addSubState($state, 'format', 'modus', $this->formatModus());
+
+        // Override the mode if set at Cell level
         $actor = Service::workflow()->actor();
-        if (!$actor->hasPermission($this->editPermission)) {
+        if ($this->action && $data instanceof Item && !$actor->canAction($this->action, $data)) {
+            $state['mode'] = 'deny';
+        } elseif (!$actor->hasPermission($this->viewPermission())) {
+            $state['mode'] = 'deny';
+        } elseif (!$actor->hasPermission($this->editPermission())) {
             $state['mode'] = 'view';
         } elseif ($this->mode === 'view') {
             $state['mode'] = 'view';
         }
-        if (!$actor->hasPermission($this->viewPermission)) {
-            $state['mode'] = 'deny';
-        }
-        $state['action'] = $this->action;
-        if ($this->action && $data instanceof Item && !$actor->canAction($this->action, $data)) {
-            $state['mode'] = 'deny';
-        }
-        if ($this->valueModus() !== null) {
-            $state['value']['modus'] = $this->valueModus();
-        }
-        if ($this->parameterModus() !== null) {
-            $state['parameter']['modus'] = $this->parameterModus();
-        }
-        if ($this->formatModus() !== null) {
-            $state['format']['modus'] = $this->formatModus();
-        }
-        if (!isset($state['sanitise']) || $this->sanitise) {
-            $state['sanitise'] = $this->sanitise;
-        }
+
         return $state;
+    }
+
+    private function addState(iterable &$state, $key, $value) : void
+    {
+        if ($value !== null) {
+            $state[$key] = $value;
+        }
+    }
+
+    private function addSubState(iterable &$state, $key, $subkey, $value) : void
+    {
+        if ($value !== null) {
+            $state[$key][$subkey] = $value;
+        }
     }
 }
