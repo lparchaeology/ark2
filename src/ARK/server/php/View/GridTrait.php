@@ -104,7 +104,7 @@ trait GridTrait
         }
         if ($view['state']['name']) {
             //dump('GROUP : CELL BUILDER '.$this->name);
-            $layoutBuilder = $this->formBuilder($view['state']['name'], $view['data'], $view['options']);
+            $layoutBuilder = $this->formBuilder($view['state']['name'], $this->formType(), $view['data'], $view['options']);
             $builder->add($layoutBuilder);
             foreach ($view['children'] as $row) {
                 foreach ($row as $col) {

@@ -154,7 +154,7 @@ abstract class Element implements ElementInterface
         if ($view['state']['mode'] === 'deny') {
             return;
         }
-        $elementBuilder = $this->formBuilder($view['state']['name'], $view['data'], $view['options']);
+        $elementBuilder = $this->formBuilder($view['state']['name'], $this->formType(), $view['data'], $view['options']);
         $builder->add($elementBuilder);
     }
 
@@ -260,11 +260,11 @@ abstract class Element implements ElementInterface
         return $view;
     }
 
-    protected function formBuilder(string $name, $data, $options = []) : FormBuilderInterface
+    protected function formBuilder(string $name, $type, $data, $options = []) : FormBuilderInterface
     {
         return Service::forms()->createNamedBuilder(
             $name,
-            $this->formType(),
+            $type,
             $data,
             $options
         );

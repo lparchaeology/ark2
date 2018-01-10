@@ -153,7 +153,7 @@ class Widget extends Element
         $view = parent::buildContext($view, $forms, $form);
         $view['widget'] = $this;
         if (!$view['form']) {
-            $builder = $this->formBuilder($view['state']['name'], $view['data'], $view['options']);
+            $builder = $this->formBuilder($view['state']['name'], $this->formType(), $view['data'], $view['options']);
             $view['form'] = $builder->getForm()->createView();
         }
         return $view;
