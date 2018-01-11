@@ -95,7 +95,6 @@ $(document).ready(function () {
                         }
                     }
 
-
                     $("button.kv-file-remove[data-key=" + removePreview + "]").click();
 
                     $("#find_image_existing_" + (count - 1).toString()).val(response[0]);
