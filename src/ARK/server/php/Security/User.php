@@ -40,6 +40,7 @@ use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
 use ARK\Workflow\Security\ActorUser;
 use DateTime;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -410,14 +411,11 @@ class User implements AdvancedUserInterface, Serializable
     public function resetLevel() : void
     {
         $levels = [];
-        dump($this->roles());
         foreach ($this->roles() as $role) {
             $levels[$role->level()] = $role->level();
         }
-        dump($levels);
         $this->level = $levels['ROLE_SUPER_ADMIN'] ?? $levels['ROLE_ADMIN'] ?? $levels['ROLE_USER'] ?? 'ROLE_ANON';
         $this->levels = null;
-        dump($this->level);
     }
 
     public function accounts() : iterable
@@ -512,7 +510,17 @@ class User implements AdvancedUserInterface, Serializable
         list($this->id, $this->username, $this->email) = unserialize($serialized);
     }
 
-    public static function findByStatus($status) : ?iterable
+    public static function find(string $id) : ?User
+    {
+        return ORM::find($id);
+    }
+
+    public static function findAll() : ?Collection
+    {
+        return ORM::findAll(self::class);
+    }
+
+    public static function findByStatus($status) : ?Collection
     {
         if (is_string($status)) {
             $status = Vocabulary::findTerm('core.security.user.status', $status);

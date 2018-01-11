@@ -99,12 +99,13 @@ trait GridTrait
     {
         //dump('BUILD GROUP : '.$this->id());
         //dump($view);
-        if ($view['state']['mode'] === 'deny') {
+        $state = $view['state'];
+        if ($state['mode'] === 'deny') {
             return;
         }
-        if ($view['state']['name']) {
+        if ($state['name']) {
             //dump('GROUP : CELL BUILDER '.$this->name);
-            $layoutBuilder = $this->formBuilder($view['state']['name'], $this->formType(), $view['data'], $view['options']);
+            $layoutBuilder = $this->formBuilder($state['name'], $state['form']['type'], $view['data'], $view['options']);
             $builder->add($layoutBuilder);
             foreach ($view['children'] as $row) {
                 foreach ($row as $col) {

@@ -151,10 +151,11 @@ abstract class Element implements ElementInterface
     {
         //dump('BUILD FORM : '.get_class($this).' '.$this->id().' '.$this->name().' '.$this->keyword());
         //dump($view);
-        if ($view['state']['mode'] === 'deny') {
+        $state = $view['state'];
+        if ($state['mode'] === 'deny') {
             return;
         }
-        $elementBuilder = $this->formBuilder($view['state']['name'], $this->formType(), $view['data'], $view['options']);
+        $elementBuilder = $this->formBuilder($state['name'], $state['form']['type'], $view['data'], $view['options']);
         $builder->add($elementBuilder);
     }
 
@@ -213,6 +214,7 @@ abstract class Element implements ElementInterface
     {
         $this->inheritValue($state, 'name', $this->name());
         $this->setValue($state, 'template', $this->template());
+        $this->setGroupValue($state, 'form', 'type', $this->formType());
         return $state;
     }
 

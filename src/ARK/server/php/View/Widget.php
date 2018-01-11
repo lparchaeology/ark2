@@ -81,7 +81,7 @@ class Widget extends Element
 
     protected function buildData($data, iterable $state)
     {
-        if ($this->isButton() || $state['sanitise'] === 'redact') {
+        if ($this->isButton($state['form']['type']) || $state['sanitise'] === 'redact') {
             return null;
         }
         $name = $state['name'];
@@ -143,7 +143,7 @@ class Widget extends Element
         }
 
         unset($options['state']);
-        if ($this->isButton()) {
+        if ($this->isButton($state['form']['type'])) {
             unset($options['required'], $options['mapped']);
         }
         return $options;
@@ -154,15 +154,15 @@ class Widget extends Element
         $view = parent::buildContext($view, $forms, $form);
         $view['widget'] = $this;
         if (!$view['form']) {
-            $builder = $this->formBuilder($view['state']['name'], $this->formType(), $view['data'], $view['options']);
+            $builder = $this->formBuilder($view['state']['name'], $view['state']['form']['type'], $view['data'], $view['options']);
             $view['form'] = $builder->getForm()->createView();
         }
         return $view;
     }
 
-    private function isButton()
+    private function isButton(string $formType)
     {
-        return is_subclass_of($this->formType(), SubmitButtonTypeInterface::class) ||
-            is_subclass_of($this->formType(), ButtonTypeInterface::class);
+        return is_subclass_of($formType, SubmitButtonTypeInterface::class) ||
+            is_subclass_of($formType, ButtonTypeInterface::class);
     }
 }

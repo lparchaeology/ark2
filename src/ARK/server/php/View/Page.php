@@ -88,8 +88,11 @@ class Page extends Element
 
     public function pageMode(Actor $actor) : string
     {
+        if ($this->mode === 'deny') {
+            return 'deny';
+        }
         if ($this->visibility === 'public' || $actor->hasPermission($this->updatePermission())) {
-            return 'edit';
+            return $this->mode;
         }
         if ($actor->hasPermission($this->readPermission())) {
             return 'read';

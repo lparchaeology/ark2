@@ -254,7 +254,6 @@ class Field extends Element
         $this->inheritGroupValue($state, 'value', 'modus', $this->valueModus());
         $this->inheritGroupValue($state, 'parameter', 'modus', $this->parameterModus());
         $this->inheritGroupValue($state, 'format', 'modus', $this->formatModus());
-        //$this->inheritGroupValue($state, 'form', 'type', $this->formType());
         $this->inheritValue($state, 'keyword', $this->keyword());
 
         if ($state['sanitise'] !== 'redact' && $data instanceof Item) {
@@ -551,7 +550,7 @@ class Field extends Element
         $view = parent::buildContext($view, $forms, $form);
         $view['field'] = $this;
         if (!$view['form']) {
-            $builder = $this->formBuilder($view['state']['name'], $this->formType(), $view['data'], $view['options']);
+            $builder = $this->formBuilder($view['state']['name'], $view['state']['form']['type'], $view['data'], $view['options']);
             $view['form'] = $builder->getForm()->createView();
         }
         return $view;

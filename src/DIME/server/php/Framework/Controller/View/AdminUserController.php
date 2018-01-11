@@ -58,12 +58,8 @@ class AdminUserController extends DimePageController
     public function buildData(Request $request)
     {
         $query = $request->query->all();
+        $users = isset($query['status']) ? User::findByStatus($query['status']) : User::findAll();
 
-        if (isset($query['status'])) {
-            $users = User::findByStatus($query['status']);
-        } else {
-            $users = ORM::findAll(User::class);
-        }
         $actors = [];
         foreach ($users as $user) {
             $actors = array_merge($actors, $user->actors()->toArray());
@@ -72,6 +68,7 @@ class AdminUserController extends DimePageController
 
         $data['actor'] = null;
         $data['user'] = null;
+        $data['roles'] = null;
         $actor = Service::workflow()->actor();
         $data['action'] = Service::workflow()->actions($actor, $actor);
         return $data;

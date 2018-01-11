@@ -81,6 +81,9 @@ class Cell implements ElementInterface
     protected $exportFormat;
     protected $template;
     protected $options;
+    protected $formType = '';
+    protected $formOptions = '';
+    protected $formOptionsArray;
 
     public function group() : Element
     {
@@ -252,6 +255,11 @@ class Cell implements ElementInterface
         return json_decode($this->options ?? '{}', true);
     }
 
+    public function formType() : string
+    {
+        return $this->formType ?? '';
+    }
+
     public function buildView(iterable $parent) : iterable
     {
         //dump('BUILD CELL VIEW : '.$this->element->name());
@@ -320,6 +328,8 @@ class Cell implements ElementInterface
         $builder->addMappedStringField('export_format', 'exportFormat', 30);
         $builder->addStringField('template', 100);
         $builder->addStringField('options', 4000);
+        $builder->addMappedStringField('form_type', 'formType', 100);
+        $builder->addMappedStringField('form_options', 'formOptions', 4000);
         EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);
 

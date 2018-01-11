@@ -43,32 +43,41 @@ class ActorController extends ApiController
 {
     public function __invoke(Request $request) : Response
     {
-        // TODO Error id no id
-        $request->attributes->set('_form', 'dime_user_actor');
+        $request->attributes->set('_form', 'dime_user_actor_role');
         return $this->handleRequest($request);
     }
 
     public function buildData(Request $request)
     {
         $actor = $request->attributes->get('id');
-        $data['actor'] = ORM::find(Actor::class, $actor);
+        $actor = ORM::find(Actor::class, $actor);
+        $data['roles'] = $actor->roles();
         return $data;
     }
 
     public function buildState(Request $request, $data) : iterable
     {
         $state = parent::buildState($request, $data);
-        $state['image'] = 'avatar';
+        $select['choices'] = ORM::findAll(Museum::class);
+        $select['choice_value'] = 'id';
+        $select['choice_name'] = 'id';
+        $select['choice_label'] = 'fullname';
+        $select['multiple'] = false;
+        $select['placeholder'] = Service::translate('core.placeholder');
+        $state['select']['museum'] = $select;
         return $state;
     }
 
     public function processForm(Request $request, Form $form) : void
     {
-        $id = $request->attributes->get('_id');
+        $id = $request->attributes->get('id');
         $submitted = $form->getConfig()->getName();
-        if ($submitted === 'actor') {
-            $actor = $form->getData();
-            ORM::flush($actor);
+        if ($submitted === 'actor_role') {
+            $actor = $request->attributes->get('id');
+            $old = ORM::findBy(ActorUser::class, ['actor' => $actor]);
+            ORM::delete($actor);
+            $roles = $form->getData();
+            ORM::flush($roles);
             $request->attributes->set('_status', 'success');
             $request->attributes->set('_message', 'dime.admin.user.updated');
         }
@@ -76,6 +85,6 @@ class ActorController extends ApiController
 
     protected function item($data) : ?Item
     {
-        return $data['actor'];
+        return null;
     }
 }

@@ -40,6 +40,8 @@ interface ElementInterface
 
     public function template() : string;
 
+    public function formType() : string;
+
     public function buildView(iterable $parent) : iterable;
 
     public function buildForm(iterable $view, FormBuilderInterface $builder) : void;
