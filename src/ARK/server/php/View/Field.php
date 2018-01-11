@@ -178,7 +178,18 @@ class Field extends Element
         }
         $view = $this->buildContext($view, $forms, $form);
         $form = $view['form']['display'] ?? $view['form']['static'] ?? null;
-        return Service::translate($form->vars['value'] ?? '');
+        $value = $form->vars['value'] ?? '';
+        if (is_string($value)) {
+            return Service::translate($value);
+        }
+        if (is_array($value)) {
+            $out = [];
+            foreach ($value as $val) {
+                $out[] = Service::translate($val);
+            }
+            return implode(' ', $out);
+        }
+        return (string) $value;
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void
