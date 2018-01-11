@@ -7,16 +7,16 @@ function adminUserId() {
 
 // Set the current user ID
 var setAdminUserId = function setAdminUserId(id) {
-    $('#actor').attr('action', Router.generatePath('api.internal.actor', { id: id }));
-    $('#password_set').attr('action', Router.generatePath('api.internal.user.password.set', { id: id }));
-    $('#role_add').attr('action', Router.generatePath('api.internal.actor.role.add', { id: id }));
+    $('#actor').attr('action', Router.generatePath('dime.api.actor.item', { id: id }));
+    $('#password_set').attr('action', Router.generatePath('dime.api.user.password.set', { id: id }));
+    $('#role_add').attr('action', Router.generatePath('dime.api.actor.role.add', { id: id }));
 };
 
 // Call API to fetch user details
 var fetchAdminUserActor = function (id) {
     clearPageAlert();
     $('#actor').clearForm();
-    var path = Router.generatePath('api.internal.actor', { id: id });
+    var path = Router.generatePath('dime.api.actor.item', { id: id });
     if (path === undefined) {
         return;
     }
@@ -39,32 +39,6 @@ function adminUserFormSubmit(data, $form, options) {
 function adminUserFormSuccess(response) {
     setPageAlert(response.status, response.message, 5000);
 }
-
-var itemFormToHtml = function (data) {
-    var initialAvatarPreview = [];
-
-    var defaultImage = 1;
-
-    if (data['actor_avatar_item']['value']) {
-        initialAvatarPreview.push('<img class="file-preview-image" src="/img/' + data['actor_avatar_item']['value'] + '?p=preview">');
-    } else {
-        initialAvatarPreview.push('<img class="file-preview-image" src="/img/' + defaultImage + '?p=preview">');
-    }
-
-    $('div.file-input').parent().append($('<input type="file" id="actor_avatar_file" name="actor[avatar][file]">'));
-
-    $('div.file-input').remove();
-
-    $('#actor_avatar_file').fileinput({
-        'showUpload': false,
-        'allowedFileTypes': ['image'],
-        'previewFileType': 'image',
-        'initialPreview': initialAvatarPreview,
-        'minFileCount': 0,
-        'maxFileCount': 1,
-    });
-
-};
 
 var adminUserSelected = function (e) {
     e.preventDefault();
