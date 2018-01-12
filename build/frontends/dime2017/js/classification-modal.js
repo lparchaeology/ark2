@@ -49,6 +49,13 @@ var initTimeline = function () {
         //var correction = window.width()/window.width();
         //leftNumber += correction;
         span.css("left", leftNumber.toString() + "px");
+        if(timeid=='start'){
+            $('#'+window.date_start_id).val(new Date(timeline.getCustomTime(timeid)).getFullYear());
+        }
+        if (timeid=='end'){
+            $('#'+window.date_start_id+"_span").val(new Date(timeline.getCustomTime(timeid)).getFullYear());
+        }
+
     }
 
     container.makeCustomTime = function(time, name, timeline){
@@ -68,8 +75,12 @@ var initTimeline = function () {
                     var target_years = getYearsFromTarget(target);
                     start = vis.moment(parseInt(target_years.start), "Y");
                     end = vis.moment(parseInt(target_years.end), "Y");
-                    container.makeCustomTime(start, 'start', timeline);
-                    container.makeCustomTime(end, 'end', timeline);
+                    if (start ){
+                        container.makeCustomTime(start, 'start', timeline);
+                    }
+                    if (end){
+                        container.makeCustomTime(end, 'end', timeline);
+                    }
             }
         }
     };
