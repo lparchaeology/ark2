@@ -280,6 +280,8 @@
                 window.tableclick = formclick;
             }
 
+            sortSelection(window.tableclick);
+
             that.$toolbar.find('button[name="tableView"]').on('click', function () {
                 $(this).blur();
 
