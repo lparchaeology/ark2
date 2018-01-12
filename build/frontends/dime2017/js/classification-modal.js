@@ -5,8 +5,8 @@ var initTimeline = function () {
     container.customTimeExists = function(timeid) {
         var promise = new Promise(function (resolve) {
             window.setTimeout(function () {
-                console.log("looping");
                 if ($(".vis-custom-time").filter("." + timeid).length !== 1) {
+                    console.log('looping');
                     container.customTimeExists(timeid);
                 } else {
                     resolve();
@@ -30,7 +30,6 @@ var initTimeline = function () {
             });
             labelinput.on("blur", function () {
                 container.makeCustomTime($(this).val(), timeid, timeline);
-                container.drawLabel(timeid,timeline);
             });
             var labelform = $("<form onsubmit=\"return false;\">");
             labelform.append(labelinput);
@@ -44,46 +43,36 @@ var initTimeline = function () {
             labelinput.css("text-align", "center");
             $("#visualization").append(span);
         } else {
-            console.log(timeid);
             $("#" + timeid + "-input").val(new Date(timeline.getCustomTime(timeid)).getFullYear());
         }
-        console.log($(".vis-custom-time." + timeid).css("left"));
         var leftNumber = parseInt($(".vis-custom-time." + timeid).css("left"), 10);
         //var correction = window.width()/window.width();
         //leftNumber += correction;
-        console.log(leftNumber);
         span.css("left", leftNumber.toString() + "px");
     }
 
     container.makeCustomTime = function(time, name, timeline){
+
         try{
             timeline.setCustomTime(time,name);
         } catch (e) {
             timeline.addCustomTime(time,name);
         }
+        container.drawLabel(name,timeline);
     }
 
     //this adds start and end lines to the timeline
-    container.updateTimelineToPeriod = function (timeline, target) {
+    container.updateTimelineToPeriod = function (target, timeline) {
         if (target !== 'undefined' && target !== null) {
             if (typeof target.parameters !== 'undefined') {
-                try {
                     var target_years = getYearsFromTarget(target);
-                    console.log(target_years);
-                    if (typeof target_years.start == 'Integer'){
-                        container.makeCustomTime(target_years.start, 'start', timeline);
-                    }
-                    if (typeof target_years.end == 'Integer'){
-                        container.makeCustomTime(target_years.end, 'end', timeline);
-                    }
-                } catch (e) {
-                    console.log("failed while making custom time")
-                }
+                    start = vis.moment(parseInt(target_years.start), "Y");
+                    end = vis.moment(parseInt(target_years.end), "Y");
+                    container.makeCustomTime(start, 'start', timeline);
+                    container.makeCustomTime(end, 'end', timeline);
             }
         }
     };
-
-
 
     //Create a DataSet (allows two way data-binding)
     var items = new vis.DataSet();
@@ -178,7 +167,7 @@ var initTimeline = function () {
     };
 
     var getYearsFromTarget = function(target){
-        target_years = {"start": NULL, "end": NULL};
+        target_years = {"start": null, "end": null};
         if(target.parameters.hasOwnProperty("period")){
             target_years.start = window.periodvocabulary[target.parameters.period.value].parameters.year_start.value,
             target_years.end =  window.periodvocabulary[target.parameters.period.value].parameters.year_end.value
@@ -307,8 +296,6 @@ var initTimeline = function () {
             var target = $(this).val();
             level2.empty();
             parenttaxonomy = window.typevocabulary[parentclass].taxonomy;
-            console.log(parenttaxonomy);
-            console.log(target)
             var level1klassification = parenttaxonomy[target];
             for (descendent in level1klassification['taxonomy']){
                 level2option =  level1klassification['taxonomy'][descendent];
@@ -328,9 +315,9 @@ var initTimeline = function () {
         level2.on("select2:select select2:unselecting", function () {
             var target = $(this).val();
             var parentclass = $('#'+window.type_id).val();
-            var parentsubclass = $('#'+window.subtype_id).val();
+            var parentsubclass = $('#find_subtype_level1').val();
             parenttaxonomy = window.typevocabulary[parentclass].taxonomy[parentsubclass].taxonomy;
-
+            console.log(parenttaxonomy[target]);
             $('#'+window.subtype_id).val(parenttaxonomy[target]['name']);
             $('#'+window.subtype_id).select2(select2Options);
             $('#'+window.subtype_id).trigger('select2:select');
@@ -338,23 +325,36 @@ var initTimeline = function () {
             container.updateTimelineToPeriod(parenttaxonomy[target], timeline);
 
         });
+        var parentclass = $('#find_class_term_modal').val()
 
         // set the initial values and set it up
-        subtypevocabulary = window.typevocabulary[$('#find_class_term_modal').val()].taxonomy;
+        subtypevocabulary = window.typevocabulary[parentclass].taxonomy;
 
         for (var term in subtypevocabulary) {
             var subtype = subtypevocabulary[term]['name'];
             $('#' + window.subtype_id + ' option[value="' + subtype + '"]').clone().appendTo(level1);
         }
 
-        var currentSubtype = $('#find_classification_subtype').val();
+        var currentSubtype = $('#'+window.subtype_id).val();
 
-        var start = $('#'+window.date_start_id).val();
-        var end = $('#'+window.date_start_id+'_span').val();
+        console.log(parentclass);
 
-        container.makeCustomTime(start,'start', timeline);
-        container.makeCustomTime(end,'end', timeline);
+        splitclass = currentSubtype.split(".");
 
+        level1name = parentclass + "." + splitclass[1];
+
+        for (potentialsubclass in window.typevocabulary[parentclass].taxonomy) {
+            if(level1name == potentialsubclass){
+                level1.val(potentialsubclass);
+                level1.select2(select2Options);
+                level1.trigger('select2:select');
+                if (level1name != currentSubtype){
+                    level2.val(currentSubtype);
+                    level2.select2(select2Options);
+                    level2.trigger('select2:select');
+                }
+            }
+        }
     }
 
     // on launching the modal do the stuff to make it work
@@ -368,6 +368,11 @@ var initTimeline = function () {
             $('.vis-tl-zoom-out').trigger('click');
         }, 3000);
 
+        var start = $('#'+window.date_start_id).val();
+        var end = $('#'+window.date_start_id+'_span').val();
+
+        container.makeCustomTime(start,'start', timeline);
+        container.makeCustomTime(end,'end', timeline);
     });
 
     $(timeline).attr('pannning', false);
@@ -486,13 +491,13 @@ var initTimeline = function () {
         var startperiod = window.getPeriodFromYear(new Date(start).getFullYear());
         $('#' + window.date_start_period_id).val(startperiod.name);
         $('#' + window.date_start_period_id).trigger('change.select2');
-        timeline.addCustomTime(start,'start');
+        container.makeCustomTime(start,'start', timeline);
 
         $('#'+window.date_start_id+'_span').val(new Date(end).getFullYear(), 'Y');
         var endperiod = window.getPeriodFromYear(new Date(end).getFullYear());
         $('#' + window.date_start_period_id+'_span').val(startperiod.name);
         $('#' + window.date_start_period_id+'_span').trigger('change.select2');
-        timeline.addCustomTime(end,'end');
+        container.makeCustomTime(end,'end',timeline);
 
     });
 
@@ -506,9 +511,6 @@ var initTimeline = function () {
 
     $('.vis-item-content').each(function () {
         $(this).attr('title', $(this).html());
-    });
-
-    timeline.on('rangechanged', function () {
     });
 
 };
