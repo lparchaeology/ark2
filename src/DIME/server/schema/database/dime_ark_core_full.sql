@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.7
+-- version 4.7.6
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 11, 2018 at 10:49 PM
--- Server version: 10.2.12-MariaDB
--- PHP Version: 7.1.13
+-- Generation Time: Jan 12, 2018 at 11:56 AM
+-- Server version: 10.2.11-MariaDB
+-- PHP Version: 7.1.12
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -6926,10 +6926,10 @@ INSERT INTO `ark_view_table` (`element`, `mode`, `caption`, `header`, `footer`, 
 ('core_actor_table', 'view', 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 'list', 'avatar', 1, 1, 10, '1', NULL, 'table-hover dime-table', NULL, NULL),
 ('core_file_table', NULL, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 'list', NULL, 1, 1, 10, '1', NULL, 'table-hover dime-table', NULL, NULL),
 ('core_message_table', 'view', 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 'list', NULL, 1, 1, 10, '1', NULL, 'table-hover dime-table', 'layouts/messagelist.html.twig', NULL),
-('core_profile_table', 'view', 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 'card', 'avatar', 1, 1, 10, NULL, 'core.profiles', 'table-hover dime-table', NULL, NULL),
-('dime_find_front_table', NULL, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 'card', 'image', 1, 1, 10, NULL, NULL, 'table-hover dime-table', NULL, NULL),
+('core_profile_table', 'view', 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 'card', 'avatar', 1, 1, 10, '1', 'core.profiles', 'table-hover dime-table', NULL, NULL),
+('dime_find_front_table', NULL, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 'card', 'image', 1, 1, 10, '1', NULL, 'table-hover dime-table', NULL, NULL),
 ('dime_find_table', NULL, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 'card', 'image', 1, 1, 10, '1', NULL, 'table-hover dime-table', NULL, NULL),
-('dime_profile_table', NULL, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 'list', 'avatar', 1, 1, 10, NULL, 'dime.profiles', 'table-hover dime-table', NULL, NULL);
+('dime_profile_table', NULL, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 'list', 'avatar', 1, 1, 10, '1', 'dime.profiles', 'table-hover dime-table', NULL, NULL);
 
 -- --------------------------------------------------------
 
