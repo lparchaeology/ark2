@@ -76,7 +76,6 @@
 
         if (that.options.minHeight) {
             if (width <= that.options.minWidth && height <= that.options.minHeight) {
-                that.$toolbar.find('button[name="tableView"]').addClass('disabled');
                 switch (oldView) {
                     case 'tableView':
                         conditionCardView(that);
@@ -89,7 +88,6 @@
                         break;
                 }
             } else if (width > that.options.minWidth && height > that.options.minHeight) {
-                that.$toolbar.find('button[name="tableView"]').removeClass('disabled');
                 switch (oldView) {
                     case 'tableView':
                         conditionTableView(that);
@@ -104,7 +102,6 @@
             }
         } else {
             if (overflowWide) {
-                that.$toolbar.find('button[name="tableView"]').addClass('disabled');
                 switch (oldView) {
                     case 'tableView':
                         conditionCardView(that);
@@ -117,7 +114,6 @@
                         break;
                 }
             } else {
-                that.$toolbar.find('button[name="tableView"]').removeClass('disabled');
                 switch (oldView) {
                     case 'tableView':
                         conditionTableView(that);
