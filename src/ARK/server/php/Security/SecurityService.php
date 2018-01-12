@@ -266,11 +266,8 @@ class SecurityService
         $actorRole->expireAt($expiry);
         ORM::persist($actorRole);
         ORM::persist($actor);
-        dump($actor->roles());
         foreach ($actor->users() as $user) {
-            dump($user->user());
             $user->user()->resetLevel();
-            dump($user->user());
             ORM::persist($user->user());
         }
         return $actorRole;
