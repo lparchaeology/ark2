@@ -75,6 +75,10 @@ input[type=checkbox] {
     opacity: 0;
 }
 
+li[role="menuitem"] input[type=checkbox] {
+    opacity: 1;
+}
+
 .checkbox {
     position: relative;
 }
