@@ -61,6 +61,7 @@
                 "vendor": [
                     "jquery/dist/jquery.js",
                     "jquery-form/src/jquery.form.js",
+                    "symfony-collection/jquery.collection.js",
                     "moment/moment.js",
                     "moment/locale/en-gb.js",
                     "moment/locale/da.js",
@@ -240,7 +241,9 @@
         ]
     },
     "templates": {
-        "vendor": [],
+        "vendor": [
+            "node_modules/symfony-collection/jquery.collection.js"
+        ],
         "core": [
             "twig/**/*",
             "twig/**/.*"
