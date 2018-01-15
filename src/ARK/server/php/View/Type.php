@@ -39,8 +39,8 @@ class Type
 
     protected $type = '';
     protected $layout = false;
-    protected $formType = '';
-    protected $template = '';
+    protected $formType;
+    protected $template;
 
     public function id() : string
     {
@@ -52,12 +52,12 @@ class Type
         return $this->layout;
     }
 
-    public function formType() : string
+    public function formType() : ?string
     {
         return $this->formType;
     }
 
-    public function template() : string
+    public function template() : ?string
     {
         return $this->template;
     }

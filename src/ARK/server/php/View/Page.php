@@ -102,13 +102,15 @@ class Page extends Element
 
     public function buildView(iterable $parent = []) : iterable
     {
-        //dump('BUILD PAGE VIEW : '.get_class($this).' '.$this->id().' '.$this->name().' '.$this->keyword());
+        dump('BUILD PAGE VIEW : '.get_class($this).' '.$this->id().' '.$this->name().' '.$this->keyword());
         //dump($parent);
         $view = parent::buildView($parent);
         if ($this->content()) {
-            $view['children'][] = $this->content()->buildView($view);
+            $childView = $view;
+            unset($childView['state']['template'], $childView['state']['form']['type']);
+            $view['children'][] = $this->content()->buildView($childView);
         }
-        //dump($view);
+        dump($view);
         return $view;
     }
 

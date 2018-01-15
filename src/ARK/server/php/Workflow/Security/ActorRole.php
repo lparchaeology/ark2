@@ -50,9 +50,7 @@ class ActorRole
         $this->actor = $actor;
         $this->role = $role->id();
         $this->roleEntity = $role;
-        if ($role->isAgent()) {
-            $this->agentFor = $agentFor;
-        }
+        $this->agentFor = ($agentFor === null) ? $actor : $agentFor;
     }
 
     public function actor() : Actor
@@ -70,12 +68,12 @@ class ActorRole
 
     public function isAgent() : bool
     {
-        return $this->agentFor !== null;
+        return $this->agentFor->id() !== $this->actor->id();
     }
 
     public function agentFor() : ?Actor
     {
-        return $this->agentFor;
+        return $this->isAgent() ? $this->agentFor : null;
     }
 
     public function isEnabled() : bool
@@ -112,12 +110,10 @@ class ActorRole
         // Key
         $builder->addManyToOneKey('actor', Actor::class, 'actor', 'id');
         $builder->addStringKey('role', 30);
+        $builder->addManyToOneKey('agentFor', Actor::class, 'agent_for', 'id');
 
         // Attributes
         $builder->addField('enabled', 'boolean');
         $builder->addMappedField('expires_at', 'expiresAt', 'datetime');
-
-        // Relationships
-        $builder->addManyToOneField('agentFor', Actor::class, 'agent_for', 'id');
     }
 }

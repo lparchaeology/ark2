@@ -46,8 +46,8 @@ abstract class Element implements ElementInterface
     protected $type;
     protected $name;
     protected $mode = '';
-    protected $template = '';
-    protected $formType = '';
+    protected $template;
+    protected $formType;
     protected $cells;
 
     public function __construct(string $element, $type, string $formType = null, string $template = null)
@@ -79,14 +79,14 @@ abstract class Element implements ElementInterface
         return $this->mode;
     }
 
-    public function template() : string
+    public function template() : ?string
     {
-        return $this->template ?? $this->type->template() ?? '';
+        return $this->template ?? $this->type->template();
     }
 
-    public function formType() : string
+    public function formType() : ?string
     {
-        return $this->formType ?? $this->type->formType() ?? '';
+        return $this->formType ?? $this->type->formType();
     }
 
     public function cells() : iterable
@@ -124,6 +124,7 @@ abstract class Element implements ElementInterface
         //dump('BUILD VIEW : '.get_class($this).' '.$this->id().' '.$this->name().' '.$this->keyword());
         //dump($parent);
         $view['element'] = $this;
+
         $view['state'] = $this->buildState($parent['data'], $parent['state']);
         $view['data'] = $this->buildData($parent['data'], $view['state']);
         $view['options'] = $this->buildOptions($view['data'], $view['state'], $parent['options']);
@@ -213,8 +214,8 @@ abstract class Element implements ElementInterface
     protected function buildState($data, iterable $state) : iterable
     {
         $this->inheritValue($state, 'name', $this->name());
-        $this->setValue($state, 'template', $this->template());
-        $this->setGroupValue($state, 'form', 'type', $this->formType());
+        $this->inheritValue($state, 'template', $this->template());
+        $this->inheritGroupValue($state, 'form', 'type', $this->formType());
         return $state;
     }
 

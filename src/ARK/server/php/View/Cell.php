@@ -53,7 +53,7 @@ class Cell implements ElementInterface
     protected $seq = 0;
     protected $class = '';
     protected $element;
-    protected $name = '';
+    protected $name;
     protected $width;
     protected $map;
     protected $vocabulary;
@@ -81,7 +81,7 @@ class Cell implements ElementInterface
     protected $exportFormat;
     protected $template;
     protected $options;
-    protected $formType = '';
+    protected $formType;
     protected $formOptions = '';
     protected $formOptionsArray;
 
@@ -245,9 +245,9 @@ class Cell implements ElementInterface
         return $this->exportFormat;
     }
 
-    public function template() : string
+    public function template() : ?string
     {
-        return $this->template ?? '';
+        return $this->template;
     }
 
     public function options() : iterable
@@ -255,9 +255,9 @@ class Cell implements ElementInterface
         return json_decode($this->options ?? '{}', true);
     }
 
-    public function formType() : string
+    public function formType() : ?string
     {
-        return $this->formType ?? '';
+        return $this->formType;
     }
 
     public function buildView(iterable $parent) : iterable
@@ -364,8 +364,9 @@ class Cell implements ElementInterface
         $state['visible'] = $this->visible ?? true;
         $state['width'] = $this->width;
         $state['keyword'] = $this->keyword;
-        $state['template'] = $this->template();
         $state['action'] = $this->action;
+        $state['template'] = $this->template();
+        $state['form']['type'] = $this->formType();
 
         // TODO check logic on this, implies cell can override schema required field?
         if ($this->required === false) {

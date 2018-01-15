@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK View Cell.
+ * ARK Form Type.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,24 +27,16 @@
  * @since      2.0
  */
 
-namespace ARK\View;
+namespace ARK\Form\Type;
 
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\AbstractType;
 
-interface ElementInterface
+class UserRoleType extends AbstractType
 {
-    public function name() : ?string;
-
-    public function mode() : string;
-
-    public function template() : ?string;
-
-    public function formType() : ?string;
-
-    public function buildView(iterable $parent) : iterable;
-
-    public function buildForm(iterable $view, FormBuilderInterface $builder) : void;
-
-    public function renderView(iterable $view, iterable $forms = [], FormView $form = null) : string;
+    public function buildForm(FormBuilderInterface $builder, array $options) : void
+    {
+        $builder->add('role');
+        $builder->add('museum');
+        $builder->add('expiry');
+    }
 }

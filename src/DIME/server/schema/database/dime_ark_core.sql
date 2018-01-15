@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.6
+-- version 4.7.7
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 12, 2018 at 12:18 PM
--- Server version: 10.2.11-MariaDB
--- PHP Version: 7.1.12
+-- Generation Time: Jan 15, 2018 at 05:00 PM
+-- Server version: 10.2.12-MariaDB
+-- PHP Version: 7.1.13
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -1042,7 +1042,7 @@ INSERT INTO `ark_route` (`route`, `collection`, `can_get`, `can_post`, `page`, `
 ('dime.api.vocabulary', 'api', 0, 1, NULL, NULL, 'DIME\\Framework\\Controller\\API\\VocabularyController'),
 ('dime.detector', 'view', 1, 0, 'dime_page_static', NULL, 'DIME\\Framework\\Controller\\View\\PageViewController'),
 ('dime.finds.add', 'view', 1, 1, 'dime_page_find_add', 'dime.finds.view', 'DIME\\Framework\\Controller\\View\\FindAddController'),
-('dime.finds.list', 'view', 1, 0, 'dime_page_find_list', NULL, 'DIME\\Framework\\Controller\\View\\FindListController'),
+('dime.finds.list', 'view', 1, 1, 'dime_page_find_list', NULL, 'DIME\\Framework\\Controller\\View\\FindListController'),
 ('dime.finds.register', 'view', 1, 1, 'dime_page_find_register', NULL, 'DIME\\Framework\\Controller\\View\\FindRegisterController'),
 ('dime.finds.view', 'view', 1, 1, 'dime_page_find', NULL, 'DIME\\Framework\\Controller\\View\\FindViewController'),
 ('dime.front', 'view', 1, 0, 'dime_page_front', NULL, 'DIME\\Framework\\Controller\\View\\FrontPageController'),
@@ -6171,7 +6171,7 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('dime_admin_user_page', '', 0, 0, 2, 'dime_profile_list', NULL, NULL, 'actors', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_admin_user_page', '', 0, 1, 0, 'dime_user_actor', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_admin_user_page', '', 0, 1, 2, 'core_user_password_set', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_admin_user_page', '', 0, 1, 4, 'dime_user_actor_role', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_admin_user_page', '', 0, 1, 4, 'core_user_role_add', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_add', '', 0, 0, 0, 'dime_find_add_case', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_add', '', 0, 0, 2, 'dime_find_event', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_add', '', 0, 0, 4, 'dime_find_geo', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
@@ -6328,7 +6328,7 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('dime_user_actor', '', 0, 0, 12, 'core_actor_email', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_user_actor', '', 0, 0, 24, 'core_widget_submit', NULL, NULL, 'save', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.save', NULL, NULL, NULL, NULL),
 ('dime_user_actor', '', 0, 1, 2, 'core_actor_avatar', NULL, NULL, NULL, 4, 0, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_user_actor_role', '', 0, 0, 0, 'core_user_role', NULL, NULL, 'museum', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\CollectionType', NULL),
+('dime_user_actor_role', '', 0, 0, 0, 'core_user_role', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, 'ARK\\Form\\Type\\CollectionPropertyType', NULL),
 ('dime_user_actor_role', '', 0, 0, 2, 'core_widget_submit', NULL, NULL, 'actor_role', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.save', NULL, NULL, NULL, NULL),
 ('dime_user_filter', '', 0, 0, 0, 'core_widget_choice', NULL, 'core.security.user.status', 'status', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"style\": \"width:95%\"}}', NULL, NULL),
 ('dime_user_filter', '', 0, 2, 0, 'core_widget_submit', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.select', NULL, NULL, NULL, NULL),
@@ -7939,8 +7939,8 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `seq`, `is_defaul
 ('core.page.class', 'page', '', NULL, 0, 0, 1, 0, 'core.page', ''),
 ('core.security.user.status', 'approved', '', NULL, 0, 0, 1, 0, 'core.security.user.status.approved', ''),
 ('core.security.user.status', 'closed', '', NULL, 0, 0, 1, 0, 'core.security.user.status.closed', ''),
-('core.security.user.status', 'disabled', '', NULL, 0, 0, 1, 0, NULL, ''),
-('core.security.user.status', 'enabled', '', NULL, 0, 0, 1, 0, NULL, ''),
+('core.security.user.status', 'disabled', '', NULL, 0, 0, 1, 0, 'core.security.user.status.disabled', ''),
+('core.security.user.status', 'enabled', '', NULL, 0, 0, 1, 0, 'core.security.user.status.enabled', ''),
 ('core.security.user.status', 'expired', '', NULL, 0, 0, 1, 0, 'core.security.user.status.expired', ''),
 ('core.security.user.status', 'locked', '', NULL, 0, 0, 1, 0, 'core.security.user.status.locked', ''),
 ('core.security.user.status', 'registered', '', NULL, 1, 0, 1, 0, 'core.security.user.status.registered', ''),

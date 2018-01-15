@@ -70,7 +70,9 @@ class Form extends Element
             $builder->setAction(Service::path($this->action));
         }
         $this->buildForm($view, $builder);
-        return [$name => $builder->getForm()];
+        $form = $builder->getForm();
+        //dump($form);
+        return [$name => $form];
     }
 
     public function buildForm(iterable $view, FormBuilderInterface $builder) : void
