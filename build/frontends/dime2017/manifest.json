@@ -242,7 +242,7 @@
     },
     "templates": {
         "vendor": [
-            "symfony-collection/jquery.collection.js"
+            "symfony-collection/jquery.collection.html.twig"
         ],
         "core": [
             "twig/**/*",
