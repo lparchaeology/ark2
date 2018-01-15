@@ -6,7 +6,7 @@ var initTimeline = function () {
         var promise = new Promise(function (resolve) {
             window.setTimeout(function () {
                 if ($(".vis-custom-time").filter("." + timeid).length !== 1) {
-                    console.log('looping');
+                    //console.log('looping');
                     container.customTimeExists(timeid);
                 } else {
                     resolve();
@@ -72,7 +72,10 @@ var initTimeline = function () {
     container.updateTimelineToPeriod = function (target, timeline) {
         if (target !== 'undefined' && target !== null) {
             if (typeof target.parameters !== 'undefined') {
-                    var target_years = getYearsFromTarget(target);
+                var target_years = getYearsFromTarget(target);
+                console.log(parseInt(target_years.start));
+                console.log(parseInt(target_years.start)!=NaN);
+                if($.isNumeric(parseInt(target_years.start)) && $.isNumeric(parseInt(target_years.end))){
                     start = vis.moment(parseInt(target_years.start), "Y");
                     end = vis.moment(parseInt(target_years.end), "Y");
                     if (start ){
@@ -81,6 +84,7 @@ var initTimeline = function () {
                     if (end){
                         container.makeCustomTime(end, 'end', timeline);
                     }
+                }
             }
         }
     };
@@ -179,7 +183,10 @@ var initTimeline = function () {
 
     var getYearsFromTarget = function(target){
         target_years = {"start": null, "end": null};
+
         if(target.parameters.hasOwnProperty("period")){
+            console.log(target.parameters.period.value);
+            console.log(window.periodvocabulary[target.parameters.period.value]);
             target_years.start = window.periodvocabulary[target.parameters.period.value].parameters.year_start.value,
             target_years.end =  window.periodvocabulary[target.parameters.period.value].parameters.year_end.value
         }
@@ -392,8 +399,9 @@ var initTimeline = function () {
         $(timeline).attr('pannning', true);
     });
     timeline.on('rangechanged', function () {
+        console.log('rangechanged');
         $('.vis-range').each(function (i, e) {
-            if ($(e).width() < 100 || $(e).width() > 1800) {
+            if ($(e).width() < 100 || $(e).width() > 1000) {
                 $(e).hide();
             } else {
                 $(e).show();

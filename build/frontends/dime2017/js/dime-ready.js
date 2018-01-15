@@ -73,42 +73,44 @@ $(document).ready(function () {
             // trigger upload method immediately after files are selected
             $("input[type=file]").fileinput("upload");
         }).on('filebatchuploadsuccess', function (event, data, previewId, index) {
-            var response = data.response;
-            if ($("#find_image_existing > input[value='null']").length > 0) {
-                $("#find_image_existing > input[value='null']").first().val(response[0]);
-            } else {
-                var count = $("#find_image_existing > input").length;
-                if (count < 3) {
-                    if ($("#find_image_existing_0").length === 0) {
-                        $("#find_image_existing").append($("<input type=\"hidden\" id=\"find_image_existing_0\" name=\"find[image][existing][0]\" value=\"" + response[0] + "\">"));
-                    } else if ($("#find_image_existing_1").length === 0) {
-                        $("#find_image_existing").append($("<input type=\"hidden\" id=\"find_image_existing_1\" name=\"find[image][existing][1]\" value=\"" + response[0] + "\">"));
-                    } else {
-                        $("#find_image_existing").append($("<input type=\"hidden\" id=\"find_image_existing_2\" name=\"find[image][existing][2]\" value=\"" + response[0] + "\">"));
-                    }
-                } else {
-                    var removePreview = $("#find_image_existing_" + (count - 1).toString()).val();
-                    var uploadPreview = $("#find_image_existing").data('uploadPreview');
-                    for (var upload in uploadPreview) {
-                        if (removePreview === uploadPreview[upload]) {
-                            $("#" + upload).find("button.kv-file-remove").click();
-                        }
-                    }
+            var response = data.response.slice(0, 3);
+            $("#find_image_existing").data('uploadResponse', response);
+            var uploadPreview = $("#find_image_existing").data('uploadPreview');
 
-                    $("button.kv-file-remove[data-key=" + removePreview + "]").click();
+            var find_image_existing_null = $("#find_image_existing > input[value='null']").length;
+            var rawindex = 0;
 
-                    $("#find_image_existing_" + (count - 1).toString()).val(response[0]);
+            while (find_image_existing_null > 0 && rawindex in response ){
+                console.log({"find_image_existing_null":find_image_existing_null});
+                $("#find_image_existing > input[value='null']").first(0).val(response[rawindex]);
+                rawindex +=1;
+                find_image_existing_null = $("#find_image_existing > input[value='null']").length;
+            }
+            if ( rawindex < response.length ){
+                for (index in response){
+                    if (index < rawindex){
+                        continue;
+                    }
+                    var removePreview = $("#find_image_existing_" + (2-index).toString()).val();
+                    console.log(removePreview);
+                    if(removePreview!=null){
+                        $(uploadPreview[removePreview]).find('button.kv-file-remove').click();
+                    }
+                    $("#find_image_existing_" + (2-index).toString()).val(response[index]);
                 }
             }
-            var uploadUploaded = $("#find_image_existing").data('uploadUploaded');
-            var thumbnails = $(".kv-preview-thumb");
-            uploadUploaded[response[0]] = thumbnails.last();
         }).on('filebatchuploadcomplete', function (event, file, extra) {
-            var uploadUploaded = $("#find_image_existing").data('uploadUploaded');
+            var thumbnails = $('.file-preview-success');
+            console.log(thumbnails);
+            console.log(thumbnails.length);
+
+            var response = $("#find_image_existing").data('uploadResponse');
             var uploadPreview = $("#find_image_existing").data('uploadPreview');
-            for (var key in uploadUploaded) {
-                uploadPreview[$(uploadUploaded[key])[0].id] = key;
+            for (index in response){
+                var thumbnail = thumbnails.length - response.length + parseInt(index);
+                uploadPreview[response[index]]=thumbnails[thumbnail];
             }
+            console.log({"uploadPreview":uploadPreview});
         }).on('filesuccessremove', function (event, id) {
             var form_root_array = $(this).closest(".file-input").find("input[type=file]").attr('id').split("_");
             form_root_array.splice(-1, 1);
@@ -117,7 +119,7 @@ $(document).ready(function () {
 
             var uploadPreview = $("#find_image_existing").data('uploadPreview');
 
-            if ($("#" + existing_id_container).find('input[value="' + uploadPreview[id] + '"]').remove()) {
+            if ($("#" + existing_id_container).find('input[value="' + uploadPreview[id] + '"]').val("null")) {
                 console.log('Uploaded thumbnail successfully removed');
             } else {
                 return false; // abort the thumbnail removal
@@ -127,7 +129,7 @@ $(document).ready(function () {
             form_root_array.splice(-1, 1);
             var existing_id_container = form_root_array.join("_") + "_existing";
 
-            if ($("#" + existing_id_container).find('input[value="' + id + '"]').remove()) {
+            if ($("#" + existing_id_container).find('input[value="' + id + '"]').val("null")) {
                 console.log('Uploaded thumbnail successfully removed');
             } else {
                 return false; // abort the thumbnail removal
