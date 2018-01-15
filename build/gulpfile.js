@@ -200,7 +200,20 @@ gulp.task('config', function () {
  * Task to install required twig templates into the frontend
  */
 gulp.task('templates', function () {
-    return installFiles('templates');
+    var manifest = frontendManifest();
+    var frontend = manifest.frontend;
+    var paths = manifest.templates;
+    var vendorSrc = prefixPaths('node_modules/', paths.vendor);
+    var frontendSrc = prefixPaths('core/', paths.core);
+    frontendSrc = frontendSrc.concat(prefixPaths('frontends/' + frontend + '/', paths.custom));
+
+    var vendorDest = frontendDestPath(manifest) + '/templates/vendor';
+    fs.emptyDirSync(vendorDest);
+    copyFiles(vendorSrc, vendorDest);
+
+    var frontendDest = frontendDestPath(manifest) + '/templates';
+    fs.emptyDirSync(frontendDest);
+    return copyFiles(frontendSrc, frontendDest);
 });
 
 /*
