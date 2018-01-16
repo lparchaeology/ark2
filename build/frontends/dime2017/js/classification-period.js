@@ -34,7 +34,9 @@ var initPeriod = function () {
                 }
                 return period;
             }
-            initTimeline();
+            if($('#finds_classify').length==1){
+                initTimeline();
+            }
         });
 
 }
