@@ -6988,7 +6988,7 @@ CREATE TABLE `ark_view_type` (
 
 INSERT INTO `ark_view_type` (`type`, `layout`, `class`, `form_type`, `template`, `keyword`) VALUES
 ('field', 0, 'ARK\\View\\Field', 'ARK\\Form\\Type\\SimplePropertyType', 'layouts/field.html.twig', NULL),
-('form', 1, 'ARK\\View\\Form', 'ARK\\Form\\Type\\SimplePropertyType', 'layouts/grid.html.twig', NULL),
+('form', 1, 'ARK\\View\\Form', 'ARK\\Form\\Type\\SimplePropertyType', 'layouts/form.html.twig', NULL),
 ('grid', 1, 'ARK\\View\\Grid', 'ARK\\Form\\Type\\SimplePropertyType', 'layouts/grid.html.twig', NULL),
 ('nav', 0, 'ARK\\View\\Nav', NULL, 'blocks/nav.html.twig', NULL),
 ('page', 0, 'ARK\\View\\Page', NULL, 'pages/default.html.twig', NULL),
