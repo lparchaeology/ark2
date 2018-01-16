@@ -87,7 +87,6 @@ class Role
     {
         if ($this->actors === null) {
             $ars = ORM::findBy(ActorRole::class, ['role' => $this->role]);
-            dump($ars);
             $this->actors = new ArrayCollection();
             foreach ($ars as $ar) {
                 $this->actors->add($ar->actor());
