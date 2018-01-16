@@ -163,7 +163,7 @@ class WorkflowService
 
     public function can(Actor $actor, $action, Item $item, $attribute = null) : bool
     {
-        //dump('Workflow::can('.$actor->id().' '.$action.' '.$item->schema()->module()->id().')');
+        //dump('Workflow::can('.$actor->id().' '.is_string($action) ? $action : $action->id().' '.$item->schema()->module()->id().')');
         if (is_string($action)) {
             $action = $this->action($item->schema()->name(), $action);
         }

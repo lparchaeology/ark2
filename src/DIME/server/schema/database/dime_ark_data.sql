@@ -991,14 +991,10 @@ CREATE TABLE `ark_workflow_actor_role` (
 
 INSERT INTO `ark_workflow_actor_role` (`actor`, `role`, `agent_for`, `enabled`, `expires_at`) VALUES
 ('admin', 'admin', 'admin', 1, NULL),
-('admin', 'admin', 'NJM', 1, NULL),
 ('anonymous', 'anonymous', 'anonymous', 1, NULL),
 ('detectorist', 'detectorist', 'detectorist', 1, NULL),
-('registrar', 'admin', 'NJM', 1, NULL),
-('researcher', 'researcher', 'ARV', 1, NULL),
-('researcher', 'researcher', 'HEM', 1, NULL),
+('registrar', 'registrar', 'NJM', 1, NULL),
 ('researcher', 'researcher', 'NJM', 1, NULL),
-('researcher', 'researcher', 'OBM', 1, NULL),
 ('sysadmin', 'sysadmin', 'sysadmin', 1, NULL);
 
 -- --------------------------------------------------------

@@ -32,6 +32,7 @@ namespace ARK\Workflow;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\ORM\ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class Permission
@@ -60,6 +61,11 @@ class Permission
     public function isEnabled() : bool
     {
         return $this->enabled;
+    }
+
+    public static function find(string $id) : ? self
+    {
+        return ORM::find(self::class, $id);
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void
