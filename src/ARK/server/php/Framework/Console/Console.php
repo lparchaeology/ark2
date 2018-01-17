@@ -30,7 +30,7 @@
 namespace ARK\Framework\Console;
 
 use ARK\ARK;
-use ARK\Database\Console\Command\DatabaseDropCommand;
+use ARK\Database\Console\Command\DatabaseDropTablesCommand;
 use ARK\Database\Console\Command\DatabaseImportCommand;
 use ARK\Database\Console\Command\DatabaseTruncateCommand;
 use ARK\Framework\Application;
@@ -87,7 +87,7 @@ class Console extends AbstractConsole
         $this->add(new ViewPageDumpCommand());
 
         // Database Commands
-        $this->add(new DatabaseDropCommand());
+        $this->add(new DatabaseDropTablesCommand());
         $this->add(new DatabaseImportCommand());
         $this->add(new DatabaseTruncateCommand());
 
