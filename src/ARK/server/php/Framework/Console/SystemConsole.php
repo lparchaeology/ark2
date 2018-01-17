@@ -30,7 +30,7 @@
 namespace ARK\Framework\Console;
 
 use ARK\Database\Console\Command\DatabaseCloneCommand;
-use ARK\Database\Console\Command\DatabaseDropCommand;
+use ARK\Database\Console\Command\DatabaseDropTablesCommand;
 use ARK\Database\Console\Command\DatabaseImportCommand;
 use ARK\Database\Console\Command\DatabaseServerAddCommand;
 use ARK\Database\Console\Command\DatabaseTruncateCommand;
@@ -59,7 +59,7 @@ class SystemConsole extends AbstractConsole
         // Database Commands
         $this->add(new DatabaseServerAddCommand());
         $this->add(new DatabaseCloneCommand());
-        $this->add(new DatabaseDropCommand());
+        $this->add(new DatabaseDropTablesCommand());
         $this->add(new DatabaseImportCommand());
         $this->add(new DatabaseTruncateCommand());
 

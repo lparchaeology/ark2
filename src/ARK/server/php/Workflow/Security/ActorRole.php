@@ -35,6 +35,8 @@ use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
 use ARK\Workflow\Role;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 class ActorRole
 {
@@ -100,6 +102,38 @@ class ActorRole
     public function expireAt(?DateTime $date) : void
     {
         $this->expiresAt = $date;
+    }
+
+    public static function findByActor($actor) : Collection
+    {
+        // TODO Use DQL to check enabled flag and expiry date in single query
+        $id = $actor instanceof Actor ? $actor->id() : $actor;
+        // Get enabled roles for actor
+        $ars = ORM::findBy(self::class, ['actor' => $id, 'enabled' => true]);
+        // Check for now expired roles
+        $enabled = new ArrayCollection();
+        foreach ($ars as $ar) {
+            if ($ar->isEnabled()) {
+                $enabled->add($ar);
+            }
+        }
+        return $enabled;
+    }
+
+    public static function findByRole($role) : Collection
+    {
+        // TODO Use DQL to check enabled flag and expiry date in single query
+        $id = $actor instanceof Role ? $role->id() : $role;
+        // Get enabled roles for actor
+        $ars = ORM::findBy(self::class, ['role' => $id, 'enabled' => true]);
+        // Check for now expired roles
+        $enabled = new ArrayCollection();
+        foreach ($ars as $ar) {
+            if ($ar->isEnabled()) {
+                $enabled->add($ar);
+            }
+        }
+        return $enabled;
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void

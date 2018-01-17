@@ -1,9 +1,5 @@
 {# ARK GridLayout template for standard Bootstrap grid #}
 
-{% if element.type.id == 'form' and form %}
-    {{ form_start(form) }}
-{% endif %}
-
 {% if label %}
     <div class="form-group">
         <div class="col-md-4"></div>
@@ -52,7 +48,3 @@
     {% endif %}
 
 {% endfor %}
-
-{% if element.type.id == 'form' and form %}
-    {{ form_end(form) }}
-{% endif %}

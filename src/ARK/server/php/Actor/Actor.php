@@ -32,7 +32,6 @@ namespace ARK\Actor;
 use ARK\Model\Item;
 use ARK\Model\ItemTrait;
 use ARK\Model\LocalText;
-use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\Workflow\Action;
 use ARK\Workflow\Permission;
@@ -91,26 +90,12 @@ class Actor implements Item
 
     public function roles() : Collection
     {
-        $roles = ORM::findBy(ActorRole::class, ['actor' => $this->id(), 'enabled' => true]);
-        $enabled = new ArrayCollection();
-        foreach ($roles as $role) {
-            if ($role->isEnabled()) {
-                $enabled->add($role);
-            }
-        }
-        return $enabled;
+        return ActorRole::findByActor($this);
     }
 
     public function users() : Collection
     {
-        $aus = ORM::findBy(ActorUser::class, ['actor' => $this->id(), 'enabled' => true]);
-        $enabled = new ArrayCollection();
-        foreach ($aus as $au) {
-            if ($au->isEnabled()) {
-                $enabled->add($au);
-            }
-        }
-        return $enabled;
+        return ActorUser::findByActor($this);
     }
 
     public function hasPermission($permission = null) : bool
@@ -119,7 +104,7 @@ class Actor implements Item
             return true;
         }
         if (is_string($permission)) {
-            $permission = ORM::find(Permission::class, $permission);
+            $permission = Permission::find($permission);
         }
         if ($permission instanceof Permission) {
             foreach ($this->roles() as $role) {

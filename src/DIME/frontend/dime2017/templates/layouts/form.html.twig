@@ -1,7 +1,11 @@
-<div>
+{# ARK GridLayout template for standard Bootstrap grid #}
 
-    {% for form in forms %}
-        {{ form_row(form, {'state': state, 'help': help}) }}
-    {% endfor %}
+{% if element.type.id == 'form' and form %}
+    {{ form_start(form) }}
+{% endif %}
 
-</div>
+{% include 'layouts/grid.html.twig' %}
+
+{% if element.type.id == 'form' and form %}
+    {{ form_end(form) }}
+{% endif %}

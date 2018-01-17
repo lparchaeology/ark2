@@ -35,6 +35,8 @@ use ARK\ORM\ClassMetadataBuilder;
 use ARK\Security\User;
 use ARK\Service;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 class ActorUser
 {
@@ -91,6 +93,38 @@ class ActorUser
     public function expireAt(?DateTime $date) : void
     {
         $this->expiresAt = $date;
+    }
+
+    public static function findByActor($actor) : Collection
+    {
+        // TODO Use DQL to check enabled flag and expiry date in single query
+        $id = $actor instanceof Actor ? $actor->id() : $actor;
+        // Get enabled users for actor
+        $aus = ORM::findBy(self::class, ['actor' => $id, 'enabled' => true]);
+        // Check for now expired users
+        $enabled = new ArrayCollection();
+        foreach ($aus as $au) {
+            if ($au->isEnabled()) {
+                $enabled->add($au);
+            }
+        }
+        return $enabled;
+    }
+
+    public static function findByUser($user) : Collection
+    {
+        // TODO Use DQL to check enabled flag and expiry date in single query
+        $id = $actor instanceof User ? $user->id() : $user;
+        // Get enabled actors for user
+        $aus = ORM::findBy(self::class, ['user' => $id, 'enabled' => true]);
+        // Check for now expired actors
+        $enabled = new ArrayCollection();
+        foreach ($aus as $au) {
+            if ($au->isEnabled()) {
+                $enabled->add($au);
+            }
+        }
+        return $enabled;
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void

@@ -37,13 +37,17 @@ class DatabaseImportCommand extends DatabaseCommand
     protected function configure() : void
     {
         $this->setName('database:import')
-             ->setDescription('Import an SQL file into a database');
+             ->setDescription('Import an SQL file into a database')
+             ->addOptionalArgument('source', 'The source file to import');
     }
 
     protected function doExecute() : void
     {
         $conn = $this->chooseSiteConnection('root');
-        $path = $this->askFilePath('Please choose the SQL file to import');
+        $path = $this->input->getArgument('source');
+        if (!$path) {
+            $path = $this->askFilePath('Please choose the SQL file to import');
+        }
         if (!$this->confirmCommand($conn, 'Importing SQL may damage your data!')) {
             return;
         }

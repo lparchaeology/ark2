@@ -125,7 +125,7 @@
             message: message,
             notes: ''
         };
-        var path = Router.generatePath('api.internal.translation.message', { keyword: keyword, language: language });
+        var path = Router.generatePath('dime.api.translation.message', { keyword: keyword, language: language });
         $.post(path, JSON.stringify(response), function(result) {});
     }
 </script>

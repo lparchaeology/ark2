@@ -195,6 +195,7 @@ class User implements AdvancedUserInterface, Serializable
         $this->expiresAt = null;
         $this->activated = true;
         $this->enabled = true;
+        $this->resetLevel();
     }
 
     public function disable() : void

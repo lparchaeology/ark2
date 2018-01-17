@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 15, 2018 at 05:00 PM
+-- Generation Time: Jan 16, 2018 at 11:41 PM
 -- Server version: 10.2.12-MariaDB
 -- PHP Version: 7.1.13
 
@@ -1033,7 +1033,7 @@ INSERT INTO `ark_route` (`route`, `collection`, `can_get`, `can_post`, `page`, `
 ('dime.api.events.get', 'api', 1, 0, NULL, NULL, 'DIME\\Framework\\Controller\\API\\EventGetController'),
 ('dime.api.file.add', 'api', 0, 1, NULL, NULL, 'DIME\\Framework\\Controller\\API\\FilePostController'),
 ('dime.api.file.get', 'api', 1, 0, NULL, NULL, 'DIME\\Framework\\Controller\\API\\FileGetController'),
-('dime.api.geo.choropleth', 'api', 0, 1, NULL, NULL, 'DIME\\Framework\\Controller\\API\\ChoroplethController'),
+('dime.api.geo.choropleth', 'api', 1, 0, NULL, NULL, 'DIME\\Framework\\Controller\\API\\ChoroplethController'),
 ('dime.api.geo.find', 'api', 0, 1, NULL, NULL, 'DIME\\Framework\\Controller\\API\\GeoFindController'),
 ('dime.api.message.read', 'api', 0, 1, NULL, NULL, 'DIME\\Framework\\Controller\\API\\MessageReadController'),
 ('dime.api.messages.get', 'api', 1, 0, NULL, NULL, 'DIME\\Framework\\Controller\\API\\MessageGetController'),
@@ -6988,7 +6988,7 @@ CREATE TABLE `ark_view_type` (
 
 INSERT INTO `ark_view_type` (`type`, `layout`, `class`, `form_type`, `template`, `keyword`) VALUES
 ('field', 0, 'ARK\\View\\Field', 'ARK\\Form\\Type\\SimplePropertyType', 'layouts/field.html.twig', NULL),
-('form', 1, 'ARK\\View\\Form', 'ARK\\Form\\Type\\SimplePropertyType', 'layouts/grid.html.twig', NULL),
+('form', 1, 'ARK\\View\\Form', 'ARK\\Form\\Type\\SimplePropertyType', 'layouts/form.html.twig', NULL),
 ('grid', 1, 'ARK\\View\\Grid', 'ARK\\Form\\Type\\SimplePropertyType', 'layouts/grid.html.twig', NULL),
 ('nav', 0, 'ARK\\View\\Nav', NULL, 'blocks/nav.html.twig', NULL),
 ('page', 0, 'ARK\\View\\Page', NULL, 'pages/default.html.twig', NULL),

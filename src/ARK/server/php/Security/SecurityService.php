@@ -210,6 +210,7 @@ class SecurityService
             $user->enable();
         }
         ORM::flush($actor);
+        $user->resetLevel();
         ORM::flush($user);
         if ($this->options['verify_email']) {
             $this->sendVerificationMessage($user);
@@ -266,10 +267,6 @@ class SecurityService
         $actorRole->expireAt($expiry);
         ORM::persist($actorRole);
         ORM::persist($actor);
-        foreach ($actor->users() as $user) {
-            $user->user()->resetLevel();
-            ORM::persist($user->user());
-        }
         return $actorRole;
     }
 

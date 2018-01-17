@@ -74,6 +74,11 @@ class ActorRoleAddController extends ApiController
             $role = ORM::find(Role::class, $data['role']->name());
             $ar = Service::security()->createActorRole($actor, $role, $data['museum'], $data['expiry']);
             ORM::flush($ar);
+            foreach ($actor->users() as $user) {
+                $user->user()->resetLevel();
+                ORM::persist($user->user());
+            }
+            ORM::flush('user');
             $request->attributes->set('_status', 'success');
             $request->attributes->set('_message', 'dime.admin.user.role.added');
         }
