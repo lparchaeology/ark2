@@ -6,9 +6,23 @@ $(document).ready(function () {
     window.date_start_period_id = 'find_dating_period';
 
     // Initially hide the Coin-only fields
-    $('#find_mint_content').closest('.form-group').hide();
-    $('#find_issuer_content').closest('.form-group').hide();
-    $('#find_secondary_term_looped').closest('.checkbox').hide();
+    if ( $('#'+window.type_id).val() !== 'coin' ){
+        $('#find_mint_content').closest('.form-group').hide();
+        $('#find_issuer_content').closest('.form-group').hide();
+        $('#find_secondary_term_looped').closest('.checkbox').hide();
+    }
+
+    $('#'+window.type_id).on('select2:select', function(){
+        if ( $('#'+window.type_id).val() === 'coin' ){
+            $('#find_mint_content').closest('.form-group').show();
+            $('#find_issuer_content').closest('.form-group').show();
+            $('#find_secondary_term_looped').closest('.checkbox').show();
+        } else {
+            $('#find_mint_content').closest('.form-group').hide();
+            $('#find_issuer_content').closest('.form-group').hide();
+            $('#find_secondary_term_looped').closest('.checkbox').hide();
+        }
+    });
 
     $('#find_classify').attr('data-toggle', 'false');
 

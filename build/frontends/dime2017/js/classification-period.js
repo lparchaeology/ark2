@@ -34,7 +34,8 @@ var initPeriod = function () {
                 }
                 return period;
             }
-            if($('#finds_classify').length==1){
+
+            if($('#find_classify').length==1){
                 initTimeline();
             }
         });
