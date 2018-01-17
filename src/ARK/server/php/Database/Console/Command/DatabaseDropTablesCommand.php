@@ -32,11 +32,11 @@ namespace ARK\Database\Console\Command;
 use ARK\ARK;
 use Doctrine\DBAL\DBALException;
 
-class DatabaseDropCommand extends DatabaseCommand
+class DatabaseDropTablesCommand extends DatabaseCommand
 {
     protected function configure() : void
     {
-        $this->setName('database:drop')
+        $this->setName('database:drop:tables')
              ->setDescription('Drop all tables in a database');
     }
 
