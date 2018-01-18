@@ -76,7 +76,6 @@
 
                 {% for item in data['finds'] %}
                     {% set location = item.property('location').value() %}
-                    {% dump(location) %}
                     {% if location %}
                         points[{{ item.id }}] = '{{ location }}';
                     {% endif %}

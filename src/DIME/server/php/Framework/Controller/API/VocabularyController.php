@@ -30,6 +30,8 @@
 namespace DIME\Framework\Controller\API;
 
 use ARK\Http\JsonResponse;
+use ARK\ORM\ORM;
+use ARK\Vocabulary\Related;
 use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,11 +64,15 @@ class VocabularyController
                 $data['closed'] = $vocabulary->closed();
                 $data['keyword'] = $vocabulary->keyword();
                 $data['terms'] = [];
-                foreach ($vocabulary->terms() as $term) {
-                    $data['terms'][$term->name()] = $this->serializeTerm($term);
+                // List all the terms in the vocabulary but without any relationships, i.e. for a straight list
+                foreach ($vocabulary->terms(true) as $term) {
+                    $data['terms'][$term->name()] = $this->serializeTerm($term, false);
                 }
-                foreach ($vocabulary->terms() as $term) {
-                    $data['taxonomy'][$term->name()] = $this->serializeTerm($term);
+                $hasRelated = ORM::findBy(Related::class, ['fromConcept' => $vocabulary]);
+                if (count($hasRelated)) {
+                    foreach ($vocabulary->terms() as $term) {
+                        $data['taxonomy'][$term->name()] = $this->serializeTerm($term);
+                    }
                 }
             } else {
                 $data['error']['code'] = 0;
@@ -82,7 +88,7 @@ class VocabularyController
         return new JsonResponse($data);
     }
 
-    protected function serializeTerm(Term $term)
+    protected function serializeTerm(Term $term, bool $full = true)
     {
         $data['name'] = $term->name();
         $data['alias'] = $term->alias();
@@ -94,22 +100,24 @@ class VocabularyController
             $data['parameters'][$parameter->name()]['type'] = $parameter->type();
             $data['parameters'][$parameter->name()]['value'] = $parameter->value();
         }
-        $data['related'] = [];
-        foreach ($term->related() as $related) {
-            $relation['from']['concept'] = $related->fromTerm()->concept()->concept();
-            $relation['from']['name'] = $related->fromTerm()->name();
-            $relation['relation'] = $related->relation()->id();
-            $relation['to']['concept'] = $related->toTerm()->concept()->concept();
-            $relation['to']['name'] = $related->toTerm()->name();
-            $data['related'][] = $relation;
-        }
-        $data['descendents'] = [];
-        foreach ($term->descendents() as $descendent) {
-            $data['descendents'][] = $descendent->name();
-        }
-        $data['taxonomy'] = [];
-        foreach ($term->descendents() as $descendent) {
-            $data['taxonomy'][$descendent->name()] = $this->serializeTerm($descendent);
+        if ($full) {
+            $data['related'] = [];
+            foreach ($term->related() as $related) {
+                $relation['from']['concept'] = $related->fromTerm()->concept()->concept();
+                $relation['from']['name'] = $related->fromTerm()->name();
+                $relation['relation'] = $related->relation()->id();
+                $relation['to']['concept'] = $related->toTerm()->concept()->concept();
+                $relation['to']['name'] = $related->toTerm()->name();
+                $data['related'][] = $relation;
+            }
+            $data['descendents'] = [];
+            foreach ($term->descendents() as $descendent) {
+                $data['descendents'][] = $descendent->name();
+            }
+            $data['taxonomy'] = [];
+            foreach ($term->descendents() as $descendent) {
+                $data['taxonomy'][$descendent->name()] = $this->serializeTerm($descendent);
+            }
         }
         return $data;
     }
