@@ -30,7 +30,6 @@
 namespace DIME\Framework\Controller\View;
 
 use ARK\Http\Exception\ItemNotFoundHttpException;
-use ARK\Model\Item;
 use ARK\ORM\ORM;
 use ARK\Service;
 use DIME\DIME;
@@ -48,6 +47,7 @@ class FindViewController extends DimePageController
             throw new ItemNotFoundHttpException('Find', $id);
         }
         $data['find'] = $find;
+        $data['workflow'] = $find;
         return $data;
     }
 
@@ -55,34 +55,49 @@ class FindViewController extends DimePageController
     {
         $state = parent::buildState($request, $data);
         // Finder cannot be changed
-        $state['select']['finder']['choices'] = [$this->item($data)->value('finder')];
+        $state['select']['finder']['choices'] = [$data['find']->value('finder')];
         return $state;
     }
 
     public function processForm(Request $request, Form $form) : void
     {
-        $clicked = $form->getClickedButton()->getName();
-        $data = $form->getData();
-        $find = $this->item($data);
-        $parameters['id'] = $find->id();
+        $id = $request->attributes->get('id');
+        $parameters['id'] = $id;
         $request->attributes->set('parameters', $parameters);
+
+        $actor = Service::workflow()->actor();
+        $clicked = $form->getClickedButton()->getName();
+        $update = false;
+        $message = null;
+
+        if ($form->getName() === 'find') {
+            $find = $form->getData();
+        } elseif ($form->getName() === 'workflow') {
+            $find = ORM::find(Find::class, $id);
+        }
+
         if ($clicked === 'clone') {
             $request->attributes->set('redirect', 'dime.finds.add');
-            return;
         }
-        $actor = Service::workflow()->actor();
+
         if ($clicked === 'save') {
             Service::workflow()->apply($actor, 'edit', $find);
             $message = 'dime.find.update.saved';
+            $update = true;
         }
+
         if ($clicked === 'submit') {
             Service::workflow()->apply($actor, 'submit', $find, $find->property('museum')->value());
             $message = 'dime.find.update.submitted';
+            $update = true;
         }
+
         if ($clicked === 'report') {
             $result = Service::workflow()->apply($actor, 'report', $find);
             $message = 'dime.find.update.reported';
+            $update = true;
         }
+
         if ($clicked === 'apply') {
             $action = $form['find']['actions']->getNormData();
             //$subject = $form['find']['actors']->getNormData();
@@ -90,16 +105,14 @@ class FindViewController extends DimePageController
             //$text = $form['find']['textarea']->getNormData();
             $action->apply($actor, $find);
             $message = $action->keyword();
+            $update = true;
         }
-        if (!isset($message)) {
-            return;
-        }
-        ORM::flush($find);
-        Service::view()->addSuccessFlash($message);
-    }
 
-    protected function item($data) : ?Item
-    {
-        return $data['find'];
+        if ($update) {
+            ORM::flush($find);
+        }
+        if ($message) {
+            Service::view()->addSuccessFlash($message);
+        }
     }
 }
