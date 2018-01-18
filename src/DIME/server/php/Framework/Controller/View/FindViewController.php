@@ -30,6 +30,7 @@
 namespace DIME\Framework\Controller\View;
 
 use ARK\Http\Exception\ItemNotFoundHttpException;
+use ARK\Model\Item;
 use ARK\ORM\ORM;
 use ARK\Service;
 use DIME\DIME;
@@ -114,5 +115,10 @@ class FindViewController extends DimePageController
         if ($message) {
             Service::view()->addSuccessFlash($message);
         }
+    }
+
+    protected function item($data) : ?Item
+    {
+        return $data['find'] ?? $data['workflow'] ?? $data;
     }
 }
