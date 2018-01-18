@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 18, 2018 at 07:03 PM
+-- Generation Time: Jan 18, 2018 at 09:15 PM
 -- Server version: 10.2.12-MariaDB
 -- PHP Version: 7.1.13
 
@@ -9914,7 +9914,6 @@ INSERT INTO `ark_workflow_update` (`schma`, `action`, `class`, `attribute`, `act
 ('dime.find', 'accession', 'find', 'process', NULL, NULL, NULL, 'accessioned', NULL, NULL),
 ('dime.find', 'accession', 'find', 'recipient', NULL, NULL, 1, NULL, NULL, NULL),
 ('dime.find', 'accession', 'find', 'treasure', NULL, NULL, NULL, 'not', NULL, NULL),
-('dime.find', 'accession', 'find', 'visibility', NULL, NULL, NULL, 'public', NULL, NULL),
 ('dime.find', 'appraise', 'find', 'custodian', 1, NULL, NULL, NULL, 'NMD', NULL),
 ('dime.find', 'appraise', 'find', 'custody', NULL, NULL, NULL, 'held', NULL, NULL),
 ('dime.find', 'appraise', 'find', 'owner', 1, NULL, NULL, NULL, 'NMD', NULL),
@@ -9939,7 +9938,6 @@ INSERT INTO `ark_workflow_update` (`schma`, `action`, `class`, `attribute`, `act
 ('dime.find', 'record', 'find', 'owner', 1, NULL, NULL, NULL, NULL, NULL),
 ('dime.find', 'record', 'find', 'process', NULL, NULL, NULL, 'recorded', NULL, NULL),
 ('dime.find', 'record', 'find', 'treasure', NULL, NULL, NULL, 'pending', NULL, NULL),
-('dime.find', 'record', 'find', 'visibility', NULL, NULL, NULL, 'private', NULL, NULL),
 ('dime.find', 'reject', 'find', 'process', NULL, NULL, NULL, 'rejected', NULL, NULL),
 ('dime.find', 'release', 'find', 'custodian', NULL, NULL, NULL, NULL, NULL, 'museum'),
 ('dime.find', 'release', 'find', 'custody', NULL, NULL, NULL, 'sent', NULL, NULL),
@@ -9947,13 +9945,10 @@ INSERT INTO `ark_workflow_update` (`schma`, `action`, `class`, `attribute`, `act
 ('dime.find', 'release', 'find', 'process', NULL, NULL, NULL, 'released', NULL, NULL),
 ('dime.find', 'release', 'find', 'recipient', NULL, NULL, NULL, NULL, NULL, 'finder'),
 ('dime.find', 'release', 'find', 'treasure', NULL, NULL, NULL, 'not', NULL, NULL),
-('dime.find', 'release', 'find', 'visibility', NULL, NULL, NULL, 'public', NULL, NULL),
 ('dime.find', 'report', 'find', 'process', NULL, NULL, NULL, 'reported', NULL, NULL),
-('dime.find', 'report', 'find', 'visibility', NULL, NULL, NULL, 'restricted', NULL, NULL),
 ('dime.find', 'submit', 'find', 'custody', NULL, NULL, NULL, 'sent', NULL, NULL),
 ('dime.find', 'submit', 'find', 'process', NULL, NULL, NULL, 'reported', NULL, NULL),
 ('dime.find', 'submit', 'find', 'recipient', NULL, NULL, NULL, NULL, NULL, 'museum'),
-('dime.find', 'submit', 'find', 'visibility', NULL, NULL, NULL, 'restricted', NULL, NULL),
 ('dime.find', 'withhold', 'find', 'visibility', NULL, NULL, NULL, 'restricted', NULL, NULL);
 
 --
