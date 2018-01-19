@@ -66,7 +66,7 @@ class VocabularyController
                 $data['terms'] = [];
                 // List all the terms in the vocabulary but without any relationships, i.e. for a straight list
                 foreach ($vocabulary->terms(true) as $term) {
-                    $data['terms'][$term->name()] = $this->serializeTerm($term, false);
+                    $data['terms'][$term->name()] = $this->serializeTerm($term);
                 }
                 $hasRelated = ORM::findBy(Related::class, ['fromConcept' => $vocabulary]);
                 if (count($hasRelated)) {
