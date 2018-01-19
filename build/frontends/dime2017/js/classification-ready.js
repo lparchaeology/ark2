@@ -32,7 +32,7 @@ $(document).ready(function () {
             console.log('Error fetching class vocabulary');
         })
         .done(function (response) {
-            window.typevocabulary = response.terms;
+            window.typevocabulary = response.taxonomy;
             initPeriod();
         });
 

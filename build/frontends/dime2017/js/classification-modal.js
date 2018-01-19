@@ -28,6 +28,9 @@ var initTimeline = function () {
                 }
             });
             labelinput.on("blur", function () {
+              console.log($(this).val());
+                timeid = $(this).attr('id').split('-')[0];
+                console.log(timeid);
                 container.makeCustomTime($(this).val(), timeid, timeline);
             });
             var labelform = $("<form onsubmit=\"return false;\">");
@@ -72,9 +75,9 @@ var initTimeline = function () {
     container.makeCustomTime = function(time, name, timeline){
 
         try{
-            timeline.setCustomTime(time,name);
+            timeline.setCustomTime(vis.moment(time, 'Y'),name);
         } catch (e) {
-            timeline.addCustomTime(time,name);
+            timeline.addCustomTime(vis.moment(time, 'Y'),name);
         }
         container.drawLabel(name,timeline);
     }
@@ -244,22 +247,12 @@ var initTimeline = function () {
     timeline.on('timechanged', function (properties) {
         if (properties.id === 'start') {
             if (properties.time > timeline.getCustomTime('end')) {
-                timeline.removeCustomTime('start');
-                timeline.addCustomTime(timeline.getCustomTime('end'), 'start');
-                return false;
-            }
-            container.customTimeExists('start').then(function () {
-                container.drawLabel('start', timeline);
-            });
+                container.makeCustomTime(timeline.getCustomTime('end'),'start', timeline);
+              }
         } else {
             if (properties.time < timeline.getCustomTime('start')) {
-                timeline.removeCustomTime('end');
-                timeline.addCustomTime(timeline.getCustomTime('start'), 'end');
-                return false;
+                container.makeCustomTime(timeline.getCustomTime('start'),'end', timeline);
             }
-            container.customTimeExists('end').then(function () {
-                container.drawLabel('end', timeline);
-            });
         }
     });
 
@@ -332,7 +325,7 @@ var initTimeline = function () {
             // # init the level1 classification as unknowwn
             level1.val(target.split('.')[0] + '.unknown');
             level1.select2(select2Options);
-            //level1.trigger('select2:select');
+            level1.trigger('select2:select');
 
         });
 
@@ -341,6 +334,8 @@ var initTimeline = function () {
             var parentclass = $('#'+window.type_id).val();
             var target = $(this).val();
             level2.empty();
+            console.log(parentclass);
+            console.log(window.typevocabulary[parentclass]);
             parenttaxonomy = window.typevocabulary[parentclass].taxonomy;
             var level1klassification = parenttaxonomy[target];
             for (descendent in level1klassification['taxonomy']){
@@ -386,24 +381,36 @@ var initTimeline = function () {
 
         var currentSubtype = $('#'+window.subtype_id).val();
 
-        console.log(parentclass);
-
-        splitclass = currentSubtype.split(".");
-
-        level1name = parentclass + "." + splitclass[1];
-
-        for (potentialsubclass in window.typevocabulary[parentclass].taxonomy) {
-            if(level1name == potentialsubclass){
-                level1.val(potentialsubclass);
-                level1.select2(select2Options);
-                level1.trigger('select2:select');
-                if (level1name != currentSubtype){
-                    level2.val(currentSubtype);
+        //walk the tree to find our subtype level
+        var subtypeaddress = false;
+        console.log("about to walk looking for "+currentSubtype);
+        if(currentSubtype!==''){
+          for (potentialsubclass in window.typevocabulary[parentclass].taxonomy) {
+            if(currentSubtype === potentialsubclass){
+              level1.val(potentialsubclass);
+              level1.select2(select2Options);
+              level1.trigger('select2:select');
+              subtypeaddress = true;
+              break;
+            }
+            for (potentialsubsubclass in window.typevocabulary[parentclass].taxonomy[potentialsubclass].taxonomy) {
+                if(currentSubtype === potentialsubsubclass){
+                  console.log("it is "+potentialsubsubclass+" at level 2");
+                    level1.val(potentialsubclass);
+                    level1.select2(select2Options);
+                    level1.trigger('select2:select');
+                    subtypeaddress = true;
+                    level2.val(potentialsubsubclass);
                     level2.select2(select2Options);
                     level2.trigger('select2:select');
+                    break;
                 }
             }
-        }
+            if (subtypeaddress){
+              break;
+            }
+          }
+      }
     }
 
     // on launching the modal do the stuff to make it work
