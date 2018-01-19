@@ -20,11 +20,13 @@
             {{ child.element.renderView(child, forms, forms.find) | raw }}
         {% endfor %}
         {{ form_end(forms.find) }}
-        <hr />
-        <h4>{{ label | translate }}</h4>
-        {{ form_start(forms.workflow) }}
-        {{ workflowGrid.element.renderView(workflowGrid, forms, forms.workflow) | raw }}
-        {{ form_end(forms.workflow) }}
+        {% if forms.workflow is defined %}
+            <hr />
+            <h4>{{ label | translate }}</h4>
+            {{ form_start(forms.workflow) }}
+            {{ workflowGrid.element.renderView(workflowGrid, forms, forms.workflow) | raw }}
+            {{ form_end(forms.workflow) }}
+        {% endif %}
     </div>
 
 </div>
