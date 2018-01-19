@@ -28,7 +28,7 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace DIME\Framework\Controller\Api;
+namespace DIME\Framework\Controller\API;
 
 use ARK\Api\JsonApi\Action\AbstractGetAction;
 use ARK\Api\JsonApi\Http\JsonApiRequest;

@@ -31,18 +31,24 @@ namespace ARK\Message;
 
 use ARK\Actor\Actor;
 use ARK\ARK;
+use ARK\Model\LocalText;
 use ARK\Workflow\Event;
 
 class Notification extends Message
 {
-    public function __construct(Actor $sender, iterable $recipients, Event $event)
+    public function __construct(Actor $sender, iterable $recipients, Event $event, LocalText $message = null)
     {
-        parent::__construct($sender, $recipients, ARK::timestamp());
-        $this->property('event')->setValue($event);
+        parent::__construct($sender, $recipients, new LocalText(), $message ?? new LocalText());
+        $this->setEvent($event);
     }
 
     public function event() : Event
     {
-        return $this->property('event')->value();
+        return $this->value('event');
+    }
+
+    public function setEvent(Event $event) : void
+    {
+        $this->setValue('event', $event);
     }
 }
