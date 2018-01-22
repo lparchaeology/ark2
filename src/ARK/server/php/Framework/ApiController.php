@@ -86,7 +86,7 @@ abstract class ApiController extends Controller
                 }
             } else {
                 $form = $forms[$group->name()]->createView();
-                $json = $this->jsonView($form, $json);
+                $json = $this->jsonView($form);
             }
         } catch (Throwable $e) {
             $json['status'] = $e->getCode();

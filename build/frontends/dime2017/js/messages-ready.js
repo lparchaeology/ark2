@@ -1,11 +1,12 @@
 $('document').ready(function () {
 
-    if (typeof window.message_id !== 'undefined') {
-        $('tr').on("click", { "target": this }, messageclick);
-        $(".dime-table tr[data-unique-id='" + window.message_id + "']").click();
-    }
+    $('#message').ajaxForm({
+        beforeSubmit: messageFormSubmit,
+        success: messageFormSuccess,
+        type: 'post',
+        clearForm: false,
+        dataType: 'json',
+    });
 
-    $('tr').each(function (i, e) {
-        getMessage($(e).attr('data-unique-id'));
-    })
+    $('.message-table > tbody  > tr').on("click", { "target": this }, messageSelected);
 });

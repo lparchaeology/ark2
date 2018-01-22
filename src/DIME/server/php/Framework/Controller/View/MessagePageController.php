@@ -54,7 +54,7 @@ class MessagePageController extends DimePageController
         $msg = $request->query->get('id');
         if ($msg) {
             $message = ORM::find(Message::class, $msg);
-            if ($messages->contains($message)) {
+            if ($data['messages']->contains($message)) {
                 $data['message'] = $message;
             }
         }
