@@ -104,9 +104,11 @@ class FindViewController extends DimePageController
             //$subject = $form['find']['actors']->getNormData();
             //$date = $form['find']['date']->getNormData();
             //$text = $form['find']['textarea']->getNormData();
-            $action->apply($actor, $find);
-            $message = $action->keyword();
-            $update = true;
+            if ($action) {
+                $action->apply($actor, $find);
+                $message = $action->keyword();
+                $update = true;
+            }
         }
 
         if ($update) {
