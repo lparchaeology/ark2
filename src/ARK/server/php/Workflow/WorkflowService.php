@@ -32,6 +32,7 @@ namespace ARK\Workflow;
 use ARK\Actor\Actor;
 use ARK\Actor\Person;
 use ARK\Model\Attribute;
+use ARK\Model\LocalText;
 use ARK\Model\Item;
 use ARK\Model\Schema\Schema;
 use ARK\ORM\ORM;
@@ -177,11 +178,11 @@ class WorkflowService
         return false;
     }
 
-    public function apply(Actor $actor, string $action, Item $item, Actor $subject = null) : void
+    public function apply(Actor $actor, string $action, Item $item, Actor $subject = null, LocalText $message = null) : void
     {
         $action = $this->action($item->schema()->name(), $action);
         if ($action) {
-            $action->apply($actor, $item, $subject);
+            $action->apply($actor, $item, $subject, $message);
         }
     }
 

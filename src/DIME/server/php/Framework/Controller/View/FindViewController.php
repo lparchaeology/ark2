@@ -31,6 +31,7 @@ namespace DIME\Framework\Controller\View;
 
 use ARK\Http\Exception\ItemNotFoundHttpException;
 use ARK\Model\Item;
+use ARK\Model\LocalText;
 use ARK\ORM\ORM;
 use ARK\Service;
 use DIME\DIME;
@@ -48,6 +49,7 @@ class FindViewController extends DimePageController
             throw new ItemNotFoundHttpException('Find', $id);
         }
         $data['find'] = $find;
+        $data['status'] = $find;
         $data['workflow'] = $find;
         return $data;
     }
@@ -69,12 +71,14 @@ class FindViewController extends DimePageController
         $actor = Service::workflow()->actor();
         $clicked = $form->getClickedButton()->getName();
         $update = false;
-        $message = null;
+        $alert = null;
 
         if ($form->getName() === 'find') {
             $find = $form->getData();
         } elseif ($form->getName() === 'workflow') {
             $find = ORM::find(Find::class, $id);
+            $message = $form['message']->getData();
+            $message = $message ? new LocalText($message, Service::locale()) : null;
         }
 
         if ($clicked === 'clone') {
@@ -83,30 +87,27 @@ class FindViewController extends DimePageController
 
         if ($clicked === 'save') {
             Service::workflow()->apply($actor, 'edit', $find);
-            $message = 'dime.find.update.saved';
+            $alert = 'dime.find.update.saved';
             $update = true;
         }
 
         if ($clicked === 'submit') {
-            Service::workflow()->apply($actor, 'submit', $find, $find->property('museum')->value());
-            $message = 'dime.find.update.submitted';
+            Service::workflow()->apply($actor, 'submit', $find, $find->property('museum')->value(), $message);
+            $alert = 'dime.find.update.submitted';
             $update = true;
         }
 
         if ($clicked === 'report') {
-            $result = Service::workflow()->apply($actor, 'report', $find);
-            $message = 'dime.find.update.reported';
+            $result = Service::workflow()->apply($actor, 'report', $find, null, $message);
+            $alert = 'dime.find.update.reported';
             $update = true;
         }
 
         if ($clicked === 'apply') {
             $action = $form['actions']->getNormData();
-            //$subject = $form['find']['actors']->getNormData();
-            //$date = $form['find']['date']->getNormData();
-            //$text = $form['find']['textarea']->getNormData();
             if ($action) {
-                $action->apply($actor, $find);
-                $message = $action->keyword();
+                $action->apply($actor, $find, null, $message);
+                $alert = $action->keyword();
                 $update = true;
             }
         }
@@ -114,8 +115,8 @@ class FindViewController extends DimePageController
         if ($update) {
             ORM::flush($find);
         }
-        if ($message) {
-            Service::view()->addSuccessFlash($message);
+        if ($alert) {
+            Service::view()->addSuccessFlash($alert);
         }
     }
 

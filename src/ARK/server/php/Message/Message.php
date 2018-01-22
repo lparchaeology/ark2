@@ -48,7 +48,7 @@ class Message implements Item
         $this->setSender($sender);
         $this->setRecipients($recipients);
         $this->setSubject($subject);
-        $this->setBody($subject);
+        $this->setBody($body);
         $this->setSentAt();
     }
 
@@ -59,7 +59,7 @@ class Message implements Item
 
     public function setSender(Actor $sender) : void
     {
-        $this->value('sender')->setValue($subject);
+        $this->setValue('sender', $sender);
     }
 
     public function recipients() : iterable
