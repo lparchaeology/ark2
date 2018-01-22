@@ -333,7 +333,7 @@ var initTimeline = function () {
             }
 
             // # init the level1 classification as unknowwn
-            level1.val(target.split('.')[0] + '.unknown');
+            level1.val(level1Default);
             level1.select2(select2Options);
             //level1.trigger('select2:select');
 
