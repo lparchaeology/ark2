@@ -7,6 +7,7 @@ $('document').ready(function () {
         clearForm: false,
         dataType: 'json',
     });
+
     $('#password_set').ajaxForm({
         beforeSubmit: adminUserFormSubmit,
         success: adminUserFormSuccess,
@@ -14,6 +15,7 @@ $('document').ready(function () {
         clearForm: true,
         dataType: 'json',
     });
+
     $('#role_add').ajaxForm({
         beforeSubmit: adminUserFormSubmit,
         success: adminUserFormSuccess,
