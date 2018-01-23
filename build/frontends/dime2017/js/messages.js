@@ -31,7 +31,7 @@ var fetchMessage = function (id) {
     }).done(function (response) {
         FormMapper.mapDataToForm(response, $('#message')[0]);
         setMessageId(id);
-        markMessageAsRead(id, window.useractorid);
+        markMessageAsRead(id, ark.actor);
     });
 };
 

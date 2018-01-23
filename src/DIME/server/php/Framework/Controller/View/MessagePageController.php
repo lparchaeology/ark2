@@ -30,6 +30,7 @@
 namespace DIME\Framework\Controller\View;
 
 use ARK\Message\Message;
+use ARK\Model\Item;
 use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\Vocabulary\Vocabulary;
@@ -50,11 +51,11 @@ class MessagePageController extends DimePageController
     {
         $actor = Service::workflow()->actor();
         $status = $request->query->get('status');
-        $data['messages'] = DIME::getNotifications($actor, $status);
+        $data['messages']['items'] = DIME::getNotifications($actor, $status);
         $msg = $request->query->get('id');
         if ($msg) {
             $message = ORM::find(Message::class, $msg);
-            if ($data['messages']->contains($message)) {
+            if ($data['messages']['items']->contains($message)) {
                 $data['message'] = $message;
             }
         }
@@ -73,5 +74,11 @@ class MessagePageController extends DimePageController
             $request->attributes->set('parameters', $query);
             return;
         }
+    }
+
+    protected function item($data) : ?Item
+    {
+        return null;
+        return $data['message'] ?? $data['messages']['items']->first() ?? null;
     }
 }

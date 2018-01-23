@@ -4,7 +4,7 @@
     Router.setBasePath('{{ routing.base_path }}');
     Router.setRoutes(JSON.parse("{{ routing.routes | json_encode() | escape('js') }}"))
 </script>
-{% set ark = {'modules': state.modules} %}
+{% set ark = {'modules': state.modules, 'actor': workflow.actor.id} %}
 <script>
     var ark = JSON.parse("{{ ark | json_encode() | escape('js') }}");
     var path = "{{ path('dime.front')|escape('js') }}";

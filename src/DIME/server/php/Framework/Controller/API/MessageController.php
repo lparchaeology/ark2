@@ -50,8 +50,7 @@ class MessageController extends ApiController
     public function buildData(Request $request)
     {
         $id = $request->attributes->get('id');
-        $data = ORM::find(Message::class, $id);
-        dump($data);
+        $data['message'] = ORM::find(Message::class, $id);
         return $data;
     }
 
@@ -69,7 +68,6 @@ class MessageController extends ApiController
 
     protected function item($data) : ?Item
     {
-        dump($data);
-        return $data;
+        return $data['message'];
     }
 }

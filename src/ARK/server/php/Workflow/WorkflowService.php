@@ -32,8 +32,8 @@ namespace ARK\Workflow;
 use ARK\Actor\Actor;
 use ARK\Actor\Person;
 use ARK\Model\Attribute;
-use ARK\Model\LocalText;
 use ARK\Model\Item;
+use ARK\Model\LocalText;
 use ARK\Model\Schema\Schema;
 use ARK\ORM\ORM;
 use ARK\Security\User;
@@ -164,7 +164,7 @@ class WorkflowService
 
     public function can(Actor $actor, $action, Item $item, $attribute = null) : bool
     {
-        //dump('Workflow::can('.$actor->id().' '.is_string($action) ? $action : $action->id().' '.$item->schema()->module()->id().')');
+        //dump('Workflow::can('.$actor->id().' '.(is_string($action) ? $action : $action->id()).' '.$item->schema()->module()->id().')');
         if (is_string($action)) {
             $action = $this->action($item->schema()->name(), $action);
         }

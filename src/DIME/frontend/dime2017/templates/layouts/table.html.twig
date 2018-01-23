@@ -124,9 +124,11 @@
                                 <span class="dime-icon icon-user-focus small"></span>
                             </a>
                         {% endif %}
-                        <a href="{{ path(state.modules[item.schema.module.id].route, {'id': item.id}) }}">
-                            <span class="glyphicon glyphicon-file"></span>
-                        </a>
+                        {% if state.modules[item.schema.module.id] is defined and state.modules[item.schema.module.id].route %}
+                            <a href="{{ path(state.modules[item.schema.module.id].route, {'id': item.id}) }}">
+                                <span class="glyphicon glyphicon-file"></span>
+                            </a>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}

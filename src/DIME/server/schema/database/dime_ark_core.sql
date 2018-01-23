@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 23, 2018 at 02:33 PM
+-- Generation Time: Jan 23, 2018 at 06:13 PM
 -- Server version: 10.2.12-MariaDB
 -- PHP Version: 7.1.13
 
@@ -6120,7 +6120,8 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('core_message_item', '', 0, 0, 8, 'core_message_event', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'static', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('core_message_item', '', 0, 0, 10, 'core_message_subject', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'static', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('core_message_item', '', 0, 0, 12, 'core_message_body', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'static', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('core_message_page', '', 1, 0, 0, 'core_message_table', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('core_message_list', '', 0, 0, 2, 'core_message_table', NULL, NULL, 'items', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('core_message_page', '', 1, 0, 0, 'core_message_list', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('core_message_page', '', 1, 1, 0, 'core_message_item', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('core_message_table', '', 0, 0, 0, 'core_message_class', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('core_message_table', '', 0, 0, 1, 'core_message_sender', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
@@ -6283,9 +6284,9 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('dime_front_page', '', 0, 0, 2, 'dime_find_classification', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_front_page', '', 0, 0, 4, 'dime_find_material', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_front_page', '', 0, 0, 6, 'dime_find_municipality', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_home_find_search', '', 0, 0, 0, 'dime_home_action', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_home_find_search', '', 1, 0, 0, 'dime_find_filter', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL);
+('dime_home_find_search', '', 0, 0, 0, 'dime_home_action', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `map`, `vocabulary`, `name`, `width`, `label`, `help`, `placeholder`, `choices`, `required`, `action_schema`, `action`, `view_permission`, `edit_permission`, `mode`, `sanitise`, `visible`, `value_modus`, `parameter_modus`, `format_modus`, `display_property`, `display_pattern`, `display_parameter`, `display_format`, `export_property`, `export_pattern`, `export_parameter`, `export_format`, `enabled`, `deprecated`, `keyword`, `template`, `options`, `form_type`, `form_options`) VALUES
+('dime_home_find_search', '', 1, 0, 0, 'dime_find_filter', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_home_find_search', '', 2, 0, 0, 'dime_find_list_action', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.actions', NULL, NULL, NULL, NULL),
 ('dime_home_find_search', '', 2, 1, 0, 'dime_find_map', 'dime_map_user', NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_home_page', '', 0, 0, 0, 'dime_home_action', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
@@ -6293,7 +6294,7 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('dime_home_page', '', 1, 1, 0, 'dime_find_list_public', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_message_page', '', 0, 0, 0, 'dime_home_action', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_message_page', '', 1, 0, 0, 'core_message_filter', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_message_page', '', 1, 0, 2, 'core_message_table', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_message_page', '', 1, 0, 2, 'core_message_list', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_message_page', '', 1, 1, 0, 'core_message_item', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_museum_form', '', 0, 0, 0, 'core_actor_id', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, 'view', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.user.username', NULL, NULL, NULL, NULL),
 ('dime_museum_form', '', 0, 0, 2, 'core_actor_fullname', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
@@ -6485,6 +6486,7 @@ INSERT INTO `ark_view_element` (`element`, `type`) VALUES
 ('core_admin_page', 'grid'),
 ('core_admin_user_page', 'grid'),
 ('core_home_page', 'grid'),
+('core_message_list', 'grid'),
 ('core_message_page', 'grid'),
 ('core_page_view', 'grid'),
 ('core_profile_page', 'grid'),
@@ -6552,7 +6554,6 @@ INSERT INTO `ark_view_element` (`element`, `type`) VALUES
 ('core_page_admin_user', 'page'),
 ('core_page_home', 'page'),
 ('core_page_message', 'page'),
-('core_page_messages', 'page'),
 ('core_page_profile', 'page'),
 ('core_page_profiles', 'page'),
 ('core_page_static', 'page'),
@@ -6736,7 +6737,7 @@ INSERT INTO `ark_view_form` (`element`, `name`, `mode`, `method`, `action`, `key
 ('core_actor_item', 'actor_item', NULL, NULL, NULL, NULL, NULL, NULL),
 ('core_file_item', 'item', 'edit', NULL, NULL, NULL, NULL, NULL),
 ('core_message_filter', 'filter', NULL, NULL, NULL, NULL, NULL, NULL),
-('core_message_item', 'message', NULL, NULL, NULL, NULL, NULL, NULL),
+('core_message_item', 'message', NULL, NULL, NULL, 'core.message', NULL, NULL),
 ('core_profile_view', 'actor', NULL, NULL, NULL, 'core.profile', NULL, NULL),
 ('core_user_filter', 'filter', NULL, NULL, NULL, NULL, NULL, NULL),
 ('core_user_login', NULL, NULL, 'POST', 'core.user.check', NULL, 'user/layouts/login.html.twig', NULL),
@@ -6787,6 +6788,7 @@ INSERT INTO `ark_view_group` (`element`, `name`, `mode`, `keyword`, `template`, 
 ('core_admin_page', NULL, NULL, NULL, NULL, NULL),
 ('core_admin_user_page', NULL, NULL, NULL, NULL, NULL),
 ('core_home_page', NULL, NULL, NULL, NULL, NULL),
+('core_message_list', 'messages', NULL, NULL, NULL, NULL),
 ('core_message_page', NULL, NULL, NULL, NULL, NULL),
 ('core_page_view', NULL, NULL, NULL, NULL, NULL),
 ('core_profile_page', NULL, 'view', NULL, NULL, NULL),
@@ -6901,8 +6903,7 @@ INSERT INTO `ark_view_page` (`element`, `mode`, `header`, `sidebar`, `content`, 
 ('core_page_admin', 'edit', 'core_site_header', 'core_site_sidebar', 'core_admin_page', 'core_site_footer', 'restricted', 'core.admin', 'core.admin', NULL, NULL),
 ('core_page_admin_user', 'edit', 'core_site_header', 'core_site_sidebar', 'core_admin_user_page', 'core_site_footer', 'restricted', 'core.admin.user', 'core.admin.user', NULL, NULL),
 ('core_page_home', 'view', 'core_site_header', 'core_site_sidebar', 'core_home_page', 'core_site_footer', 'public', NULL, NULL, NULL, NULL),
-('core_page_message', 'view', 'core_site_header', 'core_site_sidebar', 'core_message_page', 'core_site_footer', 'restricted', 'core.message.read', NULL, NULL, NULL),
-('core_page_messages', 'view', 'core_site_header', 'core_site_sidebar', 'core_message_page', 'core_site_footer', 'restricted', 'core.message.read', NULL, NULL, NULL),
+('core_page_message', 'edit', 'core_site_header', 'core_site_sidebar', 'core_message_page', 'core_site_footer', 'restricted', 'core.message.read', 'core.message.update', NULL, NULL),
 ('core_page_profile', 'view', 'core_site_header', 'core_site_sidebar', 'core_profile_page', 'core_site_footer', 'public', NULL, NULL, NULL, NULL),
 ('core_page_profiles', 'view', 'core_site_header', 'core_site_sidebar', 'core_profiles_page', 'core_site_footer', 'public', NULL, NULL, NULL, NULL),
 ('core_page_user_confirm', 'edit', 'core_site_header', 'core_site_sidebar', NULL, 'core_site_footer', 'public', NULL, NULL, NULL, NULL),
@@ -6972,7 +6973,7 @@ CREATE TABLE `ark_view_table` (
 INSERT INTO `ark_view_table` (`element`, `name`, `mode`, `caption`, `header`, `footer`, `sortable`, `searchable`, `list`, `detail`, `expand`, `card`, `thumb`, `view`, `image`, `export`, `columns`, `pagination`, `selection`, `keyword`, `classes`, `template`, `url`) VALUES
 ('core_actor_table', NULL, 'view', 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 'list', 'avatar', 1, 1, 10, '1', NULL, 'table-hover dime-table', NULL, NULL),
 ('core_file_table', NULL, NULL, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 'list', NULL, 1, 1, 10, '1', NULL, 'table-hover dime-table', NULL, NULL),
-('core_message_table', 'messages', 'view', 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 'list', NULL, 1, 1, 10, '1', NULL, 'table-hover dime-table', 'layouts/messagelist.html.twig', NULL),
+('core_message_table', NULL, 'view', 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 'list', NULL, 0, 0, 10, '0', NULL, 'table-hover dime-table', 'layouts/messagelist.html.twig', NULL),
 ('core_profile_table', NULL, 'view', 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 'card', 'avatar', 1, 1, 10, '1', 'core.profiles', 'table-hover dime-table', NULL, NULL),
 ('dime_find_front_table', NULL, NULL, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 'card', 'image', 1, 1, 10, '1', NULL, 'table-hover dime-table', NULL, NULL),
 ('dime_find_table', NULL, NULL, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 'card', 'image', 1, 1, 10, '1', NULL, 'table-hover dime-table', NULL, NULL),
@@ -9406,8 +9407,8 @@ INSERT INTO `ark_workflow_action` (`schma`, `action`, `event_vocabulary`, `event
 ('core.event', 'view', 'core.event.class', 'viewed', NULL, 0, 0, 0, 0, 1, 'dime.action.view', 'View find record'),
 ('core.file', 'edit', 'core.event.class', 'edited', NULL, 0, 0, 0, 0, 1, 'dime.action.edit', 'Edit find record'),
 ('core.file', 'view', 'core.event.class', 'viewed', NULL, 0, 0, 1, 0, 1, 'dime.action.view', 'View find record'),
-('core.message', 'edit', 'core.event.class', 'edited', NULL, 0, 0, 1, 0, 1, 'dime.action.edit', 'Edit find record'),
-('core.message', 'view', 'core.event.class', 'viewed', NULL, 0, 0, 1, 0, 1, 'dime.action.view', 'View find record'),
+('core.message', 'edit', 'core.event.class', 'edited', NULL, 0, 0, 1, 1, 1, 'dime.action.edit', 'Edit find record'),
+('core.message', 'view', 'core.event.class', 'viewed', NULL, 0, 0, 1, 1, 1, 'dime.action.view', 'View find record'),
 ('core.page', 'edit', 'core.event.class', 'edited', NULL, 0, 0, 1, 0, 1, 'dime.action.edit', 'Edit find record'),
 ('core.page', 'view', 'core.event.class', 'viewed', NULL, 0, 0, 1, 0, 1, 'dime.action.view', 'View find record'),
 ('dime.find', 'accession', 'core.event.class', 'accessioned', NULL, 1, 0, 0, 0, 1, 'dime.action.accession', 'Local museum takes ownership'),

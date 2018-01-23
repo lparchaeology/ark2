@@ -64,7 +64,7 @@ class Message implements Item
 
     public function recipients() : iterable
     {
-        return $this->value('recipients')->serialize();
+        return $this->property('recipients')->serialize();
     }
 
     public function setRecipients(iterable $recipients) : void
