@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 23, 2018 at 09:59 PM
+-- Generation Time: Jan 23, 2018 at 10:51 PM
 -- Server version: 10.2.12-MariaDB
 -- PHP Version: 7.1.13
 
@@ -6275,7 +6275,7 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('dime_find_update', '', 0, 0, 0, 'core_widget_submit', NULL, NULL, 'save', NULL, 1, 0, NULL, NULL, NULL, 'dime.find', 'edit', NULL, NULL, 'edit', 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.save', NULL, NULL, NULL, NULL),
 ('dime_find_view', '', 0, 0, 0, 'dime_find_item', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_view', '', 0, 0, 2, 'dime_find_status', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.find.status', NULL, NULL, NULL, NULL),
-('dime_find_view', '', 0, 0, 4, 'dime_find_workflow', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.workflow.action', NULL, NULL, NULL, NULL),
+('dime_find_view', '', 0, 0, 4, 'dime_find_workflow', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, 'dime.find.update', 'dime.find.update', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.workflow.action', NULL, NULL, NULL, NULL),
 ('dime_find_workflow', '', 0, 0, 2, 'core_widget_textarea', NULL, NULL, 'message', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, 'edit', 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.message', NULL, NULL, NULL, NULL),
 ('dime_find_workflow', '', 0, 0, 4, 'core_widget_submit', NULL, NULL, 'report', NULL, 1, 0, NULL, NULL, NULL, 'dime.find', 'report', NULL, NULL, 'edit', 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.action.notify', NULL, NULL, NULL, NULL),
 ('dime_find_workflow', '', 0, 0, 6, 'core_widget_submit', NULL, NULL, 'submit', NULL, 1, 0, NULL, NULL, NULL, 'dime.find', 'submit', NULL, NULL, 'edit', 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.action.submit', NULL, NULL, NULL, NULL),
