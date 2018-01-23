@@ -64,7 +64,7 @@ class ActorController extends ApiController
 
     public function processForm(Request $request, Form $form) : void
     {
-        $id = $request->attributes->get('_id');
+        $id = $request->attributes->get('id');
         $submitted = $form->getConfig()->getName();
         if ($submitted === 'actor') {
             $actor = $form->getData();

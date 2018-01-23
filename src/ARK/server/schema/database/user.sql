@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.5
+-- version 4.7.7
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 20, 2017 at 07:44 PM
--- Server version: 10.2.10-MariaDB
--- PHP Version: 7.1.11
+-- Generation Time: Jan 21, 2018 at 02:10 PM
+-- Server version: 10.2.12-MariaDB
+-- PHP Version: 7.1.13
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -38,8 +38,7 @@ INSERT INTO `ark_security_level` (`level`, `description`, `enabled`) VALUES
 --
 
 INSERT INTO `ark_security_user` (`user`, `level`, `username`, `email`, `password`, `name`, `activated`, `enabled`, `verified`, `locked`, `expired`, `expires_at`, `credentials_expired`, `credentials_expire_at`, `verification_token`, `verification_requested_at`, `password_request_token`, `password_requested_at`, `last_login`) VALUES
-('core', 'ROLE_ANON', 'core', 'core@localhost', NULL, 'Core System', 0, 0, 0, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL),
-('sysadmin', 'ROLE_SUPER_ADMIN', 'sysadmin', 'sys@admin', '$2y$13$fWkkWzbzuN37ktBQumn/v.KBtWb/IE5fHZMc4dLOhUNg3N/xHX472', 'sysadmin', 1, 1, 1, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL);
+('anonymous', 'ROLE_ANON', 'anonymous', 'anonymous@localhost', NULL, 'Anonymous', 1, 1, 1, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL);
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 

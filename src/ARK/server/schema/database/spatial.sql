@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
+-- version 4.7.7
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 04, 2017 at 05:53 PM
--- Server version: 10.2.8-MariaDB
--- PHP Version: 7.1.8
+-- Generation Time: Jan 20, 2018 at 06:27 PM
+-- Server version: 10.2.12-MariaDB
+-- PHP Version: 7.1.13
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -83,7 +83,7 @@ ALTER TABLE `ark_spatial_term`
 -- AUTO_INCREMENT for table `ark_spatial_fragment`
 --
 ALTER TABLE `ark_spatial_fragment`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT;
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 

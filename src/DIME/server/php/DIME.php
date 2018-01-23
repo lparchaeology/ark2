@@ -148,7 +148,7 @@ class DIME
     public static function getFeaturedFinds(int $limit = null) : Collection
     {
         // Featured Finds must have been through Treasure assessment to ensure quality and have photos
-        $items = self::findSearch(['treasure' => ['treasue', 'pending', 'not']]);
+        $items = self::findSearch(['treasure' => ['appraisal', 'treasure', 'not']]);
         // Featured Finds must be public, and the most recent
         $finds = ORM::findBy(Find::class, ['id' => $items, 'visibility' => 'public'], ['id' => 'DESC'], $limit);
         return $finds;

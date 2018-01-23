@@ -1,142 +1,56 @@
 /*functions for making ajax message page */
 
-var apiurl = '../api/v2';
-
-var padString = function (string) {
-
-    if (string.length = 1) {
-        return '0' + string;
-    } else {
-        return string
-    }
-
-};
-
-var formatDate = function (datestring) {
-
-    if (datestring == '') {
-        return '';
-    }
-
-    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
-
-    return new Intl.DateTimeFormat(lang, options).format(new Date(datestring));
-
-};
-
-var getMessage = function (id) {
-
-    if (typeof id == 'undefined') {
-        return false;
-    }
-
-    if (typeof sendertranslation == 'undefined') {
-        return false;
-    }
-
-    var thisRow = $(".dime-table tr[data-unique-id='" + id + "']");
-
-    if (thisRow.data("message")) {
-        return true;
-    }
-
-    var button = $("<button>&#10004;</button>").addClass('dime-icon btn normal').attr('id', id).click(function (e) {
-        alert($(e.target).attr('id'));
-    });
-
-    var definitionlist = $("<dl><dt>"
-        + sendertranslation + "</dt><dd class=\"message-from\">"
-        + senderinitial + "</dd><dt>"
-        + datetranslation + "</dt><dd class=\"message-date\">"
-        + formatDate(dateinitial) + "</dd><dt>"
-        + eventtranslation + "</dt><dd class=\"message-body\">"
-        + eventinitial + "</dd><dt>"
-        + itemtranslation + "</dt><dd class=\"message-item\">"
-        + iteminitial + "</dd></dl>");
-
-    var message = $("<div></div>").append(definitionlist);
-
-    thisRow.data("message", message);
-
-    //console.log('loading '+id);
-
-    $.ajax(apiurl + '/messages/' + id)
-        .fail(function () {
-            $('.message-from').empty();
-
-            $('.message-date').empty();
-
-            $('.message-body').empty();
-        })
-        .done(function (data) {
-            var response = data.data;
-            //console.log(data);
-            $.ajax(apiurl + '/actors/' + response.attributes.sender.id)
-                .fail(function () {
-                    thisRow.data("message").find('.message-from').html('error reading sender');
-                })
-                .done(function (response) {
-                    var actorname = response.data.attributes.fullname;
-                    thisRow.data("message").find('.message-from').html(actorname[0].content);
-                });
-
-            var sent_at = response.attributes.sent.datetime.date;
-            //console.log(sent_at)
-
-            thisRow.data("message").find('.message-date').html(formatDate(sent_at));
-
-            $.ajax(apiurl + '/events/' + response.attributes.event.id)
-                .fail(function () {
-                    thisRow.data("message").find('.message-body').html('error reading message');
-                })
-                .done(function (response) {
-                    thisRow.data("message").find('.message-body').html(message_vocabulary["dime.find.event." + response.data.attributes.class]);
-                    var subjectitem = $('<a href = "' + window.modules[response.data.attributes.subject.module].view + '/' + response.data.attributes.subject.id + '"><span class="glyphicon glyphicon-file"></span></a>')
-                    subjectitem.appendTo(thisRow.data("message").find('.message-item'));
-                });
-
-        });
-
-};
-
-var showMessage = function (id) {
-
-    var thisRow = $(".dime-table tr[data-unique-id='" + id + "']");
-
-    var message = thisRow.data("message");
-
-    if (message) {
-        $('.dime-messages').find('div').detach();
-        $('.dime-messages').append(message);
-
-    } else {
-        getMessage(id);
-        showMessage(id);
-    }
-
-};
-
-var markAsRead = function (message, recipient) {
-    var payload = JSON.stringify({ "message": message, "recipient": recipient });
-    $.post(path + 'api/internal/message/read', payload, function (result) {});
+// Return current message ID
+function messageId() {
+    return $('#message_id_value').val();
 }
 
-var messageclick = function (evt) {
+// Set the current message ID
+var setMessageId = function setMessageId(id) {
+    $('#message').attr('action', Router.generatePath('dime.api.message.item', { id: id }));
+};
 
-    $('tr').removeClass('selected');
+// Call API to mark message as read
+var markMessageAsRead = function (id, recipient) {
+    var payload = JSON.stringify({ "message": id, "recipient": recipient });
+    var path = Router.generatePath('dime.api.message.read');
+    $.post(path, payload, function () {});
+};
 
-    if ($(evt.target).is('tr')) {
-        var self = $(evt.target);
-    } else {
-        var self = $(evt.target).closest('tr');
+// Call API to fetch message details
+var fetchMessage = function (id) {
+    clearPageAlert();
+    $('#message').clearForm();
+    var path = Router.generatePath('dime.api.message.item', { id: id });
+    if (path === undefined) {
+        return;
     }
+    $.ajax(path).fail(function (response) {
+        $('#message').clearForm();
+        setPageAlert(response.status, response.message, 5000);
+    }).done(function (response) {
+        FormMapper.mapDataToForm(response, $('#message')[0]);
+        setMessageId(id);
+        markMessageAsRead(id, window.useractorid);
+    });
+};
 
-    self.addClass('selected');
-    self.addClass('read');
+// AJAX Form Submission
+function messageFormSubmit(data, $form, options) {
+    clearPageAlert();
+    return messageId() ? true : false;
+}
 
-    //console.log(window.useractorid);
-    markAsRead(self.attr('data-unique-id'), window.useractorid);
+// AJAX Form post-submit callback
+function messageFormSuccess(response) {
+    setPageAlert(response.status, response.message, 5000);
+}
 
-    showMessage(self.attr('data-unique-id'));
-
+var messageSelected = function (e) {
+    e.preventDefault();
+    $('tr').removeClass('selected');
+    var target = $(e.target).is('tr') ? $(e.target) : $(e.target).closest('tr');
+    target.addClass('selected');
+    fetchMessage(target.attr('data-unique-id'));
+    target.addClass('read');
 };

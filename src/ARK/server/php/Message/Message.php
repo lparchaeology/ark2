@@ -33,6 +33,7 @@ use ARK\Actor\Actor;
 use ARK\ARK;
 use ARK\Model\Item;
 use ARK\Model\ItemTrait;
+use ARK\Model\LocalText;
 use ARK\Service;
 use ARK\Workflow\Role;
 use DateTime;
@@ -41,10 +42,33 @@ class Message implements Item
 {
     use ItemTrait;
 
-    public function __construct(Actor $sender, iterable $recipients, DateTime $sentAt)
+    public function __construct(Actor $sender, iterable $recipients, LocalText $subject, LocalText $body)
     {
         $this->construct('core.message');
-        $this->property('sender')->setValue($sender);
+        $this->setSender($sender);
+        $this->setRecipients($recipients);
+        $this->setSubject($subject);
+        $this->setBody($body);
+        $this->setSentAt();
+    }
+
+    public function sender() : Actor
+    {
+        return $this->value('sender');
+    }
+
+    public function setSender(Actor $sender) : void
+    {
+        $this->setValue('sender', $sender);
+    }
+
+    public function recipients() : iterable
+    {
+        return $this->value('recipients')->serialize();
+    }
+
+    public function setRecipients(iterable $recipients) : void
+    {
         $dispatches = [];
         foreach ($recipients as $recipient) {
             $dispatches[]['status'] = 'unread';
@@ -55,23 +79,37 @@ class Message implements Item
                 $dispatches[]['role'] = $recipient->id();
             }
         }
-        $this->property('recipients')->setValue($dispatches);
-        $this->property('sent')->setValue($sentAt);
-    }
-
-    public function sender() : Actor
-    {
-        return $this->property('sender')->value();
-    }
-
-    public function recipients() : iterable
-    {
-        return $this->property('recipients')->serialize();
+        $this->setValue('recipients', $dispatches);
     }
 
     public function sentAt() : DateTime
     {
-        return $this->property('sent')->value();
+        return $this->value('sent');
+    }
+
+    public function setSentAt(DateTime $sentAt = null) : void
+    {
+        $this->setValue('sent', $sentAt ?? ARK::timestamp());
+    }
+
+    public function subject() : ?LocalText
+    {
+        return $this->value('subject');
+    }
+
+    public function setSubject(LocalText $subject) : void
+    {
+        $this->setValue('subject', $subject);
+    }
+
+    public function body() : ?LocalText
+    {
+        return $this->value('body');
+    }
+
+    public function setBody(LocalText $subject) : void
+    {
+        $this->setValue('body', $subject);
     }
 
     public function isRecipient(Actor $actor) : bool

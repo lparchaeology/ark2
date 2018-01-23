@@ -34,6 +34,7 @@ use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\Vocabulary\Vocabulary;
 use DIME\DIME;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 
 class MessagePageController extends DimePageController
@@ -53,10 +54,24 @@ class MessagePageController extends DimePageController
         $msg = $request->query->get('id');
         if ($msg) {
             $message = ORM::find(Message::class, $msg);
-            if ($messages->contains($message)) {
+            if ($data['messages']->contains($message)) {
                 $data['message'] = $message;
             }
         }
         return $data;
+    }
+
+    public function processForm(Request $request, Form $form) : void
+    {
+        $submitted = $form->getConfig()->getName();
+        if ($submitted === 'filter') {
+            $status = $form['status']->getData();
+            $query = [];
+            if ($status) {
+                $query['status'] = $status->name();
+            }
+            $request->attributes->set('parameters', $query);
+            return;
+        }
     }
 }

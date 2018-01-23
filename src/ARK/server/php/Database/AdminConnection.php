@@ -30,10 +30,8 @@
 namespace ARK\Database;
 
 use ARK\ARK;
-use Doctrine\DBAL\Schema\Comparator;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
-use DoctrineXml\Parser;
 
 class AdminConnection extends Connection
 {
@@ -89,9 +87,7 @@ class AdminConnection extends Connection
     public function createSchema(Schema $schema) : void
     {
         $this->disableForeignKeyChecks();
-        // TODO More efficient way???
-        $diff = Comparator::compareSchemas(new Schema(), $schema);
-        $queries = $diff->toSaveSql($this->platform());
+        $queries = $schema->toSql($this->platform());
         foreach ($queries as $query) {
             $this->query($query);
         }

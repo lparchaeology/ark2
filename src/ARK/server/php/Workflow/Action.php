@@ -33,6 +33,7 @@ use ARK\Actor\Actor;
 use ARK\Message\Notification;
 use ARK\Model\Item;
 use ARK\Model\KeywordTrait;
+use ARK\Model\LocalText;
 use ARK\Model\Schema\Schema;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
@@ -205,7 +206,7 @@ class Action
         return $recipients;
     }
 
-    public function apply(Actor $actor, Item $item, Actor $subject = null) : void
+    public function apply(Actor $actor, Item $item, Actor $subject = null, LocalText $message = null) : void
     {
         if ($this->isGranted($actor, $item)) {
             // Create Event
@@ -219,7 +220,7 @@ class Action
             // Send Notifications
             $recipients = $this->notify($item);
             if ($recipients) {
-                $notification = new Notification($actor, $recipients, $event);
+                $notification = new Notification($actor, $recipients, $event, $message);
                 ORM::persist($notification);
             }
         }

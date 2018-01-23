@@ -198,6 +198,7 @@ class Table extends Element
         $builder->setReadOnly();
 
         // Fields
+        $builder->addStringField('name', 30);
         $builder->addStringField('mode', 10);
         $builder->addField('caption', 'boolean');
         $builder->addField('header', 'boolean');

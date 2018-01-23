@@ -153,6 +153,9 @@ class FindListController extends DimePageController
                 ]);
                 $data['filters']['treasure'] = $treasures->first();
             }
+        } else {
+            // Public finds search excludes anything not yet reviewed
+            $query['treasure'] = ['appraisal', 'treasure', 'not'];
         }
 
         if ($query) {

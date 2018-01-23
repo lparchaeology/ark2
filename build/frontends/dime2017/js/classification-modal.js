@@ -2,7 +2,7 @@ var initTimeline = function () {
     // DOM element where the Timeline will be attached
     var container = document.getElementById('visualization');
 
-    container.customTimeExists = function(timeid) {
+    container.customTimeExists = function (timeid) {
         var promise = new Promise(function (resolve) {
             window.setTimeout(function () {
                 if ($(".vis-custom-time").filter("." + timeid).length !== 1) {
@@ -11,7 +11,7 @@ var initTimeline = function () {
                 } else {
                     resolve();
                 }
-            }, 100 );
+            }, 100);
         });
         return promise;
     }
@@ -53,33 +53,33 @@ var initTimeline = function () {
             timeid = "start";
             var leftNumber = parseInt($(".vis-custom-time." + timeid).css("left"), 10);
             $("#" + timeid + "-label").css("left", leftNumber.toString() + "px");
-            $('#'+window.date_start_id).val(new Date(timeline.getCustomTime(timeid)).getFullYear());
+            $('#' + window.date_start_id).val(new Date(timeline.getCustomTime(timeid)).getFullYear());
 
             timeid = "end";
             var leftNumber = parseInt($(".vis-custom-time." + timeid).css("left"), 10);
             $("#" + timeid + "-label").css("left", leftNumber.toString() + "px");
-            $('#'+window.date_start_id+"_span").val(new Date(timeline.getCustomTime(timeid)).getFullYear());
+            $('#' + window.date_start_id + "_span").val(new Date(timeline.getCustomTime(timeid)).getFullYear());
         });
         period = window.getPeriodFromYear(timeline.getCustomTime(timeid).getFullYear());
-        if (timeid=='start'){
-            $('#'+window.date_start_period_id).val(period.name);
-            $('#'+window.date_start_period_id).select2(select2Options);
+        if (timeid == 'start') {
+            $('#' + window.date_start_period_id).val(period.name);
+            $('#' + window.date_start_period_id).select2(select2Options);
         }
-        if (timeid=='end'){
-            $('#'+window.date_start_period_id+'_span').val(period.name);
-            $('#'+window.date_start_period_id+'_span').select2(select2Options);
+        if (timeid == 'end') {
+            $('#' + window.date_start_period_id + '_span').val(period.name);
+            $('#' + window.date_start_period_id + '_span').select2(select2Options);
         }
 
     }
 
-    container.makeCustomTime = function(time, name, timeline){
+    container.makeCustomTime = function (time, name, timeline) {
 
         try{
             timeline.setCustomTime(vis.moment(time, 'Y'),name);
         } catch (e) {
             timeline.addCustomTime(vis.moment(time, 'Y'),name);
         }
-        container.drawLabel(name,timeline);
+        container.drawLabel(name, timeline);
     }
 
     //this adds start and end lines to the timeline
@@ -89,28 +89,28 @@ var initTimeline = function () {
             timeline.removeCustomTime('end');
             $("#start-label").remove();
             $("#end-label").remove();
-            $('#'+window.date_start_id).val('');
-            $('#'+window.date_start_id+'_span').val('');
-            $('#'+window.date_start_period_id).val('-');
-            $('#'+window.date_start_period_id+'_span').val('-');
+            $('#' + window.date_start_id).val('');
+            $('#' + window.date_start_id + '_span').val('');
+            $('#' + window.date_start_period_id).val('-');
+            $('#' + window.date_start_period_id + '_span').val('-');
 
-            $('#'+window.date_start_period_id).select2(select2Options);
-            $('#'+window.date_start_period_id+'_span').select2(select2Options);
+            $('#' + window.date_start_period_id).select2(select2Options);
+            $('#' + window.date_start_period_id + '_span').select2(select2Options);
 
-        } catch (e){
+        } catch (e) {
 
         }
 
         if (target !== 'undefined' && target !== null) {
             if (typeof target.parameters !== 'undefined') {
                 var target_years = getYearsFromTarget(target);
-                if($.isNumeric(parseInt(target_years.start)) && $.isNumeric(parseInt(target_years.end))){
+                if ($.isNumeric(parseInt(target_years.start)) && $.isNumeric(parseInt(target_years.end))) {
                     start = vis.moment(parseInt(target_years.start), "Y");
                     end = vis.moment(parseInt(target_years.end), "Y");
-                    if (start ){
+                    if (start) {
                         container.makeCustomTime(start, 'start', timeline);
                     }
-                    if (end){
+                    if (end) {
                         container.makeCustomTime(end, 'end', timeline);
                     }
                 }
@@ -211,12 +211,12 @@ var initTimeline = function () {
         },
     };
 
-    var getYearsFromTarget = function(target){
-        target_years = {"start": null, "end": null};
+    var getYearsFromTarget = function (target) {
+        target_years = { "start": null, "end": null };
 
-        if(target.parameters.hasOwnProperty("period")){
+        if (target.parameters.hasOwnProperty("period")) {
             target_years.start = window.periodvocabulary[target.parameters.period.value].parameters.year_start.value,
-            target_years.end =  window.periodvocabulary[target.parameters.period.value].parameters.year_end.value
+                target_years.end = window.periodvocabulary[target.parameters.period.value].parameters.year_end.value
         }
         // if there is no period there are no dates, so return the whole span of default time
         return target_years;
@@ -256,7 +256,7 @@ var initTimeline = function () {
         }
     });
 
-    container.createOptions = function(){
+    container.createOptions = function () {
 
         // clear out the classification holder
         $(".classification-holder").empty();
@@ -280,7 +280,7 @@ var initTimeline = function () {
         $('#find_class_term_modal').prop('disabled', false);
         $('#find_class_term_modal').prop('required', false);
 
-        var createTimelineSelect = function(name, markup){
+        var createTimelineSelect = function (name, markup) {
 
             // attach and launch two empty subtype levels with hacked in labels
             var selectDiv = $("<div class=\"col-md-4\">");
@@ -310,6 +310,9 @@ var initTimeline = function () {
             for (var term in subtypevocabulary) {
                 var subtype = subtypevocabulary[term]['name'];
                 $('#' + window.subtype_id + ' option[value="' + subtype + '"]').clone().appendTo('#find_subtype_level1');
+                if (subtypevocabulary[term]['default']) {
+                    level1Default = subtype;
+                }
             }
 
             // set the main page selcet, and activate the select2
@@ -317,13 +320,13 @@ var initTimeline = function () {
             $('#find_class_term').select2(select2Options);
             $('#find_class_term').trigger('select2:select');
 
-            if (target != "unassessed" &&  target != '' ){
+            if (target != "unassessed" && target != '') {
                 container.updateTimelineToPeriod(target, timeline);
 
             }
 
             // # init the level1 classification as unknowwn
-            level1.val(target.split('.')[0] + '.unknown');
+            level1.val(level1Default);
             level1.select2(select2Options);
             level1.trigger('select2:select');
 
@@ -331,41 +334,46 @@ var initTimeline = function () {
 
         // Change the level2 Klassification if the Klassification1 changes
         level1.on("select2:select select2:unselecting", function () {
-            var parentclass = $('#'+window.type_id).val();
+            var parentclass = $('#' + window.type_id).val();
             var target = $(this).val();
             level2.empty();
             console.log(parentclass);
             console.log(window.typevocabulary[parentclass]);
             parenttaxonomy = window.typevocabulary[parentclass].taxonomy;
             var level1klassification = parenttaxonomy[target];
-            for (descendent in level1klassification['taxonomy']){
-                level2option =  level1klassification['taxonomy'][descendent];
+            var level2Default;
+            for (descendent in level1klassification['taxonomy']) {
+                level2option = level1klassification['taxonomy'][descendent];
                 $('#' + window.subtype_id + ' option[value="' + level2option['name'] + '"]').clone().appendTo(level2);
+                if (level2option['default']) {
+                    level2Default = level2option['name'];
+                }
             }
 
-            $('#'+window.subtype_id).val(level1klassification['name']);
-            $('#'+window.subtype_id).select2(select2Options);
-            $('#'+window.subtype_id).trigger('select2:select');
+            $('#' + window.subtype_id).val(level1klassification['name']);
+            $('#' + window.subtype_id).select2(select2Options);
+            $('#' + window.subtype_id).trigger('select2:select');
 
-            if ( target != '' ){
+            if (target != '') {
                 container.updateTimelineToPeriod(level1klassification, timeline);
             }
 
+            level2.val(level2Default);
             level2.select2(select2Options);
         });
 
         // update the timeline if the Klassification2 changes
         level2.on("select2:select select2:unselecting", function () {
             var target = $(this).val();
-            var parentclass = $('#'+window.type_id).val();
+            var parentclass = $('#' + window.type_id).val();
             var parentsubclass = $('#find_subtype_level1').val();
             parenttaxonomy = window.typevocabulary[parentclass].taxonomy[parentsubclass].taxonomy;
             console.log(parenttaxonomy[target]);
-            $('#'+window.subtype_id).val(parenttaxonomy[target]['name']);
-            $('#'+window.subtype_id).select2(select2Options);
-            $('#'+window.subtype_id).trigger('select2:select');
+            $('#' + window.subtype_id).val(parenttaxonomy[target]['name']);
+            $('#' + window.subtype_id).select2(select2Options);
+            $('#' + window.subtype_id).trigger('select2:select');
 
-            if ( target != '' ){
+            if (target != '') {
                 container.updateTimelineToPeriod(parenttaxonomy[target], timeline);
             }
         });
@@ -379,7 +387,7 @@ var initTimeline = function () {
             $('#' + window.subtype_id + ' option[value="' + subtype + '"]').clone().appendTo(level1);
         }
 
-        var currentSubtype = $('#'+window.subtype_id).val();
+        var currentSubtype = $('#' + window.subtype_id).val();
 
         //walk the tree to find our subtype level
         var subtypeaddress = false;
@@ -424,13 +432,13 @@ var initTimeline = function () {
             $('.vis-tl-zoom-out').trigger('click');
         }, 3000);
 
-        var start = $('#'+window.date_start_id).val();
-        var end = $('#'+window.date_start_id+'_span').val();
-        if($.isNumeric(start)){
-            container.makeCustomTime(start,'start', timeline);
+        var start = $('#' + window.date_start_id).val();
+        var end = $('#' + window.date_start_id + '_span').val();
+        if ($.isNumeric(start)) {
+            container.makeCustomTime(start, 'start', timeline);
         }
-        if ($.isNumeric(end)){
-            container.makeCustomTime(end,'end', timeline);
+        if ($.isNumeric(end)) {
+            container.makeCustomTime(end, 'end', timeline);
 
         }
     });
@@ -547,8 +555,8 @@ var initTimeline = function () {
             }
         }
 
-        container.makeCustomTime(start,'start', timeline);
-        container.makeCustomTime(end,'end',timeline);
+        container.makeCustomTime(start, 'start', timeline);
+        container.makeCustomTime(end, 'end', timeline);
 
     });
 
