@@ -15,8 +15,13 @@ var initTimeline = function () {
         var target_years = { "start": null, "end": null };
 
         if (target.parameters.hasOwnProperty("period")) {
-            target_years.start = window.periodvocabulary[target.parameters.period.value].parameters.year_start.value;
-            target_years.end = window.periodvocabulary[target.parameters.period.value].parameters.year_end.value;
+            try {
+              target_years.start = window.periodvocabulary[target.parameters.period.value].parameters.year_start.value;
+            } catch (TypeError){}
+            try {
+              target_years.end = window.periodvocabulary[target.parameters.period.value].parameters.year_end.value;
+            } catch (TypeError){}
+            console.log(target_years);
         }
         // if there is no period there are no dates, so return the whole span of default time
         return target_years;
@@ -77,7 +82,9 @@ var initTimeline = function () {
             labelinput.on("blur", function () {
                 console.log($(this).val());
                 timeid = $(this).attr('id').split('-')[0];
-                console.log(timeid);
+                if($(this).val()>currentYear){
+                  $(this).val(currentYear);
+                }
                 container.makeCustomTime($(this).val(), timeid, timeline);
             });
             var labelform = $("<form onsubmit=\"return false;\">");
@@ -124,6 +131,10 @@ var initTimeline = function () {
     }; // drawLabel()
 
     container.makeCustomTime = function makeCustomTime(time, name, timeline) {
+
+        if(time>new Date()){
+          time=new Date();
+        }
         try {
             timeline.setCustomTime(makeMoment(time), name);
         } catch (e) {
