@@ -452,22 +452,25 @@ var initTimeline = function () {
     // on launching the modal do the stuff to make it work
     $('#find_classify').on('click', function () {
 
+        var parentStart = $('#' + window.date_start_id).val();
+        var parentEnd = $('#' + window.date_start_id + '_span').val();
+        console.log($('#' + window.date_start_id).val());
+        console.log(parentStart);
         // reset the timeline dropdowns
         container.createOptions();
 
+        console.log($('#' + window.date_start_id).val());
+        console.log(parentStart);
         // after a short delay, zoomout, giving a nice span and forcing a redraw
         window.setTimeout(function () {
             $('.vis-tl-zoom-out').trigger('click');
-        }, 3000);
+        }, 1000);
 
-        var start = $('#' + window.date_start_id).val();
-        var end = $('#' + window.date_start_id + '_span').val();
-        if ($.isNumeric(start)) {
-            container.makeCustomTime(start, 'start', timeline);
+        if ($.isNumeric(parentStart)) {
+            container.makeCustomTime(parentStart, 'start', timeline);
         }
-        if ($.isNumeric(end)) {
-            container.makeCustomTime(end, 'end', timeline);
-
+        if ($.isNumeric(parentEnd)) {
+            container.makeCustomTime(parentEnd, 'end', timeline);
         }
     });
 
