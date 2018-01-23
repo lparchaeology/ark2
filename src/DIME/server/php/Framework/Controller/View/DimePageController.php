@@ -126,6 +126,14 @@ abstract class DimePageController extends PageController
                         ['name' => 'dime.admin.users.register', 'active' => false, 'target' => 'core.admin.users.register'],
                     ],
                 ],
+                [
+                    'name' => 'admin.museums',
+                    'active' => false,
+                    'permission' => 'core.admin.user',
+                    'links' => [
+                        ['name' => 'dime.admin.museums', 'active' => false, 'target' => 'dime.admin.museums'],
+                    ],
+                ],
             ],
         ];
         if ($route) {

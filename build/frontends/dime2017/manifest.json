@@ -110,6 +110,7 @@
                     "js/form-ready.js"
                 ],
                 "custom": [
+                    "js/admin-museums.js",
                     "js/admin-users.js",
                     "js/classification-dating.js",
                     "js/classification-modal.js",
@@ -119,9 +120,11 @@
                     "js/table-switchcardmobile.js",
                     "js/table-switchcardview.js",
                     "js/dime-ready.js",
+                    "js/admin-museums-ready.js",
                     "js/admin-users-ready.js",
                     "js/classification-ready.js",
                     "js/messages-ready.js",
+                    "js/notifications-ready.js",
                     "js/table-ready.js"
                 ]
             },
