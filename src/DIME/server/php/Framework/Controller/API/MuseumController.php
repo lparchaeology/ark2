@@ -29,11 +29,11 @@
 
 namespace DIME\Framework\Controller\API;
 
-use ARK\Actor\Museum;
 use ARK\Framework\ApiController;
 use ARK\Model\Item;
 use ARK\ORM\ORM;
 use DIME\DIME;
+use DIME\Entity\Museum;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

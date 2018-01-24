@@ -30,13 +30,13 @@
 namespace DIME\Framework\Controller\View;
 
 use ARK\Actor\Actor;
-use ARK\Actor\Museum;
 use ARK\Actor\Person;
 use ARK\ORM\ORM;
 use ARK\Security\User;
 use ARK\Service;
 use ARK\Workflow\Role;
 use DIME\DIME;
+use DIME\Entity\Museum;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 

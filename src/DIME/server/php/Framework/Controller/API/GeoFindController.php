@@ -29,11 +29,11 @@
 
 namespace DIME\Framework\Controller\API;
 
-use ARK\Actor\Museum;
 use ARK\Service;
 use ARK\Vocabulary\Term;
 use Brick\Geo\Point;
 use DIME\DIME;
+use DIME\Entity\Museum;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

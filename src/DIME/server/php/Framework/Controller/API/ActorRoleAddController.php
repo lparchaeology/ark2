@@ -30,13 +30,13 @@
 namespace DIME\Framework\Controller\API;
 
 use ARK\Actor\Actor;
-use ARK\Actor\Museum;
 use ARK\Framework\ApiController;
 use ARK\ORM\ORM;
 use ARK\Security\User;
 use ARK\Service;
 use ARK\Workflow\Role;
 use DIME\DIME;
+use DIME\Entity\Museum;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

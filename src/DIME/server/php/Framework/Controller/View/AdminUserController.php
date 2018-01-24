@@ -29,11 +29,11 @@
 
 namespace DIME\Framework\Controller\View;
 
-use ARK\Actor\Museum;
 use ARK\Model\Item;
 use ARK\ORM\ORM;
 use ARK\Security\User;
 use ARK\Service;
+use DIME\Entity\Museum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;

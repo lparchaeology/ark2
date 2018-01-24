@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 24, 2018 at 05:09 PM
+-- Generation Time: Jan 24, 2018 at 06:56 PM
 -- Server version: 10.2.12-MariaDB
 -- PHP Version: 7.1.13
 
@@ -96,7 +96,7 @@ INSERT INTO `ark_dataclass` (`dataclass`, `datatype`, `object`, `array`, `span`,
 ('multiline', 'spatial', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, 1, 0, NULL),
 ('multipoint', 'spatial', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, 1, 0, NULL),
 ('multipolygon', 'spatial', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, 1, 0, NULL),
-('museum', 'item', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 'ARK\\Actor\\Museum', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'core.actor.class.museum'),
+('museum', 'item', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 'DIME\\Entity\\Museum', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'core.actor.class.museum'),
 ('ordinaldate', 'string', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.ordinaldate'),
 ('password', 'string', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.password'),
 ('percent', 'float', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.percent'),
@@ -541,19 +541,6 @@ INSERT INTO `ark_dataclass_type` (`datatype`, `number`, `temporal`, `object`, `c
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ark_instance_route`
---
-
-CREATE TABLE `ark_instance_route` (
-  `instance` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `route` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `deprecated` tinyint(1) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `ark_map`
 --
 
@@ -833,7 +820,7 @@ CREATE TABLE `ark_model_class` (
 
 INSERT INTO `ark_model_class` (`schma`, `class`, `vocabulary`, `namespace`, `entity`, `classname`, `superclass`, `instantiable`, `enabled`, `deprecated`) VALUES
 ('core.actor', 'actor', 'core.actor.class', 'ARK\\Actor', 'Actor', 'ARK\\Actor\\Actor', 1, 0, 1, 0),
-('core.actor', 'museum', 'core.actor.class', 'ARK\\Actor', 'Museum', 'ARK\\Actor\\Museum', 0, 1, 1, 0),
+('core.actor', 'museum', 'core.actor.class', 'DIME\\Entity', 'Museum', 'DIME\\Entity\\Museum', 0, 1, 1, 0),
 ('core.actor', 'person', 'core.actor.class', 'ARK\\Actor', 'Person', 'ARK\\Actor\\Person', 0, 1, 1, 0),
 ('core.event', 'accessioned', 'core.event.class', 'ARK\\Workflow', 'Event', 'ARK\\Workflow\\Event', 0, 1, 1, 0),
 ('core.event', 'activated', 'core.event.class', 'ARK\\Workflow', 'Event', 'ARK\\Workflow\\Event', 0, 1, 1, 0),
@@ -7192,7 +7179,7 @@ CREATE TABLE `ark_vocabulary_parameter` (
 
 INSERT INTO `ark_vocabulary_parameter` (`concept`, `term`, `name`, `type`, `value`) VALUES
 ('core.actor.class', 'institution', 'entity', 'string', 'ARK\\Actor\\Institution'),
-('core.actor.class', 'museum', 'entity', 'string', 'ARK\\Actor\\Museum'),
+('core.actor.class', 'museum', 'entity', 'string', 'DIME\\Entity\\Museum'),
 ('core.actor.class', 'person', 'entity', 'string', 'ARK\\Actor\\Person'),
 ('core.file.class', 'audio', 'entity', 'string', 'ARK\\File\\Audio'),
 ('core.file.class', 'document', 'entity', 'string', 'ARK\\File\\Document'),
@@ -10162,14 +10149,6 @@ ALTER TABLE `ark_dataclass_type`
   ADD KEY `datatype_foreign` (`keyword`) USING BTREE;
 
 --
--- Indexes for table `ark_instance_route`
---
-ALTER TABLE `ark_instance_route`
-  ADD PRIMARY KEY (`instance`,`route`),
-  ADD KEY `route_foreign` (`route`) USING BTREE,
-  ADD KEY `instance_foreign` (`instance`) USING BTREE;
-
---
 -- Indexes for table `ark_map`
 --
 ALTER TABLE `ark_map`
@@ -10703,13 +10682,6 @@ ALTER TABLE `ark_dataclass_type`
   ADD CONSTRAINT `dataclass_type_format_constraint` FOREIGN KEY (`format_vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE,
   ADD CONSTRAINT `dataclass_type_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `dataclass_type_parameter_constraint` FOREIGN KEY (`parameter_vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
-
---
--- Constraints for table `ark_instance_route`
---
-ALTER TABLE `ark_instance_route`
-  ADD CONSTRAINT `instance_route_instance_constraint` FOREIGN KEY (`instance`) REFERENCES `ark_instance` (`instance`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `instance_route_route_constraint` FOREIGN KEY (`route`) REFERENCES `ark_route` (`route`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_map`

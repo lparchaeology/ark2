@@ -30,7 +30,6 @@
 namespace DIME\Framework\Controller\View;
 
 use ARK\Actor\Actor;
-use ARK\Actor\Museum;
 use ARK\Actor\Person;
 use ARK\File\File;
 use ARK\File\MediaType;
@@ -42,6 +41,7 @@ use ARK\Vocabulary\Term;
 use ARK\Workflow\Action;
 use DIME\DIME;
 use DIME\Entity\Find;
+use DIME\Entity\Museum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;

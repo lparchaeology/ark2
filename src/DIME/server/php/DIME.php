@@ -30,13 +30,13 @@
 namespace DIME;
 
 use ARK\Actor\Actor;
-use ARK\Actor\Museum;
 use ARK\Message\Notification;
 use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
 use DIME\Entity\Find;
+use DIME\Entity\Museum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Connection;
