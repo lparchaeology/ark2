@@ -41,8 +41,8 @@ class SchemaAttribute extends Attribute
     protected $class = '';
     protected $visibility = 'restricted';
     protected $visibilityTerm;
-    protected $read;
-    protected $update;
+    protected $readPermission;
+    protected $updatePermission;
 
     public function schema() : Schema
     {
@@ -64,16 +64,16 @@ class SchemaAttribute extends Attribute
 
     public function readPermission() : ?Permission
     {
-        if ($this->read) {
-            return $this->read;
+        if ($this->readPermission) {
+            return $this->readPermission;
         }
         return $this->schma->readPermission();
     }
 
     public function updatePermission() : ?Permission
     {
-        if ($this->update) {
-            return $this->update;
+        if ($this->updatePermission) {
+            return $this->updatePermission;
         }
         return $this->schma->updatePermission();
     }
@@ -93,7 +93,7 @@ class SchemaAttribute extends Attribute
         $builder->addStringField('visibility', 30);
 
         // Associations
-        $builder->addPermissionField('view', 'read');
-        $builder->addPermissionField('edit', 'update');
+        $builder->addPermissionField('view_permission', 'readPermission');
+        $builder->addPermissionField('edit_permission', 'updatePermission');
     }
 }
