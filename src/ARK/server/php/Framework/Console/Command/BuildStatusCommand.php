@@ -29,7 +29,7 @@
 
 namespace ARK\Framework\Console\Command;
 
-use ARK\Framework\Console\ProcessTrait;
+use ARK\Console\ProcessTrait;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

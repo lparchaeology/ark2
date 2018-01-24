@@ -30,8 +30,8 @@
 namespace ARK\Framework\Console;
 
 use ARK\ARK;
-use ARK\Framework\Console\ProcessTrait;
-use ARK\Framework\Console\Helper\FileChooserHelper;
+use ARK\Console\ProcessTrait;
+use ARK\Console\Helper\FileChooserHelper;
 use Silex\Application;
 use Symfony\Component\Console\Application as SymfonyConsole;
 use Symfony\Component\Console\Input\InputInterface;

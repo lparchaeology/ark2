@@ -30,7 +30,7 @@
 namespace ARK\Security\Console\Command;
 
 use ARK\ARK;
-use ARK\Framework\Console\Command\AbstractCommand;
+use ARK\Console\Command\AbstractCommand;
 use ARK\Security\User;
 use ARK\Service;
 

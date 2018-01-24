@@ -27,8 +27,9 @@
  * @since      2.0
  */
 
-namespace ARK\Framework\Console\Command;
+namespace ARK\Routing\Console\Command;
 
+use ARK\Console\Command\AbstractCommand;
 use Silex\Route;
 use Symfony\Component\Routing\RouteCollection;
 

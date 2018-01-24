@@ -27,9 +27,9 @@
  * @since      2.0
  */
 
-namespace ARK\Framework\Console\Command;
+namespace ARK\Workflow\Console\Command;
 
-use ARK\Service;
+use ARK\Console\Command\AbstractCommand;
 use Symfony\Component\Workflow\Dumper\GraphvizDumper;
 use Symfony\Component\Workflow\Dumper\StateMachineGraphvizDumper;
 
@@ -44,10 +44,6 @@ class WorkflowDumpCommand extends AbstractCommand
 
     protected function doExecute() : void
     {
-        $workflow = Service::workflow();
-
-        $name = $input->getArgument('name');
-
         if ($workflow = ORM::find(Workflow::class, $name)) {
             if (get_class($workflow) === StateMachine::class) {
                 $dumper = new StateMachineGraphvizDumper();
@@ -58,5 +54,10 @@ class WorkflowDumpCommand extends AbstractCommand
         } else {
             $this->write('Workflow not found!');
         }
+    }
+
+    protected function doInteract() : void
+    {
+        $this->askArgument('name', 'Please enter the workflow name to dump');
     }
 }

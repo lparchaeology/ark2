@@ -29,7 +29,7 @@
 
 namespace ARK\View\Console\Command;
 
-use ARK\Framework\Console\Command\AbstractCommand;
+use ARK\Console\Command\AbstractCommand;
 use ARK\ORM\ORM;
 use ARK\View\Element;
 use ARK\View\Page;

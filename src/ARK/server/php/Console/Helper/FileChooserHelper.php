@@ -27,7 +27,7 @@
  * @since      2.0
  */
 
-namespace ARK\Framework\Console\Helper;
+namespace ARK\Console\Helper;
 
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Helper\Helper;

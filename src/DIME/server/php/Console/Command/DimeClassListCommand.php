@@ -29,7 +29,7 @@
 
 namespace DIME\Console\Command;
 
-use ARK\Framework\Console\Command\AbstractCommand;
+use ARK\Console\Command\AbstractCommand;
 use ARK\Translation\Translation;
 use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;

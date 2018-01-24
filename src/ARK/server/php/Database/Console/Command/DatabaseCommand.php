@@ -30,9 +30,9 @@
 namespace ARK\Database\Console\Command;
 
 use ARK\ARK;
+use ARK\Console\Command\AbstractCommand;
 use ARK\Database\AdminConnection;
 use ARK\Database\Connection;
-use ARK\Framework\Console\Command\AbstractCommand;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
 use Symfony\Component\Console\Question\ChoiceQuestion;

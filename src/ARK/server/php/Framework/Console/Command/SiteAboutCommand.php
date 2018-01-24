@@ -30,6 +30,7 @@
 namespace ARK\Framework\Console\Command;
 
 use ARK\ARK;
+use ARK\Console\Command\AbstractCommand;
 use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Style\SymfonyStyle;
 

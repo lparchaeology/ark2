@@ -31,7 +31,7 @@ namespace ARK\Framework\Console\Command;
 
 use ARK\ARK;
 use ARK\Database\Console\Command\DatabaseCommand;
-use ARK\Framework\Console\ProcessTrait;
+use ARK\Console\ProcessTrait;
 use Doctrine\DBAL\DBALException;
 use Exception;
 use Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder;

@@ -27,10 +27,10 @@
  * @since      2.0
  */
 
-namespace ARK\Framework\Console\Command;
+namespace ARK\Console\Command;
 
 use ARK\ARK;
-use ARK\Framework\Console\Helper\FileFilter;
+use ARK\Console\Helper\FileFilter;
 use Exception;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;

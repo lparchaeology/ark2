@@ -30,6 +30,7 @@
 namespace ARK\Framework\Console\Command;
 
 use ARK\ARK;
+use ARK\Console\Command\AbstractCommand;
 use DateTime;
 use Locale;
 use Silex\Application;

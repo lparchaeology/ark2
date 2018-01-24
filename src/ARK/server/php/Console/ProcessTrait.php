@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Console Process Trait
+ * ARK Console Process Trait.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,15 +27,15 @@
  * @since      2.0
  */
 
-namespace ARK\Framework\Console;
+namespace ARK\Console;
 
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 trait ProcessTrait
 {
-    protected function runProcess(string $command, OutputInterface $output)
+    protected function runProcess(string $command, OutputInterface $output) : void
     {
         $process = new Process($command);
         $process->start();

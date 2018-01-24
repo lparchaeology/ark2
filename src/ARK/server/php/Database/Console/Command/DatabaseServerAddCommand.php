@@ -30,7 +30,7 @@
 namespace ARK\Database\Console\Command;
 
 use ARK\ARK;
-use ARK\Framework\Console\ProcessTrait;
+use ARK\Console\ProcessTrait;
 
 class DatabaseServerAddCommand extends DatabaseCommand
 {

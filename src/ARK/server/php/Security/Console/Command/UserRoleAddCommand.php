@@ -31,7 +31,7 @@ namespace ARK\Security\Console\Command;
 
 use ARK\Actor\Actor;
 use ARK\ARK;
-use ARK\Framework\Console\Command\AbstractCommand;
+use ARK\Console\Command\AbstractCommand;
 use ARK\ORM\ORM;
 use ARK\Security\User;
 use ARK\Service;
