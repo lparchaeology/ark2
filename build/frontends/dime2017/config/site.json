@@ -67,8 +67,8 @@
     },
     "console": {
         "commands": [
-            "DIME\\Framework\\Console\\Command\\DimeTranslationCommand",
-            "DIME\\Framework\\Console\\Command\\DimeClassListCommand"
+            "DIME\\Console\\Command\\DimeTranslationCommand",
+            "DIME\\Console\\Command\\DimeClassListCommand"
         ]
     },
     "security": {

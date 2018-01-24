@@ -27,7 +27,7 @@
  * @since      2.0
  */
 
-namespace DIME\Framework\Console\Command;
+namespace DIME\\Console\Command;
 
 use ARK\Framework\Console\Command\AbstractCommand;
 use ARK\ORM\ORM;
