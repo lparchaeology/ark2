@@ -239,6 +239,14 @@ trait ItemTrait
         return [];
     }
 
+    public function delete() : void
+    {
+        foreach ($this->properties() as $property) {
+            $property->delete();
+        }
+        ORM::remove($this);
+    }
+
     protected function construct(string $schema, string $class = null) : void
     {
         $this->schma = $schema;

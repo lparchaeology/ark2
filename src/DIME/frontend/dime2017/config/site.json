@@ -68,7 +68,8 @@
     "console": {
         "commands": [
             "DIME\\Console\\Command\\DimeTranslationCommand",
-            "DIME\\Console\\Command\\DimeClassListCommand"
+            "DIME\\Console\\Command\\DimeClassListCommand",
+            "DIME\\Console\\Command\\DimeFindDeleteCommand"
         ]
     },
     "security": {
