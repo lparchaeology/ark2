@@ -105,7 +105,12 @@
 
 </form>
 
-<script src="{{ asset('scripts/jquery.min.js', 'frontend') }}"></script>
+<script >
+    var lang = "{{ global.request.locale }}"
+    var path = "{{ path('dime.front')|escape('js') }}";
+</script>
+
+<script src="{{ asset('scripts/ark-default.min.js', 'frontend') }}"></script>
 
 <script type="text/javascript">
 
@@ -113,7 +118,7 @@
     Router.setBasePath('');
     Router.setRoutes(
         {
-            'api.internal.translation.message': {
+            'dime.api.translation.message': {
                 'path': '/api/internal/translations/{keyword}/languages/{language}'
             }
         }
@@ -125,8 +130,8 @@
             message: message,
             notes: ''
         };
-        var path = Router.generatePath('dime.api.translation.message', { keyword: keyword, language: language });
-        $.post(path, JSON.stringify(response), function(result) {});
+        var route = Router.generatePath('dime.api.translation.message', { keyword: keyword, language: language });
+        $.post(route, JSON.stringify(response), function(result) {});
     }
 </script>
 

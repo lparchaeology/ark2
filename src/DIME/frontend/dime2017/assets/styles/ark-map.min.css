@@ -40,13 +40,13 @@
 .fix-sticky{position:fixed;z-index:100}.fix-sticky thead{background:#fff}.fix-sticky thead th,.fix-sticky thead th:first-child{border-left:0;border-right:0;border-bottom:1px solid #eee;border-radius:0}
 
 /*!
- * bootstrap-fileinput v4.4.6
+ * bootstrap-fileinput v4.4.7
  * http://plugins.krajee.com/file-input
  *
  * Krajee default styling for bootstrap-fileinput.
  *
  * Author: Kartik Visweswaran
- * Copyright: 2014 - 2017, Kartik Visweswaran, Krajee.com
+ * Copyright: 2014 - 2018, Kartik Visweswaran, Krajee.com
  *
  * Licensed under the BSD 3-Clause
  * https://github.com/kartik-v/bootstrap-fileinput/blob/master/LICENSE.md

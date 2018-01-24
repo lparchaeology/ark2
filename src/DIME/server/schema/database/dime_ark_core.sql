@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 24, 2018 at 03:30 PM
+-- Generation Time: Jan 24, 2018 at 05:09 PM
 -- Server version: 10.2.12-MariaDB
 -- PHP Version: 7.1.13
 
@@ -1027,7 +1027,7 @@ INSERT INTO `ark_route` (`route`, `collection`, `can_get`, `can_post`, `page`, `
 ('core.user.register', 'user', 1, 1, 'dime_page_user_register', 'dime.front', 'DIME\\Framework\\Controller\\View\\UserRegisterController'),
 ('core.user.reset', 'user', 1, 1, 'core_page_user_reset', NULL, 'DIME\\Framework\\Controller\\View\\UserResetController'),
 ('core.user.target', 'user', 1, 0, 'dime_page_home', NULL, 'DIME\\Framework\\Controller\\View\\HomePageController'),
-('dime.about', 'view', 1, 0, 'dime_page_static', NULL, 'DIME\\Framework\\Controller\\View\\PageViewController'),
+('dime.about', 'view', 1, 1, 'dime_page_static', NULL, 'DIME\\Framework\\Controller\\View\\PageViewController'),
 ('dime.admin.museums', 'admin', 1, 1, 'dime_page_admin_museum', NULL, 'DIME\\Framework\\Controller\\View\\AdminMuseumController'),
 ('dime.api.actor.item', 'api', 1, 1, NULL, NULL, 'DIME\\Framework\\Controller\\API\\ActorController'),
 ('dime.api.actor.role.add', 'api', 0, 1, NULL, NULL, 'DIME\\Framework\\Controller\\API\\ActorRoleAddController'),
@@ -1042,7 +1042,7 @@ INSERT INTO `ark_route` (`route`, `collection`, `can_get`, `can_post`, `page`, `
 ('dime.api.translation.message', 'api', 1, 1, NULL, NULL, 'DIME\\Framework\\Controller\\API\\TranslationMessageController'),
 ('dime.api.user.password.set', 'api', 0, 1, NULL, NULL, 'DIME\\Framework\\Controller\\API\\UserPasswordSetController'),
 ('dime.api.vocabulary', 'api', 0, 1, NULL, NULL, 'DIME\\Framework\\Controller\\API\\VocabularyController'),
-('dime.detector', 'view', 1, 0, 'dime_page_static', NULL, 'DIME\\Framework\\Controller\\View\\PageViewController'),
+('dime.detector', 'view', 1, 1, 'dime_page_static', NULL, 'DIME\\Framework\\Controller\\View\\PageViewController'),
 ('dime.finds.add', 'view', 1, 1, 'dime_page_find_add', 'dime.finds.view', 'DIME\\Framework\\Controller\\View\\FindAddController'),
 ('dime.finds.list', 'view', 1, 1, 'dime_page_find_list', NULL, 'DIME\\Framework\\Controller\\View\\FindListController'),
 ('dime.finds.register', 'view', 1, 1, 'dime_page_find_register', NULL, 'DIME\\Framework\\Controller\\View\\FindRegisterController'),
@@ -1055,7 +1055,7 @@ INSERT INTO `ark_route` (`route`, `collection`, `can_get`, `can_post`, `page`, `
 ('dime.news', 'view', 1, 0, 'dime_page_news', NULL, 'DIME\\Framework\\Controller\\View\\NewsPageController'),
 ('dime.profiles.list', 'view', 1, 0, 'dime_page_profile_list', NULL, 'DIME\\Framework\\Controller\\View\\ProfileListController'),
 ('dime.profiles.view', 'view', 1, 0, 'dime_page_profile', NULL, 'DIME\\Framework\\Controller\\View\\ProfileViewController'),
-('dime.research', 'view', 1, 0, 'dime_page_static', NULL, 'DIME\\Framework\\Controller\\View\\PageViewController');
+('dime.research', 'view', 1, 1, 'dime_page_static', NULL, 'DIME\\Framework\\Controller\\View\\PageViewController');
 
 -- --------------------------------------------------------
 

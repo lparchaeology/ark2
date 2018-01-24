@@ -215,7 +215,9 @@
                     "vendor": [
                         "summernote/dist/summernote.css"
                     ],
-                    "core": [],
+                    "core": [
+                        "scss/vendor/summernote.scss"
+                    ],
                     "custom": []
                 }
             ]
