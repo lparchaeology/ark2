@@ -124,11 +124,18 @@ class Service
         return self::imageServer($server)->getImageResponse($path, $parameters);
     }
 
-    public static function imagePath(string $server, string $image, iterable $parameters = []) : string
+    public static function imagePath(string $server, string $image, iterable $parameters = [], bool $relative = false) : string
     {
         $parameters['server'] = $server;
         $parameters['image'] = $image;
-        return self::path('core.api.image', $parameters);
+        return self::path('core.api.image', $parameters, $relative);
+    }
+
+    public static function imageUrl(string $server, string $image, iterable $parameters = [], bool $relative = false) : string
+    {
+        $parameters['server'] = $server;
+        $parameters['image'] = $image;
+        return self::url('core.api.image', $parameters, $relative);
     }
 
     public static function forms() : FormFactory

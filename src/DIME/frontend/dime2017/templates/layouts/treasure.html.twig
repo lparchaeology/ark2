@@ -68,7 +68,11 @@
                     </td>
 
                     <td>
-                        Thumbnails
+                        {% set images = find.property('image').value %}
+                        {% for image in images %}
+                            {{ imageUrl('file', image.id, {'p': 'preview'}) }}
+                            {# <img src="{{ imageUrl('file', image.id, {'p': 'preview'}) }}" alt="" /> #}
+                        {% endfor %}
                     </td>
 
                     <td>
