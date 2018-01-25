@@ -163,6 +163,11 @@ trait ItemTrait
         return $this->schema()->attributes($this->class());
     }
 
+    public function attribute(string $name) : ?Attribute
+    {
+        return $this->schema()->attribute($name);
+    }
+
     public function path() : string
     {
         $resource = $this->schema()->module()->resource();
@@ -170,26 +175,6 @@ trait ItemTrait
             return $this->parent()->path().'/'.$resource.'/'.$this->index();
         }
         return '/'.$resource.'/'.$this->index();
-    }
-
-    public function properties() : iterable
-    {
-        foreach ($this->attributes() as $attribute) {
-            if (!isset($this->properties[$attribute->name()])) {
-                $this->properties[$attribute->name()] = new Property($this, $attribute);
-            }
-        }
-        return array_values($this->properties);
-    }
-
-    public function propertyArray() : iterable
-    {
-        foreach ($this->attributes() as $attribute) {
-            if (!isset($this->properties[$attribute->name()])) {
-                $this->properties[$attribute->name()] = new Property($this, $attribute);
-            }
-        }
-        return $this->properties;
     }
 
     public function property(string $attribute) : ?Property
@@ -205,18 +190,23 @@ trait ItemTrait
 
     public function value(string $attribute)
     {
-        if ($property = $this->property($attribute)) {
-            return $property->value();
-        }
-        return null;
+        $property = $this->property($attribute);
+        return $property instanceof Property ? $property->value() : null;
     }
 
     public function setValue(string $attribute, $value) : void
     {
-        if ($property = $this->property($attribute)) {
+        $property = $this->property($attribute);
+        if ($property instanceof Property) {
             $property->setValue($value);
             $this->refreshVersion();
         }
+    }
+
+    public function serialize(string $attribute)
+    {
+        $property = $this->property($attribute);
+        return $property instanceof Property ? $property->serialize() : null;
     }
 
     public function related(string $module = null) : iterable
@@ -247,6 +237,16 @@ trait ItemTrait
         ORM::remove($this);
     }
 
+    protected function properties() : iterable
+    {
+        foreach ($this->attributes() as $attribute) {
+            if (!isset($this->properties[$attribute->name()])) {
+                $this->properties[$attribute->name()] = new Property($this, $attribute);
+            }
+        }
+        return array_values($this->properties);
+    }
+
     protected function construct(string $schema, string $class = null) : void
     {
         $this->schma = $schema;
@@ -254,7 +254,7 @@ trait ItemTrait
         // TODO Is this really needed?
         if ($this->schema()->hasSubclassEntities()) {
             $this->class = ($class ?: $this->makeSubclass());
-            $this->property('class')->setValue($this->class);
+            $this->setValue('class', $this->class);
         }
     }
 

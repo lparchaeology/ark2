@@ -62,12 +62,12 @@ abstract class File implements Item
 
     public function title() : string
     {
-        return $this->property('title')->value();
+        return $this->value('title');
     }
 
     public function description() : string
     {
-        return $this->property('description')->value();
+        return $this->value('description');
     }
 
     public function version()
@@ -104,41 +104,41 @@ abstract class File implements Item
             $created
         );
         $this->versions[] = $this->current;
-        $this->property('versions')->setValue($this->versions);
+        $this->setValue('versions', $this->versions);
     }
 
     public function versions() : iterable
     {
         if ($this->versions === null) {
-            $this->versions = $this->property('versions')->value();
+            $this->versions = $this->value('versions');
         }
         return $this->versions;
     }
 
     public function status() : string
     {
-        return $this->property('status')->value();
+        return $this->value('status');
     }
 
     public function license() : Term
     {
-        return $this->property('license')->value();
+        return $this->value('license');
     }
 
     public function copyright() : string
     {
-        return $this->property('copyright')->value();
+        return $this->value('copyright');
     }
 
     public function mediatype() : MediaType
     {
         if ($this->mediatype === null) {
-            $this->mediatype = new MediaType($this->property('mediatype')->value());
+            $this->mediatype = new MediaType($this->value('mediatype'));
         }
         return $this->mediatype;
     }
 
-    public static function createFromUploadedFile(UploadedFile $upload) : ?File
+    public static function createFromUploadedFile(UploadedFile $upload) : ?self
     {
         if ($upload->isValid()) {
             $file = self::createForMediatype($upload->getMimetype());
@@ -151,7 +151,7 @@ abstract class File implements Item
         return null;
     }
 
-    public static function createFromContent(MediaType $mediatype, string $filename, $content) : File
+    public static function createFromContent(MediaType $mediatype, string $filename, $content) : self
     {
         $file = self::createForMediatype($mediatype);
         $file->addFileVersion($filename, $mediatype->defaultExtension());
@@ -162,10 +162,10 @@ abstract class File implements Item
     protected function setMediatype(MediaType $mediatype) : void
     {
         $this->mediatype = $mediatype;
-        $this->property('mediatype')->setValue($mediatype->mediatype());
+        $this->setValue('mediatype', $mediatype->mediatype());
     }
 
-    protected static function createForMediatype($mediatype) : File
+    protected static function createForMediatype($mediatype) : self
     {
         if (is_string($mediatype)) {
             $mediatype = new MediaType($mediatype);

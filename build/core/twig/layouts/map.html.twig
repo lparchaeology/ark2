@@ -75,7 +75,7 @@
                 var default_overlay = "distribution";
 
                 {% for item in data[layout.name] %}
-                    {% set location = item.property('location').value() %}
+                    {% set location = item.value('location') %}
                     {% if location['coordinates'] is defined %}
                         wkts[{{ item.id }}] = '{{ location['coordinates'] }}';
                     {% else %}

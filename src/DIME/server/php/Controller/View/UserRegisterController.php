@@ -75,7 +75,7 @@ class UserRegisterController extends DimePageController
 
         $actor = $data['actor'];
         $actor->setId($user->username());
-        $actor->property('email')->setValue($user->email());
+        $actor->setValue('email', $user->email());
         ORM::persist($actor);
 
         $user->setName($actor->fullname());
@@ -92,7 +92,7 @@ class UserRegisterController extends DimePageController
 
         if ($role->id() === 'detectorist') {
             $detectorist = DIME::generateDetectoristId();
-            $actor->property('detectorist_id')->setValue($detectorist);
+            $actor->setValue('detectorist_id', $detectorist);
         }
 
         Service::security()->createActorRole($actor, $role, $museum, $expiry);

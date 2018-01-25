@@ -60,9 +60,9 @@
                     {% endif %}
                     {% if element.image %}
                         <td class="thumbimage">
-                            {% set image = item.property(element.image).value() %}
+                            {% set image = item.value(element.image) %}
                             {% if image is not empty %}
-                                {% if item.property(element.image).attribute.hasMultipleOccurrences %}
+                                {% if item.attribute(element.image).hasMultipleOccurrences %}
                                     {% set image = image[0] %}
                                 {% endif %}
                                 <img src="{{path('img', {'server': 'file', 'image': image.id}) ~ '?p=thumb'}}" alt=''/>

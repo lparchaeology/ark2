@@ -42,20 +42,20 @@ class Event implements Item
     {
         $this->construct('core.event');
         $this->setParent($item);
-        $this->property('agents')->setValue([$agent]);
-        $this->property('subject')->setValue($item);
-        $this->property('class')->setValue($action->event());
-        $this->property('occurred')->setValue(ARK::timestamp());
+        $this->setValue('agents', [$agent]);
+        $this->setValue('subject', $item);
+        $this->setValue('class', $action->event());
+        $this->setValue('occurred', ARK::timestamp());
     }
 
     public function term()
     {
-        return $this->property('class')->value();
+        return $this->value('class');
     }
 
     public function agent()
     {
-        return $this->property('agent')->value();
+        return $this->value('agent');
     }
 
     public function subject()
@@ -65,6 +65,6 @@ class Event implements Item
 
     public function occurredAt()
     {
-        return $this->property('occurred')->value();
+        return $this->value('occurred');
     }
 }

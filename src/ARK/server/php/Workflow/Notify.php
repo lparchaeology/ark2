@@ -49,7 +49,7 @@ class Notify
     public function recipient(Item $item)
     {
         if ($this->attributeName) {
-            return $item->property($this->attributeName)->value();
+            return $item->value($this->attributeName);
         }
         if ($this->roleName) {
             return $this->role;

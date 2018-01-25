@@ -50,7 +50,7 @@ class PageContentController
                 $json['error']['content'] = $input;
             } elseif ($request->getMethod() === 'GET') {
                 $json['route'] = $input['route'];
-                $json['content'] = $page->property('content')->value();
+                $json['content'] = $page->value('content');
             } elseif ($request->getMethod() === 'POST') {
                 $content = $page->value('content');
                 $content->setContent($input['content']);

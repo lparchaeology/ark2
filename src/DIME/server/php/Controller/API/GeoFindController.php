@@ -59,7 +59,7 @@ class GeoFindController
                 if ($museum) {
                     $data['museum']['id'] = $museum->id();
                     $data['museum']['module'] = $museum->schema()->module()->id();
-                    $data['museum']['name'] = $museum->property('fullname')->value()->content();
+                    $data['museum']['name'] = $museum->value('fullname')->content();
                 }
             }
         } catch (\Throwable $e) {

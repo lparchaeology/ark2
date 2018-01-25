@@ -63,10 +63,10 @@ class Update
         } elseif ($this->term) {
             $value = ORM::findOneBy(Term::class, ['concept' => $this->attribute->vocabulary()->concept(), 'term' => $this->term]);
         } elseif ($this->source) {
-            $value = $item->property($this->source->name())->value();
+            $value = $item->value($this->source->name());
         }
         if (isset($value) || $this->clear) {
-            $item->property($this->attributeName)->setValue($value);
+            $item->setValue($this->attributeName, $value);
         }
     }
 

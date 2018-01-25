@@ -303,8 +303,8 @@ class FindListController extends DimePageController
             if ($action->name() === 'claim') {
                 //$layout = ORM::find(Group::class, 'dime_treasure_pdf');
                 $data['finds'] = $finds;
-                $data['museum'] = $finds[0]->property('museum')->value();
-                $data['claimant'] = $finds[0]->property('finder')->value();
+                $data['museum'] = $finds[0]->value('museum');
+                $data['claimant'] = $finds[0]->value('finder');
                 $data['agent'] = $actor;
                 /*
                 $state = $layout->buildState($data, $layout->defaultState());
@@ -335,7 +335,7 @@ class FindListController extends DimePageController
                 $mediatype = new MediaType('application/pdf');
                 $file = File::createFromContent($mediatype, 'danefae.pdf', $pdf);
                 foreach ($finds as $find) {
-                    $find->property('claim')->setValue($file);
+                    $find->setValue('claim', $file);
                 }
             }
             ORM::flush('data');

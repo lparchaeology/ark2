@@ -204,14 +204,14 @@ class ScalarPropertyType extends AbstractPropertyType
         ];
     }
 
-    protected function mapDisplayValue($value, ?string $valueName, ?string $property = null)
+    protected function mapDisplayValue($value, ?string $valueName, ?string $attribute = null)
     {
         $display = $value;
         if ($display instanceof Item) {
-            if ($property === null || $display->property($property) === null) {
+            if ($attribute === null || !$display->hasAttribute($attribute)) {
                 return $display->id();
             }
-            $display = $display->property($property)->value();
+            $display = $display->value($attribute);
         }
         if ($display instanceof Term) {
             return $display->keyword();

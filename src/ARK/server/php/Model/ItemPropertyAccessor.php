@@ -44,7 +44,7 @@ class ItemPropertAccessor extends PropertyAccessor
                 $attribute = $propertyPath;
             }
             if ($objectOrArray->hasAttribute($attribute)) {
-                return $objectOrArray->property($attribute)->value();
+                return $objectOrArray->value($attribute);
             }
         }
         return parent::getValue($objectOrArray, $propertyPath);
@@ -60,7 +60,7 @@ class ItemPropertAccessor extends PropertyAccessor
                 $attribute = $propertyPath;
             }
             if ($objectOrArray->hasAttribute($attribute)) {
-                $objectOrArray->property($attribute)->setValue($value);
+                $objectOrArray->setValue($attribute, $value);
             }
         }
         parent::setValue($objectOrArray, $propertyPath, $value);

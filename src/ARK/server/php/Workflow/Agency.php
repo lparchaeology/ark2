@@ -64,7 +64,7 @@ class Agency
 
     public function isGranted(Actor $actor, Item $item) : ?bool
     {
-        $value = $item->property($this->attributeName)->value();
+        $value = $item->value($this->attributeName);
         if (!$value instanceof Actor) {
             return self::DENY;
         }

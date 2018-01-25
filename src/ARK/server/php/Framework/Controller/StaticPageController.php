@@ -34,9 +34,7 @@ use ARK\Framework\Controller;
 use ARK\Framework\PageController;
 use ARK\Http\Exception\ItemNotFoundHttpException;
 use ARK\ORM\ORM;
-use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class StaticPageController extends PageController
 {
@@ -48,15 +46,5 @@ class StaticPageController extends PageController
             throw new ItemNotFoundHttpException('Page', $route);
         }
         return $page;
-    }
-
-    public function processForm(Request $request, Form $form) : void
-    {
-        $page = $this->buildData($request);
-        $content = $page->property('content')->value();
-        $content->setContent($request->getContent());
-        $page->property('content')->setValue($content);
-        ORM::flush($page);
-        //return new Response('', 203);
     }
 }

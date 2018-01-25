@@ -8,10 +8,10 @@
             {{ 'core.button.edit' | translate }}
         </button>
         <div class="inlineedit">
-            {{ data.property('content').value.content | raw }}
+            {{ data.value('content').content | raw }}
         </div>
     {% else %}
-        {{ data.property('content').value.content | raw }}
+        {{ data.value('content').content | raw }}
     {% endif %}
 
 {% endblock content %}

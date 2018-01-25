@@ -92,7 +92,7 @@ class FindViewController extends DimePageController
         }
 
         if ($clicked === 'submit') {
-            Service::workflow()->apply($actor, 'submit', $find, $find->property('museum')->value(), $message);
+            Service::workflow()->apply($actor, 'submit', $find, $find->value('museum'), $message);
             $alert = 'dime.find.update.submitted';
             $update = true;
         }

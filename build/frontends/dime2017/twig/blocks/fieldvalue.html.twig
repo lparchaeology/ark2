@@ -2,10 +2,10 @@
 {% block fieldvalue %}
 
     {{ item.name }}
-    {% if item.property(field.attribute.name).value is not null %}
-            {{ item.property(field.attribute.name).value['content'] }}
-        {% else %}
-            {{ field.attribute.name }}
-        {% endif %}
+    {% if item.value(field.attribute.name) is not null %}
+        {{ item.value(field.attribute.name).content }}
+    {% else %}
+        {{ field.attribute.name }}
+    {% endif %}
 
 {% endblock fieldvalue %}

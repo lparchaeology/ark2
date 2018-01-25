@@ -3,11 +3,11 @@
 {% set items = [] %}
 
 {% for key, find in data %}
-    {% if find.property('image').value is not empty %}
+    {% if find.value('image') is not empty %}
         {% set item = {
             'key': key,
             'server': 'file',
-            'image': find.property('image').value[0].id,
+            'image': find.value('image')[0].id,
             'path': path('dime.finds.view', {'id': find.id}),
             'find': find
             }

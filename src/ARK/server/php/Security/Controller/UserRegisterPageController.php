@@ -63,7 +63,7 @@ class UserRegisterPageController extends PageController
 
         $actor = $data['actor'];
         $actor->setId($credentials['_username']);
-        $actor->property('email')->setValue($credentials['email']);
+        $actor->setValue('email', $credentials['email']);
         ORM::persist($actor);
 
         $user = Service::security()->createUser(

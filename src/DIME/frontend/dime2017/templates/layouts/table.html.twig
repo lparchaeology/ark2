@@ -90,9 +90,9 @@
                         <td class="thumbimage"
                             data-field="{{ table.image }}"
                             data-tableexport-display="none">
-                            {% set image = item.property(table.image).value() %}
+                            {% set image = item.value(table.image) %}
                             {% if image is not empty %}
-                                {% if item.property(table.image).attribute.hasMultipleOccurrences %}
+                                {% if item.attribute(table.image).hasMultipleOccurrences %}
                                     {% set image = image[0] %}
                                 {% endif %}
                                 <img src="{{ imagePath('file', image.id, {'p': 'thumb'}) }}" alt=''/>

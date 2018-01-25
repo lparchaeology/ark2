@@ -4,8 +4,8 @@
     {% if global.user %}
         <div class="row usertool username">
             <a href="{{ path('dime.home.profile') }}">
-                {% if workflow.actor.property('avatar').value %}
-                {% set path = imagePath('file', workflow.actor.property('avatar').value.id, {'p': 'preview'}) %}
+                {% if workflow.actor.value('avatar') %}
+                {% set path = imagePath('file', workflow.actor.value('avatar').id, {'p': 'preview'}) %}
                     <img class = "profile-img" src="{{ path }}"/>
                 {% endif %}
                 <span class="usergreeting">

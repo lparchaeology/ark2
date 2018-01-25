@@ -6,18 +6,18 @@
 
 <div class="row">
     <div class="col-md-4">
-        <div class="row">{{ data.museum.property('id').value }}</div>
-        <div class="row">{{ data.museum.property('fullname').value.content }}</div>
-        <div class="row">{{ data.museum.property('email').value }}</div>
-        <div class="row">{{ data.museum.property('telephone').value }}</div>
-        <div class="row">{{ data.agent.property('fullname').value.content }}</div>
+        <div class="row">{{ data.museum.value('id') }}</div>
+        <div class="row">{{ data.museum.value('fullname').content }}</div>
+        <div class="row">{{ data.museum.value('email') }}</div>
+        <div class="row">{{ data.museum.value('telephone') }}</div>
+        <div class="row">{{ data.agent.value('fullname').content }}</div>
         <div class="row">{{ "now" | date('Y-m-d') }}</div>
     </div>
     <div class="col-md-4">
-        <div class="row">{{ data.claimant.property('fullname').value.content }}</div>
-        <div class="row">{{ data.claimant.property('email').value }}</div>
-        <div class="row">{{ data.claimant.property('telephone').value }}</div>
-        <div class="row">{{ data.claimant.property('detectorist_id').value }}</div>
+        <div class="row">{{ data.claimant.value('fullname').content }}</div>
+        <div class="row">{{ data.claimant.value('email') }}</div>
+        <div class="row">{{ data.claimant.value('telephone') }}</div>
+        <div class="row">{{ data.claimant.value('detectorist_id') }}</div>
     </div>
     <div class="col-md-4">
         <div class="row">Nationalmuseet</div>
@@ -43,32 +43,32 @@
                 <tr>
 
                     <td>
-                        {{ find.property('museum_id').value }}
+                        {{ find.value('museum_id') }}
                     </td>
 
                     <td>
                         <div class="row">
-                            {{ find.property('class').value.keyword | translate }}
-                            {% if find.property('classification').value.subtype %}
-                                {{ find.property('classification').value.subtype.keyword | translate }}
+                            {{ find.value('class').keyword | translate }}
+                            {% if find.value('classification').subtype %}
+                                {{ find.value('classification').subtype.keyword | translate }}
                             {% endif %}
                         </div>
                         <div class="row">
-                            {{ find.property('material').value.keyword | translate }}
+                            {{ find.value('material').keyword | translate }}
                         </div>
                         <div class="row">
-                            {{ find.property('finddate').value | date('Y-m-d') }}
-                            {{ find.property('municipality').value.keyword | translate }}
+                            {{ find.value('finddate') | date('Y-m-d') }}
+                            {{ find.value('municipality').keyword | translate }}
                         </div>
                         <div class="row">
-                            {% if find.property('description').value.text %}
-                                {{ find.property('description').value.text.content }}
+                            {% if find.value('description').text %}
+                                {{ find.value('description').text.content }}
                             {% endif %}
                         </div>
                     </td>
 
                     <td>
-                        {% set images = find.property('image').value %}
+                        {% set images = find.value('image') %}
                         {% for image in images %}
                             {{ imageUrl('file', image.id, {'p': 'preview'}) }}
                             {# <img src="{{ imageUrl('file', image.id, {'p': 'preview'}) }}" alt="" /> #}

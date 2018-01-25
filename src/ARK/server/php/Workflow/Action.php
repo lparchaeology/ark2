@@ -31,6 +31,7 @@ namespace ARK\Workflow;
 
 use ARK\Actor\Actor;
 use ARK\Message\Notification;
+use ARK\Model\Attribute;
 use ARK\Model\Item;
 use ARK\Model\KeywordTrait;
 use ARK\Model\LocalText;
@@ -177,13 +178,14 @@ class Action
             //dump('Allowed = DENIED');
             throw new ActionNotAllowedException();
         }
+        $hasReadPermission = false;
         if ($attribute) {
             if (is_string($attribute)) {
-                $attribute = $item->property($attribute)->attribute();
+                $attribute = $item->attribute($attribute);
             }
-            $hasReadPermission = $actor->hasPermission($attribute->readPermission());
-        } else {
-            $hasReadPermission = false;
+            if ($attribute instanceof Attribute) {
+                $hasReadPermission = $actor->hasPermission($attribute->readPermission());
+            }
         }
 
         if ($this->hasAgency($actor, $item) === Allow::DENY && !$hasReadPermission) {

@@ -51,7 +51,7 @@ class Actor implements Item
 
     public function fullname() : string
     {
-        $fullname = $this->property('fullname')->value();
+        $fullname = $this->value('fullname');
         return $fullname ? $fullname->content() : '';
     }
 
@@ -59,7 +59,7 @@ class Actor implements Item
     {
         $fullname = new LocalText();
         $fullname->setContent($name);
-        $this->property('fullname')->setValue($fullname);
+        $this->setValue('fullname', $fullname);
     }
 
     public function isAgentFor(self $actor) : bool

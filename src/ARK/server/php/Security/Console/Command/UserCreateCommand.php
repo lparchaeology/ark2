@@ -64,8 +64,8 @@ class UserCreateCommand extends AbstractCommand
 
         $actor = new Person();
         $actor->setId($username);
-        $actor->property('email')->setValue($email);
-        $actor->property('fullname')->setValue($fullname);
+        $actor->setValue('email', $email);
+        $actor->setValue('fullname', $fullname);
         ORM::persist($actor);
 
         Service::security()->createActorRole($actor, $role);
