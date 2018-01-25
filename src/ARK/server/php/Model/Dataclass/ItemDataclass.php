@@ -35,7 +35,7 @@ use ARK\Model\Schema\Module;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
-use ARK\Vocabulary\Vocabulary;
+use ARK\Vocabulary\Concept;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints\Type;
 
@@ -82,7 +82,7 @@ class ItemDataclass extends Dataclass
         return ORM::findItemByModule($fragment->parameter(), $fragment->value());
     }
 
-    protected function hydrateFragment($data, Fragment $fragment, Vocabulary $vocabulary = null) : void
+    protected function hydrateFragment($data, Fragment $fragment, Concept $vocabulary = null) : void
     {
         if ($data instanceof Item) {
             $fragment->setValue($data->id(), $data->schema()->module()->id());

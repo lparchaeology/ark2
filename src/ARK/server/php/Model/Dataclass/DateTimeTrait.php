@@ -31,7 +31,7 @@ namespace ARK\Model\Dataclass;
 
 use ARK\Model\Fragment\Fragment;
 use ARK\ORM\ClassMetadataBuilder;
-use ARK\Vocabulary\Vocabulary;
+use ARK\Vocabulary\Concept;
 use Doctrine\Common\Collections\Collection;
 
 trait DateTimeTrait
@@ -70,7 +70,7 @@ trait DateTimeTrait
         return $fragment->value();
     }
 
-    protected function hydrateFragment($data, Fragment $fragment, Vocabulary $vocabulary = null) : void
+    protected function hydrateFragment($data, Fragment $fragment, Concept $vocabulary = null) : void
     {
         if ($this->isSpan() || $fragment->isSpan()) {
             $fragment->setSpan($data[0], $data[1]);

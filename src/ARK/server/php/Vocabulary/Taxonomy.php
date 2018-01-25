@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Taxonomy Vocabulary.
+ * ARK Taxonomy Vocabulary.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -33,7 +33,7 @@ use ARK\ORM\ClassMetadata;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-class Taxonomy extends Vocabulary
+class Taxonomy extends Concept
 {
     protected $taxons;
 

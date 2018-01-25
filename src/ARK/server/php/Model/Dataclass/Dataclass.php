@@ -37,8 +37,8 @@ use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Service;
+use ARK\Vocabulary\Concept;
 use ARK\Vocabulary\Term;
-use ARK\Vocabulary\Vocabulary;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -251,7 +251,7 @@ abstract class Dataclass
         Attribute $attribute,
         Actor $creator,
         DateTime $created,
-        Vocabulary $vocabulary = null
+        Concept $vocabulary = null
     ) : Collection {
         $fragments = new ArrayCollection();
         if ($data === [] || $data === null) {
@@ -343,28 +343,28 @@ abstract class Dataclass
         return $data;
     }
 
-    protected function hydrateFragment($data, Fragment $fragment, Vocabulary $vocabulary = null) : void
+    protected function hydrateFragment($data, Fragment $fragment, Concept $vocabulary = null) : void
     {
         $span = ($this->isSpan() || $fragment->isSpan());
         if ($span) {
             $extent = $data[1];
             $data = $data[0];
         }
-        if ($vocabulary instanceof Vocabulary) {
+        if ($vocabulary instanceof Concept) {
             $data = ($data instanceof Term ? $data->name() : $data);
             if ($span) {
                 $extent = ($extent instanceof Term ? $extent->name() : $extent);
-                $fragment->setSpan($data, $extent, $vocabulary->concept());
+                $fragment->setSpan($data, $extent, $vocabulary->id());
             } else {
-                $fragment->setValue($data, $vocabulary->concept());
+                $fragment->setValue($data, $vocabulary->id());
             }
             return;
         }
         if ($data instanceof Term) {
             if ($span) {
-                $fragment->setSpan($data->name(), $extent->name(), $data->concept()->concept());
+                $fragment->setSpan($data->name(), $extent->name(), $data->concept()->id());
             } else {
-                $fragment->setValue($data->name(), $data->concept()->concept());
+                $fragment->setValue($data->name(), $data->concept()->id());
             }
             return;
         }

@@ -34,7 +34,7 @@ use ARK\Model\Attribute;
 use ARK\Model\Fragment\Fragment;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use ARK\Vocabulary\Vocabulary;
+use ARK\Vocabulary\Concept;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -87,7 +87,7 @@ class ObjectDataclass extends Dataclass
         Attribute $attribute,
         Actor $creator,
         DateTime $created,
-        Vocabulary $vocabulary = null
+        Concept $vocabulary = null
     ) : Collection {
         $fragments = new ArrayCollection();
         if ($data === [] || $data === null) {
@@ -163,7 +163,7 @@ class ObjectDataclass extends Dataclass
         return $data;
     }
 
-    protected function hydrateFragment($data, Fragment $fragment, Vocabulary $vocabulary = null) : void
+    protected function hydrateFragment($data, Fragment $fragment, Concept $vocabulary = null) : void
     {
     }
 }

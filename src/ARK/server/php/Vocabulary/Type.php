@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Vocabulary Type.
+ * ARK Vocabulary Type.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -29,22 +29,20 @@
 
 namespace ARK\Vocabulary;
 
-use ARK\Model\EnabledTrait;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 
 class Type
 {
-    use EnabledTrait;
     use KeywordTrait;
 
-    protected $type = '';
+    protected $type;
     protected $equivalence = false;
     protected $hierarchy = false;
     protected $association = false;
 
-    public function name() : string
+    public function id() : string
     {
         return $this->type;
     }
@@ -66,13 +64,17 @@ class Type
 
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
+        // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_vocabulary_type');
+        $builder->setReadOnly();
+
+        // Key
         $builder->addStringKey('type', 30);
+
+        // Attributes
         $builder->addField('equivalence', 'boolean');
         $builder->addField('hierarchy', 'boolean');
         $builder->addField('association', 'boolean');
-        EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);
-        $builder->setReadOnly();
     }
 }

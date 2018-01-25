@@ -52,7 +52,7 @@ class GeoFindController
             $data['museum'] = null;
             $municipality = DIME::findMunicipality($wkt);
             if ($municipality) {
-                $data['municipality']['concept'] = $municipality->concept()->concept();
+                $data['municipality']['concept'] = $municipality->concept()->id();
                 $data['municipality']['term'] = $municipality->name();
                 $data['municipality']['text'] = Service::translate($municipality->keyword());
                 $museum = DIME::getMunicipalityMuseum($municipality->name());

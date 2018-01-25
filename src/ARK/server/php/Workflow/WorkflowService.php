@@ -91,7 +91,7 @@ class WorkflowService
 
     public function updateActions(Actor $actor, Item $item) : Collection
     {
-        $schema = $item->schema()->name();
+        $schema = $item->schema()->id();
         $this->init($schema);
         $actions = new ArrayCollection();
         foreach ($this->actions[$schema] as $action) {
@@ -109,7 +109,7 @@ class WorkflowService
 
     public function actionable(Actor $actor, Item $item) : Collection
     {
-        $schema = $item->schema()->name();
+        $schema = $item->schema()->id();
         $this->init($schema);
         $actions = new ArrayCollection();
         foreach ($this->actions[$schema] as $action) {
@@ -127,7 +127,7 @@ class WorkflowService
 
     public function actions(Actor $actor, Item $item) : Collection
     {
-        $schema = $item->schema()->name();
+        $schema = $item->schema()->id();
         $this->init($schema);
         $actions = new ArrayCollection();
         foreach ($this->actions[$schema] as $action) {
@@ -144,7 +144,7 @@ class WorkflowService
 
     public function actors(Actor $actor, Item $item) : Collection
     {
-        $schema = $item->schema()->name();
+        $schema = $item->schema()->id();
         $this->init($schema);
         // TODO Fiter the list!!! Probably only museum staff?
         $actors = ORM::findAll(Person::class);
@@ -166,7 +166,7 @@ class WorkflowService
     {
         //dump('Workflow::can('.$actor->id().' '.(is_string($action) ? $action : $action->id()).' '.$item->schema()->module()->id().')');
         if (is_string($action)) {
-            $action = $this->action($item->schema()->name(), $action);
+            $action = $this->action($item->schema()->id(), $action);
         }
         if ($action instanceof Action) {
             try {
@@ -180,7 +180,7 @@ class WorkflowService
 
     public function apply(Actor $actor, string $action, Item $item, Actor $subject = null, LocalText $message = null) : void
     {
-        $action = $this->action($item->schema()->name(), $action);
+        $action = $this->action($item->schema()->id(), $action);
         if ($action) {
             $action->apply($actor, $item, $subject, $message);
         }

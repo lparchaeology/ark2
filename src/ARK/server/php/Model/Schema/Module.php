@@ -44,14 +44,8 @@ class Module
     use EnabledTrait;
     use KeywordTrait;
 
-    protected $module = '';
-    protected $resource = '';
-    protected $superclass = '';
-    protected $project = '';
-    protected $namespace = '';
-    protected $entity = '';
-    protected $classname = '';
-    protected $table = '';
+    protected $module;
+    protected $table;
     protected $core = false;
     protected $schemas;
 
@@ -63,21 +57,6 @@ class Module
     public function id() : string
     {
         return $this->module;
-    }
-
-    public function superclass() : string
-    {
-        return $this->superclass;
-    }
-
-    public function resource() : string
-    {
-        return $this->resource;
-    }
-
-    public function project() : string
-    {
-        return $this->project;
     }
 
     public function table() : string
@@ -112,7 +91,6 @@ class Module
         $builder->addStringKey('module', 30);
 
         // Fields
-        $builder->addStringField('resource', 30);
         $builder->addMappedStringField('tbl', 'table', 30);
         $builder->addField('core', 'boolean');
         EnabledTrait::buildEnabledMetadata($builder);

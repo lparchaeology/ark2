@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Vocabulary Term.
+ * ARK Vocabulary Term.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -42,8 +42,10 @@ class Term
     use KeywordTrait;
 
     protected $concept;
-    protected $term = '';
-    protected $alias = '';
+    protected $term;
+    protected $alias;
+    protected $namespace;
+    protected $entity;
     protected $default = false;
     protected $root = false;
     protected $parameters;
@@ -56,7 +58,15 @@ class Term
         $this->related = new ArrayCollection();
     }
 
-    public function concept() : Vocabulary
+    public function id() : iterable
+    {
+        return [
+            'concept' => $this->concept()->id(),
+            'term' => $this->term,
+        ];
+    }
+
+    public function concept() : Concept
     {
         return $this->concept;
     }
@@ -66,9 +76,24 @@ class Term
         return $this->term;
     }
 
-    public function alias() : string
+    public function alias() : ?string
     {
         return $this->alias;
+    }
+
+    public function namespace() : string
+    {
+        return $this->namespace;
+    }
+
+    public function entity() : string
+    {
+        return $this->entity;
+    }
+
+    public function classname() : string
+    {
+        return $this->namespace.'\\'.$this->entity;
     }
 
     public function isDefault() : bool
@@ -128,6 +153,8 @@ class Term
 
         // Attributes
         $builder->addStringField('alias', 10);
+        $builder->addStringField('namespace', 50);
+        $builder->addStringField('entity', 30);
         $builder->addMappedField('is_default', 'default', 'boolean');
         $builder->addField('root', 'boolean');
         EnabledTrait::buildEnabledMetadata($builder);

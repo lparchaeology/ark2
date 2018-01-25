@@ -33,7 +33,7 @@ use ARK\Model\EnabledTrait;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use ARK\Vocabulary\Vocabulary;
+use ARK\Vocabulary\Concept;
 use DateTime;
 
 class Datatype
@@ -129,7 +129,7 @@ class Datatype
         return $this->formatName;
     }
 
-    public function formatVocabulary() : ?Vocabulary
+    public function formatVocabulary() : ?Concept
     {
         return $this->format;
     }
@@ -139,7 +139,7 @@ class Datatype
         return $this->parameterName;
     }
 
-    public function parameterVocabulary() : ?Vocabulary
+    public function parameterVocabulary() : ?Concept
     {
         return $this->parameter;
     }

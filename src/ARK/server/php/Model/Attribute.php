@@ -34,7 +34,7 @@ use ARK\Model\Dataclass\Dataclass;
 use ARK\Model\Fragment\Fragment;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use ARK\Vocabulary\Vocabulary;
+use ARK\Vocabulary\Concept;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -85,7 +85,7 @@ abstract class Attribute
         return $this->dataclass->entity();
     }
 
-    public function vocabulary() : ?Vocabulary
+    public function vocabulary() : ?Concept
     {
         return $this->vocabulary;
     }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Vocabulary Term.
+ * ARK Vocabulary Term.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -34,12 +34,21 @@ use ARK\ORM\ClassMetadataBuilder;
 
 class Parameter
 {
-    protected $concept = '';
-    protected $termName = '';
+    protected $conceptName;
+    protected $termName;
     protected $term;
-    protected $name = '';
-    protected $type = '';
-    protected $value = '';
+    protected $parameter;
+    protected $type;
+    protected $value;
+
+    public function id() : iterable
+    {
+        return [
+            'concept' => $this->conceptName,
+            'term' => $this->termName,
+            'parameter' => $this->parameter,
+        ];
+    }
 
     public function term() : Term
     {
@@ -48,7 +57,7 @@ class Parameter
 
     public function name() : string
     {
-        return $this->name;
+        return $this->parameter;
     }
 
     public function type() : string
@@ -68,9 +77,9 @@ class Parameter
         $builder->setReadOnly();
 
         // Key
-        $builder->addVocabularyKey('concept', 'concept', 'terms');
+        $builder->addVocabularyKey('concept', 'conceptName', 'terms');
         $builder->addMappedStringKey('term', 'termName', 30);
-        $builder->addStringKey('name', 30);
+        $builder->addMappedStringKey('parameter', 'parameter', 30);
 
         // Attributes
         $builder->addStringField('type', 10);

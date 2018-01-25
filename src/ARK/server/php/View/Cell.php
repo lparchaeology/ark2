@@ -36,7 +36,7 @@ use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Service;
-use ARK\Vocabulary\Vocabulary;
+use ARK\Vocabulary\Concept;
 use ARK\Workflow\Action;
 use ARK\Workflow\Permission;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -120,7 +120,7 @@ class Cell implements ElementInterface
         return $this->map;
     }
 
-    public function vocabulary() : ?Vocabulary
+    public function vocabulary() : ?Concept
     {
         return $this->vocabulary;
     }

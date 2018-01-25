@@ -29,7 +29,6 @@
 
 namespace ARK\Model;
 
-use ARK\Model\Schema\SchemaClass;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 
@@ -52,8 +51,5 @@ class Model
         // Attributes
         EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);
-
-        // Associations
-        //$builder->addOneToManyField('classes', SchemaClass::class);
     }
 }

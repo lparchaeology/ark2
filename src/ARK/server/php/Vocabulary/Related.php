@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Vocabulary Term.
+ * ARK Vocabulary Related Term.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -34,14 +34,24 @@ use ARK\ORM\ClassMetadataBuilder;
 
 class Related
 {
-    protected $fromConcept;
-    protected $fromTermName = '';
+    protected $fromConceptName;
+    protected $fromTermName;
     protected $fromTerm;
-    protected $toConcept;
-    protected $toTermName = '';
+    protected $toConceptName;
+    protected $toTermName;
     protected $toTerm;
     protected $relation;
     protected $depth = 0;
+
+    public function id() : iterable
+    {
+        return [
+            'from_concept' => $this->fromConceptName,
+            'from_term' => $this->fromTermName,
+            'to_concept' => $this->toConceptName,
+            'to_term' => $this->toTermName,
+        ];
+    }
 
     public function fromTerm() : Term
     {
@@ -70,9 +80,9 @@ class Related
         $builder->setReadOnly();
 
         // Key
-        $builder->addVocabularyKey('from_concept', 'fromConcept');
+        $builder->addVocabularyKey('from_concept', 'fromConceptName');
         $builder->addMappedStringKey('from_term', 'fromTermName', 30);
-        $builder->addVocabularyKey('to_concept', 'toConcept');
+        $builder->addVocabularyKey('to_concept', 'toConceptName');
         $builder->addMappedStringKey('to_term', 'toTermName', 30);
 
         // Attributes

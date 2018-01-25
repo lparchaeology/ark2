@@ -30,7 +30,6 @@
 namespace DIME\Controller\API;
 
 use ARK\Http\JsonResponse;
-use ARK\ORM\ORM;
 use ARK\Vocabulary\Related;
 use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
@@ -58,8 +57,8 @@ class VocabularyController
         try {
             $vocabulary = Vocabulary::find($content->concept);
             if ($vocabulary) {
-                $data['concept'] = $vocabulary->concept();
-                $data['type'] = $vocabulary->type()->name();
+                $data['concept'] = $vocabulary->id();
+                $data['type'] = $vocabulary->type()->id();
                 $data['source'] = $vocabulary->source();
                 $data['closed'] = $vocabulary->closed();
                 $data['keyword'] = $vocabulary->keyword();
@@ -68,8 +67,8 @@ class VocabularyController
                 foreach ($vocabulary->terms(true) as $term) {
                     $data['terms'][$term->name()] = $this->serializeTerm($term);
                 }
-                $hasRelated = ORM::findBy(Related::class, ['fromConcept' => $vocabulary]);
-                if (count($hasRelated)) {
+                $related = Vocabulary::findRelated($vocabulary->id());
+                if (count($related)) {
                     foreach ($vocabulary->terms() as $term) {
                         $data['taxonomy'][$term->name()] = $this->serializeTerm($term);
                     }
@@ -103,10 +102,10 @@ class VocabularyController
         if ($full) {
             $data['related'] = [];
             foreach ($term->related() as $related) {
-                $relation['from']['concept'] = $related->fromTerm()->concept()->concept();
+                $relation['from']['concept'] = $related->fromTerm()->concept()->id();
                 $relation['from']['name'] = $related->fromTerm()->name();
                 $relation['relation'] = $related->relation()->id();
-                $relation['to']['concept'] = $related->toTerm()->concept()->concept();
+                $relation['to']['concept'] = $related->toTerm()->concept()->id();
                 $relation['to']['name'] = $related->toTerm()->name();
                 $data['related'][] = $relation;
             }

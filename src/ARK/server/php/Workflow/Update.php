@@ -61,7 +61,7 @@ class Update
         } elseif ($this->clear) {
             $value = $this->attribute->emptyValue();
         } elseif ($this->term) {
-            $value = ORM::findOneBy(Term::class, ['concept' => $this->attribute->vocabulary()->concept(), 'term' => $this->term]);
+            $value = $this->attribute->vocabulary()->term($this->term);
         } elseif ($this->source) {
             $value = $item->value($this->source->name());
         }

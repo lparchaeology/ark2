@@ -38,7 +38,7 @@ use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
-use ARK\Service;
+use ARK\Vocabulary\Concept;
 use ARK\Vocabulary\Term;
 use ARK\Workflow\Permission;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -51,19 +51,17 @@ class Schema
 
     protected $name;
     protected $module;
-    protected $hasSubclasses;
-    protected $hasEntities;
-    protected $attribute;
-    protected $entities;
+    protected $hasSubclassEntities;
+    protected $classAttributeName;
     protected $generator;
     protected $sequence;
-    protected $vocabulary;
+    protected $classVocabulary;
     protected $visibility = 'private';
     protected $visibilityTerm;
-    protected $create;
-    protected $read;
-    protected $update;
-    protected $delete;
+    protected $createPermission;
+    protected $readPermission;
+    protected $updatePermission;
+    protected $deletePermission;
     protected $model;
     protected $superclass;
     protected $classes;
@@ -78,7 +76,7 @@ class Schema
         $this->associations = new ArrayCollection();
     }
 
-    public function name() : string
+    public function id() : string
     {
         return $this->name;
     }
@@ -88,29 +86,19 @@ class Schema
         return $this->module;
     }
 
-    public function superclass() : Module
-    {
-        return $this->superclass;
-    }
-
-    public function hasSubclasses() : bool
-    {
-        return $this->hasSubclasses;
-    }
-
     public function hasSubclassEntities() : bool
     {
-        return $this->hasEntities;
+        return $this->hasSubclassEntities;
     }
 
     public function classAttributeName() : ?string
     {
-        return $this->attribute;
+        return $this->classAttributeName;
     }
 
-    public function classVocabulary() : string
+    public function classVocabulary() : Concept
     {
-        return $this->vocabulary;
+        return $this->classVocabulary;
     }
 
     public function subclassNames() : iterable
@@ -132,29 +120,29 @@ class Schema
     public function visibility() : Term
     {
         if ($this->visibilityTerm === null) {
-            $this->visibilityTerm = ORM::find(Term::class, ['concept' => 'core.visibility', 'term' => $this->visibility]);
+            $this->visibilityTerm = Vocabulary::find('core.visibility', $this->visibility);
         }
         return $this->visibilityTerm;
     }
 
     public function createPermission() : ?Permission
     {
-        return $this->create;
+        return $this->createPermission;
     }
 
     public function readPermission() : ?Permission
     {
-        return $this->read;
+        return $this->readPermission;
     }
 
     public function updatePermission() : ?Permission
     {
-        return $this->update;
+        return $this->updatePermission;
     }
 
     public function deletePermission() : ?Permission
     {
-        return $this->delete;
+        return $this->deletePermission;
     }
 
     public function children() : Collection
@@ -228,6 +216,11 @@ class Schema
         ;
     }
 
+    public static function find(string $schema) : ?self
+    {
+        return ORM::find(self::class, $schema);
+    }
+
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
@@ -237,9 +230,8 @@ class Schema
         $builder->addMappedStringKey('schma', 'name', 30);
 
         // Fields
-        $builder->addMappedField('subclasses', 'hasSubclasses', 'boolean');
-        $builder->addMappedField('entities', 'hasEntities', 'boolean');
-        $builder->addStringField('attribute', 30);
+        $builder->addMappedStringField('class_attribute', 'classAttributeName', 30);
+        $builder->addMappedField('subclasses', 'hasSubclassEntities', 'boolean');
         $builder->addStringField('generator', 30);
         $builder->addStringField('sequence', 30);
         $builder->addStringField('visibility', 30);
@@ -248,12 +240,11 @@ class Schema
 
         // Associations
         $builder->addRequiredManyToOneField('module', Module::class);
-        $builder->addVocabularyField('vocabulary');
-        $builder->addPermissionField('new', 'create');
-        $builder->addPermissionField('view', 'read');
-        $builder->addPermissionField('edit', 'update');
-        $builder->addPermissionField('remove', 'delete');
-        $builder->addOneToManyField('classes', SchemaClass::class, 'schma');
+        $builder->addVocabularyField('class_vocabulary', 'classVocabulary');
+        $builder->addPermissionField('create_permission', 'createPermission');
+        $builder->addPermissionField('read_permission', 'readPermission');
+        $builder->addPermissionField('update_permission', 'updatePermission');
+        $builder->addPermissionField('delete_permission', 'deletePermission');
         $builder->addOneToManyField('attributes', SchemaAttribute::class, 'schma');
         $builder->addOneToManyField('associations', SchemaAssociation::class, 'schma');
         $builder->setReadOnly();
@@ -265,6 +256,7 @@ class Schema
         if (!$class) {
             $class = $this->superclass;
         }
+        return $class;
         if ($this->hasSubclasses()) {
             if ($class === $this->superclass) {
                 throw new SubclassRequiredException();
@@ -287,12 +279,13 @@ class Schema
         }
         $this->model = [];
         $this->subclassNames = [];
-        $entities = Service::database()->getEntitiesForSchema($this->name);
-        foreach ($entities as $entity) {
-            $class = $entity['class'];
+        $this->superclass = $this->module->id();
+        $baseClassName = $this->classVocabulary->classname();
+        foreach ($this->classVocabulary->terms() as $classTerm) {
+            $class = $classTerm->name();
             $this->model[$class]['attributes'] = [];
             $this->model[$class]['associations'] = [];
-            if ($entity['superclass']) {
+            if ($class === $this->superclass || $classTerm->classname() === $baseClassName) {
                 $this->superclass = $class;
                 $this->model[$this->superclass]['allattributes'] = [];
                 $this->model[$this->superclass]['allassociations'] = [];

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Ring Vocabulary.
+ * ARK Ring Vocabulary.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -31,7 +31,7 @@ namespace ARK\Vocabulary;
 
 use ARK\ORM\ClassMetadata;
 
-class TermRing extends Vocabulary
+class Ring extends Concept
 {
     public static function loadMetadata(ClassMetadata $metadata) : void
     {

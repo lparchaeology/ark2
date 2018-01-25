@@ -418,19 +418,32 @@ class Database
         $this->entities['module'] = [];
         $this->entities['resource'] = [];
         $sql = '
-            SELECT class.classname, class.entity, class.namespace, class.class, class.superclass, class.instantiable,
-                schma.schma, schma.subclasses, schma.entities, schma.vocabulary, schma.generator, schma.sequence,
+            SELECT term.entity, term.namespace, term.term as class,
+                vocabulary.entity as base_entity, vocabulary.namespace as base_namespace,
+                schma.schma, schma.subclasses, schma.class_vocabulary, schma.generator, schma.sequence,
                 module.module, module.tbl, module.core
-            FROM ark_model_class AS class, ark_model_schema AS schma, ark_model_module AS module
-            WHERE class.enabled = TRUE
-            AND schma.schma = class.schma
+            FROM ark_vocabulary_term AS term,
+                ark_vocabulary as vocabulary,
+                ark_model_schema AS schma,
+                ark_model_module AS module
+            WHERE term.enabled = TRUE
+            AND vocabulary.concept = term.concept
+            AND vocabulary.enabled = TRUE
+            AND schma.class_vocabulary = vocabulary.concept
             AND schma.enabled = TRUE
             AND module.module = schma.module
             AND module.enabled = TRUE
         ';
         $entities = $this->core()->fetchAll($sql, []);
+        //dump($entities);
         foreach ($entities as $entity) {
-            if ($entity['superclass'] || $entity['entities']) {
+            if (!isset($entity['namespace']) || $entity['namespace'] === null) {
+                $entity['namespace'] = $entity['base_namespace'];
+                $entity['entity'] = $entity['base_entity'];
+            }
+            $entity['classname'] = $entity['namespace'].'\\'.$entity['entity'];
+            $entity['superclass'] = ($entity['class'] === $entity['module']);
+            if ($entity['superclass'] || $entity['subclasses']) {
                 $this->entities['classname'][$entity['classname']] = $entity;
                 $this->entities['namespace'][$entity['namespace']][] = $entity;
             }
@@ -438,13 +451,14 @@ class Database
             $this->entities['schema'][$entity['schma']][] = $entity;
             $this->entities['module'][$entity['module']][] = $entity;
             $this->classnames[$entity['namespace']][] = $entity['classname'];
-            if ($entity['entities'] && !$entity['superclass']) {
+            if ($entity['subclasses'] && !$entity['superclass']) {
                 $this->subclasses[$entity['schma']][] = $entity;
             }
             if ($entity['superclass']) {
                 $this->entities['resource'][$entity['classname']] = $entity;
             }
         }
+        //dump($this->entities);
     }
 
     private function loadDatatypes() : void

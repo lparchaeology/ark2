@@ -34,7 +34,7 @@ use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\Vocabulary\Vocabulary;
+use ARK\Vocabulary\Concept;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
 
@@ -234,7 +234,7 @@ abstract class Element implements ElementInterface
         return $options;
     }
 
-    protected function vocabularyOptions(Vocabulary $vocabulary, iterable $options = []) : iterable
+    protected function vocabularyOptions(Concept $vocabulary, iterable $options = []) : iterable
     {
         $options['choices'] = $vocabulary->terms();
         $options['choice_value'] = 'name';

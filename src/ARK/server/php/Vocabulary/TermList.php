@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model List Vocabulary.
+ * ARK List Vocabulary.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -31,7 +31,7 @@ namespace ARK\Vocabulary;
 
 use ARK\ORM\ClassMetadata;
 
-class TermList extends Vocabulary
+class TermList extends Concept
 {
     public static function loadMetadata(ClassMetadata $metadata) : void
     {

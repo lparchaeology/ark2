@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Abstract Vocabulary.
+ * ARK Vocabulary.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -29,123 +29,14 @@
 
 namespace ARK\Vocabulary;
 
-use ARK\Model\EnabledTrait;
-use ARK\Model\KeywordTrait;
-use ARK\ORM\ClassMetadata;
-use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Component\Workflow\Definition;
-use Symfony\Component\Workflow\DefinitionBuilder;
-use Symfony\Component\Workflow\Transition;
 
-abstract class Vocabulary
+class Vocabulary
 {
-    use EnabledTrait;
-    use KeywordTrait;
-
-    protected $concept = '';
-    protected $type;
-    protected $source = '';
-    protected $closed = true;
-    protected $transitions = false;
-    protected $definition;
-    protected $terms;
-    protected $enabledTerms;
-
-    public function __construct()
+    public static function find(string $concept) : ?Concept
     {
-        $this->terms = new ArrayCollection();
-    }
-
-    public function concept() : string
-    {
-        return $this->concept;
-    }
-
-    public function type() : Type
-    {
-        return $this->type;
-    }
-
-    public function source() : string
-    {
-        return $this->source;
-    }
-
-    public function closed() : bool
-    {
-        return $this->closed;
-    }
-
-    public function terms(bool $all = false) : Collection
-    {
-        if ($all) {
-            return $this->terms;
-        }
-        if ($this->enabledTerms === null) {
-            $this->enabledTerms = new ArrayCollection();
-            foreach ($this->terms as $term) {
-                if ($term->isEnabled()) {
-                    $this->enabledTerms->add($term);
-                }
-            }
-        }
-        return $this->enabledTerms;
-    }
-
-    public function term(string $name) : ?Term
-    {
-        foreach ($this->terms as $term) {
-            if ($term->name() === $name) {
-                return $term;
-            }
-        }
-        return null;
-    }
-
-    public function defaultTerm() : ?Term
-    {
-        foreach ($this->terms as $term) {
-            if ($term->isDefault()) {
-                return $term;
-            }
-        }
-        return null;
-    }
-
-    public function hasTransitions() : bool
-    {
-        return $this->transitions;
-    }
-
-    public function transitions() : Definition
-    {
-        if ($this->hasTransitions() && $this->definition === null) {
-            $builder = new DefinitionBuilder();
-            foreach ($this->terms() as $term) {
-                $builder->addPlace($term->name());
-                if ($term->isRoot()) {
-                    $builder->setInitialPlace($term->name());
-                }
-            }
-            foreach ($this->terms() as $term) {
-                foreach ($term->related() as $related) {
-                    if ($related->type() === 'transition') {
-                        $trans = new Transition($related->parameter(), $related->fromTerm()->name(), $related->toTerm()->name());
-                        $builder > addTransition($trans);
-                    }
-                }
-            }
-            $this->definition = $builder->build();
-        }
-        return $this->definition;
-    }
-
-    public static function find(string $concept) : ?Vocabulary
-    {
-        return ORM::find(self::class, $concept);
+        return ORM::find(Concept::class, $concept);
     }
 
     public static function findTerm(string $concept, string $term) : ?Term
@@ -153,29 +44,8 @@ abstract class Vocabulary
         return ORM::findOneBy(Term::class, ['concept' => $concept, 'term' => $term]);
     }
 
-    public static function loadMetadata(ClassMetadata $metadata) : void
+    public static function findRelated(string $concept) : ?Collection
     {
-        // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_vocabulary');
-        $builder->setReadOnly();
-        $builder->setSingleTableInheritance()->setDiscriminatorColumn('type', 'string', 10);
-        $builder->addDiscriminatorMapClass('taxonomy', Taxonomy::class);
-        $builder->addDiscriminatorMapClass('list', TermList::class);
-        $builder->addDiscriminatorMapClass('ring', TermRing::class);
-        $builder->addDiscriminatorMapClass('thesaurus', Thesaurus::class);
-
-        // Key
-        $builder->addStringKey('concept', 30);
-
-        // Attributes
-        $builder->addRequiredManyToOneField('type', Type::class);
-        $builder->addStringField('source', 30);
-        $builder->addField('closed', 'boolean');
-        $builder->addField('transitions', 'boolean');
-        EnabledTrait::buildEnabledMetadata($builder);
-        KeywordTrait::buildKeywordMetadata($builder);
-
-        // Associations
-        $builder->addOneToManyField('terms', Term::class, 'concept');
+        return ORM::findBy(Related::class, ['fromConceptName' => $concept]);
     }
 }

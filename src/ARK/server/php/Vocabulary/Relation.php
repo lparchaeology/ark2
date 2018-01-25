@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Vocabulary Relation.
+ * ARK Vocabulary Relation  Type.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *

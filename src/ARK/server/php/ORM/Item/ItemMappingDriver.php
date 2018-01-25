@@ -51,7 +51,7 @@ class ItemMappingDriver implements MappingDriver
     {
         // Table
         $entity = Service::database()->getEntityForClassName($classname);
-        if (!$entity || ($entity['entities'] && !$entity['superclass'])) {
+        if (!$entity || ($entity['subclasses'] && !$entity['superclass'])) {
             return;
         }
         $classnames[] = $entity['classname'];
@@ -68,7 +68,7 @@ class ItemMappingDriver implements MappingDriver
         // Fields
         $builder->addStringField('module', 30);
         $builder->addStringField('schma', 30);
-        if ($entity['entities']) {
+        if ($entity['subclasses']) {
             $subclasses = Service::database()->getSubclassEntities($entity['schma']);
             $builder->setSingleTableInheritance()->setDiscriminatorColumn('class', 'string', 30);
             $metadata->addDiscriminatorMapClass('', $entity['classname']);

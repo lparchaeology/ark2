@@ -32,6 +32,7 @@ namespace ARK\Model;
 use ARK\Model\Schema\Schema;
 use ARK\ORM\ORM;
 use ARK\Vocabulary\Term;
+use ARK\Vocabulary\Vocabulary;
 
 trait ItemTrait
 {
@@ -102,12 +103,6 @@ trait ItemTrait
 
     public function class() : string
     {
-        if ($this->class === null) {
-            $this->class =
-                $this->schema()->hasSubclassEntities()
-                    ? $this->makeSubclass()
-                    : $this->schema()->module()->superclass();
-        }
         return $this->class;
     }
 
@@ -120,7 +115,7 @@ trait ItemTrait
     public function schema() : Schema
     {
         if ($this->schema === null) {
-            $this->schema = ORM::find(Schema::class, $this->schma);
+            $this->schema = Schema::find($this->schma);
         }
         return $this->schema;
     }
@@ -128,7 +123,7 @@ trait ItemTrait
     public function status() : Term
     {
         if ($this->statusTerm === null) {
-            $this->statusTerm = ORM::find(Term::class, ['concept' => 'core.item.status', 'term' => $this->status]);
+            $this->statusTerm = Vocabulary::findTerm('core.item.status', $this->status);
         }
         return $this->statusTerm;
     }
@@ -136,7 +131,7 @@ trait ItemTrait
     public function visibility() : Term
     {
         if ($this->visibilityTerm === null) {
-            $this->visibilityTerm = ORM::find(Term::class, ['concept' => 'core.visibility', 'term' => $this->visibility]);
+            $this->visibilityTerm = Vocabulary::findTerm('core.visibility', $this->visibility);
         }
         return $this->visibilityTerm;
     }
@@ -144,7 +139,7 @@ trait ItemTrait
     public function setVisibility($visibility) : void
     {
         if (is_string($visibility)) {
-            $visibility = ORM::find(Term::class, ['concept' => 'core.visibility', 'term' => $visibility]);
+            $visibility = Vocabulary::findTerm('core.visibility', $visibility);
         }
         if ($visibility instanceof Term && $visibility->name() !== $this->visibility) {
             $this->visibilityTerm = $visibility;
@@ -155,12 +150,12 @@ trait ItemTrait
 
     public function hasAttribute(string $name) : bool
     {
-        return $this->schema()->hasAttribute($name, $this->class());
+        return $this->schema()->hasAttribute($name, $this->class);
     }
 
     public function attributes() : iterable
     {
-        return $this->schema()->attributes($this->class());
+        return $this->schema()->attributes($this->class);
     }
 
     public function attribute(string $name) : ?Attribute
@@ -184,7 +179,7 @@ trait ItemTrait
             return null;
         }
         if (!isset($this->properties[$attribute])) {
-            $this->properties[$attribute] = new Property($this, $this->schema()->attribute($attribute, $this->class()));
+            $this->properties[$attribute] = new Property($this, $this->schema()->attribute($attribute, $this->class));
         }
         return $this->properties[$attribute];
     }
@@ -252,11 +247,15 @@ trait ItemTrait
     {
         $this->schma = $schema;
         $this->module = $this->schema()->module()->id();
-        // TODO Is this really needed?
         if ($this->schema()->hasSubclassEntities()) {
             $this->class = ($class ?: $this->makeSubclass());
-            $this->setValue('class', $this->class);
+        } else {
+            $this->class = $this->schema()->classVocabulary()->defaultTerm()->name();
         }
+        if ($this->class === null) {
+            $this->class = $this->module;
+        }
+        $this->setValue($this->schema()->classAttributeName(), $this->class);
     }
 
     protected function makeSubclass() : string

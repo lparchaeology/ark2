@@ -40,8 +40,8 @@ use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
 use ARK\Workflow\Security\ActorUser;
 use DateTime;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
@@ -511,7 +511,7 @@ class User implements AdvancedUserInterface, Serializable
         list($this->id, $this->username, $this->email) = unserialize($serialized);
     }
 
-    public static function find(string $id) : ?User
+    public static function find(string $id) : ?self
     {
         return ORM::find($id);
     }
@@ -526,7 +526,7 @@ class User implements AdvancedUserInterface, Serializable
         if (is_string($status)) {
             $status = Vocabulary::findTerm('core.security.user.status', $status);
         }
-        if (!$status instanceof Term || $status->concept()->concept() !== 'core.security.user.status') {
+        if (!$status instanceof Term || $status->concept()->id() !== 'core.security.user.status') {
             return new ArrayCollection();
         }
         switch ($status->name()) {

@@ -81,10 +81,10 @@ class VocabularyWidgetType extends AbstractType implements DataMapperInterface
         }
 
         if ($data instanceof Term) {
-            $forms['concept']->setData($data->concept()->concept());
+            $forms['concept']->setData($data->concept()->id());
             $forms['term']->setData($data->name());
         } elseif ($options['choices'][0]) {
-            $forms['concept']->setData($options['choices'][0]->concept()->concept());
+            $forms['concept']->setData($options['choices'][0]->concept()->id());
         }
     }
 

@@ -96,7 +96,7 @@ class ScalarPropertyType extends AbstractPropertyType
                             $parameter = $val->schema()->module()->id();
                             $vals[] = $val->id();
                         } elseif ($val instanceof Term) {
-                            $parameter = $val->concept()->concept();
+                            $parameter = $val->concept()->id();
                             $vals[] = $val->name();
                         } else {
                             $vals[] = $val;
@@ -109,7 +109,7 @@ class ScalarPropertyType extends AbstractPropertyType
                     $parameter = $value->schema()->module()->id();
                     $value = $value->id();
                 } elseif ($value instanceof Term) {
-                    $parameter = $value->concept()->concept();
+                    $parameter = $value->concept()->id();
                     $value = $value->name();
                 } elseif ($value instanceof DateTime) {
                     // TODO LOCALISE!!!
