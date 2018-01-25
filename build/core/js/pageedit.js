@@ -7,7 +7,12 @@ var NoteSaveButton = function (context) {
         contents: '<i class="fa fa-child"/>Save',
         tooltip: 'save',
         click: function () {
-            $.post(window.location.pathname, context.invoke('code'));
+            var response = {
+                route: pageRoute,
+                content: context.invoke('code')
+            };
+            var path = Router.generatePath('dime.api.page.content', {});
+            $.post(path, JSON.stringify(response), function(result) {});
         }
     });
 

@@ -32,10 +32,7 @@ namespace DIME\Controller\View;
 use ARK\Entity\Page;
 use ARK\Http\Exception\ItemNotFoundHttpException;
 use ARK\ORM\ORM;
-use DIME\DIME;
-use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class PageViewController extends DimePageController
 {
@@ -47,15 +44,5 @@ class PageViewController extends DimePageController
             throw new ItemNotFoundHttpException('Page', $id);
         }
         return $page;
-    }
-
-    public function processForm(Request $request, Form $form) : void
-    {
-        $page = $this->buildData($request);
-        $content = $page->property('content')->value();
-        $content->setContent($request->getContent());
-        $page->property('content')->setValue($content);
-        ORM::flush($page);
-        //return new Response('', 203);
     }
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 24, 2018 at 07:22 PM
+-- Generation Time: Jan 25, 2018 at 01:10 AM
 -- Server version: 10.2.12-MariaDB
 -- PHP Version: 7.1.13
 
@@ -1026,6 +1026,7 @@ INSERT INTO `ark_route` (`route`, `collection`, `can_get`, `can_post`, `page`, `
 ('dime.api.message.item', 'api', 1, 0, NULL, NULL, 'DIME\\Controller\\API\\MessageController'),
 ('dime.api.message.read', 'api', 0, 1, NULL, NULL, 'DIME\\Controller\\API\\MessageReadController'),
 ('dime.api.museum.item', 'api', 1, 1, NULL, NULL, 'DIME\\Controller\\API\\MuseumController'),
+('dime.api.page.content', 'api', 1, 1, NULL, NULL, 'DIME\\Controller\\API\\PageContentController'),
 ('dime.api.translation.message', 'api', 1, 1, NULL, NULL, 'DIME\\Controller\\API\\TranslationMessageController'),
 ('dime.api.user.password.set', 'api', 0, 1, NULL, NULL, 'DIME\\Controller\\API\\UserPasswordSetController'),
 ('dime.api.vocabulary', 'api', 0, 1, NULL, NULL, 'DIME\\Controller\\API\\VocabularyController'),
@@ -1112,6 +1113,7 @@ INSERT INTO `ark_route_path` (`route`, `language`, `path`) VALUES
 ('dime.api.message.item', 'da', '/api/internal/messages/{id}'),
 ('dime.api.message.read', 'da', '/api/internal/message/read'),
 ('dime.api.museum.item', 'da', '/api/internal/museums/{id}'),
+('dime.api.page.content', 'da', '/api/internal/page/content'),
 ('dime.api.translation.message', 'da', '/api/internal/translations/{keyword}/languages/{language}'),
 ('dime.api.user.password.set', 'da', '/api/internal/users/{id}/password/set'),
 ('dime.api.vocabulary', 'da', '/api/internal/vocabulary'),

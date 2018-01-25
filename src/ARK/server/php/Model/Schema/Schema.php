@@ -103,7 +103,7 @@ class Schema
         return $this->hasEntities;
     }
 
-    public function classAttributeName() : string
+    public function classAttributeName() : ?string
     {
         return $this->attribute;
     }
