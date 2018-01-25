@@ -177,9 +177,10 @@ trait ItemTrait
         return '/'.$resource.'/'.$this->index();
     }
 
+    // TODO This should be protected, need to change table rendering to do so
     public function property(string $attribute) : ?Property
     {
-        if ($this->schema()->attribute($attribute, $this->class()) === null) {
+        if (!$this->hasAttribute($attribute)) {
             return null;
         }
         if (!isset($this->properties[$attribute])) {
