@@ -188,14 +188,16 @@ class Database
     }
 
     // Spatial
-    public function getSpatialTerms(string $concept, string $type = null) : ?iterable
+    public function getSpatialTerms(string $concept, string $level = 'full', string $type = null) : ?iterable
     {
         $sql = '
             SELECT term, ST_AsText(geometry) as geometry, srid
             FROM ark_spatial_term
             WHERE concept = :concept
+            AND level = :level
         ';
         $params[':concept'] = $concept;
+        $params[':level'] = $level;
         if ($type) {
             $sql .= 'AND type = :type';
             $params[':type'] = $type;
@@ -210,10 +212,12 @@ class Database
             SELECT term
             FROM ark_spatial_term
             WHERE concept = :concept
+            AND level = :level
             AND ST_Contains(geometry, ST_GeometryFromText(:point, :srid))
         ';
         $params = [
             ':concept' => $concept,
+            ':level' => 'full',
             ':point' => $wkt,
             ':srid' => $srid,
         ];
@@ -232,6 +236,7 @@ class Database
             FROM ark_spatial_fragment, ark_spatial_term
             WHERE ST_Contains(ark_spatial_term.geometry, ark_spatial_fragment.geometry)
             AND ark_spatial_term.concept = :concept
+            AND ark_spatial_term.level = :level
             AND ark_spatial_fragment.module = :module
             AND ark_spatial_fragment.attribute = :attribute';
 
@@ -253,6 +258,7 @@ class Database
             GROUP BY ark_spatial_term.term
         ';
         $params[':concept'] = $concept;
+        $params[':level'] = 'choropleth';
         $params[':module'] = $module;
         $params[':attribute'] = $attribute;
         if ($items) {
