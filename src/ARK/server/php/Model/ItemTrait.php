@@ -103,6 +103,14 @@ trait ItemTrait
 
     public function class() : string
     {
+        // If subclass entities, then class is discriminator column and doctrine doesn't populate.
+        // Need to determine the class manually in this case.
+        if ($this->class === null) {
+            $this->class =
+                $this->schema()->hasSubclassEntities()
+                ? $this->makeSubclass()
+                : $this->schema()->module()->superclass();
+        }
         return $this->class;
     }
 
@@ -150,12 +158,12 @@ trait ItemTrait
 
     public function hasAttribute(string $name) : bool
     {
-        return $this->schema()->hasAttribute($name, $this->class);
+        return $this->schema()->hasAttribute($name, $this->class());
     }
 
     public function attributes() : iterable
     {
-        return $this->schema()->attributes($this->class);
+        return $this->schema()->attributes($this->class());
     }
 
     public function attribute(string $name) : ?Attribute
@@ -179,7 +187,7 @@ trait ItemTrait
             return null;
         }
         if (!isset($this->properties[$attribute])) {
-            $this->properties[$attribute] = new Property($this, $this->schema()->attribute($attribute, $this->class));
+            $this->properties[$attribute] = new Property($this, $this->schema()->attribute($attribute, $this->class()));
         }
         return $this->properties[$attribute];
     }
