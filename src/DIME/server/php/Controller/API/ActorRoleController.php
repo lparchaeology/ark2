@@ -39,7 +39,7 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ActorController extends ApiController
+class ActorRoleController extends ApiController
 {
     public function __invoke(Request $request) : Response
     {
