@@ -258,7 +258,7 @@ class Database
             GROUP BY ark_spatial_term.term
         ';
         $params[':concept'] = $concept;
-        $params[':level'] = 'choropleth';
+        $params[':level'] = 'full';
         $params[':module'] = $module;
         $params[':attribute'] = $attribute;
         if ($items) {

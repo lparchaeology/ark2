@@ -39,7 +39,7 @@ class ChoroplethController
     public function __invoke(Request $request) : Response
     {
         // get all the municipality
-        $municipalities = Service::database()->getSpatialTerms('dime.denmark.municipality');
+        $municipalities = Service::database()->getSpatialTerms('dime.denmark.municipality', 'choropleth');
 
         // get the counts of finds in municipality
         $itemlist = $request->query->get('itemlist');
