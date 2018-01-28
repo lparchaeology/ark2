@@ -42,9 +42,7 @@ var FormMapper = (function () {
         if ($.type(data) === 'undefined' || data === null || data === '') {
             data = 'core.placeholder';
         }
-        if ($.type(window.translations) !== 'undefined') {
-            data = window.translations[data] ? window.translations[data] : data;
-        }
+        data = Translator.trans(data);
         $('#' + field).html(data);
     };
 

@@ -3,6 +3,10 @@
 <script>
     Router.setBasePath('{{ routing.base_path }}');
     Router.setRoutes(JSON.parse("{{ routing.routes | json_encode() | escape('js') }}"))
+    // TODO Do proper loading of translations, not ad-hoc
+    Translator.add("dime.dropdown.undef", "{{ 'dime.dropdown.undef' | translate }}");
+    Translator.add("dime.user.update.success", "{{ 'dime.user.update.success' | translate }}");
+    Translator.add("dime.user.update.failure", "{{ 'dime.user.update.failure' | translate }}");
 </script>
 {% set ark = {'modules': state.modules, 'actor': workflow.actor.id} %}
 <script>
