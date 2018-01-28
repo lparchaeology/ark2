@@ -61,6 +61,7 @@
                 "vendor": [
                     "jquery/dist/jquery.js",
                     "jquery-form/src/jquery.form.js",
+                    "bazinga-translator/js/translator.js",
                     "bootstrap-sass/assets/javascripts/bootstrap.js",
                     "summernote/dist/summernote.js",
                     "select2/dist/js/select2.js",

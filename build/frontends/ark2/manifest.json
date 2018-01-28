@@ -63,6 +63,7 @@
                 "vendor": [
                     "jquery/dist/jquery.js",
                     "jquery-form/src/jquery.form.js",
+                    "bazinga-translator/js/translator.js",
                     "bootstrap-sass/assets/javascripts/bootstrap.js",
                     "select2/dist/js/select2.js",
                     "file-saver.js/FileSaver.js",
@@ -117,7 +118,8 @@
             "ark-jquery": {
                 "vendor": [
                     "jquery/dist/jquery.js",
-                    "jquery-form/src/jquery.form.js"
+                    "jquery-form/src/jquery.form.js",
+                    "bazinga-translator/js/translator.js"
                 ],
                 "core": [
                     "js/routing.js"
@@ -127,6 +129,7 @@
             "ark-static": {
                 "vendor": [
                     "jquery/dist/jquery.js",
+                    "bazinga-translator/js/translator.js",
                     "bootstrap-sass/assets/javascripts/bootstrap.js",
                     "summernote/dist/summernote.js",
                     "summernote/dist/lang/summernote-da-DK.js"

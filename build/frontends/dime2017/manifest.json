@@ -65,6 +65,7 @@
                     "moment/moment.js",
                     "moment/locale/en-gb.js",
                     "moment/locale/da.js",
+                    "bazinga-translator/js/translator.js",
                     "select2/dist/js/select2.js",
                     "select2/dist/js/i18n/da.js",
                     "file-saver/FileSaver.js",
@@ -144,7 +145,8 @@
             "ark-jquery": {
                 "vendor": [
                     "jquery/dist/jquery.js",
-                    "jquery-form/src/jquery.form.js"
+                    "jquery-form/src/jquery.form.js",
+                    "bazinga-translator/js/translator.js"
                 ],
                 "core": [
                     "js/routing.js"
@@ -154,6 +156,7 @@
             "ark-static": {
                 "vendor": [
                     "jquery/dist/jquery.js",
+                    "bazinga-translator/js/translator.js",
                     "bootstrap-sass/assets/javascripts/bootstrap.js",
                     "summernote/dist/summernote.js",
                     "summernote/dist/lang/summernote-da-DK.js"

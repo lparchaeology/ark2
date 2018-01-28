@@ -74,6 +74,7 @@
     },
     "dependencies": {
         "@api-platform/admin": "github:api-platform/admin",
+        "bazinga-translator": "^2.6.5",
         "bootstrap-datetime-picker": "^2.4.4",
         "colresizable": "^1.6.0",
         "eonasdan-bootstrap-datetimepicker": "^4.17.47",
