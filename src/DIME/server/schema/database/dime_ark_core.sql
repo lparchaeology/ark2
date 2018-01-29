@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 29, 2018 at 05:24 PM
+-- Generation Time: Jan 29, 2018 at 09:41 PM
 -- Server version: 10.2.12-MariaDB
--- PHP Version: 7.1.13
+-- PHP Version: 7.2.1
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -913,7 +913,7 @@ CREATE TABLE `ark_route` (
   `collection` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'view',
   `can_get` tinyint(1) NOT NULL DEFAULT 1,
   `can_post` tinyint(1) NOT NULL DEFAULT 0,
-  `page` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `view` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `redirect` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `controller` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -922,7 +922,7 @@ CREATE TABLE `ark_route` (
 -- Dumping data for table `ark_route`
 --
 
-INSERT INTO `ark_route` (`route`, `collection`, `can_get`, `can_post`, `page`, `redirect`, `controller`) VALUES
+INSERT INTO `ark_route` (`route`, `collection`, `can_get`, `can_post`, `view`, `redirect`, `controller`) VALUES
 ('core.admin', 'admin', 1, 0, 'dime_page_admin', NULL, 'DIME\\Controller\\View\\AdminHomeController'),
 ('core.admin.users', 'admin', 1, 1, 'dime_page_admin_user', NULL, 'DIME\\Controller\\View\\AdminUserController'),
 ('core.admin.users.register', 'admin', 1, 1, 'dime_page_admin_register', 'core.admin.users', 'DIME\\Controller\\View\\UserRegisterController'),
@@ -938,19 +938,19 @@ INSERT INTO `ark_route` (`route`, `collection`, `can_get`, `can_post`, `page`, `
 ('core.user.target', 'user', 1, 0, 'dime_page_home', NULL, 'DIME\\Controller\\View\\HomePageController'),
 ('dime.about', 'view', 1, 1, 'dime_page_static', NULL, 'DIME\\Controller\\View\\PageViewController'),
 ('dime.admin.museums', 'admin', 1, 1, 'dime_page_admin_museum', NULL, 'DIME\\Controller\\View\\AdminMuseumController'),
-('dime.api.actor.item', 'api', 1, 1, NULL, NULL, 'DIME\\Controller\\API\\ActorController'),
-('dime.api.actor.role.add', 'api', 0, 1, NULL, NULL, 'DIME\\Controller\\API\\ActorRoleAddController'),
+('dime.api.actor.item', 'api', 1, 1, 'dime_user_actor', NULL, 'DIME\\Controller\\API\\ActorController'),
+('dime.api.actor.role.add', 'api', 0, 1, 'core_user_role_add', NULL, 'DIME\\Controller\\API\\ActorRoleAddController'),
 ('dime.api.events.get', 'api', 1, 0, NULL, NULL, 'DIME\\Controller\\API\\EventGetController'),
 ('dime.api.file.add', 'api', 0, 1, NULL, NULL, 'DIME\\Controller\\API\\FilePostController'),
 ('dime.api.file.get', 'api', 1, 0, NULL, NULL, 'DIME\\Controller\\API\\FileGetController'),
 ('dime.api.geo.choropleth', 'api', 1, 0, NULL, NULL, 'DIME\\Controller\\API\\ChoroplethController'),
 ('dime.api.geo.find', 'api', 0, 1, NULL, NULL, 'DIME\\Controller\\API\\GeoFindController'),
-('dime.api.message.item', 'api', 1, 0, NULL, NULL, 'DIME\\Controller\\API\\MessageController'),
+('dime.api.message.item', 'api', 1, 0, 'core_message_item', NULL, 'DIME\\Controller\\API\\MessageController'),
 ('dime.api.message.read', 'api', 0, 1, NULL, NULL, 'DIME\\Controller\\API\\MessageReadController'),
-('dime.api.museum.item', 'api', 1, 1, NULL, NULL, 'DIME\\Controller\\API\\MuseumController'),
+('dime.api.museum.item', 'api', 1, 1, 'dime_museum_form', NULL, 'DIME\\Controller\\API\\MuseumController'),
 ('dime.api.page.content', 'api', 1, 1, NULL, NULL, 'DIME\\Controller\\API\\PageContentController'),
 ('dime.api.translation.message', 'api', 1, 1, NULL, NULL, 'DIME\\Controller\\API\\TranslationMessageController'),
-('dime.api.user.password.set', 'api', 0, 1, NULL, NULL, 'DIME\\Controller\\API\\UserPasswordSetController'),
+('dime.api.user.password.set', 'api', 0, 1, 'core_user_password_set', NULL, 'DIME\\Controller\\API\\UserPasswordSetController'),
 ('dime.api.vocabulary', 'api', 0, 1, NULL, NULL, 'DIME\\Controller\\API\\VocabularyController'),
 ('dime.detector', 'view', 1, 1, 'dime_page_static', NULL, 'DIME\\Controller\\View\\PageViewController'),
 ('dime.finds.add', 'view', 1, 1, 'dime_page_find_add', 'dime.finds.view', 'DIME\\Controller\\View\\FindAddController'),
@@ -10210,7 +10210,7 @@ ALTER TABLE `ark_model_subschema`
 --
 ALTER TABLE `ark_route`
   ADD PRIMARY KEY (`route`),
-  ADD KEY `page_foreign` (`page`) USING BTREE,
+  ADD KEY `page_foreign` (`view`) USING BTREE,
   ADD KEY `redirect_foreign` (`redirect`) USING BTREE;
 
 --
@@ -10720,7 +10720,7 @@ ALTER TABLE `ark_model_subschema`
 -- Constraints for table `ark_route`
 --
 ALTER TABLE `ark_route`
-  ADD CONSTRAINT `route_page_constraint` FOREIGN KEY (`page`) REFERENCES `ark_view_page` (`element`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `route_page_constraint` FOREIGN KEY (`view`) REFERENCES `ark_view_element` (`element`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `route_redirect_constraint` FOREIGN KEY (`redirect`) REFERENCES `ark_route` (`route`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --

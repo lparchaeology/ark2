@@ -31,8 +31,9 @@ namespace ARK\Routing;
 
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\View\Page;
+use ARK\View\Element;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class Route
@@ -41,7 +42,7 @@ class Route
     protected $collection = '';
     protected $get = false;
     protected $post = false;
-    protected $page;
+    protected $view;
     protected $redirect;
     protected $controller;
     protected $paths;
@@ -90,9 +91,9 @@ class Route
         return 'GET';
     }
 
-    public function page() : ?Page
+    public function view() : ?Element
     {
-        return $this->page;
+        return $this->view;
     }
 
     public function redirect() : ?self
@@ -103,6 +104,11 @@ class Route
     public function controller() : string
     {
         return $this->controller;
+    }
+
+    public static function find(string $concept) : ?self
+    {
+        return ORM::find(self::class, $concept);
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void
@@ -121,7 +127,7 @@ class Route
         $builder->addStringField('controller', 100);
 
         // Associations
-        $builder->addManyToOneField('page', Page::class, 'page', 'element');
+        $builder->addManyToOneField('view', Element::class, 'view', 'element');
         $builder->addManyToOneField('redirect', self::class, 'redirect', 'route');
         $builder->addOneToManyField('paths', Path::class, 'route');
     }

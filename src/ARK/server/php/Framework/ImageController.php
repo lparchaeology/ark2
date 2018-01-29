@@ -46,7 +46,10 @@ class ImageController
             if ($server === 'file') {
                 $file = Image::find($image);
                 if ($file) {
-                    $path = $file->path();
+                    $actor = Service::workflow()->actor();
+                    if ($file->visibility()->name() === 'public' || Service::workflow()->can($actor, 'view', $file)) {
+                        $path = $file->path();
+                    }
                 } else {
                     $server = 'assets';
                 }

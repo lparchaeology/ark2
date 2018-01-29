@@ -30,24 +30,16 @@
 namespace DIME\Controller\API;
 
 use ARK\Actor\Actor;
-use ARK\Framework\ApiController;
+use ARK\Framework\FormController;
 use ARK\Model\Item;
 use ARK\ORM\ORM;
 use ARK\Security\User;
 use DIME\DIME;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
-class ActorController extends ApiController
+class ActorController extends FormController
 {
-    public function __invoke(Request $request) : Response
-    {
-        // TODO Error id no id
-        $request->attributes->set('_form', 'dime_user_actor');
-        return $this->handleRequest($request);
-    }
-
     public function buildData(Request $request)
     {
         $actor = $request->attributes->get('id');

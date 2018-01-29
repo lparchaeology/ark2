@@ -30,7 +30,6 @@
 namespace ARK\Framework;
 
 use ARK\ORM\ORM;
-use ARK\Routing\Route;
 use ARK\Service;
 use ARK\Translation\Translation;
 use ARK\View\Page;
@@ -97,9 +96,9 @@ abstract class PageController extends Controller
 
     protected function buildPage(Request $request) : ?Page
     {
-        $route = ORM::find(Route::class, $request->attributes->get('_route'));
+        $route = $this->route($request);
         if ($route) {
-            $page = $route->page();
+            $page = $route->view();
             if ($route->redirect()) {
                 $request->attributes->set('redirect', $route->redirect()->id());
             }

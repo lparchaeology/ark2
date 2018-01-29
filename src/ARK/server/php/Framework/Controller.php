@@ -30,6 +30,7 @@
 namespace ARK\Framework;
 
 use ARK\Model\Item;
+use ARK\Routing\Route;
 use ARK\Service;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,6 +41,13 @@ abstract class Controller
     public function __invoke(Request $request) : Response
     {
         return $this->handleRequest($request);
+    }
+
+    abstract public function handleRequest(Request $request) : Response;
+
+    protected function route(Request $request) : ?Route
+    {
+        return Route::find($request->attributes->get('_route'));
     }
 
     protected function buildData(Request $request)

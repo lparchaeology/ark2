@@ -30,7 +30,7 @@
 namespace DIME\Controller\API;
 
 use ARK\Actor\Actor;
-use ARK\Framework\ApiController;
+use ARK\Framework\FormController;
 use ARK\ORM\ORM;
 use ARK\Security\User;
 use ARK\Service;
@@ -40,18 +40,9 @@ use DIME\DIME;
 use DIME\Entity\Museum;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
-class ActorRoleAddController extends ApiController
+class ActorRoleAddController extends FormController
 {
-    public function __invoke(Request $request, string $id = null) : Response
-    {
-        // TODO Error id no id
-        $request->attributes->set('_form', 'core_user_role_add');
-        $request->attributes->set('_id', $id);
-        return $this->handleRequest($request);
-    }
-
     public function buildState(Request $request, $data) : iterable
     {
         $state = parent::buildState($request, $data);
@@ -67,7 +58,7 @@ class ActorRoleAddController extends ApiController
 
     public function processForm(Request $request, Form $form) : void
     {
-        $id = $request->attributes->get('_id');
+        $id = $request->attributes->get('id');
         $submitted = $form->getConfig()->getName();
         if ($submitted === 'role_add') {
             $data = $form->getData();
