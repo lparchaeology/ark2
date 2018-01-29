@@ -33,16 +33,19 @@ use ARK\Translation\Translation;
 use ARK\Twig\Node\TranslateNodeVisitor;
 use ARK\Twig\TokenParser\TranslateChoiceTokenParser;
 use ARK\Twig\TokenParser\TranslateTokenParser;
+use Symfony\Component\Translation\TranslatorInterface;
 use Twig_Extension;
 use Twig_Filter;
 use Twig_NodeVisitorInterface;
 
 class TranslateExtension extends Twig_Extension
 {
+    private $translator;
     private $translateNodeVisitor;
 
-    public function __construct(Twig_NodeVisitorInterface $translateNodeVisitor = null)
+    public function __construct(TranslatorInterface $translator, Twig_NodeVisitorInterface $translateNodeVisitor = null)
     {
+        $this->translator = $translator;
         $this->translateNodeVisitor = ($translateNodeVisitor === null ? new TranslateNodeVisitor() : $translateNodeVisitor);
     }
 
@@ -64,14 +67,14 @@ class TranslateExtension extends Twig_Extension
         return [$this->translateNodeVisitor];
     }
 
-    public function translate($id, $role = null, $parameters = null, $domain = null, $locale = null) : string
+    public function translate($id, $role = null, $parameters = [], $domain = null, $locale = null) : string
     {
-        return Translation::translate($id, $role, $parameters, $domain, $locale);
+        return $this->translator->translate($id, $role, $parameters, $domain, $locale);
     }
 
-    public function translateChoice($id, int $count, $role = null, $parameters = null, $domain = null, $locale = null) : string
+    public function translateChoice($id, int $count, $role = null, $parameters = [], $domain = null, $locale = null) : string
     {
-        return Translation::translate($id, $count, $role, $parameters, $domain, $locale);
+        return $this->translator->translateChoice($id, $count, $role, $parameters, $domain, $locale);
     }
 
     public function getName() : string

@@ -53,7 +53,6 @@ use Silex\Application\FormTrait;
 use Silex\Application\MonologTrait;
 use Silex\Application\SecurityTrait;
 use Silex\Application\SwiftmailerTrait;
-use Silex\Application\TranslationTrait;
 use Silex\Application\TwigTrait;
 use Silex\Application\UrlGeneratorTrait;
 use Silex\Provider\HttpFragmentServiceProvider;
@@ -68,7 +67,6 @@ class Application extends AbstractApplication
 {
     use TwigTrait;
     use MonologTrait;
-    use TranslationTrait;
     use FormTrait;
     use SecurityTrait;
     use SwiftmailerTrait;

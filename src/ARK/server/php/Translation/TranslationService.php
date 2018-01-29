@@ -30,7 +30,6 @@
 namespace ARK\Translation;
 
 use ARK\Framework\Application;
-use ARK\Model\LocalText;
 
 class TranslationService
 {
@@ -41,72 +40,13 @@ class TranslationService
         $this->app = $app;
     }
 
-    public function translate($id, $role = null, $parameters = null, $domain = null, $locale = null) : string
+    public function translate($id, $role = null, $parameters = [], $domain = null, $locale = null) : string
     {
-        return $this->doTranslate($id, null, $role, $parameters, $domain, $locale);
+        return $this->app['translator']->translate($id, $role, $parameters, $domain, $locale);
     }
 
-    public function translateChoice($id, int $count, $role = null, $parameters = null, $domain = null, $locale = null) : string
+    public function translateChoice($id, int $count, $role = null, $parameters = [], $domain = null, $locale = null) : string
     {
-        return $this->doTranslate($id, $count, $role, $parameters, $domain, $locale);
-    }
-
-    private function doTranslate($id, $count = null, $role = null, $parameters = null, $domain = null, $locale = null) : string
-    {
-        if (!$id) {
-            return  '';
-        }
-        if ($id instanceof LocalText) {
-            return  $id->content($locale);
-        }
-
-        if (is_object($id) && method_exists($id, 'keyword')) {
-            $id = $id->keyword();
-        }
-        if (is_array($id) && isset($id['keyword'])) {
-            $id = $id['keyword'];
-        }
-        if ($id instanceof Keyword) {
-            $id = $id->id();
-        }
-
-        if ($role instanceof Role) {
-            $role = $role->id();
-        }
-        if (!$role) {
-            $role = 'default';
-        }
-
-        if (!$parameters) {
-            $parameters = [];
-        }
-
-        if ($domain instanceof Domain) {
-            $domain = $domain->id();
-        }
-        if (!$domain) {
-            $domain = 'messages';
-        }
-
-        if ($locale instanceof Language) {
-            $locale = $locale->code();
-        }
-
-        if ($role !== null && $role !== 'default') {
-            $lookup = $id.'.'.$role;
-            if ($count === null) {
-                $msg = $this->app->trans($lookup, $parameters, $domain, $locale);
-            } else {
-                $msg = $this->app->transChoice($lookup, $count, $parameters, $domain, $locale);
-            }
-            if ($msg !== $lookup) {
-                return $msg;
-            }
-        }
-
-        if ($count === null) {
-            return $this->app->trans($id, $parameters, $domain, $locale);
-        }
-        return $this->app->transChoice($id, $count, $parameters, $domain, $locale);
+        return $this->app['translator']->translateChoice($id, $count, $role, $parameters, $domain, $locale);
     }
 }

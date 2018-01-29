@@ -75,7 +75,7 @@ class ViewServiceProvider implements ServiceProviderInterface
         $container->extend('twig', function ($twig, $app) {
             $twig->addExtension(new Twig_Extensions_Extension_Intl());
             $twig->addExtension(new Twig_Extensions_Extension_Date($app['translator']));
-            $twig->addExtension(new TranslateExtension());
+            $twig->addExtension(new TranslateExtension($app['translator']));
             $twig->addFunction(new Twig_Function('imagePath', Service::class.'::imagePath'));
             $twig->addFunction(new Twig_Function('imageUrl', Service::class.'::imageUrl'));
             $twig->addGlobal('security', $app['security']);

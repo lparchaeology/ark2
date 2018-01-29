@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Translation.
+ * ARK Translation Namespace.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -33,12 +33,12 @@ use ARK\Service;
 
 class Translation
 {
-    public function translate($id, $role = null, $parameters = null, $domain = null, $locale = null) : string
+    public function translate($id, $role = null, $parameters = [], $domain = null, $locale = null) : string
     {
         return Service::translation()->translate($id, $role, $parameters, $domain, $locale);
     }
 
-    public function translateChoice($id, int $count, $role = null, $parameters = null, $domain = null, $locale = null) : string
+    public function translateChoice($id, int $count, $role = null, $parameters = [], $domain = null, $locale = null) : string
     {
         return Service::translation()->translateChoice($id, $number, $role, $parameters, $domain, $locale);
     }
