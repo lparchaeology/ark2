@@ -84,12 +84,12 @@ col-xs-12 col-sm-4
             {% set out = '' %}
             {% set sep = '' %}
             {% for val in value %}
-                {% set out = out ~ sep ~ val|translate %}
+                {% set out = out ~ sep ~ val | translate %}
                 {% set sep = '<br />' %}
             {% endfor %}
-            {{ out|raw }}
+            {{ out | raw }}
         {% else %}
-            {{ value|translate }}
+            {{ value | translate | raw }}
         {% endif %}
     </div>
     {% endspaceless %}

@@ -31,7 +31,6 @@ namespace DIME\Controller\API;
 
 use ARK\File\File;
 use ARK\Http\Exception\ItemNotFoundHttpException;
-use ARK\ORM\ORM;
 use ARK\Service;
 use League\Glide\Responses\SymfonyResponseFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,7 +42,7 @@ class FileGetController
     public function __invoke(Request $request, $id) : Response
     {
         // TODO Wrap in a nice neat class or Service call
-        $file = ORM::find(File::class, $id);
+        $file = File::find($id);
         if (!$file) {
             throw new ItemNotFoundHttpException('File', $id);
         }

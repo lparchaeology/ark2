@@ -79,11 +79,11 @@ class ScalarPropertyType extends AbstractPropertyType
                 $display = [];
                 if (is_iterable($value)) {
                     foreach ($value as $val) {
-                        $display[] = $this->mapDisplayValue($val, $valueName, $options['state']['display']['property']);
+                        $display[] = $this->mapDisplayValue($val, $valueName, $options['state']['display']);
                     }
                 }
             } else {
-                $display = $this->mapDisplayValue($value, $valueName, $options['state']['display']['property']);
+                $display = $this->mapDisplayValue($value, $valueName, $options['state']['display']);
             }
         }
 
@@ -205,14 +205,22 @@ class ScalarPropertyType extends AbstractPropertyType
         ];
     }
 
-    protected function mapDisplayValue($value, ?string $valueName, ?string $attribute = null)
+    // TODO This probably needs to be done in a more generic way elsewhere.
+    protected function mapDisplayValue($display, ?string $valueName, iterable $options)
     {
-        $display = $value;
         if ($display instanceof Item) {
-            if ($attribute === null || !$display->hasAttribute($attribute)) {
+            $property = $options['property'];
+            $id = $display->id();
+            if ($display->hasAttribute($property)) {
+                $display = $display->value($property);
+            } elseif (method_exists($display, $property)) {
+                $display = $display->$property();
+                if ($options['pattern'] === 'a') {
+                    return '<a href="'.$display.'" >'.$id.'</a>';
+                }
+            } else {
                 return $display->id();
             }
-            $display = $display->value($attribute);
         }
         if ($display instanceof Term) {
             return $display->keyword();
@@ -221,8 +229,7 @@ class ScalarPropertyType extends AbstractPropertyType
             return $display->content();
         }
         if ($display instanceof DateTime) {
-            // TODO LOCALISE!!!
-            return $display->format('Y-m-d');
+            return $display->format($options['pattern'] ?? 'Y-m-d');
         }
         if (is_array($display) && isset($display[$valueName])) {
             return $display[$valueName];

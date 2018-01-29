@@ -32,6 +32,7 @@ namespace ARK\File;
 use ARK\Model\Item;
 use ARK\Model\ItemTrait;
 use ARK\ORM\ORM;
+use ARK\Service;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 abstract class File implements Item
@@ -136,6 +137,16 @@ abstract class File implements Item
             $this->mediatype = new MediaType($this->value('mediatype'));
         }
         return $this->mediatype;
+    }
+
+    public function sourcePath() : string
+    {
+        return Service::filePath($this->id());
+    }
+
+    public function sourceUrl() : string
+    {
+        return Service::imageUrl($this->id());
     }
 
     public static function find(string $id) : ?self
