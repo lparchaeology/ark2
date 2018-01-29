@@ -66,12 +66,12 @@ class TranslateExtension extends Twig_Extension
 
     public function translate($id, $role = null, $parameters = null, $domain = null, $locale = null) : string
     {
-        return Translation::translate($message, $role, $parameters, $domain, $locale);
+        return Translation::translate($id, $role, $parameters, $domain, $locale);
     }
 
     public function translateChoice($id, int $count, $role = null, $parameters = null, $domain = null, $locale = null) : string
     {
-        return Translation::translate($message, $count, $role, $parameters, $domain, $locale);
+        return Translation::translate($id, $count, $role, $parameters, $domain, $locale);
     }
 
     public function getName() : string

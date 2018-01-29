@@ -77,6 +77,10 @@ class TranslationService
             $role = 'default';
         }
 
+        if (!$parameters) {
+            $parameters = [];
+        }
+
         if ($domain instanceof Domain) {
             $domain = $domain->id();
         }
