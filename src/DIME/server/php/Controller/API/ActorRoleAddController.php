@@ -34,6 +34,7 @@ use ARK\Framework\ApiController;
 use ARK\ORM\ORM;
 use ARK\Security\User;
 use ARK\Service;
+use ARK\Translation\Translation;
 use ARK\Workflow\Role;
 use DIME\DIME;
 use DIME\Entity\Museum;
@@ -59,7 +60,7 @@ class ActorRoleAddController extends ApiController
         $select['choice_name'] = 'id';
         $select['choice_label'] = 'fullname';
         $select['multiple'] = false;
-        $select['placeholder'] = Service::translate('core.placeholder');
+        $select['placeholder'] = Translation::translate('core.placeholder');
         $state['select']['museum'] = $select;
         return $state;
     }

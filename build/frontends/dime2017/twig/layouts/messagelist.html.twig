@@ -19,10 +19,10 @@
 
         <thead>
             <tr>
-                <th data-field="type" data-title="{{"core.message.type"|trans}}">
-                <th data-field="sent_at" data-title="{{"core.message.sent_at"|trans}}">
-                <th data-field="sender" data-title="{{"core.message.sender"|trans}}">
-                <th data-field="notification" data-title="{{"core.message.notification.event"|trans}}">
+                <th data-field="type" data-title="{{"core.message.type" | translate}}">
+                <th data-field="sent_at" data-title="{{"core.message.sent_at" | translate}}">
+                <th data-field="sender" data-title="{{"core.message.sender" | translate}}">
+                <th data-field="notification" data-title="{{"core.message.notification.event" | translate}}">
             </tr>
         </thead>
 
@@ -44,7 +44,7 @@
                             {{ item.sender.fullname }}
                         </td>
                         <td>
-                            {{ item.event.term.keyword | translate }}
+                            {{ item.event.term | translate }}
                         </td>
                 </tr>
             {% endfor %}

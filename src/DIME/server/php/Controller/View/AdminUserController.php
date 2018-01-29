@@ -33,6 +33,7 @@ use ARK\Model\Item;
 use ARK\ORM\ORM;
 use ARK\Security\User;
 use ARK\Service;
+use ARK\Translation\Translation;
 use DIME\Entity\Museum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\Form;
@@ -49,7 +50,7 @@ class AdminUserController extends DimePageController
         $select['choice_name'] = 'id';
         $select['choice_label'] = 'fullname';
         $select['multiple'] = false;
-        $select['placeholder'] = Service::translate('core.placeholder');
+        $select['placeholder'] = Translation::translate('core.placeholder');
         $state['select']['museum'] = $select;
         $state['controls']['actor'] = true;
         return $state;

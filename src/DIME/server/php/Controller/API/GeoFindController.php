@@ -29,7 +29,7 @@
 
 namespace DIME\Controller\API;
 
-use ARK\Service;
+use ARK\Translation\Translation;
 use ARK\Vocabulary\Term;
 use Brick\Geo\Point;
 use DIME\DIME;
@@ -54,7 +54,7 @@ class GeoFindController
             if ($municipality) {
                 $data['municipality']['concept'] = $municipality->concept()->id();
                 $data['municipality']['term'] = $municipality->name();
-                $data['municipality']['text'] = Service::translate($municipality->keyword());
+                $data['municipality']['text'] = Translation::translate($municipality->keyword());
                 $museum = DIME::getMunicipalityMuseum($municipality->name());
                 if ($museum) {
                     $data['museum']['id'] = $museum->id();

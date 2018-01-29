@@ -34,6 +34,7 @@ use ARK\Actor\Person;
 use ARK\ORM\ORM;
 use ARK\Security\User;
 use ARK\Service;
+use ARK\Translation\Translation;
 use ARK\Workflow\Role;
 use DIME\DIME;
 use DIME\Entity\Museum;
@@ -51,7 +52,7 @@ class UserRegisterController extends DimePageController
         $select['choice_name'] = 'id';
         $select['choice_label'] = 'fullname';
         $select['multiple'] = false;
-        $select['placeholder'] = Service::translate('core.placeholder');
+        $select['placeholder'] = Translation::translate('core.placeholder');
         $state['options']['museum'] = $select;
         return $state;
     }

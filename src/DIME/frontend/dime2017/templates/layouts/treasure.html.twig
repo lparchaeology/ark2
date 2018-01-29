@@ -7,14 +7,14 @@
 <div class="row">
     <div class="col-md-4">
         <div class="row">{{ data.museum.value('id') }}</div>
-        <div class="row">{{ data.museum.value('fullname').content }}</div>
+        <div class="row">{{ data.museum.value('fullname') }}</div>
         <div class="row">{{ data.museum.value('email') }}</div>
         <div class="row">{{ data.museum.value('telephone') }}</div>
-        <div class="row">{{ data.agent.value('fullname').content }}</div>
+        <div class="row">{{ data.agent.value('fullname') }}</div>
         <div class="row">{{ "now" | date('Y-m-d') }}</div>
     </div>
     <div class="col-md-4">
-        <div class="row">{{ data.claimant.value('fullname').content }}</div>
+        <div class="row">{{ data.claimant.value('fullname') }}</div>
         <div class="row">{{ data.claimant.value('email') }}</div>
         <div class="row">{{ data.claimant.value('telephone') }}</div>
         <div class="row">{{ data.claimant.value('detectorist_id') }}</div>
@@ -48,21 +48,21 @@
 
                     <td>
                         <div class="row">
-                            {{ find.value('class').keyword | translate }}
+                            {{ find.value('class') | translate }}
                             {% if find.value('classification').subtype %}
-                                {{ find.value('classification').subtype.keyword | translate }}
+                                {{ find.value('classification').subtype | translate }}
                             {% endif %}
                         </div>
                         <div class="row">
-                            {{ find.value('material').keyword | translate }}
+                            {{ find.value('material') | translate }}
                         </div>
                         <div class="row">
                             {{ find.value('finddate') | date('Y-m-d') }}
-                            {{ find.value('municipality').keyword | translate }}
+                            {{ find.value('municipality') | translate }}
                         </div>
                         <div class="row">
                             {% if find.value('description').text %}
-                                {{ find.value('description').text.content }}
+                                {{ find.value('description').text }}
                             {% endif %}
                         </div>
                     </td>

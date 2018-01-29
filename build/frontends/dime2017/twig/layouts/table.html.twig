@@ -33,7 +33,7 @@
         icons="{ columns: 'glyphicon-th-list icon-th-list' }">
 
         {% if table.showCaption %}
-            <caption>{{ table.keyword | translate('caption') }}</caption>
+            <caption>{{ table | translate('caption') }}</caption>
         {% endif %}
 
         {% if table.showHeader %}
@@ -55,15 +55,16 @@
                             data-tableexport-display="none"></th>
                     {% endif %}
                     {% for child in children %}
-                        {% set childId = child.state.name ? child.element.id ~ '_' ~ child.state.name : child.element.id %}
+                    {% set childId = child.state.name ? child.element.id ~ '_' ~ child.state.name : child.element.id %}
+                    {% set childTrans = child.state | translate %}
                         <th data-field="{{ childId }}"
-                            data-title="{{ child.state.keyword | translate }}"
+                            data-title="{{ childTrans }}"
                             data-sortable="true"
                             data-sorter="alphanum"
                             data-visible="{{ child.state.visible }}"
                             data-card-visible="false"
-                            data-tableexport-value="{{ child.state.keyword | translate }}">
-                            {{ child.state.keyword | translate }}
+                            data-tableexport-value="{{ childTrans }}">
+                            {{ childTrans }}
                         </th>
                     {% endfor %}
                     <th class="controlshead"
@@ -111,7 +112,7 @@
                         {% set childId = child.state.name ? child.element.id ~ '_' ~ child.state.name : child.element.id %}
                         {% set childValue = child.element.renderValue(child, forms, form) | raw %}
                         <td data-field="{{ childId }}" data-tableexport-value="{{ childValue }}">
-                            <span class="cell-label">{{ child.state.keyword | translate }}</span>
+                            <span class="cell-label">{{ child.state | translate }}</span>
                             {{ childValue }}
                         </td>
                     {% endfor %}

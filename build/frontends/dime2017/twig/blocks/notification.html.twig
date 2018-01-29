@@ -2,9 +2,9 @@
 {% block notification %}
 
     <a class = "messagetext" href="{{ path('dime.home.messages' ) }}">
-        {{ notification.event.term.keyword | trans }}
+        {{ notification.event.term | translate }}
         <br/>
-        {{ notification.event.subject.schema.keyword | trans ~ ' ' ~  notification.event.subject.id }}
+        {{ notification.event.subject.schema | translate ~ ' ' ~  notification.event.subject.id }}
     </a>
     <span class="markasread" href="{{ path('api.internal.message.read') }}"
     message="{{ notification.id }}"

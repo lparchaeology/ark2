@@ -4,7 +4,7 @@
 
     <div class="dropdown">
         <a id="dLabel" role="button" data-toggle="dropdown" class="btn btn-primary" data-target="#" href="/page.html">
-            {{ vocabulary.keyword|translate }} <span class="caret"></span>
+            {{ vocabulary | translate }} <span class="caret"></span>
         </a>
     <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
     {% tree term in terms %}

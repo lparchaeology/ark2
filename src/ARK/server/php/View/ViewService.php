@@ -35,6 +35,7 @@ use ARK\Framework\Application;
 use ARK\Http\Exception\InternalServerHttpException;
 use ARK\ORM\ORM;
 use ARK\Service;
+use ARK\Translation\Translation;
 use League\Glide\Responses\SymfonyResponseFactory;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpFoundation\Response;
@@ -168,7 +169,7 @@ class ViewService
     public function addFlash(string $flash, string $message, iterable $parms = []) : void
     {
         if ($parms) {
-            $message = Service::translate($message, $flash, $parms);
+            $message = Translation::translate($message, $flash, $parms);
         }
         Service::session()->getFlashBag()->add($flash, $message);
     }

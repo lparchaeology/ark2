@@ -31,7 +31,7 @@ namespace ARK\Form\Type;
 
 use ARK\Model\Attribute;
 use ARK\Model\Property;
-use ARK\Service;
+use ARK\Translation\Translation;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -127,7 +127,7 @@ class ObjectType extends AbstractType implements DataMapperInterface
             $options['choice_value'] = 'name';
             $options['choice_name'] = 'name';
             $options['choice_label'] = 'keyword';
-            $options['placeholder'] = Service::translate('core.placeholder');
+            $options['placeholder'] = Translation::translate('core.placeholder');
         } else {
             $class = $attribute->dataclass()->datatype()->activeFormType();
         }

@@ -30,7 +30,7 @@
 namespace ARK\Form\Type;
 
 use ARK\Model\LocalText;
-use ARK\Service;
+use ARK\Translation\Translation;
 use ARK\Vocabulary\Term;
 use Brick\Geo\Geometry;
 use DateTime;
@@ -97,6 +97,6 @@ class StaticType extends AbstractType implements DataTransformerInterface
         if ($value) {
             return $value;
         }
-        return Service::translate('core.placeholder');
+        return Translation::translate('core.placeholder');
     }
 }

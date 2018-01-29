@@ -181,47 +181,6 @@ class Application extends AbstractApplication
         parent::run($request);
     }
 
-    public function translate(
-        ?string $id,
-        string $role = 'default',
-        iterable $parameters = [],
-        string $domain = 'messages',
-        strint $locale = null
-    ) : string {
-        if (!$id) {
-            return  '';
-        }
-        if ($role !== null && $role !== 'default') {
-            $lookup = $id.'.'.$role;
-            $msg = $this->trans($lookup, $parameters, $domain, $locale);
-            if ($msg !== $lookup) {
-                return $msg;
-            }
-        }
-        return $this->trans($id, $parameters, $domain, $locale);
-    }
-
-    public function translateChoice(
-        ?string $id,
-        int $number,
-        string $role = 'default',
-        iterable $parameters = [],
-        string $domain = 'messages',
-        strint $locale = null
-    ) : string {
-        if (!$id) {
-            return  '';
-        }
-        if ($role !== null && $role !== 'default') {
-            $lookup = $id.'.'.$role;
-            $msg = $this->transChoice($lookup, $number, $parameters, $domain, $locale);
-            if ($msg !== $lookup) {
-                return $msg;
-            }
-        }
-        return $this->transChoice($id, $number, $parameters, $domain, $locale);
-    }
-
     public function cacheDir() : string
     {
         return  ARK::siteCacheDir($this['ark']['site']);

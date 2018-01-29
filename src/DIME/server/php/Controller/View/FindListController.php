@@ -35,6 +35,7 @@ use ARK\File\File;
 use ARK\File\MediaType;
 use ARK\ORM\ORM;
 use ARK\Service;
+use ARK\Translation\Translation;
 use ARK\View\Group;
 use ARK\View\Page;
 use ARK\Vocabulary\Term;
@@ -232,7 +233,7 @@ class FindListController extends DimePageController
                     $select['choice_name'] = 'name';
                     $select['choice_label'] = 'keyword';
                     $select['multiple'] = false;
-                    $select['placeholder'] = Service::translate('core.placeholder');
+                    $select['placeholder'] = Translation::translate('core.placeholder');
                     $state['select']['actions'] = $select;
                 }
             }
@@ -247,7 +248,7 @@ class FindListController extends DimePageController
             if ($actor->hasPermission('dime.find.filter.museum')) {
                 $select['choices'] = ORM::findAll(Museum::class);
                 $select['multiple'] = true;
-                $select['placeholder'] = Service::translate('core.placeholder');
+                $select['placeholder'] = Translation::translate('core.placeholder');
             } else {
                 $select['choices'] = $this->museums($actor);
                 $select['multiple'] = false;
@@ -269,7 +270,7 @@ class FindListController extends DimePageController
                 $finders = DIME::getFinders();
                 $select['choices'] = ORM::findBy(Person::class, ['id' => $finders]);
                 $select['multiple'] = false;
-                $select['placeholder'] = Service::translate('core.placeholder');
+                $select['placeholder'] = Translation::translate('core.placeholder');
             } elseif ($actor->hasPermission('dime.find.create')) {
                 $select['choices'] = [$actor];
                 $select['multiple'] = false;

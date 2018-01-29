@@ -33,6 +33,7 @@ use ARK\Model\Item;
 use ARK\Model\LocalText;
 use ARK\Model\Property;
 use ARK\ORM\ORM;
+use ARK\Translation\Translation;
 use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
 use DateTime;
@@ -172,7 +173,7 @@ class ScalarPropertyType extends AbstractPropertyType
             $value = $forms[$dataclass->valueName()]->getData();
             if (isset($options['state']['value']['choices'])
                 && $options['placeholder']
-                && ($value === $placeholder || $value === Service::translate($placeholder))
+                && ($value === $placeholder || $value === Translation::translate($placeholder))
             ) {
                 $value = null;
             }

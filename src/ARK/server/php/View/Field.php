@@ -39,6 +39,7 @@ use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
 use ARK\Service;
+use ARK\Translation\Translation;
 use IntlDateFormatter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -180,12 +181,12 @@ class Field extends Element
         $form = $view['form']['display'] ?? $view['form']['static'] ?? null;
         $value = $form->vars['value'] ?? '';
         if (is_string($value)) {
-            return Service::translate($value);
+            return Translation::translate($value);
         }
         if (is_array($value)) {
             $out = [];
             foreach ($value as $val) {
-                $out[] = Service::translate($val);
+                $out[] = Translation::translate($val);
             }
             return implode(' ', $out);
         }

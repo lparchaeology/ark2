@@ -34,6 +34,7 @@ use ARK\Framework\ApiController;
 use ARK\Model\Item;
 use ARK\ORM\ORM;
 use ARK\Security\User;
+use ARK\Translation\Translation;
 use DIME\DIME;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
@@ -63,7 +64,7 @@ class ActorRoleController extends ApiController
         $select['choice_name'] = 'id';
         $select['choice_label'] = 'fullname';
         $select['multiple'] = false;
-        $select['placeholder'] = Service::translate('core.placeholder');
+        $select['placeholder'] = Translation::translate('core.placeholder');
         $state['select']['museum'] = $select;
         return $state;
     }

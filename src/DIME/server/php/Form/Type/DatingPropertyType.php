@@ -32,7 +32,7 @@ namespace DIME\Form\Type;
 use ARK\Form\Type\AbstractPropertyType;
 use ARK\Model\Property;
 use ARK\ORM\ORM;
-use ARK\Service;
+use ARK\Translation\Translation;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -96,8 +96,8 @@ class DatingPropertyType extends AbstractPropertyType
                 $p0 = ($value['period'][0] ? $value['period'][0]->keyword() : '');
                 $p1 = ($value['period'][1] ? $value['period'][1]->keyword() : '');
 
-                $p0 = Service::translate($p0);
-                $p1 = Service::translate($p1);
+                $p0 = Translation::translate($p0);
+                $p1 = Translation::translate($p1);
                 if ($p1 && $p1 !== $p0) {
                     $forms['display_period']->setData($p0.' - '.$p1);
                 } else {

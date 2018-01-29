@@ -11,9 +11,9 @@
             {% set config = [] %}
             {% for layer in state.map.layers %}
                 {% if layer.isDefault %}
-                    <li><a class="layer-select selected" value="{{ layer.name }}">{{ layer.keyword | translate }}</a></li>
+                    <li><a class="layer-select selected" value="{{ layer.name }}">{{ layer | translate }}</a></li>
                 {% else %}
-                    <li><a class="layer-select" value="{{ layer.name }}">{{ layer.keyword | translate }}</a></li>
+                    <li><a class="layer-select" value="{{ layer.name }}">{{ layer | translate }}</a></li>
                 {% endif %}
             {% endfor %}
         </ul>

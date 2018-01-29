@@ -31,6 +31,7 @@ namespace ARK\Framework\Provider;
 
 use ARK\Translation\Loader\ActorLoader;
 use ARK\Translation\Loader\DatabaseLoader;
+use ARK\Translation\TranslationService;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Provider\TranslationServiceProvider as CoreTranslationServiceProvider;
@@ -40,7 +41,9 @@ class TranslationServiceProvider implements ServiceProviderInterface
     public function register(Container $container) : void
     {
         $container->register(new CoreTranslationServiceProvider());
+
         $container['locale_fallbacks'] = $container['ark']['locale']['locales'];
+
         $container->extend('translator', function ($translator, $container) {
             $translator->addLoader('database', new DatabaseLoader());
             $translator->addLoader('actor', new ActorLoader());
@@ -52,6 +55,10 @@ class TranslationServiceProvider implements ServiceProviderInterface
             $this->loadTranslationFiles($translator, $container['locale_fallbacks'], $container['dir.site'].'/translations/'.$container['ark']['view']['frontend']);
             return $translator;
         });
+
+        $container['translation'] = function ($app) {
+            return new TranslationService($app);
+        };
     }
 
     private function loadTranslationFiles($translator, array $languages, $dir) : void

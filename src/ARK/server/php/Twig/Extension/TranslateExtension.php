@@ -29,39 +29,28 @@
 
 namespace ARK\Twig\Extension;
 
+use ARK\Translation\Translation;
 use ARK\Twig\Node\TranslateNodeVisitor;
 use ARK\Twig\TokenParser\TranslateChoiceTokenParser;
 use ARK\Twig\TokenParser\TranslateTokenParser;
-use Symfony\Component\Translation\TranslatorInterface;
 use Twig_Extension;
 use Twig_Filter;
 use Twig_NodeVisitorInterface;
 
 class TranslateExtension extends Twig_Extension
 {
-    private $translator;
     private $translateNodeVisitor;
 
-    public function __construct(TranslatorInterface $translator, Twig_NodeVisitorInterface $translateNodeVisitor = null)
+    public function __construct(Twig_NodeVisitorInterface $translateNodeVisitor = null)
     {
-        if (!$translateNodeVisitor) {
-            $translateNodeVisitor = new TranslateNodeVisitor();
-        }
-
-        $this->translator = $translator;
-        $this->translateNodeVisitor = $translateNodeVisitor;
-    }
-
-    public function getTranslator() : TranslatorInterface
-    {
-        return $this->translator;
+        $this->translateNodeVisitor = ($translateNodeVisitor === null ? new TranslateNodeVisitor() : $translateNodeVisitor);
     }
 
     public function getFilters() : iterable
     {
         return [
             new Twig_Filter('translate', [$this, 'translate']),
-            new Twig_Filter('translatechoice', [$this, 'translatechoice']),
+            new Twig_Filter('translatechoice', [$this, 'translateChoice']),
         ];
     }
 
@@ -75,62 +64,14 @@ class TranslateExtension extends Twig_Extension
         return [$this->translateNodeVisitor];
     }
 
-    public function getTranslationNodeVisitor() : Twig_NodeVisitorInterface
+    public function translate($id, $role = null, $parameters = null, $domain = null, $locale = null) : string
     {
-        return $this->translateNodeVisitor;
+        return Translation::translate($message, $role, $parameters, $domain, $locale);
     }
 
-    public function translate(
-        ?string $message,
-        string $role = null,
-        iterable $arguments = [],
-        string $domain = null,
-        string $locale = null
-    ) : string {
-        if (!$message) {
-            return '';
-        }
-        if ($role !== null && $role !== 'default') {
-            $lookup = $message.'.'.$role;
-            $translation = $this->translator->trans($lookup, $arguments, $domain, $locale);
-            if ($translation !== $lookup) {
-                return $translation;
-            }
-        }
-        return $this->translator->trans($message, $arguments, $domain, $locale);
-    }
-
-    public function translatechoice(
-        ?string $message,
-        int $count,
-        string $role = null,
-        iterable $arguments = [],
-        string $domain = null,
-        string $locale = null
-    ) : string {
-        if (!$message) {
-            return '';
-        }
-        if ($role !== null && $role !== 'default') {
-            $lookup = $message.'.'.$role;
-            $translation = $this->translator->transChoice(
-                $lookup,
-                $count,
-                array_merge(['%count%' => $count], $arguments),
-                $domain,
-                $locale
-            );
-            if ($translation !== $lookup) {
-                return $translation;
-            }
-        }
-        return $this->translator->transChoice(
-            $message,
-            $count,
-            array_merge(['%count%' => $count], $arguments),
-            $domain,
-            $locale
-        );
+    public function translateChoice($id, int $count, $role = null, $parameters = null, $domain = null, $locale = null) : string
+    {
+        return Translation::translate($message, $count, $role, $parameters, $domain, $locale);
     }
 
     public function getName() : string

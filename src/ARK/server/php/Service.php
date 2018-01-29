@@ -34,6 +34,7 @@ use ARK\Database\Database;
 use ARK\Framework\Application;
 use ARK\Security\SecurityService;
 use ARK\Spatial\SpatialService;
+use ARK\Translation\TranslationService;
 use ARK\View\ViewService;
 use ARK\Workflow\WorkflowService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -203,27 +204,6 @@ class Service
         }
     }
 
-    public static function translate(
-        ?string $id,
-        string $role = 'default',
-        iterable $parameters = [],
-        string $domain = 'messages',
-        string $locale = null
-    ) : string {
-        return self::$app->translate($id, $role, $parameters, $domain, $locale);
-    }
-
-    public static function translateChoice(
-        ?string $id,
-        int $number,
-        string $role = 'default',
-        iterable $parameters = [],
-        string $domain = 'messages',
-        string $locale = null
-    ) : string {
-        return self::$app->translateChoice($id, $number, $role, $parameters, $domain, $locale);
-    }
-
     public static function entityManager(string $em) : EntityManagerInterface
     {
         return self::$app['orm.ems'][$em];
@@ -272,6 +252,11 @@ class Service
     public static function spatial() : SpatialService
     {
         return self::$app['spatial'];
+    }
+
+    public static function translation() : TranslationService
+    {
+        return self::$app['translation'];
     }
 
     public static function view() : ViewService
