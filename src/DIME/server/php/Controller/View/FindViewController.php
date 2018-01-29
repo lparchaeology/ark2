@@ -110,10 +110,17 @@ class FindViewController extends DimePageController
                 $alert = $action->keyword();
                 $update = true;
             }
+            if ($action->name() === 'claim') {
+                $file = DIME::generateTreasureClaimFile([$find], $find->value('museum'), $find->value('finder'), $actor);
+                $find->setValue('claim', $file);
+            }
         }
 
         if ($update) {
             ORM::flush($find);
+        }
+        if (isset($file)) {
+            $request->attributes->set('_file', $file->id());
         }
         if ($alert) {
             Service::view()->addSuccessFlash($alert);

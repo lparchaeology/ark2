@@ -138,6 +138,11 @@ abstract class File implements Item
         return $this->mediatype;
     }
 
+    public static function find(string $id) : ?self
+    {
+        return ORM::find(self::class, $id);
+    }
+
     public static function createFromUploadedFile(UploadedFile $upload) : ?self
     {
         if ($upload->isValid()) {

@@ -30,6 +30,9 @@
 namespace DIME;
 
 use ARK\Actor\Actor;
+use ARK\Actor\Person;
+use ARK\File\File;
+use ARK\File\MediaType;
 use ARK\Message\Notification;
 use ARK\ORM\ORM;
 use ARK\Service;
@@ -52,6 +55,23 @@ class DIME
     {
         $seq = Service::database()->sequence()->generateSequence('DIME', '', 'detectorist_id');
         return 'DB'.str_pad($seq, 6, '0', STR_PAD_LEFT);
+    }
+
+    public static function generateTreasureClaimFile(iterable $finds, Museum $museum, Person $claimant, Person $agent) : File
+    {
+        $data['finds'] = $finds;
+        $data['museum'] = $museum;
+        $data['claimant'] = $claimant;
+        $data['agent'] = $agent;
+
+        $options['page-size'] = 'A4';
+        $options['orientation'] = 'Landscape';
+        $options['viewport-size'] = '1280x800';
+        $pdf = Service::view()->renderPdf('pages/treasure.html.twig', ['data' => $data], $options);
+
+        $mediatype = new MediaType('application/pdf');
+        $file = File::createFromContent($mediatype, 'danefae.pdf', $pdf);
+        return $file;
     }
 
     public static function getMapTicket() : ?string

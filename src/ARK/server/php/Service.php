@@ -115,14 +115,18 @@ class Service
         return self::$app->redirect(self::path($path, $parmameters), $status);
     }
 
-    public static function imageServer(string $server = 'file') : Server
+    public static function imageServer(string $server = 'file') : ?Server
     {
         return self::$app['image'][$server];
     }
 
-    public static function imageResponse(string $server, string $path, iterable $parameters = []) : Response
+    public static function imageResponse(string $server, string $path, iterable $parameters = []) : ?Response
     {
-        return self::imageServer($server)->getImageResponse($path, $parameters);
+        $server = self::imageServer($server);
+        if ($server) {
+            return $server->getImageResponse($path, $parameters);
+        }
+        return new Response();
     }
 
     public static function imagePath(string $server, string $image, iterable $parameters = [], bool $relative = false) : string

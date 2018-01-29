@@ -36,12 +36,15 @@ use League\Glide\Responses\SymfonyResponseFactory;
 use League\Glide\ServerFactory;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use WyriHaximus\SliFly\FlysystemServiceProvider;
 
 class FileServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $container) : void
     {
+        $fs = new Filesystem();
+
         // Configure directories
         $container['dir.install'] = ARK::installDir();
         $container['dir.var'] = ARK::siteVarDir($container['ark']['site']);
@@ -50,8 +53,13 @@ class FileServiceProvider implements ServiceProviderInterface
         $container['dir.site'] = ARK::siteDir($container['ark']['site']);
         $container['dir.config'] = $container['dir.site'].'/config';
         $container['dir.files'] = $container['dir.site'].$container['ark']['file']['root'];
-        $container['dir.web'] = $container['dir.site'].'/public';
-        $container['dir.assets'] = $container['dir.web'].'/assets/'.$container['ark']['view']['frontend'];
+        // Backwards compatability for early DIME versions
+        if ($fs->exists($container['dir.site'].'/web')) {
+            $container['dir.webroot'] = $container['dir.site'].'/web';
+        } else {
+            $container['dir.webroot'] = $container['dir.site'].'/public';
+        }
+        $container['dir.assets'] = $container['dir.webroot'].'/assets/'.$container['ark']['view']['frontend'];
 
         $container->register(new FlysystemServiceProvider());
         $data = $container['ark']['file']['data'];

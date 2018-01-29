@@ -8,7 +8,9 @@
 
 namespace ARK\File;
 
+use ARK\ORM\ORM;
 use ARK\Service;
+use Symfony\Component\HttpFoundation\Response;
 
 class Image extends File
 {
@@ -20,5 +22,25 @@ class Image extends File
         }
         $path = Service::imagePath('file', $this->id(), $paramaters);
         return $path;
+    }
+
+    public function sourceUrl(string $preset = null) : string
+    {
+        $paramaters = [];
+        if ($preset) {
+            $paramaters['p'] = $preset;
+        }
+        $path = Service::imageUrl('file', $this->id(), $paramaters);
+        return $path;
+    }
+
+    public static function response(string $server, string $path, iterable $parameters = []) : Response
+    {
+        return Service::imageResponse($server, $path, $parameters);
+    }
+
+    public static function find(string $id) : ?File
+    {
+        return ORM::find(self::class, $id);
     }
 }

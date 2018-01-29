@@ -32,11 +32,9 @@ namespace DIME\Controller\View;
 use ARK\Actor\Actor;
 use ARK\Actor\Person;
 use ARK\File\File;
-use ARK\File\MediaType;
 use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\Translation\Translation;
-use ARK\View\Group;
 use ARK\View\Page;
 use ARK\Vocabulary\Term;
 use ARK\Workflow\Action;
@@ -302,39 +300,7 @@ class FindListController extends DimePageController
                 ORM::persist($find);
             }
             if ($action->name() === 'claim') {
-                //$layout = ORM::find(Group::class, 'dime_treasure_pdf');
-                $data['finds'] = $finds;
-                $data['museum'] = $finds[0]->value('museum');
-                $data['claimant'] = $finds[0]->value('finder');
-                $data['agent'] = $actor;
-                /*
-                $state = $layout->buildState($data, $layout->defaultState());
-                $state['actor'] = $actor;
-                $state['image'] = 'image';
-                $state['mode'] = 'view';
-                $state['workflow']['mode'] = 'edit';
-                $options = $layout->buildOptions($data, $state);
-                $forms = $layout->buildForms($data, $state, $options);
-                $state['forms'] = null;
-                if ($forms) {
-                    foreach ($forms as $name => $form) {
-                        if ($form) {
-                            $state['forms'][$name] = $form->createView();
-                        }
-                    }
-                }
-                $context = $layout->buildContext($data, $state);
-                $context['layout'] = $layout;
-                $context['forms'] = $state['forms'];
-                $context['form'] = null;
-                */
-
-                $options['page-size'] = 'A4';
-                $options['orientation'] = 'Landscape';
-                $options['viewport-size'] = '1280x800';
-                $pdf = Service::view()->renderPdf('pages/treasure.html.twig', ['data' => $data], $options);
-                $mediatype = new MediaType('application/pdf');
-                $file = File::createFromContent($mediatype, 'danefae.pdf', $pdf);
+                $file = DIME::generateTreasureClaimFile($finds, $finds[0]->value('museum'), $finds[0]->value('finder'), $actor);
                 foreach ($finds as $find) {
                     $find->setValue('claim', $file);
                 }

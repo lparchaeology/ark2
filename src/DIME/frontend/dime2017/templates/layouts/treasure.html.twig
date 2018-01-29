@@ -50,7 +50,7 @@
                         <div class="row">
                             {{ find.value('class') | translate }}
                             {% if find.value('classification').subtype %}
-                                {{ find.value('classification').subtype | translate }}
+                                / {{ find.value('classification').subtype | translate }}
                             {% endif %}
                         </div>
                         <div class="row">
@@ -58,20 +58,22 @@
                         </div>
                         <div class="row">
                             {{ find.value('finddate') | date('Y-m-d') }}
-                            {{ find.value('municipality') | translate }}
                         </div>
                         <div class="row">
-                            {% if find.value('description').text %}
-                                {{ find.value('description').text }}
-                            {% endif %}
+                            {{ find.value('municipality') | translate }}
                         </div>
+                        {% if find.value('description').text %}
+                            <div class="row">
+                                {{ find.value('description').text }}
+                            </div>
+                        {% endif %}
                     </td>
 
                     <td>
                         {% set images = find.value('image') %}
                         {% for image in images %}
-                            {{ imageUrl('file', image.id, {'p': 'preview'}) }}
-                            {# <img src="{{ imageUrl('file', image.id, {'p': 'preview'}) }}" alt="" /> #}
+                            {{ image.sourceUrl('preview') }}
+                            {# <img src="{{ image.sourceUrl('preview') }}" alt="" /> #}
                         {% endfor %}
                     </td>
 

@@ -30,34 +30,34 @@
 namespace ARK\Framework;
 
 use ARK\File\Image;
-use ARK\ORM\ORM;
-use ARK\Service;
-use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Throwable;
 
 class ImageController
 {
-    public function __invoke(Request $request, $server, $image) : Response
+    public function __invoke(Request $request) : Response
     {
-        if ($server === 'file') {
-            $file = ORM::find(Image::class, $image);
-            $path = $file ? $file->path() : '';
-        } else {
-            $path = $server.'/'.$image;
-            $server = 'assets';
-        }
+        $server = $request->attributes->get('server');
+        $image = $request->attributes->get('image');
+        $path = 'brand/logo.png';
         try {
-            if ($path) {
-                return Service::imageResponse($server, $path, $request->query->all());
+            if ($server === 'file') {
+                $file = Image::find($image);
+                if ($file) {
+                    $path = $file->path();
+                } else {
+                    $server = 'assets';
+                }
+            } else {
+                $path = $server.'/'.$image;
+                $server = 'assets';
             }
-        } catch (Exception $e) {
+            $response = Image::response($server, $path, $request->query->all());
+            return $response;
+        } catch (Throwable $e) {
             $msg = $e->getMessage();
-        }
-        try {
-            return Service::imageResponse('assets', 'icons/image.svg', $request->query->all());
-        } catch (Exception $e) {
             throw new NotFoundHttpException($msg);
         }
     }
