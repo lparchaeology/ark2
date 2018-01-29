@@ -36,6 +36,7 @@ use League\Glide\Responses\SymfonyResponseFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class FileGetController
 {
@@ -45,6 +46,9 @@ class FileGetController
         $file = File::find($id);
         if (!$file) {
             throw new ItemNotFoundHttpException('File', $id);
+        }
+        if ($file->visibility()->name() !== 'public' && !Service::workflow()->can($actor, 'view', $file)) {
+            throw new AccessDeniedException('core.error.access.denied');
         }
         $factory = new SymfonyResponseFactory($request);
         $response = $factory->create(Service::filesystem(), $file->path());
