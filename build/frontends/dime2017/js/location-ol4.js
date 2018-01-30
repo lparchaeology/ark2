@@ -67,43 +67,57 @@ function initialisePickMap() {
         }),
     });
 
+    function makeDecimal(value) {
+        return parseFloat(parseFloat(value).toFixed(6));
+    }
+
+    function makeUtm(value) {
+        return parseInt(value);
+    }
+
+    function makeNullPoint(srid) {
+        return { 'easting': null, 'northing': null, 'srid': parseInt(srid) };
+    }
+
+    function makeDecimalPoint(easting, northing) {
+        return { 'easting': makeDecimal(easting), 'northing': makeDecimal(northing), 'srid': 4326 };
+    }
+
+    function makeMapPoint(easting, northing) {
+        return { 'easting': makeDecimal(easting), 'northing': makeDecimal(northing), 'srid': 3857 };
+    }
+
+    function makeUtmPoint(easting, northing, srid) {
+        return { 'easting': makeUtm(easting), 'northing': makeUtm(northing), 'srid': 32632 };
+    }
+
     function mapToDecimal(map) {
-        var result = ol.proj.transform(map, 'EPSG:3857', 'EPSG:4326');
-        var easting = parseFloat(result[0]).toFixed(6);
-        var northing = parseFloat(result[1]).toFixed(6);
-        return { 'easting': easting, 'northing': northing, 'srid': 4326 };
+        var result = ol.proj.transform([map.easting, map.northing], 'EPSG:3857', 'EPSG:4326');
+        return makeDecimalPoint(result[0], result[1]);
     }
 
     function decimalToMap(decimal) {
-        var result = ol.proj.transform([decimal['easting'], decimal['northing']], 'EPSG:4326', 'EPSG:3857');
-        var easting = parseFloat(result[0]).toFixed(6);
-        var northing = parseFloat(result[1]).toFixed(6);
-        return { 'easting': easting, 'northing': northing, 'srid': 4326 };
+        var result = ol.proj.transform([decimal.easting, decimal.northing], 'EPSG:4326', 'EPSG:3857');
+        return makeMapPoint(result[0], result[1]);
     }
 
     function utmToDecimal(utm) {
-        var result = ol.proj.transform([utm['easting'], utm['northing']], 'EPSG:32632', 'EPSG:4326');
-        var easting = parseFloat(result[0]).toFixed(6);
-        var northing = parseFloat(result[1]).toFixed(6);
-        return { 'easting': easting, 'northing': northing, 'srid': 4326 };
+        var result = ol.proj.transform([utm.easting, utm.northing], 'EPSG:32632', 'EPSG:4326');
+        return makeDecimalPoint(result[0], result[1]);
     }
 
     function decimalToUtm(decimal) {
-        var result = ol.proj.transform([decimal['easting'], decimal['northing']], 'EPSG:4326', 'EPSG:32632');
-        var easting = parseInt(result[0]);
-        var northing = parseInt(result[1]);
-        return { 'easting': easting, 'northing': northing, 'srid': 32632 };
+        var result = ol.proj.transform([decimal.easting, decimal.northing], 'EPSG:4326', 'EPSG:32632');
+        return makeUtmPoint(result[0], result[1]);
     }
 
     function getMap() {
         if (mapPickSource.getFeatures().length === 1) {
             var feature = mapPickSource.getFeatures()[0];
             var map = feature.getGeometry().getCoordinates();
-            var easting = parseFloat(map[0]).toFixed(6);
-            var northing = parseFloat(map[1]).toFixed(6);
-            return { 'easting': easting, 'northing': northing, 'srid': 3857 };
+            return makeMapPoint(map[0], map[1]);
         }
-        return { 'easting': null, 'northing': null, 'srid': 3857 };
+        return makeNullPoint(3857);
     }
 
     function getDecimal() {
@@ -116,9 +130,7 @@ function initialisePickMap() {
             easting = $('#find_location_easting').text();
             northing = $('#find_location_northing').text();
         }
-        easting = parseFloat(easting).toFixed(6);
-        northing = parseFloat(northing).toFixed(6);
-        return { 'easting': easting, 'northing': northing, 'srid': 4326 };
+        return makeDecimalPoint(easting, northing);
     }
 
     function getUtm() {
@@ -131,12 +143,15 @@ function initialisePickMap() {
             easting = $('#find_location_utmEasting').text();
             northing = $('#find_location_utmNorthing').text();
         }
-        return { 'easting': parseInt(easting), 'northing': parseInt(northing), 'srid': 32632 };
+        return makeUtmPoint(easting, northing);
     }
 
     function setMap(decimal) {
+        if (isNaN(decimal.easting) || isNaN(decimal.northing)) {
+            return;
+        }
         var map = decimalToMap(decimal);
-        var geometry = new ol.geom.Point([map['easting'], map['northing']]);
+        var geometry = new ol.geom.Point([map.easting, map.northing]);
         var feature = new ol.Feature({ geometry: geometry });
         mapPickSource.clear();
         mapPickSource.addFeature(feature);
@@ -145,14 +160,23 @@ function initialisePickMap() {
     }
 
     function setDecimal(decimal) {
-        $('#find_location_easting').val(decimal['easting']);
-        $('#find_location_northing').val(decimal['northing']);
+        if (isNaN(decimal.easting) || isNaN(decimal.northing)) {
+            return;
+        }
+        $('#find_location_easting').val(decimal.easting);
+        $('#find_location_northing').val(decimal.northing);
     }
 
     function setUtm(decimal) {
-        utm = decimalToUtm(decimal);
-        $('#find_location_utmEasting').val(utm['easting']);
-        $('#find_location_utmNorthing').val(utm['northing']);
+        if (isNaN(decimal.easting) || isNaN(decimal.northing)) {
+            return;
+        }
+        var utm = decimalToUtm(decimal);
+        if (isNaN(utm.easting) || isNaN(utm.northing)) {
+            return;
+        }
+        $('#find_location_utmEasting').val(utm.easting);
+        $('#find_location_utmNorthing').val(utm.northing);
     }
 
     function setMunicipality(municipality) {
@@ -202,27 +226,29 @@ function initialisePickMap() {
     }
 
     function updateLocation(decimal) {
-        var wkt = 'POINT(' + decimal['easting'] + ' ' + decimal['northing'] + ')';
+        var wkt = 'POINT(' + decimal.easting + ' ' + decimal.northing + ')';
         $.post(path + 'api/geo/find', wkt, function (result) {
-            clearLocation();
-            if (result.municipality == null || result.museum == null) {
+            if (result.municipality === null || result.museum === null || isNaN(result.x) || isNaN(result.y)) {
                 bootbox.alert(Translator.trans('dime.mappick.invalidpointlocation'));
-                return;
+                setMap(getDecimal());
+            } else {
+                var decimal = makeDecimalPoint(result.x, result.y);
+                clearLocation();
+                setLocation(decimal, result.municipality.term, result.museum.id);
             }
-            var decimal = { 'easting': result.x, 'northing': result.y, 'srid': 4326 };
-            setLocation(decimal, result.municipality.term, result.museum.id);
         });
     }
 
     draw.on('drawend', function (e) {
-        bootbox.confirm(Translator.trans("dime.mappick.newpointconfirmmessage"), function(result) {
+        bootbox.confirm(Translator.trans("dime.mappick.newpointconfirmmessage"), function (result) {
             if (result) {
-                map = getMap();
-                decimal = mapToDecimal(map);
+                var feature = e.feature;
+                var coords = feature.getGeometry().getCoordinates();
+                var map = makeMapPoint(coords[0], coords[1]);
+                var decimal = mapToDecimal(map);
                 updateLocation(decimal);
             } else {
-                decimal = getDecimal();
-                setMap(decimal);
+                setMap(getDecimal());
             }
         });
     });
@@ -242,13 +268,11 @@ function initialisePickMap() {
     });
 
     $('.mappick-decimal-control').on('change', function () {
-        decimal = getDecimal();
-        updateLocation(decimal);
+        updateLocation(getDecimal());
     });
 
     $('.mappick-utm-control').on('change', function () {
-        utm = getUtm();
-        decimal = utmToDecimal(decimal);
+        var decimal = utmToDecimal(getUtm());
         updateLocation(decimal);
     });
 
@@ -261,7 +285,7 @@ function initialisePickMap() {
 
     mapPickMap.addInteraction(draw);
 
-    decimal = getDecimal();
+    var decimal = getDecimal();
     setMap(decimal);
     setUtm(decimal);
 }
