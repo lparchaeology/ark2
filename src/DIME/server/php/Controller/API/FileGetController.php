@@ -47,10 +47,12 @@ class FileGetController
         if (!$file) {
             throw new ItemNotFoundHttpException('File', $id);
         }
+        /*
         $actor = Service::workflow()->actor();
         if ($file->visibility()->name() !== 'public' && !Service::workflow()->can($actor, 'view', $file)) {
             throw new AccessDeniedException('core.error.access.denied');
         }
+        */
         $factory = new SymfonyResponseFactory($request);
         $response = $factory->create(Service::filesystem(), $file->path());
         $disposition = ($request->query->has('d') ? ResponseHeaderBag::DISPOSITION_ATTACHMENT : ResponseHeaderBag::DISPOSITION_INLINE);
