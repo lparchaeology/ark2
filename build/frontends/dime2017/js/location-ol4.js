@@ -67,9 +67,48 @@ function initialisePickMap() {
         }),
     });
 
-    function updateMapPoint() {
-        var easting = null;
-        var northing = null;
+    function mapToDecimal(map) {
+        var result = ol.proj.transform(map, 'EPSG:3857', 'EPSG:4326');
+        var easting = parseFloat(result[0]).toFixed(6);
+        var northing = parseFloat(result[1]).toFixed(6);
+        return { 'easting': easting, 'northing': northing, 'srid': 4326 };
+    }
+
+    function decimalToMap(decimal) {
+        var result = ol.proj.transform([decimal['easting'], decimal['northing']], 'EPSG:4326', 'EPSG:3857');
+        var easting = parseFloat(result[0]).toFixed(6);
+        var northing = parseFloat(result[1]).toFixed(6);
+        return { 'easting': easting, 'northing': northing, 'srid': 4326 };
+    }
+
+    function utmToDecimal(utm) {
+        var result = ol.proj.transform([utm['easting'], utm['northing']], 'EPSG:32632', 'EPSG:4326');
+        var easting = parseFloat(result[0]).toFixed(6);
+        var northing = parseFloat(result[1]).toFixed(6);
+        return { 'easting': easting, 'northing': northing, 'srid': 4326 };
+    }
+
+    function decimalToUtm(decimal) {
+        var result = ol.proj.transform([decimal['easting'], decimal['northing']], 'EPSG:4326', 'EPSG:32632');
+        var easting = parseInt(result[0]);
+        var northing = parseInt(result[1]);
+        return { 'easting': easting, 'northing': northing, 'srid': 32632 };
+    }
+
+    function getMap() {
+        if (mapPickSource.getFeatures().length === 1) {
+            var feature = mapPickSource.getFeatures()[0];
+            var map = feature.getGeometry().getCoordinates();
+            var easting = parseFloat(map[0]).toFixed(6);
+            var northing = parseFloat(map[1]).toFixed(6);
+            return { 'easting': easting, 'northing': northing, 'srid': 3857 };
+        }
+        return { 'easting': null, 'northing': null, 'srid': 3857 };
+    }
+
+    function getDecimal() {
+        var easting;
+        var northing;
         if ($('#find_location_easting').is('input')) {
             easting = $('#find_location_easting').val();
             northing = $('#find_location_northing').val();
@@ -77,84 +116,115 @@ function initialisePickMap() {
             easting = $('#find_location_easting').text();
             northing = $('#find_location_northing').text();
         }
-        if (easting && northing) {
-            var coords = ol.proj.transform([parseFloat(easting), parseFloat(northing)], 'EPSG:4326', 'EPSG:3857');
-            mapPickSource.clear();
-            mapPickSource.addFeature(new ol.Feature({
-                geometry: new ol.geom.Point(coords),
-            }));
-        }
+        easting = parseFloat(easting).toFixed(6);
+        northing = parseFloat(northing).toFixed(6);
+        return { 'easting': easting, 'northing': northing, 'srid': 4326 };
     }
 
-    function updateDecimalPoint() {
-        var easting = $('#find_location_utmEasting').val();
-        var northing = $('#find_location_utmNorthing').val();
-        if (easting && northing) {
-            var coords = ol.proj.transform([parseFloat(easting), parseFloat(northing)], 'EPSG:32632', 'EPSG:4326');
-            $('#find_location_easting').val(coords[0].toFixed(6));
-            $('#find_location_northing').val(coords[1].toFixed(6));
+    function getUtm() {
+        var easting;
+        var northing;
+        if ($('#find_location_utmEasting').is('input')) {
+            easting = $('#find_location_utmEasting').val();
+            northing = $('#find_location_utmNorthing').val();
+        } else if ($('#find_location_utmEasting').is('div')) {
+            easting = $('#find_location_utmEasting').text();
+            northing = $('#find_location_utmNorthing').text();
         }
+        return { 'easting': parseInt(easting), 'northing': parseInt(northing), 'srid': 32632 };
     }
 
-    function updateUtmPoint() {
-        var easting = $('#find_location_easting').val();
-        var northing = $('#find_location_northing').val();
-        if (easting && northing) {
-            var coords = ol.proj.transform([parseFloat(easting), parseFloat(northing)], 'EPSG:4326', 'EPSG:32632');
-            $('#find_location_utmEasting').val(coords[0].toFixed(0));
-            $('#find_location_utmNorthing').val(coords[1].toFixed(0));
-        }
+    function setMap(decimal) {
+        var map = decimalToMap(decimal);
+        var geometry = new ol.geom.Point([map['easting'], map['northing']]);
+        var feature = new ol.Feature({ geometry: geometry });
+        mapPickSource.clear();
+        mapPickSource.addFeature(feature);
+        mapPickMap.getView().setCenter(geometry.getCoordinates());
+        mapPickMap.getView().setZoom(12);
     }
 
-    function updateMunicipality() {
-        var easting = $('#find_location_easting').val();
-        var northing = $('#find_location_northing').val();
-        var wkt = 'POINT(' + easting + ' ' + northing + ')';
+    function setDecimal(decimal) {
+        $('#find_location_easting').val(decimal['easting']);
+        $('#find_location_northing').val(decimal['northing']);
+    }
 
+    function setUtm(decimal) {
+        utm = decimalToUtm(decimal);
+        $('#find_location_utmEasting').val(utm['easting']);
+        $('#find_location_utmNorthing').val(utm['northing']);
+    }
+
+    function setMunicipality(municipality) {
+        $('#find_municipality_term').val(municipality).trigger("change");
+    }
+
+    function setMuseum(museum) {
+        $('#find_museum_id').val(museum).trigger("change");
+    }
+
+    function setLocation(decimal, municipality, museum) {
+        setMap(decimal);
+        setDecimal(decimal);
+        setUtm(decimal);
+        setMunicipality(municipality);
+        setMuseum(museum);
+    }
+
+    function clearMap() {
+        mapPickSource.clear();
+    }
+
+    function clearDecimal() {
+        $('#find_location_easting').val('');
+        $('#find_location_northing').val('');
+    }
+
+    function clearUtm() {
+        $('#find_location_utmEasting').val('');
+        $('#find_location_utmNorthing').val('');
+    }
+
+    function clearMunicipality() {
+        $('#find_municipality_term').val('').trigger("change");
+    }
+
+    function clearMuseum() {
+        $('#find_museum_id').val('').trigger("change");
+    }
+
+    function clearLocation() {
+        clearMap();
+        clearDecimal();
+        clearUtm();
+        clearMunicipality();
+        clearMuseum();
+    }
+
+    function updateLocation(decimal) {
+        var wkt = 'POINT(' + decimal['easting'] + ' ' + decimal['northing'] + ')';
         $.post(path + 'api/geo/find', wkt, function (result) {
-            // TODO Find way without using actual form IDs
-            console.log(result);
-            try {
-                $('#find_municipality_term').val(result.municipality.term).trigger("change");
-                $('#find_museum_id').val(result.museum.id).trigger("change");
-                return true;
-            } catch (typeError) {
-                alert(window.invalidpointlocation);
-                $('#find_location_easting').val('');
-                $('#find_location_northing').val('');
-                $('#find_location_utmEasting').val('');
-                $('#find_location_utmNorthing').val('');
-                mapPickSource.clear();
-                return false;
+            clearLocation();
+            if (result.municipality == null || result.museum == null) {
+                bootbox.alert(Translator.trans('dime.mappick.invalidpointlocation'));
+                return;
             }
+            var decimal = { 'easting': result.x, 'northing': result.y, 'srid': 4326 };
+            setLocation(decimal, result.municipality.term, result.museum.id);
         });
     }
 
-
-    mapPickSource.on('addfeature', function () {
-        if (mapPickSource.getFeatures().length === 1) {
-            mapPickSource.forEachFeature(function (feature) {
-                var coords = ol.proj.transform(feature.getGeometry().getCoordinates(), 'EPSG:3857', 'EPSG:4326');
-                $('#find_location_easting').val(parseFloat(coords[0].toFixed(6)));
-                $('#find_location_northing').val(parseFloat(coords[1].toFixed(6)));
-                updateUtmPoint();
-                if (updateMunicipality()) {
-                    mapPickMap.getView().setCenter(feature.getGeometry().getCoordinates());
-                    mapPickMap.getView().setZoom(12);
-                }
-            });
-        } else {
-            mapPickSource.removeFeature(removefeature);
-        }
-
-    });
-
     draw.on('drawend', function (e) {
-        if (confirm(window.newpointconfirmmessage)) {
-            mapPickSource.clear();
-        } else {
-            removefeature = e.feature;
-        }
+        bootbox.confirm(Translator.trans("dime.mappick.newpointconfirmmessage"), function(result) {
+            if (result) {
+                map = getMap();
+                decimal = mapToDecimal(map);
+                updateLocation(decimal);
+            } else {
+                decimal = getDecimal();
+                setMap(decimal);
+            }
+        });
     });
 
     $('.mappick-fields input').on('change', function () {
@@ -172,13 +242,14 @@ function initialisePickMap() {
     });
 
     $('.mappick-decimal-control').on('change', function () {
-        updateUtmPoint();
-        updateMapPoint();
+        decimal = getDecimal();
+        updateLocation(decimal);
     });
 
     $('.mappick-utm-control').on('change', function () {
-        updateDecimalPoint();
-        updateMapPoint();
+        utm = getUtm();
+        decimal = utmToDecimal(decimal);
+        updateLocation(decimal);
     });
 
     $(".mappick-fields").keydown(function (event) {
@@ -190,8 +261,7 @@ function initialisePickMap() {
 
     mapPickMap.addInteraction(draw);
 
-    updateUtmPoint();
-
-    updateMapPoint();
-
+    decimal = getDecimal();
+    setMap(decimal);
+    setUtm(decimal);
 }

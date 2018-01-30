@@ -9,7 +9,7 @@ $(document).ready(function () {
 
         $.post($(e.target).attr('href'), payload)
             .fail(function () {
-                alert('fail');
+                bootbox.alert('fail');
             })
             .done(function (data) {
                 var response = data.data;

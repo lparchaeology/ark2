@@ -63,6 +63,7 @@
                     "jquery-form/src/jquery.form.js",
                     "bazinga-translator/js/translator.js",
                     "bootstrap-sass/assets/javascripts/bootstrap.js",
+                    "bootbox/bootbox.js",
                     "summernote/dist/summernote.js",
                     "select2/dist/js/select2.js",
                     "file-saver.js/FileSaver.js",

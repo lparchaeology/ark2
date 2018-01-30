@@ -136,9 +136,7 @@ $(document).ready(function () {
             }
         }).on("filepredelete", function (event) {
             var abort = true;
-            if (confirm(window.confirmfiledelete)) {
-                abort = false;
-            }
+            bootbox.confirm(Translator.trans("dime.confirmfiledeletion"), function(result) { abort = !result; });
             return abort;
         })
     });

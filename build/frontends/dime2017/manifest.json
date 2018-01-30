@@ -76,6 +76,7 @@
                     "tableexport.jquery.plugin/tableExport.js",
                     "colresizable/colResizable-1.6.js",
                     "bootstrap-sass/assets/javascripts/bootstrap.js",
+                    "bootbox/bootbox.js",
                     "bootstrap-datetime-picker/js/bootstrap-datetimepicker.js",
                     "bootstrap-datetime-picker/js/locales/bootstrap-datetimepicker.da.js",
                     "bootstrap-fileinput/js/plugins/piexif.js",
@@ -158,6 +159,7 @@
                     "jquery/dist/jquery.js",
                     "bazinga-translator/js/translator.js",
                     "bootstrap-sass/assets/javascripts/bootstrap.js",
+                    "bootbox/bootbox.js",
                     "summernote/dist/summernote.js",
                     "summernote/dist/lang/summernote-da-DK.js"
                 ],
