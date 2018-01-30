@@ -72,8 +72,7 @@
                     <td>
                         {% set images = find.value('image') %}
                         {% for image in images %}
-                            {{ image.sourceUrl('preview') }}
-                            {# <img src="{{ image.sourceUrl('preview') }}" alt="" /> #}
+                            <img src="{{ image.sourceUrl('thumb') }}" alt="" / />
                         {% endfor %}
                     </td>
 
