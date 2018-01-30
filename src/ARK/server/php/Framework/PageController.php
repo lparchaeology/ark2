@@ -122,7 +122,8 @@ abstract class PageController extends Controller
 
         // Set up the Select choices to show users
         $item = $this->item($data);
-        if ($item && $state['workflow']['mode'] === 'edit') {
+        //if ($item && $state['workflow']['mode'] === 'edit') {
+        if ($item) {
             $select['choice_value'] = 'name';
             $select['choice_name'] = 'name';
             $select['choice_label'] = 'keyword';

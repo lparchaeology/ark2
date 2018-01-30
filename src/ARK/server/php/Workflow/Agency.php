@@ -47,19 +47,25 @@ class Agency
     protected $class = '';
     protected $attributeName = '';
     protected $attribute;
+    protected $grp = 0;
     protected $operator = 'is';
     protected $condition;
     protected $conditionAttribute;
-    protected $conditionAttributeName;
     protected $conditionOperator;
     protected $conditionValue;
+    protected $conditionActor;
 
     public function condition() : ?Condition
     {
-        if ($this->condition === null && $this->conditionAttribute !== null) {
+        if ($this->condition === null && $this->conditionValue !== null) {
             $this->condition = new Condition($this->conditionAttribute, $this->conditionOperator, $this->conditionValue);
         }
         return $this->condition;
+    }
+
+    public function group() : int
+    {
+        return $this->grp;
     }
 
     public function isGranted(Actor $actor, Item $item) : ?bool
@@ -69,7 +75,17 @@ class Agency
             return self::DENY;
         }
         $isAgent = ($value === $actor || $actor->isAgentFor($value));
-        $isGranted = ($this->condition() ? $this->condition()->isMet($item) : true);
+        $isGranted = true;
+        if ($this->condition()) {
+            $isGranted = $this->condition()->isMet($item);
+        } elseif ($this->conditionActor !== null) {
+            $conditionValue = $item->value($this->conditionAttribute->name());
+            $isConditionActor = false;
+            if ($conditionValue instanceof Actor) {
+                $isConditionActor = ($conditionValue === $actor || $actor->isAgentFor($conditionValue));
+            }
+            $isGranted = ($this->conditionOperator === 'not' ? !$isConditionActor : $isConditionActor);
+        }
         if ($this->operator === 'not' && $isAgent && $isGranted) {
             return self::DENY;
         }
@@ -90,11 +106,13 @@ class Agency
         $builder->addMappedStringKey('action', 'actionName', 30);
         $builder->addStringKey('class', 30);
         $builder->addMappedStringKey('attribute', 'attributeName', 30);
+        $builder->addKey('grp', 'integer');
 
         // Fields
         $builder->addStringField('operator', 10);
         $builder->addMappedStringField('condition_operator', 'conditionOperator', 10);
         $builder->addMappedStringField('condition_value', 'conditionValue', 4000);
+        $builder->addMappedField('condition_actor', 'conditionActor', 'boolean');
 
         // Associations
         $builder->addCompositeManyToOneField(

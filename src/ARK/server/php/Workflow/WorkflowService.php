@@ -153,6 +153,7 @@ class WorkflowService
 
     public function mode(Actor $actor, Item $item) : string
     {
+        //if ($this->can($actor, 'edit', $item) || count($this->actionable($actor, $item)) > 0) {
         if ($this->can($actor, 'edit', $item)) {
             return 'edit';
         }

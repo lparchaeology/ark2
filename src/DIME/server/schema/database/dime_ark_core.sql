@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 29, 2018 at 09:41 PM
+-- Generation Time: Jan 30, 2018 at 04:20 PM
 -- Server version: 10.2.12-MariaDB
--- PHP Version: 7.2.1
+-- PHP Version: 7.1.13
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -3120,7 +3120,7 @@ INSERT INTO `ark_translation_language` (`language`, `markup`, `vocabulary`, `tex
 CREATE TABLE `ark_translation_message` (
   `language` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `role` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `role` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'default',
   `text` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `notes` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -3268,17 +3268,29 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.about.instructions', 'default', 'Vejledning', NULL),
 ('da', 'dime.about.museums', 'default', 'Deltagende museer', NULL),
 ('da', 'dime.about.partners', 'default', 'Samarbejdspartnere', NULL),
+('da', 'dime.action.accession', 'default', 'Indlemmet i museets samling', ''),
+('da', 'dime.action.appraise', 'default', 'Treasure - Retained by National Museum', ''),
 ('da', 'dime.action.approve', 'default', 'Godkend', NULL),
 ('da', 'dime.action.cancel', 'default', 'Cancel', NULL),
+('da', 'dime.action.claim', 'default', 'Create Treasure Claim', ''),
 ('da', 'dime.action.delete', 'default', 'Slet', NULL),
+('da', 'dime.action.destroy', 'default', 'Artefact accidentally destroyed', ''),
+('da', 'dime.action.discard', 'default', 'Discard the artefact', ''),
 ('da', 'dime.action.edit', 'default', 'Rediger fund oplysninger', NULL),
+('da', 'dime.action.evaluate', 'default', 'Muligt danefæ - skal indsendes til NM', ''),
+('da', 'dime.action.lose', 'default', 'Artefact has been lost', ''),
 ('da', 'dime.action.notify', 'default', 'Rapporter fund til museum', ''),
+('da', 'dime.action.publish', 'default', 'Publish find record on DIME', ''),
 ('da', 'dime.action.record', 'default', 'Gem fundoplysninger', NULL),
+('da', 'dime.action.recover', 'default', 'Recover a lost artefact', ''),
 ('da', 'dime.action.register', 'default', 'Registrer', NULL),
+('da', 'dime.action.reject', 'default', 'Reject find submission', ''),
+('da', 'dime.action.release', 'default', 'Fund frigivet til finder', ''),
 ('da', 'dime.action.report', 'default', 'Rapportér', NULL),
 ('da', 'dime.action.submit', 'default', 'Send fund til Museum', ''),
 ('da', 'dime.action.suspend', 'default', 'action_suspend(suspendér)', NULL),
 ('da', 'dime.action.view', 'default', 'Vis', NULL),
+('da', 'dime.action.withhold', 'default', 'Withhold from publication', ''),
 ('da', 'dime.actions', 'default', 'Handling', NULL),
 ('da', 'dime.actor.municipalities', 'default', 'Kommuner', NULL),
 ('da', 'dime.actor.participating', 'default', 'DIME-bruger', NULL),
@@ -3393,7 +3405,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.find.process.rejected', 'default', 'Afvist pga. manglende eller fejlagtig fundinformation', NULL),
 ('da', 'dime.find.process.released', 'default', 'Fund frigivet til finder', NULL),
 ('da', 'dime.find.process.reported', 'default', 'Fund rapporteret til museum (ikke afleveret)', NULL),
-('da', 'dime.find.query.set', 'default', 'Søgeresultat', ''),
+('da', 'dime.find.query.set', 'default', 'Søgeresultat %items% fund.', ''),
 ('da', 'dime.find.recipient', 'default', 'Fundmodtager', NULL),
 ('da', 'dime.find.save', 'default', 'Gem', NULL),
 ('da', 'dime.find.search', 'default', 'Søg fund', NULL),
@@ -3755,7 +3767,8 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.kommune.hojetaastrup', 'official', 'Høje-Taastrup Kommune', NULL),
 ('da', 'dime.kommune.holbaek', 'default', 'Holbæk', NULL),
 ('da', 'dime.kommune.holbaek', 'official', 'Holbæk Kommune', NULL),
-('da', 'dime.kommune.holstebro', 'default', 'Holstebro', NULL),
+('da', 'dime.kommune.holstebro', 'default', 'Holstebro', NULL);
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('da', 'dime.kommune.holstebro', 'official', 'Holstebro Kommune', NULL),
 ('da', 'dime.kommune.horsens', 'default', 'Horsens', NULL),
 ('da', 'dime.kommune.horsens', 'official', 'Horsens Kommune', NULL),
@@ -3769,8 +3782,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.kommune.ishoj', 'official', 'Ishøj Kommune', NULL),
 ('da', 'dime.kommune.jammerbugt', 'default', 'Jammerbugt', NULL),
 ('da', 'dime.kommune.jammerbugt', 'official', 'Jammerbugt Kommune', NULL),
-('da', 'dime.kommune.kalundborg', 'default', 'Kalundborg', NULL);
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('da', 'dime.kommune.kalundborg', 'default', 'Kalundborg', NULL),
 ('da', 'dime.kommune.kalundborg', 'official', 'Kalundborg Kommune', NULL),
 ('da', 'dime.kommune.kerteminde', 'default', 'Kerteminde', NULL),
 ('da', 'dime.kommune.kerteminde', 'official', 'Kerteminde Kommune', NULL),
@@ -4041,12 +4053,11 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'Værdien er ikke gyldig. data[credentials].username.error', 'default', 'Det valgte brugernavn er ikke gyldigt. Brugernavnet kan kun bestå af bogstaver og tal, dvs. ingen mellemrum eller specialtegn', ''),
 ('en', 'core.action.approve', 'default', 'Approve', ''),
 ('en', 'core.action.cancel', 'default', 'Cancel', ''),
-('en', 'core.action.edit', 'default', 'edit', NULL),
+('en', 'core.action.edit', 'default', 'Edit', NULL),
 ('en', 'core.action.register', 'default', 'Register', ''),
 ('en', 'core.action.select', 'default', 'Select Action', ''),
 ('en', 'core.action.suspend', 'default', 'Suspend', ''),
 ('en', 'core.action.view', 'default', 'View', ''),
-('en', 'core.action.view1', 'default', 'View', ''),
 ('en', 'core.actor', 'resource', 'actors', NULL),
 ('en', 'core.actor.address', 'default', 'Address', ''),
 ('en', 'core.actor.avatar', 'default', 'Photo', ''),
@@ -4431,29 +4442,31 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.about.instructions', 'default', 'Instructions', NULL),
 ('en', 'dime.about.museums', 'default', 'Participating Museums', NULL),
 ('en', 'dime.about.partners', 'default', 'Partners', NULL),
-('en', 'dime.action.accession', 'default', 'Indlemmet i museets samling', ''),
+('en', 'dime.action.accession', 'default', 'Accession for museum', ''),
 ('en', 'dime.action.appraise', 'default', 'Treasure - Retained by National Museum', ''),
 ('en', 'dime.action.approve', 'default', 'Approve', ''),
 ('en', 'dime.action.cancel', 'default', 'Cancel', ''),
-('en', 'dime.action.claim', 'default', 'Send to National Museum for Treasure assessment', ''),
+('en', 'dime.action.claim', 'default', 'Create Treasure Claim', ''),
 ('en', 'dime.action.delete', 'default', 'Delete', ''),
 ('en', 'dime.action.destroy', 'default', 'Artefact accidentally destroyed', ''),
 ('en', 'dime.action.discard', 'default', 'Discard the artefact', ''),
 ('en', 'dime.action.edit', 'default', 'Edit find record', NULL),
-('en', 'dime.action.evaluate', 'default', 'Muligt danefæ - skal indsendes til NM', ''),
+('en', 'dime.action.evaluate', 'default', 'Evaluate as potential treasure', ''),
 ('en', 'dime.action.lose', 'default', 'Artefact has been lost', ''),
+('en', 'dime.action.notify', 'default', 'Notify', ''),
 ('en', 'dime.action.publish', 'default', 'Publish find record on DIME', ''),
 ('en', 'dime.action.record', 'default', 'Create a new find record', 'Record'),
 ('en', 'dime.action.recover', 'default', 'Recover a lost artefact', ''),
-('en', 'dime.action.register', 'default', 'Register', ''),
-('en', 'dime.action.reject', 'default', 'Afvist pga. manglende eller fejlagtig fundinformation', ''),
-('en', 'dime.action.release', 'default', 'Fund frigivet til finder', ''),
+('en', 'dime.action.register', 'default', 'Register find', ''),
+('en', 'dime.action.reject', 'default', 'Reject find submission', ''),
+('en', 'dime.action.release', 'default', 'Release find to finder', ''),
 ('en', 'dime.action.report', 'default', 'Notify museum of find', 'Report'),
-('en', 'dime.action.submit', 'default', 'Send dette fund til ansvarshavende museum ', ''),
+('en', 'dime.action.request', 'default', 'Request find form finder', NULL),
+('en', 'dime.action.submit', 'default', 'Send find to museum', ''),
 ('en', 'dime.action.suspend', 'default', 'Suspend', ''),
 ('en', 'dime.action.view', 'default', 'View a find record', ''),
 ('en', 'dime.action.withhold', 'default', 'Withhold from publication', ''),
-('en', 'dime.actions', 'default', 'Action', 'Action'),
+('en', 'dime.actions', 'default', 'Actions', 'Action'),
 ('en', 'dime.actor.municipalities', 'default', 'Municipalities', NULL),
 ('en', 'dime.actor.participating', 'default', 'DIME Participant', ''),
 ('en', 'dime.admin.museums', 'default', 'Administer Museums', NULL),
@@ -4506,8 +4519,8 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.custody.discarded', 'default', 'Discarded', NULL),
 ('en', 'dime.find.custody.held', 'default', 'Held by custodian', NULL),
 ('en', 'dime.find.custody.lost', 'default', 'Lost', NULL),
-('en', 'dime.find.custody.requested', 'default', 'Requested by recipient', NULL),
-('en', 'dime.find.custody.sent', 'default', 'Sent to recipient', NULL),
+('en', 'dime.find.custody.requested', 'default', 'Requested by Museum', NULL),
+('en', 'dime.find.custody.sent', 'default', 'Sent to Museum', NULL),
 ('en', 'dime.find.dating', 'default', 'Dating', NULL),
 ('en', 'dime.find.dating', 'help', 'Here you have two input options:\r\n\r\n1) In the drop down menu, you can specify a date period (eg Viking Period) or enter \'undated\' if you are unsure about the date.\r\n2) In the Advanced Dates menu you can specify a start and end date both as a period or year number. It is important that you specify BOTH start and end dates. For example, if you have found a coin from 1687 you indicate 1687 in both fields.', NULL),
 ('en', 'dime.find.description', 'default', 'Description', NULL),
@@ -4519,7 +4532,8 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.event.deleted', 'default', 'Deleted', ''),
 ('en', 'dime.find.event.destroyed', 'default', 'Artefact accidentally destroyed', ''),
 ('en', 'dime.find.event.discarded', 'default', 'Artefact discarded', ''),
-('en', 'dime.find.event.edited', 'default', 'Edited', NULL),
+('en', 'dime.find.event.edited', 'default', 'Edited', NULL);
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'dime.find.event.evaluated', 'default', 'Evaluated as possible Treasure', ''),
 ('en', 'dime.find.event.lost', 'default', 'Artefact lost', ''),
 ('en', 'dime.find.event.published', 'default', 'Find record published', ''),
@@ -4532,8 +4546,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.filters', 'default', 'Filters', NULL),
 ('en', 'dime.find.finddate', 'default', 'Find Date', NULL),
 ('en', 'dime.find.finddate', 'help', 'Enter the date of when you actually found the item you want to register.', NULL),
-('en', 'dime.find.finder', 'default', 'Detectorist', NULL);
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.find.finder', 'default', 'Detectorist', NULL),
 ('en', 'dime.find.finder_id', 'default', 'Find num. / X num.', NULL),
 ('en', 'dime.find.finder_id', 'help', 'To help the museum to record your finds, it is recommended that you enter a unique number for your find (the same number as you write on the find). NOTE! If you have received a find number from the museum then enter this.', NULL),
 ('en', 'dime.find.finder_place', 'default', 'Find spot', NULL),
@@ -5045,6 +5058,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.map.layer.foraar', 'default', 'Aerial Photo', NULL),
 ('en', 'dime.map.layer.hb', 'default', 'Topographical Map', NULL),
 ('en', 'dime.map.layer.skaermkort', 'default', 'Base Map', NULL),
+('en', 'dime.mappick.newpointconfirmmessage', 'default', 'New Point Confirm.', ''),
 ('en', 'dime.material', 'default', 'Material', ''),
 ('en', 'dime.material.aluminium', 'default', 'Aluminium', NULL),
 ('en', 'dime.material.ceramic', 'default', 'Ceramic', ''),
@@ -5155,7 +5169,8 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.user.dashboard.finds', 'default', 'You have recorded %count% finds.', NULL),
 ('en', 'dime.user.dashboard.notifications', 'default', 'You have %count% unread notifications.', NULL),
 ('en', 'dime.user.detectorist.id', 'default', 'Detectorist ID', ''),
-('en', 'dime.user.login', 'default', 'Login', NULL),
+('en', 'dime.user.login', 'default', 'Login', NULL);
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'dime.user.name', 'default', 'User Name', NULL),
 ('en', 'dime.user.password', 'default', 'Password', NULL),
 ('en', 'dime.user.password.forgot', 'default', 'Forgotten Password?', NULL),
@@ -5165,10 +5180,10 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.user.terms', 'default', 'Terms and Conditions', ''),
 ('en', 'dime.user.terms.v1', 'default', '<H2>Terms and Conditions</H2><P>v1.0 dated 1 June 2017</P><P>Lorem Ipsem...</P>', ''),
 ('en', 'dime.user.update', 'success', 'User successfully updated.', ''),
+('en', 'dime.user.update.failure', 'default', 'Update Failed!', ''),
 ('en', 'file.type.audio', 'default', 'Audio File', NULL),
 ('en', 'file.type.document', 'default', 'Document File', NULL),
-('en', 'file.type.image', 'default', 'Image File', NULL);
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'file.type.image', 'default', 'Image File', NULL),
 ('en', 'file.type.other', 'default', 'Other File', NULL),
 ('en', 'find.gotofind', 'default', 'View Find Record', NULL),
 ('en', 'form.select.optional', 'default', 'optional', NULL),
@@ -9356,18 +9371,16 @@ INSERT INTO `ark_workflow_action` (`schma`, `action`, `event_vocabulary`, `event
 ('dime.find', 'discard', 'core.event.class', 'discarded', NULL, 1, 0, 0, 0, 1, 'dime.action.discard', 'Artefact was discarded after assessment'),
 ('dime.find', 'edit', 'core.event.class', 'edited', NULL, 0, 0, 0, 0, 1, 'dime.action.edit', 'Edit find record'),
 ('dime.find', 'evaluate', 'core.event.class', 'evaluated', NULL, 1, 0, 0, 0, 1, 'dime.action.evaluate', 'Local museum evaluates as potential treasure, send to national museum'),
-('dime.find', 'loan', 'core.event.class', 'loaned', NULL, 1, 0, 0, 0, 1, 'dime.action.loan', 'Owner lends artefact, transfers custody'),
 ('dime.find', 'lose', 'core.event.class', 'lost', NULL, 1, 0, 0, 0, 1, 'dime.action.lose', 'Artefact was lost'),
 ('dime.find', 'publish', 'core.event.class', 'published', NULL, 1, 0, 0, 0, 1, 'dime.action.publish', 'Find record is made public'),
-('dime.find', 'receive', 'core.event.class', 'received', NULL, 1, 0, 0, 0, 1, 'dime.action.receive', 'Artefact was received by new custodian'),
 ('dime.find', 'record', 'core.event.class', 'recorded', NULL, 0, 0, 0, 1, 1, 'dime.action.record', 'Find record was created'),
 ('dime.find', 'recover', 'core.event.class', 'recovered', NULL, 1, 0, 0, 0, 1, 'dime.action.recover', 'Lost artefact has been found'),
 ('dime.find', 'reject', 'core.event.class', 'rejected', NULL, 1, 0, 0, 0, 1, 'dime.action.reject', 'Local museum requests more info from finder'),
 ('dime.find', 'release', 'core.event.class', 'released', NULL, 1, 0, 0, 0, 1, 'dime.action.release', 'Find deemed not treasure and returned to finder'),
 ('dime.find', 'report', 'core.event.class', 'reported', NULL, 0, 1, 0, 1, 1, 'dime.action.report', 'Report but don\'t send artefact to local museum'),
-('dime.find', 'request', 'core.event.class', 'requested', NULL, 1, 0, 0, 0, 1, 'dime.action.request', 'Request custody of artefact'),
+('dime.find', 'request', 'core.event.class', 'requested', NULL, 1, 1, 0, 0, 1, 'dime.action.request', 'Request custody of artefact'),
+('dime.find', 'send', 'core.event.class', 'sent', NULL, 1, 1, 0, 1, 1, 'dime.action.send', 'Send find to museum'),
 ('dime.find', 'submit', 'core.event.class', 'submitted', NULL, 0, 0, 0, 1, 1, 'dime.action.submit', 'Report and send artefact to local museum'),
-('dime.find', 'transfer', 'core.event.class', 'transferred', NULL, 1, 0, 0, 0, 1, 'dime.action.transfer', 'Change ownership of artefact'),
 ('dime.find', 'view', 'core.event.class', 'viewed', NULL, 0, 0, 0, 0, 1, 'dime.action.view', 'View find record'),
 ('dime.find', 'withhold', 'core.event.class', 'withheld', NULL, 1, 0, 0, 0, 1, 'dime.action.withhold', 'Withhold publication of find record');
 
@@ -9381,46 +9394,54 @@ CREATE TABLE `ark_workflow_agency` (
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `action` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `class` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `operator` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '''eq''',
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `grp` int(11) NOT NULL DEFAULT 0,
+  `operator` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '''eq''',
   `condition_attribute` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `condition_operator` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `condition_value` varchar(4000) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `condition_value` varchar(4000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `condition_actor` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_workflow_agency`
 --
 
-INSERT INTO `ark_workflow_agency` (`schma`, `action`, `class`, `operator`, `attribute`, `condition_attribute`, `condition_operator`, `condition_value`) VALUES
-('dime.find', 'accession', 'find', 'is', 'museum', NULL, NULL, NULL),
-('dime.find', 'appraise', 'find', 'is', 'museum', NULL, NULL, NULL),
-('dime.find', 'claim', 'find', 'is', 'museum', NULL, NULL, NULL),
-('dime.find', 'clone', 'find', 'is', 'finder', NULL, NULL, NULL),
-('dime.find', 'destroy', 'find', 'is', 'custodian', NULL, NULL, NULL),
-('dime.find', 'discard', 'find', 'is', 'owner', NULL, NULL, NULL),
-('dime.find', 'edit', 'find', 'is', 'finder', 'process', 'is', 'recorded'),
-('dime.find', 'edit', 'find', 'is', 'museum', 'process', 'not', 'recorded'),
-('dime.find', 'evaluate', 'find', 'is', 'museum', NULL, NULL, NULL),
-('dime.find', 'loan', 'find', 'is', 'owner', NULL, NULL, NULL),
-('dime.find', 'lose', 'find', 'is', 'custodian', NULL, NULL, NULL),
-('dime.find', 'publish', 'find', 'is', 'owner', NULL, NULL, NULL),
-('dime.find', 'receive', 'find', 'is', 'recipient', NULL, NULL, NULL),
-('dime.find', 'record', 'find', 'is', 'finder', NULL, NULL, NULL),
-('dime.find', 'record', 'find', 'is', 'museum', NULL, NULL, NULL),
-('dime.find', 'recover', 'find', 'is', 'custodian', NULL, NULL, NULL),
-('dime.find', 'recover', 'find', 'is', 'owner', NULL, NULL, NULL),
-('dime.find', 'reject', 'find', 'is', 'museum', NULL, NULL, NULL),
-('dime.find', 'release', 'find', 'is', 'museum', NULL, NULL, NULL),
-('dime.find', 'report', 'find', 'is', 'finder', NULL, NULL, NULL),
-('dime.find', 'report', 'find', 'is', 'museum', NULL, NULL, NULL),
-('dime.find', 'request', 'find', 'not', 'custodian', NULL, NULL, NULL),
-('dime.find', 'submit', 'find', 'is', 'finder', NULL, NULL, NULL),
-('dime.find', 'submit', 'find', 'is', 'museum', NULL, NULL, NULL),
-('dime.find', 'transfer', 'find', 'is', 'owner', NULL, NULL, NULL),
-('dime.find', 'view', 'find', 'is', 'finder', NULL, NULL, NULL),
-('dime.find', 'view', 'find', 'is', 'museum', NULL, NULL, NULL),
-('dime.find', 'withhold', 'find', 'is', 'owner', NULL, NULL, NULL);
+INSERT INTO `ark_workflow_agency` (`schma`, `action`, `class`, `attribute`, `grp`, `operator`, `condition_attribute`, `condition_operator`, `condition_value`, `condition_actor`) VALUES
+('dime.find', 'accession', 'find', 'museum', 0, 'is', 'custodian', 'is', NULL, 1),
+('dime.find', 'accession', 'find', 'museum', 1, 'is', 'recipient', 'is', NULL, 1),
+('dime.find', 'appraise', 'find', 'museum', 0, 'is', NULL, NULL, NULL, NULL),
+('dime.find', 'claim', 'find', 'museum', 0, 'is', 'custodian', 'is', NULL, 1),
+('dime.find', 'claim', 'find', 'museum', 1, 'is', 'recipient', 'is', NULL, 1),
+('dime.find', 'clone', 'find', 'finder', 0, 'is', NULL, NULL, NULL, NULL),
+('dime.find', 'destroy', 'find', 'custodian', 0, 'is', NULL, NULL, NULL, NULL),
+('dime.find', 'destroy', 'find', 'owner', 0, 'is', NULL, NULL, NULL, NULL),
+('dime.find', 'discard', 'find', 'custodian', 0, 'is', NULL, NULL, NULL, NULL),
+('dime.find', 'discard', 'find', 'owner', 0, 'is', NULL, NULL, NULL, NULL),
+('dime.find', 'edit', 'find', 'finder', 0, 'is', 'process', 'is', 'recorded', NULL),
+('dime.find', 'edit', 'find', 'finder', 1, 'is', 'process', 'is', 'rejected', NULL),
+('dime.find', 'edit', 'find', 'museum', 0, 'is', NULL, NULL, NULL, NULL),
+('dime.find', 'evaluate', 'find', 'museum', 0, 'is', 'custodian', 'is', NULL, 1),
+('dime.find', 'evaluate', 'find', 'museum', 1, 'is', 'recipient', 'is', NULL, 1),
+('dime.find', 'lose', 'find', 'custodian', 0, 'is', NULL, NULL, NULL, NULL),
+('dime.find', 'lose', 'find', 'owner', 0, 'is', NULL, NULL, NULL, NULL),
+('dime.find', 'publish', 'find', 'museum', 0, 'is', NULL, NULL, NULL, NULL),
+('dime.find', 'record', 'find', 'finder', 0, 'is', NULL, NULL, NULL, NULL),
+('dime.find', 'record', 'find', 'museum', 0, 'is', NULL, NULL, NULL, NULL),
+('dime.find', 'recover', 'find', 'custodian', 0, 'is', NULL, NULL, NULL, NULL),
+('dime.find', 'recover', 'find', 'owner', 0, 'is', NULL, NULL, NULL, NULL),
+('dime.find', 'reject', 'find', 'museum', 0, 'is', NULL, NULL, NULL, NULL),
+('dime.find', 'release', 'find', 'museum', 0, 'is', NULL, NULL, NULL, NULL),
+('dime.find', 'report', 'find', 'finder', 0, 'is', NULL, NULL, NULL, NULL),
+('dime.find', 'report', 'find', 'museum', 0, 'is', NULL, NULL, NULL, NULL),
+('dime.find', 'request', 'find', 'museum', 0, 'is', 'custodian', 'not', NULL, 1),
+('dime.find', 'request', 'find', 'museum', 1, 'is', 'recipient', 'not', NULL, 1),
+('dime.find', 'send', 'find', 'finder', 0, 'is', 'custodian', 'is', NULL, 1),
+('dime.find', 'submit', 'find', 'finder', 0, 'is', 'process', 'is', 'recorded', NULL),
+('dime.find', 'submit', 'find', 'museum', 0, 'is', 'process', 'is', 'recorded', NULL),
+('dime.find', 'view', 'find', 'finder', 0, 'is', NULL, NULL, NULL, NULL),
+('dime.find', 'view', 'find', 'museum', 0, 'is', NULL, NULL, NULL, NULL),
+('dime.find', 'withhold', 'find', 'museum', 0, 'is', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -9493,6 +9514,8 @@ INSERT INTO `ark_workflow_allow` (`schma`, `action`, `role`, `operator`) VALUES
 ('dime.find', 'report', 'admin', 'is'),
 ('dime.find', 'report', 'detectorist', 'is'),
 ('dime.find', 'report', 'registrar', 'is'),
+('dime.find', 'request', 'registrar', 'is'),
+('dime.find', 'send', 'detectorist', 'is'),
 ('dime.find', 'submit', 'admin', 'is'),
 ('dime.find', 'submit', 'detectorist', 'is'),
 ('dime.find', 'submit', 'registrar', 'is'),
@@ -9534,14 +9557,11 @@ INSERT INTO `ark_workflow_condition` (`schma`, `action`, `class`, `attribute`, `
 ('dime.find', 'appraise', 'find', 'process', 0, 'eq', 'claimed'),
 ('dime.find', 'appraise', 'find', 'treasure', 0, 'eq', 'appraisal'),
 ('dime.find', 'claim', 'find', 'process', 0, 'eq', 'evaluated'),
-('dime.find', 'claim', 'find', 'treasure', 0, 'eq', 'pending'),
+('dime.find', 'claim', 'find', 'process', 1, 'eq', 'reported'),
 ('dime.find', 'discard', 'find', 'process', 0, 'eq', 'recorded'),
 ('dime.find', 'discard', 'find', 'process', 1, 'eq', 'accessioned'),
 ('dime.find', 'discard', 'find', 'process', 2, 'eq', 'released'),
 ('dime.find', 'evaluate', 'find', 'process', 0, 'eq', 'reported'),
-('dime.find', 'loan', 'find', 'process', 1, 'eq', 'accessioned'),
-('dime.find', 'loan', 'find', 'process', 2, 'eq', 'released'),
-('dime.find', 'receive', 'find', 'custody', 0, 'eq', 'sent'),
 ('dime.find', 'record', 'find', 'process', 0, 'eq', 'recorded'),
 ('dime.find', 'recover', 'find', 'custody', 0, 'eq', 'lost'),
 ('dime.find', 'recover', 'find', 'custody', 1, 'eq', 'discarded'),
@@ -9554,6 +9574,7 @@ INSERT INTO `ark_workflow_condition` (`schma`, `action`, `class`, `attribute`, `
 ('dime.find', 'report', 'find', 'process', 0, 'eq', 'recorded'),
 ('dime.find', 'report', 'find', 'process', 1, 'eq', 'rejected'),
 ('dime.find', 'request', 'find', 'custody', 0, 'eq', 'held'),
+('dime.find', 'send', 'find', 'custody', 0, 'eq', 'requested'),
 ('dime.find', 'submit', 'find', 'image', 0, 'gt', '0'),
 ('dime.find', 'submit', 'find', 'image', 1, 'gt', '0'),
 ('dime.find', 'submit', 'find', 'process', 0, 'eq', 'recorded'),
@@ -9771,31 +9792,19 @@ CREATE TABLE `ark_workflow_notify` (
 INSERT INTO `ark_workflow_notify` (`id`, `schma`, `action`, `class`, `attribute`, `role`, `keyword`) VALUES
 (1, 'core.actor', 'register', 'person', NULL, 'admin', NULL),
 (2, 'dime.find', 'accession', 'find', 'finder', NULL, NULL),
-(3, 'dime.find', 'accession', 'find', 'museum', NULL, NULL),
-(4, 'dime.find', 'accession', 'find', 'owner', NULL, NULL),
 (5, 'dime.find', 'appraise', 'find', 'finder', NULL, NULL),
 (17, 'dime.find', 'destroy', 'find', 'custodian', NULL, NULL),
 (18, 'dime.find', 'destroy', 'find', 'owner', NULL, NULL),
 (19, 'dime.find', 'discard', 'find', 'custodian', NULL, NULL),
 (20, 'dime.find', 'discard', 'find', 'owner', NULL, NULL),
-(22, 'dime.find', 'loan', 'find', 'custodian', NULL, NULL),
-(23, 'dime.find', 'loan', 'find', 'owner', NULL, NULL),
 (24, 'dime.find', 'lose', 'find', 'custodian', NULL, NULL),
 (25, 'dime.find', 'lose', 'find', 'owner', NULL, NULL),
-(26, 'dime.find', 'receive', 'find', 'custodian', NULL, NULL),
-(27, 'dime.find', 'receive', 'find', 'owner', NULL, NULL),
 (29, 'dime.find', 'recover', 'find', 'custodian', NULL, NULL),
 (30, 'dime.find', 'recover', 'find', 'owner', NULL, NULL),
 (32, 'dime.find', 'reject', 'find', 'finder', NULL, NULL),
 (34, 'dime.find', 'release', 'find', 'finder', NULL, NULL),
-(35, 'dime.find', 'release', 'find', 'museum', NULL, NULL),
-(36, 'dime.find', 'release', 'find', 'owner', NULL, NULL),
 (39, 'dime.find', 'report', 'find', 'museum', NULL, NULL),
-(41, 'dime.find', 'request', 'find', 'custodian', NULL, NULL),
-(42, 'dime.find', 'request', 'find', 'owner', NULL, NULL),
-(47, 'dime.find', 'transfer', 'find', 'custodian', NULL, NULL),
-(48, 'dime.find', 'transfer', 'find', 'owner', NULL, NULL),
-(54, 'dime.find', 'evaluate', 'find', 'finder', NULL, NULL),
+(41, 'dime.find', 'request', 'find', 'finder', NULL, NULL),
 (55, 'dime.find', 'submit', 'find', 'museum', NULL, NULL),
 (56, 'dime.find', 'claim', 'find', 'finder', NULL, NULL);
 
@@ -9969,9 +9978,6 @@ INSERT INTO `ark_workflow_update` (`schma`, `action`, `class`, `attribute`, `act
 ('dime.find', 'evaluate', 'find', 'process', NULL, NULL, NULL, 'evaluated', NULL, NULL),
 ('dime.find', 'evaluate', 'find', 'recipient', NULL, NULL, 1, NULL, NULL, NULL),
 ('dime.find', 'publish', 'find', 'visibility', NULL, NULL, NULL, 'public', NULL, NULL),
-('dime.find', 'receive', 'find', 'custodian', 1, NULL, NULL, NULL, NULL, NULL),
-('dime.find', 'receive', 'find', 'custody', NULL, NULL, NULL, 'held', NULL, NULL),
-('dime.find', 'receive', 'find', 'recipient', NULL, NULL, NULL, NULL, NULL, NULL),
 ('dime.find', 'record', 'find', 'custodian', 1, NULL, NULL, NULL, NULL, NULL),
 ('dime.find', 'record', 'find', 'custody', NULL, NULL, NULL, 'held', NULL, NULL),
 ('dime.find', 'record', 'find', 'finder', 1, NULL, NULL, NULL, NULL, NULL),
@@ -9986,6 +9992,9 @@ INSERT INTO `ark_workflow_update` (`schma`, `action`, `class`, `attribute`, `act
 ('dime.find', 'release', 'find', 'recipient', NULL, NULL, NULL, NULL, NULL, 'finder'),
 ('dime.find', 'release', 'find', 'treasure', NULL, NULL, NULL, 'not', NULL, NULL),
 ('dime.find', 'report', 'find', 'process', NULL, NULL, NULL, 'reported', NULL, NULL),
+('dime.find', 'request', 'find', 'custody', NULL, NULL, NULL, 'requested', NULL, NULL),
+('dime.find', 'send', 'find', 'custody', NULL, NULL, NULL, 'sent', NULL, NULL),
+('dime.find', 'send', 'find', 'recipient', NULL, NULL, NULL, NULL, NULL, 'museum'),
 ('dime.find', 'submit', 'find', 'custody', NULL, NULL, NULL, 'sent', NULL, NULL),
 ('dime.find', 'submit', 'find', 'process', NULL, NULL, NULL, 'reported', NULL, NULL),
 ('dime.find', 'submit', 'find', 'recipient', NULL, NULL, NULL, NULL, NULL, 'museum'),
@@ -10431,7 +10440,7 @@ ALTER TABLE `ark_workflow_action`
 -- Indexes for table `ark_workflow_agency`
 --
 ALTER TABLE `ark_workflow_agency`
-  ADD PRIMARY KEY (`schma`,`action`,`class`,`attribute`),
+  ADD PRIMARY KEY (`schma`,`action`,`class`,`attribute`,`grp`),
   ADD KEY `attribute_foreign` (`schma`,`class`,`attribute`) USING BTREE,
   ADD KEY `action_foreign` (`schma`,`action`) USING BTREE,
   ADD KEY `condition_foreign` (`schma`,`class`,`condition_attribute`) USING BTREE;
@@ -10903,7 +10912,7 @@ ALTER TABLE `ark_vocabulary_type`
 --
 ALTER TABLE `ark_workflow_action`
   ADD CONSTRAINT `workflow_action_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `workflow_action_schema_constraint` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `workflow_action_schema_constraint` FOREIGN KEY (`schma`) REFERENCES `ark_model_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `workflow_action_term_constraint` FOREIGN KEY (`event_vocabulary`,`event_term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON UPDATE CASCADE;
 
 --
@@ -10911,8 +10920,8 @@ ALTER TABLE `ark_workflow_action`
 --
 ALTER TABLE `ark_workflow_agency`
   ADD CONSTRAINT `workflow_agency_action_constraint` FOREIGN KEY (`schma`,`action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `workflow_agency_attribute_constraint` FOREIGN KEY (`schma`,`class`,`attribute`) REFERENCES `ark_schema_attribute` (`schma`, `class`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `workflow_agency_condition_constraint` FOREIGN KEY (`schma`,`class`,`condition_attribute`) REFERENCES `ark_schema_attribute` (`schma`, `class`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `workflow_agency_attribute_constraint` FOREIGN KEY (`schma`,`class`,`attribute`) REFERENCES `ark_model_attribute` (`schma`, `class`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `workflow_agency_condition_attribute_constraint` FOREIGN KEY (`schma`,`class`,`condition_attribute`) REFERENCES `ark_model_attribute` (`schma`, `class`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_workflow_allow`
@@ -10926,7 +10935,7 @@ ALTER TABLE `ark_workflow_allow`
 --
 ALTER TABLE `ark_workflow_condition`
   ADD CONSTRAINT `workflow_condition_action_constraint` FOREIGN KEY (`schma`,`action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `workflow_condition_attribute_constraint` FOREIGN KEY (`schma`,`class`,`attribute`) REFERENCES `ark_schema_attribute` (`schma`, `class`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `workflow_condition_attribute_constraint` FOREIGN KEY (`schma`,`class`,`attribute`) REFERENCES `ark_model_attribute` (`schma`, `class`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_workflow_grant`
@@ -10940,7 +10949,7 @@ ALTER TABLE `ark_workflow_grant`
 --
 ALTER TABLE `ark_workflow_notify`
   ADD CONSTRAINT `workflow_notify_action_constraint` FOREIGN KEY (`schma`,`action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `workflow_notify_attribute_constraint` FOREIGN KEY (`schma`,`class`,`attribute`) REFERENCES `ark_schema_attribute` (`schma`, `class`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `workflow_notify_attribute_constraint` FOREIGN KEY (`schma`,`class`,`attribute`) REFERENCES `ark_model_attribute` (`schma`, `class`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `workflow_notify_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `workflow_notify_role_constraint` FOREIGN KEY (`role`) REFERENCES `ark_workflow_role` (`role`) ON UPDATE CASCADE;
 
@@ -10968,8 +10977,8 @@ ALTER TABLE `ark_workflow_trigger`
 --
 ALTER TABLE `ark_workflow_update`
   ADD CONSTRAINT `workflow_update_action_constraint` FOREIGN KEY (`schma`,`action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `workflow_update_agency_constraint` FOREIGN KEY (`schma`,`class`,`source`) REFERENCES `ark_schema_attribute` (`schma`, `class`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `workflow_update_attribute_constraint` FOREIGN KEY (`schma`,`class`,`attribute`) REFERENCES `ark_schema_attribute` (`schma`, `class`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `workflow_update_agency_constraint` FOREIGN KEY (`schma`,`class`,`source`) REFERENCES `ark_model_attribute` (`schma`, `class`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `workflow_update_attribute_constraint` FOREIGN KEY (`schma`,`class`,`attribute`) REFERENCES `ark_model_attribute` (`schma`, `class`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE;
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 

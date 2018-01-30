@@ -77,8 +77,11 @@ class FindViewController extends DimePageController
             $find = $form->getData();
         } elseif ($form->getName() === 'workflow') {
             $find = ORM::find(Find::class, $id);
-            $message = $form['message']->getData();
-            $message = $message ? new LocalText($message, Service::locale()) : null;
+            $message = null;
+            if (isset($form['message'])) {
+                $message = $form['message']->getData();
+                $message = $message ? new LocalText($message, Service::locale()) : null;
+            }
         }
 
         if ($clicked === 'clone') {
