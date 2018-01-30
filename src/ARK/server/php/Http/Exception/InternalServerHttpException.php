@@ -37,7 +37,7 @@ class InternalServerHttpException extends HttpException
 {
     public function __construct(
         string $key = 'INTERNAL_SERVER_ERROR',
-        String $message = 'Unknown Internal Server Error',
+        string $message = 'Unknown Internal Server Error',
         Exception $previous = null,
         int $code = 0
     ) {

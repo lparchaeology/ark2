@@ -30,6 +30,7 @@
 namespace ARK\Framework;
 
 use ARK\File\Image;
+use ARK\Service;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
