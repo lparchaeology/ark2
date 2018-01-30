@@ -47,6 +47,7 @@ class FileGetController
         if (!$file) {
             throw new ItemNotFoundHttpException('File', $id);
         }
+        $actor = Service::workflow()->actor();
         if ($file->visibility()->name() !== 'public' && !Service::workflow()->can($actor, 'view', $file)) {
             throw new AccessDeniedException('core.error.access.denied');
         }
