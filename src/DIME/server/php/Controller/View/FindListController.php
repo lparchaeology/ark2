@@ -307,8 +307,6 @@ class FindListController extends DimePageController
             }
             ORM::flush('data');
             if (isset($file)) {
-                $file->setName('Danefae'.$file->id().'.pdf');
-                ORM::flush($file);
                 $request->attributes->set('_file', $file->id());
             } else {
                 $message = $action->keyword();
