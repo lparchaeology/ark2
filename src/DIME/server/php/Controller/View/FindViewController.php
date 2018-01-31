@@ -107,6 +107,12 @@ class FindViewController extends DimePageController
             $update = true;
         }
 
+        if ($clicked === 'send') {
+            Service::workflow()->apply($actor, 'send', $find, $find->value('museum'), $message);
+            $alert = 'dime.find.update.sent';
+            $update = true;
+        }
+
         if ($clicked === 'apply') {
             $action = $form['actions']->getNormData();
             if ($action) {
