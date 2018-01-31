@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 31, 2018 at 04:14 PM
+-- Generation Time: Jan 31, 2018 at 04:29 PM
 -- Server version: 10.2.12-MariaDB
 -- PHP Version: 7.1.13
 
@@ -9383,10 +9383,10 @@ INSERT INTO `ark_workflow_action` (`schma`, `action`, `event_vocabulary`, `event
 ('dime.find', 'recover', 'core.event.class', 'recovered', NULL, 1, 0, 0, 0, 1, 'dime.action.recover', 'Lost artefact has been found'),
 ('dime.find', 'reject', 'core.event.class', 'rejected', NULL, 1, 0, 0, 0, 1, 'dime.action.reject', 'Local museum requests more info from finder'),
 ('dime.find', 'release', 'core.event.class', 'released', NULL, 1, 0, 0, 0, 1, 'dime.action.release', 'Find deemed not treasure and returned to finder'),
-('dime.find', 'report', 'core.event.class', 'reported', NULL, 0, 1, 0, 1, 1, 'dime.action.report', 'Report but don\'t send artefact to local museum'),
+('dime.find', 'report', 'core.event.class', 'reported', NULL, 1, 1, 0, 1, 1, 'dime.action.report', 'Report but don\'t send artefact to local museum'),
 ('dime.find', 'request', 'core.event.class', 'requested', NULL, 1, 1, 0, 0, 1, 'dime.action.request', 'Request custody of artefact'),
 ('dime.find', 'send', 'core.event.class', 'sent', NULL, 1, 1, 0, 1, 1, 'dime.action.send', 'Send find to museum'),
-('dime.find', 'submit', 'core.event.class', 'submitted', NULL, 0, 0, 0, 1, 1, 'dime.action.submit', 'Report and send artefact to local museum'),
+('dime.find', 'submit', 'core.event.class', 'submitted', NULL, 1, 0, 0, 1, 1, 'dime.action.submit', 'Report and send artefact to local museum'),
 ('dime.find', 'view', 'core.event.class', 'viewed', NULL, 0, 0, 0, 0, 1, 'dime.action.view', 'View find record'),
 ('dime.find', 'withhold', 'core.event.class', 'withheld', NULL, 1, 0, 0, 0, 1, 'dime.action.withhold', 'Withhold publication of find record');
 

@@ -61,7 +61,7 @@ abstract class Controller
         $state['actor'] = $actor;
         $item = $this->item($data);
         $state['workflow']['mode'] = $item ? Service::workflow()->mode($actor, $item) : 'edit';
-        if ($item && $state['workflow']['mode'] === 'edit') {
+        if ($item) {
             $state['actions'] = Service::workflow()->actionable($actor, $item);
             $state['actors'] = Service::workflow()->actors($actor, $item);
         }

@@ -32,8 +32,7 @@
         {% endif %}
 
         {% if forms.workflow is defined %}
-            {% set actionable = workflow.actionable(state.actor, data.workflow) %}
-            {% if actionable | length > 0 %}
+            {% if state.actions | length > 0 %}
                 <hr />
                 <h4>{{ label | translate }}</h4>
                 {{ form_start(forms.workflow) }}
