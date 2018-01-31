@@ -121,6 +121,11 @@ class FindViewController extends DimePageController
 
         if ($update) {
             ORM::flush($find);
+            if (isset($file)) {
+                $file = $find->value('claim');
+                $file->setName('Danefae'.$file->id().'.pdf');
+                ORM::flush($file);
+            }
         }
         if ($alert) {
             Service::view()->addSuccessFlash($alert);
