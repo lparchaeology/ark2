@@ -71,6 +71,8 @@ class DIME
 
         $mediatype = new MediaType('application/pdf');
         $file = File::createFromContent($mediatype, 'Danefae.pdf', $pdf);
+        // TODO This should work but doesn't, object does not rehydrate....
+        $file->setName('Danefae'.$file->id().'.pdf');
         return $file;
     }
 

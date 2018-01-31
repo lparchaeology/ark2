@@ -30,6 +30,7 @@
 namespace DIME\Controller\View;
 
 use ARK\Http\Exception\ItemNotFoundHttpException;
+use ARK\Model\Fragment\StringFragment;
 use ARK\Model\Item;
 use ARK\Model\LocalText;
 use ARK\ORM\ORM;
@@ -121,10 +122,11 @@ class FindViewController extends DimePageController
 
         if ($update) {
             ORM::flush($find);
+            // HACK Workaround bug in ObjectFragment not rehydrating...
             if (isset($file)) {
-                $file = $find->value('claim');
-                $file->setName('Danefae'.$file->id().'.pdf');
-                ORM::flush($file);
+                $frag = ORM::findOneBy(StringFragment::class, ['module' => 'file', 'item' => $file->id(), 'attribute' => 'name']);
+                $frag->setValue('Danefae'.$file->id().'.pdf');
+                ORM::flush($frag);
             }
         }
         if ($alert) {
