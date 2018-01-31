@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 31, 2018 at 12:39 PM
+-- Generation Time: Jan 31, 2018 at 04:14 PM
 -- Server version: 10.2.12-MariaDB
 -- PHP Version: 7.1.13
 
@@ -3188,6 +3188,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'core.file.status.expired', 'default', 'Udløbet', NULL),
 ('da', 'core.file.status.locked', 'default', 'Låst', NULL),
 ('da', 'core.file.status.new', 'default', 'Ny', NULL),
+('da', 'core.message', 'default', 'Besked', NULL),
 ('da', 'core.message', 'resource', 'beskeder', NULL),
 ('da', 'core.message.allmessages', 'default', 'Se tidligere underretninger', NULL),
 ('da', 'core.message.class', 'default', 'Type', NULL),
@@ -3288,6 +3289,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.action.reject', 'default', 'Reject find submission', ''),
 ('da', 'dime.action.release', 'default', 'Fund frigivet til finder', ''),
 ('da', 'dime.action.report', 'default', 'Rapportér', NULL),
+('da', 'dime.action.send', 'default', 'Send', NULL),
 ('da', 'dime.action.submit', 'default', 'Send fund til Museum', ''),
 ('da', 'dime.action.suspend', 'default', 'action_suspend(suspendér)', NULL),
 ('da', 'dime.action.view', 'default', 'Vis', NULL),
@@ -3767,9 +3769,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.kommune.hojetaastrup', 'default', 'Høje-Taastrup', NULL),
 ('da', 'dime.kommune.hojetaastrup', 'official', 'Høje-Taastrup Kommune', NULL),
 ('da', 'dime.kommune.holbaek', 'default', 'Holbæk', NULL),
-('da', 'dime.kommune.holbaek', 'official', 'Holbæk Kommune', NULL),
-('da', 'dime.kommune.holstebro', 'default', 'Holstebro', NULL);
+('da', 'dime.kommune.holbaek', 'official', 'Holbæk Kommune', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('da', 'dime.kommune.holstebro', 'default', 'Holstebro', NULL),
 ('da', 'dime.kommune.holstebro', 'official', 'Holstebro Kommune', NULL),
 ('da', 'dime.kommune.horsens', 'default', 'Horsens', NULL),
 ('da', 'dime.kommune.horsens', 'official', 'Horsens Kommune', NULL),
@@ -4110,6 +4112,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'core.license.cc0', 'default', 'CC0: No rights reserved.', ''),
 ('en', 'core.license.ccbyncsa', 'default', 'CC BY-NC-SA: Attribution, Non-Commercial, Share-Alike', ''),
 ('en', 'core.license.ccbysa', 'default', 'CC BY-SA: Attribution, Share-Alike', ''),
+('en', 'core.message', 'default', 'Message', NULL),
 ('en', 'core.message', 'resource', 'messages', NULL),
 ('en', 'core.message.allmessages', 'default', 'See Older Notifications', NULL),
 ('en', 'core.message.body', 'default', 'Message', NULL),
@@ -4463,6 +4466,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.action.release', 'default', 'Release find to finder', ''),
 ('en', 'dime.action.report', 'default', 'Notify museum of find', 'Report'),
 ('en', 'dime.action.request', 'default', 'Request find form finder', NULL),
+('en', 'dime.action.send', 'default', 'Send', ''),
 ('en', 'dime.action.submit', 'default', 'Send find to museum', ''),
 ('en', 'dime.action.suspend', 'default', 'Suspend', ''),
 ('en', 'dime.action.view', 'default', 'View a find record', ''),
@@ -4531,10 +4535,10 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.event.claimed', 'default', 'Sent for Treasure assessment', ''),
 ('en', 'dime.find.event.classified', 'default', 'Classified', NULL),
 ('en', 'dime.find.event.deleted', 'default', 'Deleted', ''),
-('en', 'dime.find.event.destroyed', 'default', 'Artefact accidentally destroyed', ''),
-('en', 'dime.find.event.discarded', 'default', 'Artefact discarded', ''),
-('en', 'dime.find.event.edited', 'default', 'Edited', NULL);
+('en', 'dime.find.event.destroyed', 'default', 'Artefact accidentally destroyed', '');
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.find.event.discarded', 'default', 'Artefact discarded', ''),
+('en', 'dime.find.event.edited', 'default', 'Edited', NULL),
 ('en', 'dime.find.event.evaluated', 'default', 'Evaluated as possible Treasure', ''),
 ('en', 'dime.find.event.lost', 'default', 'Artefact lost', ''),
 ('en', 'dime.find.event.published', 'default', 'Find record published', ''),
@@ -5168,10 +5172,10 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.treasure.treasure', 'default', 'Treasure Trove', NULL),
 ('en', 'dime.user.actor.museum', 'default', 'Associated Museum', ''),
 ('en', 'dime.user.dashboard.finds', 'default', 'You have recorded %count% finds.', NULL),
-('en', 'dime.user.dashboard.notifications', 'default', 'You have %count% unread notifications.', NULL),
-('en', 'dime.user.detectorist.id', 'default', 'Detectorist ID', ''),
-('en', 'dime.user.login', 'default', 'Login', NULL);
+('en', 'dime.user.dashboard.notifications', 'default', 'You have %count% unread notifications.', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.user.detectorist.id', 'default', 'Detectorist ID', ''),
+('en', 'dime.user.login', 'default', 'Login', NULL),
 ('en', 'dime.user.name', 'default', 'User Name', NULL),
 ('en', 'dime.user.password', 'default', 'Password', NULL),
 ('en', 'dime.user.password.forgot', 'default', 'Forgotten Password?', NULL),
@@ -6235,12 +6239,13 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('dime_find_view', '', 0, 0, 0, 'dime_find_item', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_view', '', 0, 0, 2, 'dime_find_status', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, 'dime.find.read.status', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.find.status', NULL, NULL, NULL, NULL),
 ('dime_find_view', '', 0, 0, 4, 'dime_find_workflow', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, 'dime.find.workflow.action', 'dime.find.workflow.action', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.workflow.action', NULL, NULL, NULL, NULL),
-('dime_find_workflow', '', 0, 0, 2, 'core_widget_textarea', NULL, NULL, 'message', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, 'edit', 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.message', NULL, NULL, NULL, NULL),
-('dime_find_workflow', '', 0, 0, 4, 'core_widget_submit', NULL, NULL, 'report', NULL, 1, 0, NULL, NULL, NULL, 'dime.find', 'report', NULL, NULL, 'edit', 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.action.notify', NULL, NULL, NULL, NULL),
-('dime_find_workflow', '', 0, 0, 6, 'core_widget_submit', NULL, NULL, 'submit', NULL, 1, 0, NULL, NULL, NULL, 'dime.find', 'submit', NULL, NULL, 'edit', 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.action.submit', NULL, NULL, NULL, NULL),
-('dime_find_workflow', '', 0, 0, 8, 'core_widget_date', NULL, NULL, 'date', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, 'edit', 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.action.date', NULL, NULL, NULL, NULL),
-('dime_find_workflow', '', 0, 0, 10, 'core_widget_choice', NULL, NULL, 'actions', NULL, 1, 0, NULL, 1, 0, NULL, NULL, NULL, NULL, 'edit', 'redact', 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.workflow.action', NULL, NULL, NULL, NULL),
-('dime_find_workflow', '', 0, 0, 12, 'core_widget_submit', NULL, NULL, 'apply', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'edit', 'redact', 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.apply', NULL, NULL, NULL, NULL),
+('dime_find_workflow', '', 0, 0, 0, 'core_widget_textarea', NULL, NULL, 'message', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, 'edit', 'redact', 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.message', NULL, NULL, NULL, NULL),
+('dime_find_workflow', '', 0, 0, 2, 'core_widget_submit', NULL, NULL, 'report', NULL, 1, 0, NULL, NULL, NULL, 'dime.find', 'report', NULL, NULL, 'edit', 'redact', 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.action.notify', NULL, NULL, NULL, NULL),
+('dime_find_workflow', '', 0, 0, 4, 'core_widget_submit', NULL, NULL, 'submit', NULL, 1, 0, NULL, NULL, NULL, 'dime.find', 'submit', NULL, NULL, 'edit', 'redact', 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.action.submit', NULL, NULL, NULL, NULL),
+('dime_find_workflow', '', 0, 0, 6, 'core_widget_submit', NULL, NULL, 'send', NULL, 1, 0, NULL, NULL, NULL, 'dime.find', 'send', NULL, NULL, 'edit', 'redact', 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.action.send', NULL, NULL, NULL, NULL),
+('dime_find_workflow', '', 0, 0, 8, 'core_widget_date', NULL, NULL, 'date', NULL, 1, 0, NULL, NULL, 0, 'dime.find', 'withhold', NULL, NULL, 'edit', 'redact', 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.action.withhold', NULL, NULL, NULL, NULL),
+('dime_find_workflow', '', 0, 0, 10, 'core_widget_choice', NULL, NULL, 'actions', NULL, 1, 0, NULL, 1, 0, NULL, NULL, 'dime.find.workflow.action.any', 'dime.find.workflow.action.any', 'edit', 'redact', 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.workflow.action', NULL, NULL, NULL, NULL),
+('dime_find_workflow', '', 0, 0, 12, 'core_widget_submit', NULL, NULL, 'apply', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, 'dime.find.workflow.action.any', 'dime.find.workflow.action.any', 'edit', 'redact', 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.apply', NULL, NULL, NULL, NULL),
 ('dime_front_page', '', 0, 0, 0, 'dime_find_class', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_front_page', '', 0, 0, 2, 'dime_find_classification', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_front_page', '', 0, 0, 4, 'dime_find_material', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
@@ -9575,7 +9580,10 @@ INSERT INTO `ark_workflow_condition` (`schma`, `action`, `class`, `attribute`, `
 ('dime.find', 'report', 'find', 'process', 0, 'eq', 'recorded'),
 ('dime.find', 'report', 'find', 'process', 1, 'eq', 'rejected'),
 ('dime.find', 'request', 'find', 'custody', 0, 'eq', 'held'),
-('dime.find', 'send', 'find', 'custody', 0, 'eq', 'requested'),
+('dime.find', 'send', 'find', 'custody', 0, 'eq', 'held'),
+('dime.find', 'send', 'find', 'custody', 1, 'eq', 'requested'),
+('dime.find', 'send', 'find', 'process', 0, 'eq', 'reported'),
+('dime.find', 'send', 'find', 'process', 1, 'eq', 'reported'),
 ('dime.find', 'submit', 'find', 'image', 0, 'gt', '0'),
 ('dime.find', 'submit', 'find', 'image', 1, 'gt', '0'),
 ('dime.find', 'submit', 'find', 'process', 0, 'eq', 'recorded'),
@@ -9634,6 +9642,7 @@ INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
 ('admin', 'dime.find.update.process'),
 ('admin', 'dime.find.update.treasure'),
 ('admin', 'dime.find.workflow.action'),
+('admin', 'dime.find.workflow.action.any'),
 ('anonymous', 'core.actor.read'),
 ('anonymous', 'core.file.read'),
 ('anonymous', 'core.page.read'),
@@ -9657,7 +9666,6 @@ INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
 ('appraiser', 'dime.find.read.status'),
 ('appraiser', 'dime.find.update'),
 ('appraiser', 'dime.find.update.treasure'),
-('appraiser', 'dime.find.workflow.action'),
 ('curator', 'core.actor.read'),
 ('curator', 'core.actor.update'),
 ('curator', 'core.file.read'),
@@ -9719,6 +9727,7 @@ INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
 ('registrar', 'dime.find.update.process'),
 ('registrar', 'dime.find.update.treasure'),
 ('registrar', 'dime.find.workflow.action'),
+('registrar', 'dime.find.workflow.action.any'),
 ('researcher', 'core.actor.read'),
 ('researcher', 'core.actor.update'),
 ('researcher', 'core.file.read'),
@@ -9891,7 +9900,8 @@ INSERT INTO `ark_workflow_permission` (`permission`, `keyword`, `enabled`, `desc
 ('dime.find.update.owner', NULL, 1, NULL),
 ('dime.find.update.process', NULL, 1, NULL),
 ('dime.find.update.treasure', NULL, 1, NULL),
-('dime.find.workflow.action', NULL, 1, NULL);
+('dime.find.workflow.action', NULL, 1, NULL),
+('dime.find.workflow.action.any', NULL, 1, NULL);
 
 -- --------------------------------------------------------
 
