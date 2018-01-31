@@ -35,7 +35,6 @@ use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
-use ARK\Service;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -46,6 +45,7 @@ class Module
 
     protected $module;
     protected $table;
+    protected $classname;
     protected $core = false;
     protected $schemas;
 
@@ -64,6 +64,11 @@ class Module
         return $this->table;
     }
 
+    public function classname() : string
+    {
+        return $this->classname;
+    }
+
     public function isCore() : bool
     {
         return $this->core;
@@ -74,11 +79,10 @@ class Module
         return $this->schemas;
     }
 
+    // TODO Remove this, should access via ORM and classname
     public function find(string $id) : ?Item
     {
-        $item = Service::database()->getItem($this->table, $id);
-        $classname = Service::database()->getSuperclassForSchema($item['schma']);
-        return ORM::find($classname, $id);
+        return ORM::find($this->classname, $id);
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void
@@ -92,6 +96,7 @@ class Module
 
         // Fields
         $builder->addMappedStringField('tbl', 'table', 30);
+        $builder->addStringField('classname', 50);
         $builder->addField('core', 'boolean');
         EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);

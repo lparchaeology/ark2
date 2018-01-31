@@ -31,6 +31,8 @@ namespace DIME\Controller\API;
 
 use ARK\File\File;
 use ARK\Http\Exception\ItemNotFoundHttpException;
+use ARK\Model\Fragment\ItemFragment;
+use ARK\ORM\ORM;
 use ARK\Service;
 use League\Glide\Responses\SymfonyResponseFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,15 +49,23 @@ class FileGetController
         if (!$file) {
             throw new ItemNotFoundHttpException('File', $id);
         }
-        /*
+        // DIME File Security
+        // In DIME files do not exisit in their own right, they are an arefact of their owner, i.e. a Find.
+        // As such we need to first check the security of the file itself, then check the security where it is used.
         $actor = Service::workflow()->actor();
         if ($file->visibility()->name() !== 'public' && !Service::workflow()->can($actor, 'view', $file)) {
             throw new AccessDeniedException('core.error.access.denied');
         }
-        */
+        $frags = ORM::findBy(ItemFragment::class, ['parameter' => 'file', 'value' => $file->id()]);
+        foreach ($frags as $frag) {
+            $item = $frag->owner();
+            if ($item->visibility()->name() !== 'public' && !Service::workflow()->can($actor, 'view', $item)) {
+                throw new AccessDeniedException('core.error.access.denied');
+            }
+        }
         $factory = new SymfonyResponseFactory($request);
         $response = $factory->create(Service::filesystem(), $file->path());
-        $disposition = ($request->query->has('d') ? ResponseHeaderBag::DISPOSITION_ATTACHMENT : ResponseHeaderBag::DISPOSITION_INLINE);
+        $disposition = ($request->query->has('d') ? ResponseHeaderBag::DISPOSITION_INLINE : ResponseHeaderBag::DISPOSITION_ATTACHMENT);
         $response->headers->set('Content-Disposition', $response->headers->makeDisposition($disposition, $file->name()));
         return $response;
     }

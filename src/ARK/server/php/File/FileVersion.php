@@ -63,6 +63,11 @@ class FileVersion extends FileHandler
         return $this->name;
     }
 
+    public function setName($name) : void
+    {
+        $this->name = $name;
+    }
+
     public function extension() : string
     {
         return $this->extension;
@@ -127,7 +132,7 @@ class FileVersion extends FileHandler
         string $extension,
         string $version = null,
         DateTime $created = null
-    ) : FileVersion {
+    ) : self {
         $file = new self();
         $file->name = $name;
         $file->extension = $extension;
@@ -145,7 +150,7 @@ class FileVersion extends FileHandler
     }
 
     // TODO Do this in ObjectFormat? Use magic methods?
-    public static function fromArray(array $data) : FileVersion
+    public static function fromArray(array $data) : self
     {
         $file = new self();
         $file->name = $data['name'] ?? '';
@@ -162,7 +167,7 @@ class FileVersion extends FileHandler
     }
 
     // TODO Do this in ObjectFormat? Use magic methods?
-    public static function toArray(FileVersion $file) : iterable
+    public static function toArray(self $file) : iterable
     {
         $data['path'] = $file->path();
         $data['name'] = $file->name();

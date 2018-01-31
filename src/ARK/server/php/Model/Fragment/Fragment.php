@@ -32,9 +32,11 @@ namespace ARK\Model\Fragment;
 use ARK\Actor\Actor;
 use ARK\Model\Attribute;
 use ARK\Model\Item;
+use ARK\Model\Schema\Module;
 use ARK\Model\VersionTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\ORM\ORM;
 use ARK\Service;
 use DateTime;
 
@@ -44,7 +46,9 @@ abstract class Fragment
 
     protected $fid;
     protected $module = '';
+    protected $moduleObject;
     protected $item = '';
+    protected $owner;
     protected $attribute = '';
     protected $datatype = '';
     protected $format = '';
@@ -81,6 +85,17 @@ abstract class Fragment
     {
         $this->item = $item->id();
         $this->module = $item->schema()->module()->id();
+    }
+
+    public function owner() : ?Item
+    {
+        if ($this->moduleObject === null) {
+            $this->moduleObject = ORM::find(Module::class, $this->module);
+        }
+        if ($this->owner === null) {
+            $this->owner = ORM::find($this->moduleObject->classname(), $this->item);
+        }
+        return $this->owner;
     }
 
     public function attribute() : string

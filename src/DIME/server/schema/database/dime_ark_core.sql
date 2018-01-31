@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 30, 2018 at 04:20 PM
+-- Generation Time: Jan 31, 2018 at 12:39 PM
 -- Server version: 10.2.12-MariaDB
 -- PHP Version: 7.1.13
 
@@ -807,6 +807,7 @@ INSERT INTO `ark_model_attribute` (`schma`, `class`, `attribute`, `dataclass`, `
 CREATE TABLE `ark_model_module` (
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tbl` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `classname` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `core` tinyint(1) NOT NULL DEFAULT 0,
   `enabled` tinyint(1) NOT NULL DEFAULT 1,
   `deprecated` tinyint(1) NOT NULL DEFAULT 0,
@@ -817,13 +818,13 @@ CREATE TABLE `ark_model_module` (
 -- Dumping data for table `ark_model_module`
 --
 
-INSERT INTO `ark_model_module` (`module`, `tbl`, `core`, `enabled`, `deprecated`, `keyword`) VALUES
-('actor', 'ark_item_actor', 1, 1, 0, 'core.actor'),
-('event', 'ark_item_event', 1, 1, 0, 'core.event'),
-('file', 'ark_item_file', 1, 1, 0, 'core.file'),
-('find', 'ark_item_find', 0, 1, 0, 'dime.find'),
-('message', 'ark_item_message', 1, 1, 0, 'core.message'),
-('page', 'ark_item_page', 1, 1, 0, 'core.page');
+INSERT INTO `ark_model_module` (`module`, `tbl`, `classname`, `core`, `enabled`, `deprecated`, `keyword`) VALUES
+('actor', 'ark_item_actor', 'ARK\\Actor\\Actor', 1, 1, 0, 'core.actor'),
+('event', 'ark_item_event', 'ARK\\Workflow\\Event', 1, 1, 0, 'core.event'),
+('file', 'ark_item_file', 'ARK\\File\\File', 1, 1, 0, 'core.file'),
+('find', 'ark_item_find', 'DIME\\Entity\\Find', 0, 1, 0, 'dime.find'),
+('message', 'ark_item_message', 'ARK\\Message\\Message', 1, 1, 0, 'core.message'),
+('page', 'ark_item_page', 'ARK\\Entity\\Page', 1, 1, 0, 'core.page');
 
 -- --------------------------------------------------------
 
@@ -9358,7 +9359,7 @@ INSERT INTO `ark_workflow_action` (`schma`, `action`, `event_vocabulary`, `event
 ('core.event', 'edit', 'core.event.class', 'edited', NULL, 0, 0, 0, 0, 1, 'dime.action.edit', 'Edit find record'),
 ('core.event', 'view', 'core.event.class', 'viewed', NULL, 0, 0, 0, 0, 1, 'dime.action.view', 'View find record'),
 ('core.file', 'edit', 'core.event.class', 'edited', NULL, 0, 0, 0, 0, 1, 'dime.action.edit', 'Edit find record'),
-('core.file', 'view', 'core.event.class', 'viewed', NULL, 0, 0, 1, 0, 1, 'dime.action.view', 'View find record'),
+('core.file', 'view', 'core.event.class', 'viewed', NULL, 0, 0, 1, 1, 1, 'dime.action.view', 'View find record'),
 ('core.message', 'edit', 'core.event.class', 'edited', NULL, 0, 0, 1, 1, 1, 'dime.action.edit', 'Edit find record'),
 ('core.message', 'view', 'core.event.class', 'viewed', NULL, 0, 0, 1, 1, 1, 'dime.action.view', 'View find record'),
 ('core.page', 'edit', 'core.event.class', 'edited', NULL, 0, 0, 1, 0, 1, 'dime.action.edit', 'Edit find record'),
@@ -9414,9 +9415,9 @@ INSERT INTO `ark_workflow_agency` (`schma`, `action`, `class`, `attribute`, `grp
 ('dime.find', 'claim', 'find', 'museum', 0, 'is', 'custodian', 'is', NULL, 1),
 ('dime.find', 'claim', 'find', 'museum', 1, 'is', 'recipient', 'is', NULL, 1),
 ('dime.find', 'clone', 'find', 'finder', 0, 'is', NULL, NULL, NULL, NULL),
-('dime.find', 'destroy', 'find', 'custodian', 0, 'is', NULL, NULL, NULL, NULL),
+('dime.find', 'destroy', 'find', 'museum', 0, 'is', NULL, NULL, NULL, NULL),
 ('dime.find', 'destroy', 'find', 'owner', 0, 'is', NULL, NULL, NULL, NULL),
-('dime.find', 'discard', 'find', 'custodian', 0, 'is', NULL, NULL, NULL, NULL),
+('dime.find', 'discard', 'find', 'museum', 0, 'is', NULL, NULL, NULL, NULL),
 ('dime.find', 'discard', 'find', 'owner', 0, 'is', NULL, NULL, NULL, NULL),
 ('dime.find', 'edit', 'find', 'finder', 0, 'is', 'process', 'is', 'recorded', NULL),
 ('dime.find', 'edit', 'find', 'finder', 1, 'is', 'process', 'is', 'rejected', NULL),
@@ -9601,6 +9602,7 @@ INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
 ('admin', 'core.admin'),
 ('admin', 'core.admin.system'),
 ('admin', 'core.admin.user'),
+('admin', 'core.file.read'),
 ('admin', 'core.message.read'),
 ('admin', 'core.message.update'),
 ('admin', 'core.page.read'),
@@ -9633,6 +9635,7 @@ INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
 ('admin', 'dime.find.update.treasure'),
 ('admin', 'dime.find.workflow.action'),
 ('anonymous', 'core.actor.read'),
+('anonymous', 'core.file.read'),
 ('anonymous', 'core.page.read'),
 ('anonymous', 'core.user.confirm'),
 ('anonymous', 'core.user.login'),
@@ -9641,6 +9644,7 @@ INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
 ('anonymous', 'dime.find.read'),
 ('appraiser', 'core.actor.read'),
 ('appraiser', 'core.actor.update'),
+('appraiser', 'core.file.read'),
 ('appraiser', 'core.message.read'),
 ('appraiser', 'core.message.update'),
 ('appraiser', 'core.page.read'),
@@ -9656,6 +9660,7 @@ INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
 ('appraiser', 'dime.find.workflow.action'),
 ('curator', 'core.actor.read'),
 ('curator', 'core.actor.update'),
+('curator', 'core.file.read'),
 ('curator', 'core.message.read'),
 ('curator', 'core.message.update'),
 ('curator', 'core.page.read'),
@@ -9666,6 +9671,7 @@ INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
 ('curator', 'dime.find.read.status'),
 ('detectorist', 'core.actor.read'),
 ('detectorist', 'core.actor.update'),
+('detectorist', 'core.file.read'),
 ('detectorist', 'core.message.read'),
 ('detectorist', 'core.message.update'),
 ('detectorist', 'core.page.read'),
@@ -9683,6 +9689,7 @@ INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
 ('detectorist', 'dime.find.workflow.action'),
 ('registrar', 'core.actor.read'),
 ('registrar', 'core.actor.update'),
+('registrar', 'core.file.read'),
 ('registrar', 'core.message.read'),
 ('registrar', 'core.message.update'),
 ('registrar', 'dime.find.create'),
@@ -9731,6 +9738,7 @@ INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
 ('sysadmin', 'core.admin'),
 ('sysadmin', 'core.admin.system'),
 ('sysadmin', 'core.admin.user'),
+('sysadmin', 'core.file.read'),
 ('sysadmin', 'core.message.read'),
 ('sysadmin', 'core.message.update'),
 ('sysadmin', 'core.page.read'),

@@ -31,6 +31,7 @@ namespace ARK\File;
 
 use ARK\Model\Item;
 use ARK\Model\ItemTrait;
+use ARK\Model\LocalText;
 use ARK\ORM\ORM;
 use ARK\Service;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -56,17 +57,22 @@ abstract class File implements Item
         return $this->current()->name();
     }
 
+    public function setName(string $name)
+    {
+        return $this->current()->setName($name);
+    }
+
     public function extension() : string
     {
         return $this->current()->extension();
     }
 
-    public function title() : string
+    public function title() : ?LocalText
     {
         return $this->value('title');
     }
 
-    public function description() : string
+    public function description() : ?LocalText
     {
         return $this->value('description');
     }
@@ -116,17 +122,17 @@ abstract class File implements Item
         return $this->versions;
     }
 
-    public function status() : string
+    public function status() : ?Term
     {
         return $this->value('status');
     }
 
-    public function license() : Term
+    public function license() : ?Term
     {
         return $this->value('license');
     }
 
-    public function copyright() : string
+    public function copyright() : ?Actor
     {
         return $this->value('copyright');
     }

@@ -70,7 +70,8 @@ class DIME
         $pdf = Service::view()->renderPdf('pages/treasure.html.twig', ['data' => $data], $options);
 
         $mediatype = new MediaType('application/pdf');
-        $file = File::createFromContent($mediatype, 'danefae.pdf', $pdf);
+        $file = File::createFromContent($mediatype, 'Danefae.pdf', $pdf);
+        $file->setName('Danefae'.$file->id().'.pdf');
         return $file;
     }
 
