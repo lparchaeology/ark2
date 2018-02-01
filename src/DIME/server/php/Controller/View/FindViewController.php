@@ -35,6 +35,7 @@ use ARK\Model\Item;
 use ARK\Model\LocalText;
 use ARK\ORM\ORM;
 use ARK\Service;
+use ARK\Workflow\Action;
 use DIME\DIME;
 use DIME\Entity\Find;
 use Symfony\Component\Form\Form;
@@ -95,21 +96,17 @@ class FindViewController extends DimePageController
             $update = true;
         }
 
-        if ($clicked === 'submit') {
-            Service::workflow()->apply($actor, 'submit', $find, $find->value('museum'), $message);
-            $alert = 'dime.find.update.submitted';
+        if ($clicked === 'report' || $clicked === 'submit' || $clicked === 'send') {
+            $action = Action::find($find->schema()->id(), $clicked);
+            $action->apply($actor, $find, $find->value('museum'), $message);
+            $alert = $action->keyword().'.success';
             $update = true;
         }
 
-        if ($clicked === 'report') {
-            $result = Service::workflow()->apply($actor, 'report', $find, null, $message);
-            $alert = 'dime.find.update.reported';
-            $update = true;
-        }
-
-        if ($clicked === 'send') {
-            Service::workflow()->apply($actor, 'send', $find, $find->value('museum'), $message);
-            $alert = 'dime.find.update.sent';
+        if ($clicked === 'discard' || $clicked === 'destroy' || $clicked === 'lose' || $clicked === 'recover') {
+            $action = Action::find($find->schema()->id(), $clicked);
+            $action->apply($actor, $find, null, $message);
+            $alert = $action->keyword().'.success';
             $update = true;
         }
 
@@ -117,7 +114,7 @@ class FindViewController extends DimePageController
             $action = $form['actions']->getNormData();
             if ($action) {
                 $action->apply($actor, $find, null, $message);
-                $alert = $action->keyword();
+                $alert = $action->keyword().'.success';
                 $update = true;
             }
             if ($action->name() === 'claim') {

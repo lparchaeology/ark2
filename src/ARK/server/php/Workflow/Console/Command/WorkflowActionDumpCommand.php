@@ -48,7 +48,7 @@ class WorkflowActionDumpCommand extends AbstractCommand
         $parts = explode('.', $compound);
         $action = array_pop($parts);
         $schema = implode('.', $parts);
-        $action = ORM::find(Action::class, ['schma' => $schema, 'action' => $action]);
+        $action = Action::find($schema, $action);
 
         $this->write('');
         $this->write('Action : '.$action->name());

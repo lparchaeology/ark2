@@ -261,6 +261,11 @@ class Action
         }
     }
 
+    public static function find(string $schema, string $action) : ?self
+    {
+        return ORM::find(self::class, ['schma' => $schema, 'action' => $action]);
+    }
+
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Joined Table Inheritance
