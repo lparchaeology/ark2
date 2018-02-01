@@ -241,6 +241,11 @@ trait ItemTrait
         ORM::remove($this);
     }
 
+    public static function find(string $id) : ?self
+    {
+        return ORM::find(self::class, $id);
+    }
+
     protected function properties() : iterable
     {
         foreach ($this->attributes() as $attribute) {

@@ -44,6 +44,11 @@ class Vocabulary
         return ORM::findOneBy(Term::class, ['concept' => $concept, 'term' => $term]);
     }
 
+    public static function findTerms(string $concept, iterable $terms) : ?Collection
+    {
+        return ORM::findBy(Term::class, ['concept' => $concept, 'term' => $terms]);
+    }
+
     public static function findRelated(string $concept) : ?Collection
     {
         return ORM::findBy(Related::class, ['fromConceptName' => $concept]);

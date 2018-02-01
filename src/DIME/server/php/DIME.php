@@ -255,7 +255,7 @@ class DIME
             $all = array_merge($all, $items);
         }
         $all = array_unique($all);
-        sort($all);
+        natsort($all);
         $result = call_user_func_array('array_intersect', array_merge([$all], array_values($results)));
         return $result;
     }

@@ -37,6 +37,7 @@ use ARK\Service;
 use ARK\Translation\Translation;
 use ARK\View\Page;
 use ARK\Vocabulary\Term;
+use ARK\Vocabulary\Vocabulary;
 use ARK\Workflow\Action;
 use DIME\DIME;
 use DIME\Entity\Find;
@@ -49,53 +50,56 @@ class FindListController extends DimePageController
 {
     public function buildData(Request $request)
     {
+        // Fetch any query parms passed in
         $query = $request->query->all();
-        // If on the users home search/action page, then enable advanced filtering
+        // If on the Actors home search/action page, then enable advanced filtering
         $advanced = ($request->attributes->get('_route') === 'dime.home.finds');
+        // On Public Search page, don't show All Finds by default, require a query first
+        $showAll = $query || $advanced;
+        // Decide what the user can search for.
         $actor = Service::workflow()->actor();
         // Only allow to filter for all Finders if explicitly granted
         $filterFinders = $actor->hasPermission('dime.find.filter.finder');
         // Only allow to filter for all Museums if explicitly granted
         $filterMuseums = $actor->hasPermission('dime.find.filter.museum');
-        // Otherwise only allow advanced filtering for the current users finds
+        // Otherwise only allow advanced filtering for the current Actors finds
         $myfinds = $advanced && $actor->hasPermission('dime.find.create') && !$filterFinders;
 
+        // Set the selected Municipality query values in the Municipality filter dropdown, can be multiple terms
         if (isset($query['municipality'])) {
-            $municipalities = ORM::findBy(Term::class, [
-                'concept' => 'dime.denmark.municipality',
-                'term' => $query['municipality'],
-            ]);
+            $municipalities = (is_array($query['municipality']) ? $query['municipality'] : [$query['municipality']]);
+            $municipalities = Vocabulary::findTerms('dime.denmark.municipality', $municipalities);
             $data['filters']['municipality'] = $municipalities->toArray();
         }
 
+        // Set the selected Find Class query values in the Find Class filter dropdown, can be multiple terms
         if (isset($query['class'])) {
-            $classes = ORM::findBy(Term::class, [
-                'concept' => 'dime.find.class',
-                'term' => $query['class'],
-            ]);
+            $classes = (is_array($query['class']) ? $query['class'] : [$query['class']]);
+            $classes = Vocabulary::findTerms('dime.find.class', $classes);
             $data['filters']['class'] = $classes->toArray();
         }
 
+        // Set the selected Period query values in the Period filter dropdown, should be single term passed in
         if (isset($query['period'])) {
-            $period = ORM::findOneBy(Term::class, [
-                'concept' => 'dime.period',
-                'term' => $query['period'],
-            ]);
+            $periods = (is_array($query['period']) ? $query['period'] : [$query['period']]);
+            $periods = Vocabulary::findTerms('dime.period', $periods);
+            $period = $periods->first();
             $data['filters']['period'] = $period;
+            // Period includes any descendent periods
             $query['period'][] = $period->name();
             foreach ($period->descendents() as $descendent) {
                 $query['period'][] = $descendent->name();
             }
         }
 
+        // Set the selected Material query values in the Material filter dropdown, can be multiple terms
         if (isset($query['material'])) {
-            $materials = ORM::findBy(Term::class, [
-                'concept' => 'dime.material',
-                'term' => $query['material'],
-            ]);
+            $materials = (is_array($query['material']) ? $query['material'] : [$query['material']]);
+            $materials = Vocabulary::findTerms('dime.material', $materials);
             $data['filters']['material'] = $materials->toArray();
         }
 
+        // Advanced search options if on Actor's Find search page
         if ($advanced) {
             $museums = new ArrayCollection();
             $finders = new ArrayCollection();
@@ -127,36 +131,36 @@ class FindListController extends DimePageController
                 }
             }
 
+            // Set the selected Finder query values in the Finder filter dropdown, should be single term passed in.
+            // Authorised users can search for any Finder, but Detectorists can only search for themselves.
             if ($myfinds) {
                 $data['filters']['finder'] = $actor;
                 $query['finder'] = [$data['filters']['finder']->id()];
             } elseif ($filterFinders && isset($query['finder'])) {
-                $finder = ORM::findOneBy(Person::class, [
-                    'id' => $query['finder'],
-                ]);
+                $finder = Actor::find($query['finder']);
                 $data['filters']['finder'] = $finder;
             }
 
+            // Set the selected Status query values in the Status filter dropdown, should be single term passed in.
+            // It is important that this is only a single value as it determines the bulk action that can be applied.
             if (isset($query['status'])) {
-                $status = ORM::findBy(Term::class, [
-                    'concept' => 'dime.find.process',
-                    'term' => $query['status'],
-                ]);
-                $data['filters']['status'] = $status->first();
+                $statuses = (is_array($query['status']) ? $query['status'] : [$query['status']]);
+                $statuses = Vocabulary::findTerms('dime.find.process', $statuses);
+                $data['filters']['status'] = $statuses->first();
             }
 
+            // Set the selected Treasure query values in the Treasure filter dropdown, should be single term passed in.
             if (isset($query['treasure'])) {
-                $treasures = ORM::findBy(Term::class, [
-                    'concept' => 'dime.treasure',
-                    'term' => $query['treasure'],
-                ]);
+                $treasures = (is_array($query['treasure']) ? $query['treasure'] : [$query['treasure']]);
+                $treasures = Vocabulary::findTerms('dime.treasure', $treasures);
                 $data['filters']['treasure'] = $treasures->first();
             }
         } else {
-            // Public finds search excludes anything not yet reviewed
+            // Public finds search excludes anything not yet reviewed, but don't include in query string or filter dropdown
             $query['treasure'] = ['appraisal', 'treasure', 'not'];
         }
 
+        // Perform the query as defined
         if ($query) {
             $items = DIME::findSearch($query);
             $finds = ORM::findBy(Find::class, ['id' => $items]);
@@ -164,6 +168,7 @@ class FindListController extends DimePageController
             $finds = ORM::findAll(Find::class);
         }
 
+        // Of the finds matching the search criteria, only include those that are Visible to the current Actor
         $visible = new ArrayCollection();
         foreach ($finds as $find) {
             if ($find->visibility()->name() === 'public' || Service::workflow()->can($actor, 'view', $find)) {
@@ -171,17 +176,28 @@ class FindListController extends DimePageController
             }
         }
 
-        if ($query) {
-            Service::view()->addInfoFlash('dime.find.query.set', ['%items%' => count($visible)]);
+        // Finally, decide what of the Visible Finds to show on screen
+
+        // Finds to list in table
+        $data['finds']['items'] = new ArrayCollection();
+        // Finds to select in table
+        $data['finds']['selected'] = [];
+        // Find points to show in map
+        $data['map']['finds'] = [];
+        if ($advanced || $showAll) {
+            // If advanced search, or public search with query options, show results of the query
+            $data['finds']['items'] = $visible;
+            Service::view()->addInfoFlash('dime.find.query.found', ['%items%' => count($visible)]);
+            // Set finds to show as points on map, Viewing Find Locations as points on map is restricted
+            if ($myfinds || Service::workflow()->actor()->hasPermission('dime.find.read.location')) {
+                $data['map']['finds'] = $visible;
+            }
+        } else {
+            // If public search page without a query only say how many are in system
+            $data['finds']['items'] = new ArrayCollection();
+            Service::view()->addInfoFlash('dime.find.query.available', ['%items%' => count($visible)]);
         }
 
-        $data['finds']['items'] = $visible;
-        $data['finds']['selected'] = [];
-        if ($myfinds || Service::workflow()->actor()->hasPermission('dime.find.read.location')) {
-            $data['map']['finds'] = $visible;
-        } else {
-            $data['map']['finds'] = [];
-        }
         $data['map']['kortforsyningenticket'] = DIME::getMapTicket();
         return $data;
     }

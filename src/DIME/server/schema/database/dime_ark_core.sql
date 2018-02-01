@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 01, 2018 at 01:26 AM
+-- Generation Time: Feb 01, 2018 at 12:30 PM
 -- Server version: 10.2.12-MariaDB
--- PHP Version: 7.2.1
+-- PHP Version: 7.1.13
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -1786,7 +1786,9 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.find.process.rejected', 'dime', 0, 0),
 ('dime.find.process.released', 'dime', 0, 0),
 ('dime.find.process.reported', 'dime', 0, 0),
-('dime.find.query.set', 'dime', 0, 0),
+('dime.find.query.available', 'dime', 0, 1),
+('dime.find.query.found', 'dime', 0, 1),
+('dime.find.query.set', 'dime', 0, 1),
 ('dime.find.recipient', 'dime', 0, 0),
 ('dime.find.recorder', 'dime', 0, 0),
 ('dime.find.save', 'dime', 0, 0),
@@ -2284,10 +2286,10 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.user.profile', 'dime', 0, 0),
 ('dime.user.register', 'dime', 0, 0),
 ('dime.user.register.success', 'dime', 0, 0),
-('dime.user.terms', 'dime', 0, 0),
-('dime.user.terms.v1', 'dime', 0, 0),
-('dime.user.update', 'dime', 0, 0);
+('dime.user.terms', 'dime', 0, 0);
 INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
+('dime.user.terms.v1', 'dime', 0, 0),
+('dime.user.update', 'dime', 0, 0),
 ('dime.user.update.failure', 'dime', 0, 0),
 ('file.type.audio', 'core', 0, 0),
 ('file.type.document', 'core', 0, 0),
@@ -3408,6 +3410,8 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.find.process.rejected', 'default', 'Afvist pga. manglende eller fejlagtig fundinformation', NULL),
 ('da', 'dime.find.process.released', 'default', 'Fund frigivet til finder', NULL),
 ('da', 'dime.find.process.reported', 'default', 'Fund rapporteret til museum (ikke afleveret)', NULL),
+('da', 'dime.find.query.available', 'default', 'There are %items% finds in DIME that you can search.', ''),
+('da', 'dime.find.query.found', 'default', 'Søgeresultat %items% fund.', ''),
 ('da', 'dime.find.query.set', 'default', 'Søgeresultat %items% fund.', ''),
 ('da', 'dime.find.recipient', 'default', 'Fundmodtager', NULL),
 ('da', 'dime.find.save', 'default', 'Gem', NULL),
@@ -3766,11 +3770,11 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.kommune.hillerod', 'official', 'Hillerød Kommune', NULL),
 ('da', 'dime.kommune.hjorring', 'default', 'Hjørring', NULL),
 ('da', 'dime.kommune.hjorring', 'official', 'Hjørring Kommune', NULL),
-('da', 'dime.kommune.hojetaastrup', 'default', 'Høje-Taastrup', NULL),
+('da', 'dime.kommune.hojetaastrup', 'default', 'Høje-Taastrup', NULL);
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('da', 'dime.kommune.hojetaastrup', 'official', 'Høje-Taastrup Kommune', NULL),
 ('da', 'dime.kommune.holbaek', 'default', 'Holbæk', NULL),
-('da', 'dime.kommune.holbaek', 'official', 'Holbæk Kommune', NULL);
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('da', 'dime.kommune.holbaek', 'official', 'Holbæk Kommune', NULL),
 ('da', 'dime.kommune.holstebro', 'default', 'Holstebro', NULL),
 ('da', 'dime.kommune.holstebro', 'official', 'Holstebro Kommune', NULL),
 ('da', 'dime.kommune.horsens', 'default', 'Horsens', NULL),
@@ -4532,11 +4536,11 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.event', 'default', 'Event', ''),
 ('en', 'dime.find.event.accessioned', 'default', 'Accessioned by museum', ''),
 ('en', 'dime.find.event.appraised', 'default', 'Assessed as Treasure', ''),
-('en', 'dime.find.event.claimed', 'default', 'Sent for Treasure assessment', ''),
+('en', 'dime.find.event.claimed', 'default', 'Sent for Treasure assessment', '');
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'dime.find.event.classified', 'default', 'Classified', NULL),
 ('en', 'dime.find.event.deleted', 'default', 'Deleted', ''),
-('en', 'dime.find.event.destroyed', 'default', 'Artefact accidentally destroyed', '');
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.find.event.destroyed', 'default', 'Artefact accidentally destroyed', ''),
 ('en', 'dime.find.event.discarded', 'default', 'Artefact discarded', ''),
 ('en', 'dime.find.event.edited', 'default', 'Edited', NULL),
 ('en', 'dime.find.event.evaluated', 'default', 'Evaluated as possible Treasure', ''),
@@ -4585,6 +4589,8 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.process.rejected', 'default', 'More details requested by museum', NULL),
 ('en', 'dime.find.process.released', 'default', 'Aretefact returned to finder', NULL),
 ('en', 'dime.find.process.reported', 'default', 'Find reported to museum', NULL),
+('en', 'dime.find.query.available', 'default', 'There are %items% finds in DIME that you can search.', ''),
+('en', 'dime.find.query.found', 'default', 'Your search found %items% finds.', ''),
 ('en', 'dime.find.query.set', 'default', 'Your search found %items% finds.', ''),
 ('en', 'dime.find.recipient', 'default', 'Recipient', NULL),
 ('en', 'dime.find.save', 'default', 'Save', 'DIME Find Save button'),
@@ -5167,13 +5173,13 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.treasure', 'default', 'Treasure Trove', NULL),
 ('en', 'dime.treasure', 'resource', 'treasure', NULL),
 ('en', 'dime.treasure.appraisal', 'default', 'Under Appraisal', NULL),
-('en', 'dime.treasure.not', 'default', 'Not Treasure Trove', NULL),
+('en', 'dime.treasure.not', 'default', 'Not Treasure Trove', NULL);
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'dime.treasure.pending', 'default', 'Pending Assessment', NULL),
 ('en', 'dime.treasure.treasure', 'default', 'Treasure Trove', NULL),
 ('en', 'dime.user.actor.museum', 'default', 'Associated Museum', ''),
 ('en', 'dime.user.dashboard.finds', 'default', 'You have recorded %count% finds.', NULL),
-('en', 'dime.user.dashboard.notifications', 'default', 'You have %count% unread notifications.', NULL);
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.user.dashboard.notifications', 'default', 'You have %count% unread notifications.', NULL),
 ('en', 'dime.user.detectorist.id', 'default', 'Detectorist ID', ''),
 ('en', 'dime.user.login', 'default', 'Login', NULL),
 ('en', 'dime.user.name', 'default', 'User Name', NULL),
@@ -5922,6 +5928,9 @@ CREATE TABLE `ark_translation_parameter` (
 --
 
 INSERT INTO `ark_translation_parameter` (`keyword`, `parameter`) VALUES
+('dime.find.query.available', 'items'),
+('dime.find.query.found', 'items'),
+('dime.find.query.set', 'items'),
 ('dime.home.welcome', 'name'),
 ('dime.user.dashboard.finds', 'count'),
 ('dime.user.dashboard.notifications', 'count'),
