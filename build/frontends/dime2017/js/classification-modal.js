@@ -28,8 +28,8 @@ var initTimeline = function () {
     };
 
     var currentYear = new Date().getFullYear();
-    // Min year is 10,000BC- the beginning of archaeology ;-)
-    var minYear = -10000;
+    // Min year is 250,000BC- the beginning of archaeology ;-)
+    var minYear = -250000;
     // Max year is Current Year, unless you have a flux capacitor handy!
     var maxYear = currentYear;
 
@@ -266,7 +266,7 @@ var initTimeline = function () {
 
     // this will hide pills which are either too small or too large to be comfortably shown
     $('.vis-range').each(function (i, e) {
-        if ($(e).width() < 100 || $(e).width() > 2000) {
+        if ($(e).width() < 100 || $(e).width() > 5000) {
             $(e).hide();
         } else {
             $(e).show();
@@ -510,7 +510,7 @@ var initTimeline = function () {
     timeline.on('rangechanged', function () {
         console.log('rangechanged');
         $('.vis-range').each(function (i, e) {
-            if ($(e).width() < 100 || $(e).width() > 2000) {
+            if ($(e).width() < 100 || $(e).width() > 5000) {
                 $(e).hide();
             } else {
                 $(e).show();
@@ -588,9 +588,7 @@ var initTimeline = function () {
 
             var item_mid_point = (start.year() + end.year()) / 2;
 
-            console.log(item_mid_point);
-
-            timeline.moveTo(makeMoment(item_mid_point));
+            timeline.moveTo(makeMoment(Math.max(-10000,item_mid_point)));
 
         } else {
             if (existing_start === null) {

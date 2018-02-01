@@ -9,7 +9,7 @@
                     {{ form_widget(form.period) }}
                 </div>
                 <div class="col-sm-3 dating-year">
-                    {{ form_widget(form.year) }}
+                    {{ form_widget(form.year, { 'attr': { 'placeholder': 'dime.find.class.unknown' } }) }}
                 </div>
             </div>
         </div>
@@ -20,7 +20,7 @@
                     {{ form_widget(form.period_span) }}
                 </div>
                 <div class="col-sm-3 dating-year">
-                    {{ form_widget(form.year_span) }}
+                    {{ form_widget(form.year_span, { 'attr': { 'placeholder': 'dime.find.class.unknown' } }) }}
                 </div>
             </div>
         </div>
