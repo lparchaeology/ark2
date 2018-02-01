@@ -80,11 +80,51 @@ class WorkflowActionDumpCommand extends AbstractCommand
         $this->write('');
         $this->write("Conditions ('and' within group, 'or' between groups):");
         if (count($action->conditions()) > 0) {
+            $group = null;
             foreach ($action->conditions() as $condition) {
-                $this->write('  '.$condition->group().' '.$condition->attribute()->name().' '.$condition->operator().' '.$condition->value());
+                if ($condition->group() !== $group) {
+                    $this->write('  Group '.$condition->group());
+                    $group = $condition->group();
+                }
+                $this->write('    '.$condition->attribute()->name().' '.$condition->operator().' '.$condition->value());
             }
         } else {
             $this->write('  None');
+        }
+
+        $this->write('');
+        $this->write('Updates:');
+        if (count($action->updates()) > 0) {
+            foreach ($action->updates() as $update) {
+                if ($update->setToActor()) {
+                    $this->write('  Set '.$update->attribute()->name().' to Actor');
+                } elseif ($update->setToSubject()) {
+                    $this->write('  Set '.$update->attribute()->name().' to Subject');
+                } elseif ($update->setToClear()) {
+                    $this->write('  Set '.$update->attribute()->name().' to clear');
+                } elseif ($update->setToTerm()) {
+                    $this->write('  Set '.$update->attribute()->name().' to '.$update->setToTerm());
+                } elseif ($update->sourceAttribute()) {
+                    $this->write('  Set '.$update->attribute()->name().' to '.$update->sourceAttribute()->name());
+                }
+            }
+        } else {
+            $this->write('  None');
+        }
+
+        $this->write('');
+        $this->write('Notifies:');
+        if (count($action->notifications()) > 0) {
+            foreach ($action->notifications() as $notify) {
+                if ($notify->attribute()) {
+                    $this->write('    '.$notify->attribute()->name());
+                }
+                if ($notify->role()) {
+                    $this->write('    '.$notify->role()->id());
+                }
+            }
+        } else {
+            $this->write('  No-one');
         }
 
         $this->write('');

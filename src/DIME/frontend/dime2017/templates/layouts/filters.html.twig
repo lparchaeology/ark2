@@ -68,7 +68,11 @@
                 </div>
             </div>
 
-            <div class="col-sm-1"><br/></div>
+            <div class="col-sm-1">
+                <br/>
+                {{- form_widget(form.clear) -}}
+                {% do form.clear.setRendered %}
+            </div>
 
         </div>
     {% else %}
@@ -76,6 +80,7 @@
         {% do form.finder.setRendered %}
         {% do form.status.setRendered %}
         {% do form.treasure.setRendered %}
+        {% do form.clear.setRendered %}
     {% endif %}
 
 {{ form_end(form) }}

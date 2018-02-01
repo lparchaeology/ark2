@@ -52,6 +52,56 @@ class Update
     protected $id;
     protected $source;
 
+    public function attribute() : SchemaAttribute
+    {
+        return $this->attribute;
+    }
+
+    public function setToActor() : ?string
+    {
+        if ($this->actor) {
+            return $this->id;
+        }
+        return null;
+    }
+
+    public function setToSubject() : ?bool
+    {
+        if ($this->subject) {
+            return $this->subject;
+        }
+        return null;
+    }
+
+    public function setToClear() : ?bool
+    {
+        if ($this->clear) {
+            return $this->clear;
+        }
+        return null;
+    }
+
+    public function setToTerm() : ?string
+    {
+        if ($this->term) {
+            return $this->term;
+        }
+        return null;
+    }
+
+    public function setToSource() : ?string
+    {
+        if ($this->term) {
+            return $this->term;
+        }
+        return null;
+    }
+
+    public function sourceAttribute() : ?SchemaAttribute
+    {
+        return $this->source;
+    }
+
     public function apply(Actor $actor, Item $item, Actor $subject = null) : void
     {
         if ($this->actor) {

@@ -369,6 +369,10 @@ class FindListController extends DimePageController
             }
             $request->attributes->set('parameters', $query);
         }
+
+        if ($clicked === 'clear') {
+            $request->attributes->set('parameters', []);
+        }
     }
 
     private function queryName($data)

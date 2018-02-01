@@ -46,6 +46,16 @@ class Notify
     protected $roleName = '';
     protected $role;
 
+    public function attribute() : ?SchemaAttribute
+    {
+        return $this->attribute;
+    }
+
+    public function role() : ?Role
+    {
+        return $this->role;
+    }
+
     public function recipient(Item $item)
     {
         if ($this->attributeName) {

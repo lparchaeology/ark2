@@ -29,6 +29,7 @@
 
 namespace DIME\Controller\View;
 
+use ARK\ARK;
 use ARK\Http\Exception\ItemNotFoundHttpException;
 use ARK\Model\Fragment\StringFragment;
 use ARK\Model\Item;
@@ -36,6 +37,7 @@ use ARK\Model\LocalText;
 use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\Workflow\Action;
+use DateInterval;
 use DIME\DIME;
 use DIME\Entity\Find;
 use Symfony\Component\Form\Form;
@@ -96,14 +98,23 @@ class FindViewController extends DimePageController
             $update = true;
         }
 
-        if ($clicked === 'report' || $clicked === 'submit' || $clicked === 'send') {
+        if (in_array($clicked, ['report', 'submit', 'send'], true)) {
             $action = Action::find($find->schema()->id(), $clicked);
             $action->apply($actor, $find, $find->value('museum'), $message);
             $alert = $action->keyword().'.success';
             $update = true;
         }
 
-        if ($clicked === 'discard' || $clicked === 'destroy' || $clicked === 'lose' || $clicked === 'recover') {
+        if ($clicked === 'withhold') {
+            Service::workflow()->apply($actor, 'withhold', $find);
+            $publish = ARK::timestamp();
+            $publish->add(new DateInterval('P1Y'));
+            $find->setValue('publish', $publish);
+            $alert = 'dime.find.update.saved';
+            $update = true;
+        }
+
+        if (in_array($clicked, ['publish', 'discard', 'destroy', 'lose', 'recover'], true)) {
             $action = Action::find($find->schema()->id(), $clicked);
             $action->apply($actor, $find, null, $message);
             $alert = $action->keyword().'.success';
