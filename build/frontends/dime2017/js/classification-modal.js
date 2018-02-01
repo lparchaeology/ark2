@@ -192,7 +192,7 @@ var initTimeline = function () {
             }
         }
 
-    }; // updateTimelineToPeriod()
+    };
 
     //Create a DataSet (allows two way data-binding)
     var items = new vis.DataSet();
@@ -253,7 +253,7 @@ var initTimeline = function () {
             },
         },
         zoomMin: 5 * millisPerYear, // 5 years in milliseconds
-        zoomMax: 10000 * millisPerYear, // 10000 years in milliseconds
+        zoomMax: 50000 * millisPerYear, // 10000 years in milliseconds
         showCurrentTime: false,
         horizontalScroll: true,
         zoomKey: 'ctrlKey',
@@ -342,7 +342,7 @@ var initTimeline = function () {
             $(".classification-holder").append(selectDiv);
             selectSelect.select2(select2Options);
 
-        }; // createTimelineSelect()
+        };
 
         createTimelineSelect("level1", "Klassifikation 1");
         createTimelineSelect("level2", "Klassifikation 2");
@@ -374,7 +374,6 @@ var initTimeline = function () {
 
             if (target !== "unassessed" && target !== '') {
                 container.updateTimelineToPeriod(target, timeline);
-
             }
 
             // # init the level1 classification as unknowwn
@@ -382,7 +381,7 @@ var initTimeline = function () {
             level1.select2(select2Options);
             level1.trigger('select2:select');
 
-        }); // on("select2:select select2:unselecting")
+        });
 
         // Change the level2 Klassification if the Klassification1 changes
         level1.on("select2:select select2:unselecting", function () {
@@ -411,6 +410,8 @@ var initTimeline = function () {
 
             if (target !== '') {
                 container.updateTimelineToPeriod(level1klassification, timeline);
+            } else {
+              console.log("set Timeline to default");
             }
 
             level2.val(level2Default);
@@ -509,7 +510,7 @@ var initTimeline = function () {
     timeline.on('rangechanged', function () {
         console.log('rangechanged');
         $('.vis-range').each(function (i, e) {
-            if ($(e).width() < 100 || $(e).width() > 1000) {
+            if ($(e).width() < 100 || $(e).width() > 2000) {
                 $(e).hide();
             } else {
                 $(e).show();

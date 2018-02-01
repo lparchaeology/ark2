@@ -22,7 +22,9 @@ var initPeriod = function () {
                     try {
                         periodvocabend = parseInt(periodvocabulary[key].parameters.year_end.value);
                     } catch (e) {
-                        periodvocabend = null;
+                      // If a period doesn't have a defined end, it must end now
+                        periodvocabend = new Date().getFullYear();
+                        periodvocabulary[key].parameters.year_end = { "type": "integer", "value": new Date().getFullYear().toString() };
                     }
                     if (periodvocabend >= year && year >= periodvocabstart) {
                         //lets just get the most precise for now
