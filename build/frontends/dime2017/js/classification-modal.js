@@ -80,12 +80,28 @@ var initTimeline = function () {
                 }
             });
             labelinput.on("blur", function () {
-                console.log($(this).val());
                 timeid = $(this).attr('id').split('-')[0];
-                if($(this).val()>currentYear){
-                  $(this).val(currentYear);
+                if (timeid === 'start' ){
+                  var year = getCustomYear(timeline, 'end');
+                  console.log($(this).val());
+                  console.log(year);
+                  console.log('timeid==start');
+                  if ($(this).val() > year){
+                    container.makeCustomTime($(this).val(), 'end', timeline);
+                    container.makeCustomTime(year, 'start', timeline);
+                  } else {
+                    container.makeCustomTime($(this).val(), timeid, timeline);
+                  }
+                } else {
+                  var year = getCustomYear(timeline, 'end');
+                  if ($(this).val() < year){
+                  container.makeCustomTime($(this).val(), 'start', timeline);
+                    container.makeCustomTime(year, 'end', timeline);
+                  } else {
+                    container.makeCustomTime($(this).val(), timeid, timeline);
+                  }
+
                 }
-                container.makeCustomTime($(this).val(), timeid, timeline);
             });
             var labelform = $("<form onsubmit=\"return false;\">");
             labelform.append(labelinput);
