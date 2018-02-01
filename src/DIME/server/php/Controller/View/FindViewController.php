@@ -110,7 +110,7 @@ class FindViewController extends DimePageController
             $publish = ARK::timestamp();
             $publish->add(new DateInterval('P1Y'));
             $find->setValue('publish', $publish);
-            $alert = 'dime.find.update.saved';
+            $alert = $action->keyword().'.success';
             $update = true;
         }
 
