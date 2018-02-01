@@ -59,7 +59,6 @@ class Action
     protected $defaultAgency = false;
     protected $defaultAllowence = false;
     protected $enabled = true;
-    protected $permissions;
     protected $allowances;
     protected $agencies;
     protected $conditions;
@@ -69,7 +68,6 @@ class Action
 
     public function __construct()
     {
-        $this->permissions = new ArrayCollection();
         $this->allowances = new ArrayCollection();
         $this->agencies = new ArrayCollection();
         $this->conditions = new ArrayCollection();
@@ -103,14 +101,49 @@ class Action
         return $this->actionable;
     }
 
+    public function isUpdate() : bool
+    {
+        return !$this->updates->isEmpty();
+    }
+
     public function enabled() : bool
     {
         return $this->enabled;
     }
 
-    public function isUpdate() : bool
+    public function defaultAgency() : bool
     {
-        return !$this->updates->isEmpty();
+        return $this->defaultAgency;
+    }
+
+    public function defaultAllowance() : bool
+    {
+        return $this->defaultAllowence;
+    }
+
+    public function allowances() : Collection
+    {
+        return $this->allowances;
+    }
+
+    public function agencies() : Collection
+    {
+        return $this->agencies;
+    }
+
+    public function conditions() : Collection
+    {
+        return $this->conditions;
+    }
+
+    public function notifications() : Collection
+    {
+        return $this->notifications;
+    }
+
+    public function updates() : Collection
+    {
+        return $this->updates;
     }
 
     public function meetsConditions(Item $item) : bool

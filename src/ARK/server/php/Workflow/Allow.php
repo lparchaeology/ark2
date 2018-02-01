@@ -53,6 +53,11 @@ class Allow
         return $this->role;
     }
 
+    public function operator() : string
+    {
+        return $this->operator;
+    }
+
     public function isAllowed(Actor $actor) : ?bool
     {
         $hasRole = $this->role->hasActor($actor);

@@ -55,6 +55,21 @@ class Agency
     protected $conditionValue;
     protected $conditionActor;
 
+    public function group() : int
+    {
+        return $this->grp;
+    }
+
+    public function operator() : string
+    {
+        return $this->operator;
+    }
+
+    public function attribute() : ?SchemaAttribute
+    {
+        return $this->attribute;
+    }
+
     public function condition() : ?Condition
     {
         if ($this->condition === null && $this->conditionValue !== null) {
@@ -63,9 +78,20 @@ class Agency
         return $this->condition;
     }
 
-    public function group() : int
+    public function conditionOperator() : ?string
     {
-        return $this->grp;
+        if ($this->conditionActor !== null) {
+            return $this->conditionOperator;
+        }
+        return null;
+    }
+
+    public function conditionAttribute() : ?SchemaAttribute
+    {
+        if ($this->conditionActor !== null) {
+            return $this->conditionAttribute;
+        }
+        return null;
     }
 
     public function isGranted(Actor $actor, Item $item) : ?bool

@@ -60,6 +60,21 @@ class Condition
         return $this->action;
     }
 
+    public function attribute() : SchemaAttribute
+    {
+        return $this->attribute;
+    }
+
+    public function operator() : string
+    {
+        return $this->operator;
+    }
+
+    public function value() : string
+    {
+        return $this->value;
+    }
+
     public function group() : int
     {
         return $this->grp;
