@@ -34,10 +34,13 @@ use ARK\Actor\Person;
 use ARK\File\File;
 use ARK\File\MediaType;
 use ARK\Message\Notification;
+use ARK\Model\Fragment\DateFragment;
 use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
+use ARK\Workflow\Action;
+use DateTime;
 use DIME\Entity\Find;
 use DIME\Entity\Museum;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -103,6 +106,29 @@ class DIME
             }
         }
         return ORM::findBy(Notification::class, ['id' => $msgIds], ['created' => 'DESC']);
+    }
+
+    public static function publishFinds(Actor $actor = null) : iterable
+    {
+        $published = [];
+        $actor = $actor ?? Service::workflow()->actor();
+        $today = new DateTime();
+        $frags = ORM::findBy(DateFragment::class, ['module' => 'find', 'attribute' => 'publish']);
+        foreach ($frags as $frag) {
+            $publish = $frag->value();
+            if ($publish <= $today) {
+                $find = $frag->owner();
+                $action = Action::find($find->schema()->id(), 'publish');
+                $action->apply($actor, $find);
+                ORM::persist($find);
+                $published[$find->id()] = $publish->format('Y-m-d');
+            }
+        }
+        if ($published) {
+            ORM::flush();
+        }
+        ORM::flush();
+        return $published;
     }
 
     public static function findMunicipality(string $wkt) : ?Term
