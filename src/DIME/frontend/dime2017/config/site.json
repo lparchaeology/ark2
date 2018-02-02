@@ -69,7 +69,7 @@
         "commands": [
             "DIME\\Console\\Command\\DimeClassListCommand",
             "DIME\\Console\\Command\\DimeFindDeleteCommand",
-            "DIME\\Console\\Command\\DimeFindPulishCommand",
+            "DIME\\Console\\Command\\DimeFindPublishCommand",
             "DIME\\Console\\Command\\DimeTranslationCommand"
         ]
     },
