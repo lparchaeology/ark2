@@ -70,6 +70,7 @@
             "DIME\\Console\\Command\\DimeClassListCommand",
             "DIME\\Console\\Command\\DimeFindDeleteCommand",
             "DIME\\Console\\Command\\DimeFindPublishCommand",
+            "DIME\\Console\\Command\\DimeRoleAdminCommand",
             "DIME\\Console\\Command\\DimeTranslationCommand"
         ]
     },

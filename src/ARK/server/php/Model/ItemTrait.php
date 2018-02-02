@@ -33,6 +33,7 @@ use ARK\Model\Schema\Schema;
 use ARK\ORM\ORM;
 use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
+use Doctrine\Common\Collections\Collection;
 
 trait ItemTrait
 {
@@ -243,7 +244,12 @@ trait ItemTrait
 
     public static function find(string $id) : ?self
     {
-        return ORM::find(self::class, $id);
+        return ORM::find(get_called_class(), $id);
+    }
+
+    public static function findAll() : Collection
+    {
+        return ORM::findAll(get_called_class());
     }
 
     protected function properties() : iterable
