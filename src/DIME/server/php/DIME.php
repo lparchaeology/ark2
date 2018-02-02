@@ -205,15 +205,17 @@ class DIME
     public static function findSearch(iterable $query) : ?iterable
     {
         $conn = Service::database()->data();
+        $types = [
+            Connection::PARAM_STR_ARRAY,
+        ];
+        $results = [];
+
+        // Do the Vocabulary Term queries
         $pre = "
             SELECT item
             FROM ark_fragment_string
             WHERE module = 'find'
         ";
-        $types = [
-            Connection::PARAM_STR_ARRAY,
-        ];
-        $results = [];
         if (isset($query['municipality'])) {
             $sql = $pre."AND attribute = 'municipality' AND value IN (?)";
             $params = [
@@ -256,7 +258,22 @@ class DIME
             ];
             $results['treasure'] = $conn->fetchAllColumn($sql, 'item', $params, $types);
         }
+        if (isset($query['visibility'])) {
+            $sql = $pre."AND attribute = 'visibility' AND value IN (?)";
+            $params = [
+                $query['visibility'],
+            ];
+            $results['visibility'] = $conn->fetchAllColumn($sql, 'item', $params, $types);
+        }
+        if (isset($query['custody'])) {
+            $sql = $pre."AND attribute = 'custody' AND value IN (?)";
+            $params = [
+                $query['custody'],
+            ];
+            $results['custody'] = $conn->fetchAllColumn($sql, 'item', $params, $types);
+        }
 
+        // Do the linked Item queries, i.e. Actors
         $pre = "
             SELECT item
             FROM ark_fragment_item
@@ -276,6 +293,8 @@ class DIME
             ];
             $results['finder'] = $conn->fetchAllColumn($sql, 'item', $params, $types);
         }
+
+        // Merge all the result sets into a single sorted result list
         $all = [];
         foreach ($results as $key => $items) {
             $all = array_merge($all, $items);

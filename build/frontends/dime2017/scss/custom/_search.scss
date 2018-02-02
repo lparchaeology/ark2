@@ -1,27 +1,7 @@
 /* css for the search tool */
 
-form[name="dime_find_filter"] {
-    display:inline;
-}
-
-@media (min-width: 768px) {
-    form[name="dime_find_filter"].form-horizontal .control-label {
-        text-align:left;
-    }
-}
-
-@media (min-width: 1200px){
-    form[name="dime_find_filter"] .col-sm-10,
-    form[name="dime_find_filter"] .col-lg-9 {
-        width:100%;
-    }
-}
-
-form[name="dime_find_filter"] label {
-    float:left;
-    width:100%;
-}
-
-#dime_find_filter_dime_search {
-    margin-top:28px;
+form[name="filters"] .control-label {
+    text-align: left;
+    width: 100%;
+    margin-top: 5px;
 }

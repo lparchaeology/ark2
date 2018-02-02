@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 02, 2018 at 09:30 AM
+-- Generation Time: Feb 02, 2018 at 04:06 PM
 -- Server version: 10.2.12-MariaDB
 -- PHP Version: 7.1.13
 
@@ -3259,6 +3259,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'core.user.terms.agree', 'default', 'Jeg accepterer vilkårene for DIME.', ''),
 ('da', 'core.user.username', 'default', 'Brugernavn', NULL),
 ('da', 'core.users', 'resource', 'brugere', NULL),
+('da', 'core.visibility', 'default', 'Publikationsstatus', NULL),
 ('da', 'core.visibility.private', 'default', 'Privat', NULL),
 ('da', 'core.visibility.public', 'default', 'Offentlig', NULL),
 ('da', 'core.visibility.restricted', 'default', 'Begrænset', NULL),
@@ -3772,9 +3773,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.kommune.herlev', 'official', 'Herlev Kommune', NULL),
 ('da', 'dime.kommune.herning', 'default', 'Herning', NULL),
 ('da', 'dime.kommune.herning', 'official', 'Herning Kommune', NULL),
-('da', 'dime.kommune.hillerod', 'default', 'Hillerød', NULL),
-('da', 'dime.kommune.hillerod', 'official', 'Hillerød Kommune', NULL);
+('da', 'dime.kommune.hillerod', 'default', 'Hillerød', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('da', 'dime.kommune.hillerod', 'official', 'Hillerød Kommune', NULL),
 ('da', 'dime.kommune.hjorring', 'default', 'Hjørring', NULL),
 ('da', 'dime.kommune.hjorring', 'official', 'Hjørring Kommune', NULL),
 ('da', 'dime.kommune.hojetaastrup', 'default', 'Høje-Taastrup', NULL),
@@ -4196,6 +4197,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'core.user.terms.v1', 'default', '<H2>Terms and Conditions</H2><P>v1.0 dated 1 June 2017</P><P>Lorem Ipsem...</P>', ''),
 ('en', 'core.user.username', 'default', 'Username', ''),
 ('en', 'core.users', 'resource', 'users', ''),
+('en', 'core.visibility', 'default', 'Publication Status', ''),
 ('en', 'core.visibility.private', 'default', 'Private', ''),
 ('en', 'core.visibility.public', 'default', 'Public', ''),
 ('en', 'core.visibility.restricted', 'default', 'Restricted', ''),
@@ -4538,10 +4540,10 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.custody.requested', 'default', 'Requested by Museum', NULL),
 ('en', 'dime.find.custody.sent', 'default', 'Sent to Museum', NULL),
 ('en', 'dime.find.dating', 'default', 'Dating', NULL),
-('en', 'dime.find.dating', 'help', 'Here you have two input options:\r\n\r\n1) In the drop down menu, you can specify a date period (eg Viking Period) or enter \'undated\' if you are unsure about the date.\r\n2) In the Advanced Dates menu you can specify a start and end date both as a period or year number. It is important that you specify BOTH start and end dates. For example, if you have found a coin from 1687 you indicate 1687 in both fields.', NULL),
-('en', 'dime.find.description', 'default', 'Description', NULL),
-('en', 'dime.find.event', 'default', 'Event', '');
+('en', 'dime.find.dating', 'help', 'Here you have two input options:\r\n\r\n1) In the drop down menu, you can specify a date period (eg Viking Period) or enter \'undated\' if you are unsure about the date.\r\n2) In the Advanced Dates menu you can specify a start and end date both as a period or year number. It is important that you specify BOTH start and end dates. For example, if you have found a coin from 1687 you indicate 1687 in both fields.', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.find.description', 'default', 'Description', NULL),
+('en', 'dime.find.event', 'default', 'Event', ''),
 ('en', 'dime.find.event.accessioned', 'default', 'Accessioned by museum', ''),
 ('en', 'dime.find.event.appraised', 'default', 'Assessed as Treasure', ''),
 ('en', 'dime.find.event.claimed', 'default', 'Sent for Treasure assessment', ''),
@@ -5174,10 +5176,10 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.role.researcher', 'default', 'Researcher', ''),
 ('en', 'dime.save', 'default', 'Save', NULL),
 ('en', 'dime.schema.find', 'default', 'Find', NULL),
-('en', 'dime.schema.image', 'default', 'Image', NULL),
-('en', 'dime.schema.location', 'default', 'Location', NULL),
-('en', 'dime.search', 'default', 'Search', NULL);
+('en', 'dime.schema.image', 'default', 'Image', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.schema.location', 'default', 'Location', NULL),
+('en', 'dime.search', 'default', 'Search', NULL),
 ('en', 'dime.search.finds.mine', 'default', 'My Finds', NULL),
 ('en', 'dime.supportedby', 'default', 'supported by', NULL),
 ('en', 'dime.treasure', 'default', 'Treasure Trove', NULL),
@@ -6183,6 +6185,8 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('dime_find_filter', '', 1, 4, 0, 'core_widget_choice', NULL, 'dime.find.process', 'status', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"style\": \"width:95%\"}}', NULL, NULL),
 ('dime_find_filter', '', 1, 6, 0, 'core_widget_choice', NULL, 'dime.treasure', 'treasure', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"style\": \"width:95%\"}}', NULL, NULL),
 ('dime_find_filter', '', 1, 8, 0, 'core_widget_submit', NULL, NULL, 'clear', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.clear', NULL, NULL, NULL, NULL),
+('dime_find_filter', '', 4, 0, 0, 'core_widget_choice', NULL, 'core.visibility', 'visibility', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"style\": \"width:95%\"}}', NULL, NULL),
+('dime_find_filter', '', 4, 2, 0, 'core_widget_choice', NULL, 'dime.find.custody', 'custody', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"style\": \"width:95%\"}}', NULL, NULL),
 ('dime_find_front_table', '', 0, 0, 2, 'dime_find_class', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_front_table', '', 0, 0, 4, 'dime_find_material', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_front_table', '', 0, 0, 6, 'dime_find_municipality', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
@@ -6240,11 +6244,11 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('dime_find_table', '', 0, 0, 24, 'dime_find_finder_id', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_table', '', 0, 0, 26, 'dime_find_finder_place', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_table', '', 0, 0, 28, 'dime_find_id', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 30, 'dime_find_issuer', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_table', '', 0, 0, 30, 'dime_find_issuer', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `map`, `vocabulary`, `name`, `width`, `label`, `help`, `placeholder`, `choices`, `required`, `action_schema`, `action`, `view_permission`, `edit_permission`, `mode`, `sanitise`, `visible`, `value_modus`, `parameter_modus`, `format_modus`, `display_property`, `display_pattern`, `display_parameter`, `display_format`, `export_property`, `export_pattern`, `export_parameter`, `export_format`, `enabled`, `deprecated`, `keyword`, `template`, `options`, `form_type`, `form_options`) VALUES
 ('dime_find_table', '', 0, 0, 32, 'dime_find_length', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_table', '', 0, 0, 34, 'dime_find_location', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 36, 'dime_find_material', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `map`, `vocabulary`, `name`, `width`, `label`, `help`, `placeholder`, `choices`, `required`, `action_schema`, `action`, `view_permission`, `edit_permission`, `mode`, `sanitise`, `visible`, `value_modus`, `parameter_modus`, `format_modus`, `display_property`, `display_pattern`, `display_parameter`, `display_format`, `export_property`, `export_pattern`, `export_parameter`, `export_format`, `enabled`, `deprecated`, `keyword`, `template`, `options`, `form_type`, `form_options`) VALUES
+('dime_find_table', '', 0, 0, 36, 'dime_find_material', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_table', '', 0, 0, 38, 'dime_find_mint', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_table', '', 0, 0, 40, 'dime_find_municipality', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_table', '', 0, 0, 42, 'dime_find_museum', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),

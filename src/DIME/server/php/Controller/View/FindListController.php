@@ -101,10 +101,6 @@ class FindListController extends DimePageController
 
         // Advanced search options if on Actor's Find search page
         if ($advanced) {
-            $museums = new ArrayCollection();
-            $finders = new ArrayCollection();
-            $status = new ArrayCollection();
-            $treasures = new ArrayCollection();
             $agencies = $this->museums($actor);
 
             if (!$filterMuseums && $agencies->count() > 0 && !isset($query['museum'])) {
@@ -154,6 +150,20 @@ class FindListController extends DimePageController
                 $treasures = (is_array($query['treasure']) ? $query['treasure'] : [$query['treasure']]);
                 $treasures = Vocabulary::findTerms('dime.treasure', $treasures);
                 $data['filters']['treasure'] = $treasures->first();
+            }
+
+            // Set the selected Visibility query values in the Visibility filter dropdown, should be single term passed in.
+            if (isset($query['visibility'])) {
+                $visibility = (is_array($query['visibility']) ? $query['visibility'] : [$query['visibility']]);
+                $visibility = Vocabulary::findTerms('core.visibility', $visibility);
+                $data['filters']['visibility'] = $visibility->first();
+            }
+
+            // Set the selected Custody query values in the Custody filter dropdown, should be single term passed in.
+            if (isset($query['custody'])) {
+                $custody = (is_array($query['custody']) ? $query['custody'] : [$query['custody']]);
+                $custody = Vocabulary::findTerms('dime.find.custody', $custody);
+                $data['filters']['custody'] = $custody->first();
             }
         } else {
             // Public finds search excludes anything not yet reviewed, but don't include in query string or filter dropdown
@@ -342,6 +352,8 @@ class FindListController extends DimePageController
             $finders = $form['finder']->getData();
             $status = $form['status']->getData();
             $treasures = $form['treasure']->getData();
+            $visibility = $form['visibility']->getData();
+            $custody = $form['custody']->getData();
             $query = [];
             if ($municipalities) {
                 $query['municipality'] = $this->queryName($municipalities);
@@ -366,6 +378,12 @@ class FindListController extends DimePageController
             }
             if ($treasures) {
                 $query['treasure'] = $this->queryName($treasures);
+            }
+            if ($visibility) {
+                $query['visibility'] = $this->queryName($visibility);
+            }
+            if ($custody) {
+                $query['custody'] = $this->queryName($custody);
             }
             $request->attributes->set('parameters', $query);
         }
