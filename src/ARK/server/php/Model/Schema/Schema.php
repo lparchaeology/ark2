@@ -40,6 +40,7 @@ use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
 use ARK\Vocabulary\Concept;
 use ARK\Vocabulary\Term;
+use ARK\Vocabulary\Vocabulary;
 use ARK\Workflow\Permission;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -120,7 +121,7 @@ class Schema
     public function visibility() : Term
     {
         if ($this->visibilityTerm === null) {
-            $this->visibilityTerm = Vocabulary::find('core.visibility', $this->visibility);
+            $this->visibilityTerm = Vocabulary::findTerm('core.visibility', $this->visibility);
         }
         return $this->visibilityTerm;
     }

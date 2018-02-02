@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 01, 2018 at 05:29 PM
+-- Generation Time: Feb 02, 2018 at 09:30 AM
 -- Server version: 10.2.12-MariaDB
 -- PHP Version: 7.1.13
 
@@ -3690,6 +3690,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.find.update', 'success', 'Fundoplysningerne blev opdateret', NULL),
 ('da', 'dime.find.update.reported', 'default', 'Rapporteringen afsendt til museet.', ''),
 ('da', 'dime.find.update.submitted', 'default', 'Fund- og fundoplysninger er sendt/indleveret til museet', ''),
+('da', 'dime.find.visibility', 'default', 'Offentliggørelse', NULL),
 ('da', 'dime.find.weight', 'default', 'Vægt', NULL),
 ('da', 'dime.home', 'default', 'Hjem', NULL),
 ('da', 'dime.home', 'resource', 'hjem', NULL),
@@ -3772,9 +3773,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.kommune.herning', 'default', 'Herning', NULL),
 ('da', 'dime.kommune.herning', 'official', 'Herning Kommune', NULL),
 ('da', 'dime.kommune.hillerod', 'default', 'Hillerød', NULL),
-('da', 'dime.kommune.hillerod', 'official', 'Hillerød Kommune', NULL),
-('da', 'dime.kommune.hjorring', 'default', 'Hjørring', NULL);
+('da', 'dime.kommune.hillerod', 'official', 'Hillerød Kommune', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('da', 'dime.kommune.hjorring', 'default', 'Hjørring', NULL),
 ('da', 'dime.kommune.hjorring', 'official', 'Hjørring Kommune', NULL),
 ('da', 'dime.kommune.hojetaastrup', 'default', 'Høje-Taastrup', NULL),
 ('da', 'dime.kommune.hojetaastrup', 'official', 'Høje-Taastrup Kommune', NULL),
@@ -4539,9 +4540,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.dating', 'default', 'Dating', NULL),
 ('en', 'dime.find.dating', 'help', 'Here you have two input options:\r\n\r\n1) In the drop down menu, you can specify a date period (eg Viking Period) or enter \'undated\' if you are unsure about the date.\r\n2) In the Advanced Dates menu you can specify a start and end date both as a period or year number. It is important that you specify BOTH start and end dates. For example, if you have found a coin from 1687 you indicate 1687 in both fields.', NULL),
 ('en', 'dime.find.description', 'default', 'Description', NULL),
-('en', 'dime.find.event', 'default', 'Event', ''),
-('en', 'dime.find.event.accessioned', 'default', 'Accessioned by museum', '');
+('en', 'dime.find.event', 'default', 'Event', '');
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.find.event.accessioned', 'default', 'Accessioned by museum', ''),
 ('en', 'dime.find.event.appraised', 'default', 'Assessed as Treasure', ''),
 ('en', 'dime.find.event.claimed', 'default', 'Sent for Treasure assessment', ''),
 ('en', 'dime.find.event.classified', 'default', 'Classified', NULL),
@@ -4869,6 +4870,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.treasure', 'default', 'Treasure', NULL),
 ('en', 'dime.find.update', 'default', 'Update', ''),
 ('en', 'dime.find.update', 'success', 'The find was successfully updated.', ''),
+('en', 'dime.find.visibility', 'default', 'Publication', NULL),
 ('en', 'dime.find.weight', 'default', 'Weight', 'Core Property Weight'),
 ('en', 'dime.home', 'default', 'Home', NULL),
 ('en', 'dime.home', 'resource', 'home', NULL),
@@ -5174,10 +5176,10 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.schema.find', 'default', 'Find', NULL),
 ('en', 'dime.schema.image', 'default', 'Image', NULL),
 ('en', 'dime.schema.location', 'default', 'Location', NULL),
-('en', 'dime.search', 'default', 'Search', NULL),
-('en', 'dime.search.finds.mine', 'default', 'My Finds', NULL),
-('en', 'dime.supportedby', 'default', 'supported by', NULL);
+('en', 'dime.search', 'default', 'Search', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.search.finds.mine', 'default', 'My Finds', NULL),
+('en', 'dime.supportedby', 'default', 'supported by', NULL),
 ('en', 'dime.treasure', 'default', 'Treasure Trove', NULL),
 ('en', 'dime.treasure', 'resource', 'treasure', NULL),
 ('en', 'dime.treasure.appraisal', 'default', 'Under Appraisal', NULL),

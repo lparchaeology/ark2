@@ -269,6 +269,7 @@ trait ItemTrait
             $this->class = $this->module;
         }
         $this->setValue($this->schema()->classAttributeName(), $this->class);
+        $this->setValue('visibility', $this->schema()->visibility());
     }
 
     protected function makeSubclass() : string

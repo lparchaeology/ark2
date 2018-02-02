@@ -106,6 +106,7 @@ class FindViewController extends DimePageController
         }
 
         if ($clicked === 'withhold') {
+            $action = Action::find($find->schema()->id(), $clicked);
             Service::workflow()->apply($actor, 'withhold', $find);
             $publish = ARK::timestamp();
             $publish->add(new DateInterval('P1Y'));
