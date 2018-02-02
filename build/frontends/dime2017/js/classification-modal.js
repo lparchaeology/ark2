@@ -492,7 +492,7 @@ var initTimeline = function () {
         // after a short delay, zoomout, giving a nice span and forcing a redraw
         window.setTimeout(function () {
             $('.vis-tl-zoom-out').trigger('click');
-        }, 1000);
+        }, 1500);
 
         if ($.isNumeric(parentStart)) {
             container.makeCustomTime(parentStart, 'start', timeline);

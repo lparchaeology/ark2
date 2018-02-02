@@ -67,7 +67,6 @@ class DatingPropertyType extends AbstractPropertyType
             $integerType = TextType::class;
         }
 
-        //$integerOptions['placeholder'] = 'core.placeholder';
         $builder->add('year', $integerType, $integerOptions);
         $builder->add('year_span', $integerType, $integerOptions);
         $valueOptions['label'] = 'dime.dating.from';

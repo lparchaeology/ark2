@@ -40,6 +40,7 @@ function museumFormSuccess(response) {
 
 var museumSelected = function (e) {
     e.preventDefault();
+    e.stopPropagation();
     var target = $(e.target).is('tr') ? $(e.target) : $(e.target).closest('tr');
     fetchMuseumActor(target.attr('data-unique-id'));
 };

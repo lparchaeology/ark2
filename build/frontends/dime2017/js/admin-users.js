@@ -42,6 +42,7 @@ function adminUserFormSuccess(response) {
 
 var adminUserSelected = function (e) {
     e.preventDefault();
+    e.stopPropagation();
     var target = $(e.target).is('tr') ? $(e.target) : $(e.target).closest('tr');
     fetchAdminUserActor(target.attr('data-unique-id'));
 };
