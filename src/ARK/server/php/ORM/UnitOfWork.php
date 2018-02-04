@@ -29,45 +29,34 @@
 
 namespace ARK\ORM;
 
-use Doctrine\ORM\EntityManagerInterface;
+use ARK\Utility\ReflectionTrait;
 use Doctrine\ORM\Persisters\Entity\EntityPersister;
 use Doctrine\ORM\UnitOfWork as DoctrineUnitOfWork;
-use ReflectionClass;
 
 class UnitOfWork extends DoctrineUnitOfWork
 {
-    protected $em2;
-    protected $refl;
-    protected $reflPersisters;
-
-    public function __construct(EntityManagerInterface $em)
-    {
-        parent::__construct($em);
-        $this->em2 = $em;
-        $this->refl = new ReflectionClass('Doctrine\ORM\UnitOfWork');
-        $this->reflPersisters = $this->refl->getProperty('persisters');
-        $this->reflPersisters->setAccessible(true);
-    }
+    use ReflectionTrait;
 
     public function getEntityPersister($entityName) : EntityPersister
     {
-        $persisters = $this->reflPersisters->getValue($this);
+        $persisters = $this->reflectGetValue('persisters');
         if (isset($persisters[$entityName])) {
             return $persisters[$entityName];
         }
 
-        $meta = $this->em2->getClassMetadata($entityName);
-        $persister = $meta->getEntityPersister($this->em2);
+        $em = $this->reflectGetValue('em');
+        $meta = $em->getClassMetadata($entityName);
+        $persister = $meta->getEntityPersister($em);
 
         if ($this->hasCache && $meta->cache !== null) {
-            $persister = $this->em2->getConfiguration()
+            $persister = $em->getConfiguration()
                 ->getSecondLevelCacheConfiguration()
                 ->getCacheFactory()
-                ->buildCachedEntityPersister($this->em2, $persister, $meta);
+                ->buildCachedEntityPersister($em, $persister, $meta);
         }
 
         $persisters[$entityName] = $persister;
-        $this->reflPersisters->setValue($this, $persisters);
+        $this->reflectSetValue('persisters', $persisters);
         return $persister;
     }
 }

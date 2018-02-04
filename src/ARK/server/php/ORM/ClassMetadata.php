@@ -41,10 +41,16 @@ use RuntimeException;
 class ClassMetadata extends DoctrineClassMetadata
 {
     public $isItemEntity = false;
+    public $classnames;
 
     public function setItemEntity(bool $status) : void
     {
         $this->isItemEntity = $status;
+    }
+
+    public function setClassNames(iterable $classnames) : void
+    {
+        $this->classnames = $classnames;
     }
 
     public function getEntityPersister(EntityManagerInterface $em)

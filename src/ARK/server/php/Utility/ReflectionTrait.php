@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Command Message.
+ * ARK ORM Entity Manager.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,47 +27,39 @@
  * @since      2.0
  */
 
-namespace ARK\ORM\Item;
+namespace ARK\Utility;
 
-class GenerateItemEntityMessage
+use ReflectionClass;
+
+trait ReflectionTrait
 {
-    protected $project = '';
-    protected $namespace = '';
-    protected $entity = '';
-    protected $classname = '';
-    protected $schema = '';
+    private $reflectClass;
+    private $reflectProperty = [];
 
-    public function __construct(string $project, string $namespace, string $entity, string $classname, string $schema)
+    public function reflectClass() : ReflectionClass
     {
-        $this->project = $project;
-        $this->namespace = $namespace;
-        $this->entity = $entity;
-        $this->classname = $classname;
-        $this->schema = $schema;
+        if ($this->reflectClass === null) {
+            $this->reflectClass = new ReflectionClass(get_parent_class($this));
+        }
+        return $this->reflectClass;
     }
 
-    public function project() : string
+    public function reflectProperty(string $property)
     {
-        return $this->project;
+        if (!isset($this->reflectProperty[$property])) {
+            $this->reflectProperty[$property] = $this->reflectClass()->getProperty($property);
+            $this->reflectProperty[$property]->setAccessible(true);
+        }
+        return $this->reflectProperty[$property];
     }
 
-    public function namespace() : string
+    public function reflectGetValue(string $property)
     {
-        return $this->namespace;
+        return $this->reflectProperty($property)->getValue($this);
     }
 
-    public function entity() : string
+    public function reflectSetValue(string $property, $value) : void
     {
-        return $this->entity;
-    }
-
-    public function classname() : string
-    {
-        return $this->classname;
-    }
-
-    public function schema() : string
-    {
-        return $this->schema;
+        $this->reflectProperty($property)->setValue($this, $value);
     }
 }

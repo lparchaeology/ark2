@@ -29,60 +29,38 @@
 
 namespace ARK\ORM\Driver;
 
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
-use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
+use ARK\Utility\ReflectionTrait;
+use Doctrine\Common\Persistence\Mapping\Driver\StaticPHPDriver as DoctrinePhpDriver;
 use Doctrine\Common\Persistence\Mapping\MappingException;
 use Gedmo\Mapping\Driver;
 
-/**
- * The StaticPHPDriver calls a static loadMetadata() method on your entity
- * classes where you can manually populate the ClassMetadata instance.
- * @author Benjamin Eberlei <kontakt@beberlei.de>
- * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
- * @author Jonathan H. Wage <jonwage@gmail.com>
- * @author Roman Borschel <roman@code-factory.org>
- */
-class StaticPHPDriver implements MappingDriver, Driver
+class StaticPHPDriver extends DoctrinePhpDriver implements Driver
 {
-    private $paths = [];
-    private $classNames;
+    use ReflectionTrait;
 
-    public function __construct($paths)
-    {
-        $this->addPaths((array) $paths);
-    }
-
-    public function addPaths(iterable $paths) : void
-    {
-        $this->paths = array_unique(array_merge($this->paths, $paths));
-    }
-
-    public function loadMetadataForClass($className, ClassMetadata $metadata) : void
-    {
-        $className::loadMetadata($metadata);
-    }
-
-    public function readExtendedMetadata($meta, iterable &$config) : void
-    {
-        if ($meta->getReflectionClass()->hasMethod('readExtendedMetadata')) {
-            $className = $meta->name;
-            $className::readExtendedMetadata($config);
-        }
-    }
-
+    /**
+     * Modifed version of Doctrine\Common\Persistence\Mapping\Driver\StaticPHPDriver.
+     * @author Benjamin Eberlei <kontakt@beberlei.de>
+     * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
+     * @author Jonathan H. Wage <jonwage@gmail.com>
+     * @author Roman Borschel <roman@code-factory.org>
+     */
     public function getAllClassNames() : iterable
     {
-        if ($this->classNames !== null) {
-            return $this->classNames;
+        $classNames = $this->reflectGetValue('classNames');
+        $paths = $this->reflectGetValue('paths');
+
+        if ($classNames !== null) {
+            return $classNames;
         }
 
-        if (!$this->paths) {
+        if (!$paths) {
             throw MappingException::pathRequired();
         }
 
-        $classes = [];
+        $classNames = [];
         $includedFiles = [];
-        foreach ($this->paths as $path) {
+        foreach ($paths as $path) {
             if (is_dir($path)) {
                 $iterator = new \RecursiveIteratorIterator(
                     new \RecursiveDirectoryIterator($path),
@@ -111,18 +89,21 @@ class StaticPHPDriver implements MappingDriver, Driver
             $rc = new \ReflectionClass($className);
             $sourceFile = $rc->getFileName();
             if (in_array($sourceFile, $includedFiles, true) && !$this->isTransient($className)) {
-                $classes[] = $className;
+                $classNames[] = $className;
             }
         }
 
-        $this->classNames = $classes;
+        $this->reflectSetValue('classNames', $classNames);
 
-        return $classes;
+        return $classNames;
     }
 
-    public function isTransient($className) : bool
+    public function readExtendedMetadata($meta, iterable &$config) : void
     {
-        return !method_exists($className, 'loadMetadata');
+        if ($meta->getReflectionClass()->hasMethod('readExtendedMetadata')) {
+            $className = $meta->name;
+            $className::readExtendedMetadata($config);
+        }
     }
 
     public function setOriginalDriver($driver) : void

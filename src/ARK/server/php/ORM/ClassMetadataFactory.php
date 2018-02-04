@@ -29,20 +29,12 @@
 
 namespace ARK\ORM;
 
+use ARK\Utility\ReflectionTrait;
 use Doctrine\ORM\Mapping\ClassMetadataFactory as DoctrineClassMetadataFactory;
-use ReflectionClass;
 
 class ClassMetadataFactory extends DoctrineClassMetadataFactory
 {
-    private $refl;
-    private $emRefl;
-
-    public function __construct()
-    {
-        $this->refl = new ReflectionClass('Doctrine\ORM\Mapping\ClassMetadataFactory');
-        $this->emRefl = $this->refl->getProperty('em');
-        $this->emRefl->setAccessible(true);
-    }
+    use ReflectionTrait;
 
     public function classNames() : iterable
     {
@@ -62,7 +54,7 @@ class ClassMetadataFactory extends DoctrineClassMetadataFactory
 
     protected function newClassMetadataInstance($className) : ClassMetadata
     {
-        $em = $this->emRefl->getValue($this);
+        $em = $this->reflectGetValue('em');
         return new ClassMetadata($className, $em->getConfiguration()->getNamingStrategy());
     }
 }

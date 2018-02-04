@@ -30,10 +30,16 @@
 namespace ARK\Model;
 
 use ARK\Model\Schema\Schema;
+use ARK\ORM\ClassMetadata;
+use ARK\ORM\ClassMetadataBuilder;
+use ARK\ORM\Item\ItemIdGenerator;
+use ARK\ORM\Item\ItemRepository;
 use ARK\ORM\ORM;
+use ARK\Service;
 use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 trait ItemTrait
 {
@@ -250,6 +256,77 @@ trait ItemTrait
     public static function findAll() : Collection
     {
         return ORM::findAll(get_called_class());
+    }
+
+    public static function loadMetadata(ClassMetadata $metadata) : void
+    {
+        // Table
+        $classname = get_called_class();
+        $entity = Service::database()->getEntityForClassName($classname);
+        if (!$entity || ($entity['subclasses'] && !$entity['superclass'])) {
+            dump($classname);
+            dump($entity);
+            return;
+        }
+        $classnames[] = $entity['classname'];
+
+        $builder = new ClassMetadataBuilder($metadata, $entity['tbl']);
+        $builder->setCustomRepositoryClass(ItemRepository::class);
+
+        // Key
+        $builder->addStringKey('id', 30);
+        $metadata->setIdGeneratorType(ClassMetadataInfo::GENERATOR_TYPE_CUSTOM);
+        // TODO Get from $entity?
+        $metadata->setCustomGeneratorDefinition(['class' => ItemIdGenerator::class]);
+
+        // Fields
+        $builder->addStringField('module', 30);
+        $builder->addStringField('schma', 30);
+        if ($entity['subclasses']) {
+            $subclasses = Service::database()->getSubclassEntities($entity['schma']);
+            $builder->setSingleTableInheritance()->setDiscriminatorColumn('class', 'string', 30);
+            $metadata->addDiscriminatorMapClass('', $entity['classname']);
+            foreach ($subclasses as $subclass) {
+                $metadata->addDiscriminatorMapClass($subclass['class'], $subclass['classname']);
+                $classnames[] = $subclass['classname'];
+            }
+        } else {
+            $builder->addStringField('class', 30);
+        }
+        $builder->addStringField('status', 30, false, ['default' => 'allocated']);
+        $builder->addStringField('visibility', 30, false, ['default' => 'restricted']);
+        $builder->addMappedStringField('parent_module', 'parentModule', 30, true);
+        $builder->addMappedStringField('parent_id', 'parentId', 30, true);
+        $builder->addStringField('idx', 30);
+        $builder->addStringField('label', 30);
+        VersionTrait::buildVersionMetadata($builder);
+        $metadata->setItemEntity(true);
+        $metadata->setClassNames($classnames);
+    }
+
+    public static function loadClassNames() : iterable
+    {
+        // Table
+        $classname = get_called_class();
+        $entity = Service::database()->getEntityForClassName($classname);
+        if (!$entity || ($entity['subclasses'] && !$entity['superclass'])) {
+            return [];
+        }
+        $classnames[] = $entity['classname'];
+        if ($entity['subclasses']) {
+            $subclasses = Service::database()->getSubclassEntities($entity['schma']);
+            foreach ($subclasses as $subclass) {
+                $classnames[] = $subclass['classname'];
+            }
+        }
+        return $classnames;
+    }
+
+    public function loadMetadataForGenerator(ClassMetadata $metadata) : void
+    {
+        $classname = get_called_class();
+        $entity = Service::database()->getEntityForClassName($classname);
+        $builder = new ClassMetadataBuilder($metadata, $entity['tbl']);
     }
 
     protected function properties() : iterable

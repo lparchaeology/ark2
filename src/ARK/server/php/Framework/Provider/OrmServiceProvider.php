@@ -37,7 +37,6 @@ namespace ARK\Framework\Provider;
 
 use ARK\ORM\Driver\StaticPHPDriver;
 use ARK\ORM\EntityManager;
-use ARK\ORM\Item\ItemMappingDriver;
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Configuration;
@@ -111,6 +110,127 @@ class OrmServiceProvider implements ServiceProviderInterface
             ],
         ];
 
+        $srcDir = $container['dir.install'].'/src/ARK/server/php';
+        $container['orm.em.default_options.mappings'] = new Container();
+
+        $this->setMappings($container, 'core', [
+            [
+                'type' => 'php',
+                'namespace' => 'ARK\Map',
+                'path' => $srcDir.'/Map',
+            ],
+            [
+                'type' => 'php',
+                'namespace' => 'ARK\Model',
+                'path' => [
+                    $srcDir.'/Model/Attribute.php',
+                    $srcDir.'/Model/Model.php',
+                    $srcDir.'/Model/ModelSchema.php',
+                ],
+            ],
+            [
+                'type' => 'php',
+                'namespace' => 'ARK\Model\Dataclass',
+                'path' => $srcDir.'/Model/Dataclass',
+            ],
+            [
+                'type' => 'php',
+                'namespace' => 'ARK\Model\Schema',
+                'path' => $srcDir.'/Model/Schema',
+            ],
+            [
+                'type' => 'php',
+                'namespace' => 'ARK\Routing',
+                'path' => $srcDir.'/Routing',
+            ],
+            [
+                'type' => 'php',
+                'namespace' => 'ARK\Security',
+                'path' => [
+                    $srcDir.'/Security/Permission.php',
+                    $srcDir.'/Security/Role.php',
+                ],
+            ],
+            [
+                'type' => 'php',
+                'namespace' => 'ARK\Translation',
+                'path' => $srcDir.'/Translation',
+            ],
+            [
+                'type' => 'php',
+                'namespace' => 'ARK\View',
+                'path' => $srcDir.'/View',
+            ],
+            [
+                'type' => 'php',
+                'namespace' => 'ARK\Vocabulary',
+                'path' => $srcDir.'/Vocabulary',
+            ],
+            [
+                'type' => 'php',
+                'namespace' => 'ARK\Workflow',
+                'path' => $srcDir.'/Workflow',
+            ],
+        ]);
+
+        $this->setMappings($container, 'data', [
+            [
+                'type' => 'php',
+                'namespace' => 'ARK\Entity',
+                'path' => $srcDir.'/Entity',
+            ],
+            [
+                'type' => 'php',
+                'namespace' => 'ARK\File',
+                'path' => $srcDir.'/File',
+            ],
+            [
+                'type' => 'php',
+                'namespace' => 'ARK\Message',
+                'path' => $srcDir.'/Message',
+            ],
+            [
+                'type' => 'php',
+                'namespace' => 'ARK\Model\Fragment',
+                'path' => $srcDir.'/Model/Fragment',
+            ],
+            [
+                'type' => 'php',
+                'namespace' => 'ARK\Security',
+                'path' => [
+                    $srcDir.'/Security/Actor.php',
+                    $srcDir.'/Security/ActorRole.php',
+                    $srcDir.'/Security/ActorUser.php',
+                    $srcDir.'/Security/Person.php',
+                    $srcDir.'/Security/System.php',
+                ],
+            ],
+            [
+                'type' => 'php',
+                'namespace' => 'Entity',
+                'path' => $container['dir.install'].'/src/Generated/php/Entity',
+            ],
+        ]);
+
+        $this->setMappings($container, 'spatial', [
+            [
+                'type' => 'php',
+                'namespace' => 'ARK\Spatial\Entity',
+                'path' => $srcDir.'/Spatial/Entity',
+            ],
+        ]);
+
+        $this->setMappings($container, 'user', [
+            [
+                'type' => 'php',
+                'namespace' => 'ARK\Security',
+                'path' => [
+                    $srcDir.'/Security/Account.php',
+                    $srcDir.'/Security/User.php',
+                ],
+            ],
+        ]);
+
         $container['orm.ems.options.initializer'] = $container->protect(function () use ($container) : void {
             static $initialized = false;
 
@@ -120,63 +240,12 @@ class OrmServiceProvider implements ServiceProviderInterface
 
             $initialized = true;
 
-            $srcDir = $container['dir.install'].'/src/ARK/server/php';
             $options['core'] = array_replace(
                 $container['orm.em.default_options'],
                 [
                     'connection' => 'core',
                     'extensions' => ['tree'],
-                    'mappings' => [
-                        [
-                            'type' => 'php',
-                            'namespace' => 'ARK\Map',
-                            'path' => $srcDir.'/Map',
-                        ],
-                        [
-                            'type' => 'php',
-                            'namespace' => 'ARK\Model',
-                            'path' => [
-                                $srcDir.'/Model/Attribute.php',
-                                $srcDir.'/Model/Model.php',
-                                $srcDir.'/Model/ModelSchema.php',
-                            ],
-                        ],
-                        [
-                            'type' => 'php',
-                            'namespace' => 'ARK\Model\Dataclass',
-                            'path' => $srcDir.'/Model/Dataclass',
-                        ],
-                        [
-                            'type' => 'php',
-                            'namespace' => 'ARK\Model\Schema',
-                            'path' => $srcDir.'/Model/Schema',
-                        ],
-                        [
-                            'type' => 'php',
-                            'namespace' => 'ARK\Routing',
-                            'path' => $srcDir.'/Routing',
-                        ],
-                        [
-                            'type' => 'php',
-                            'namespace' => 'ARK\Translation',
-                            'path' => $srcDir.'/Translation',
-                        ],
-                        [
-                            'type' => 'php',
-                            'namespace' => 'ARK\View',
-                            'path' => $srcDir.'/View',
-                        ],
-                        [
-                            'type' => 'php',
-                            'namespace' => 'ARK\Vocabulary',
-                            'path' => $srcDir.'/Vocabulary',
-                        ],
-                        [
-                            'type' => 'php',
-                            'namespace' => 'ARK\Workflow',
-                            'path' => $srcDir.'/Workflow',
-                        ],
-                    ],
+                    'mappings' => $container['orm.em.default_options.mappings']['core'],
                 ]
             );
             $options['data'] = array_replace(
@@ -184,64 +253,14 @@ class OrmServiceProvider implements ServiceProviderInterface
                 [
                     'connection' => 'data',
                     'extensions' => ['tree'],
-                    'mappings' => [
-                        [
-                            'type' => 'item',
-                            'namespace' => 'ARK\Actor',
-                            'path' => $srcDir.'/Actor',
-                        ],
-                        [
-                            'type' => 'item',
-                            'namespace' => 'ARK\Message',
-                            'path' => $srcDir.'/Message',
-                        ],
-                        [
-                            'type' => 'php',
-                            'namespace' => 'ARK\Model\Fragment',
-                            'path' => $srcDir.'/Model/Fragment',
-                        ],
-                        [
-                            'type' => 'item',
-                            'namespace' => 'ARK\Entity',
-                        ],
-                        [
-                            'type' => 'item',
-                            'namespace' => 'ARK\File',
-                            'path' => $srcDir.'/File',
-                        ],
-                        [
-                            'type' => 'php',
-                            'namespace' => 'ARK\Workflow\Security',
-                            'path' => $srcDir.'/Workflow/Security',
-                        ],
-                        [
-                            'type' => 'item',
-                            'namespace' => 'ARK\Workflow',
-                            'path' => $srcDir.'/Workflow',
-                        ],
-                        [
-                            'type' => 'item',
-                            'namespace' => 'DIME\Entity',
-                        ],
-                        [
-                            'type' => 'item',
-                            'namespace' => 'Entity',
-                            'path' => $container['dir.install'].'/src/Generated/php/Entity',
-                        ],
-                    ],
+                    'mappings' => $container['orm.em.default_options.mappings']['data'],
                 ]
             );
             $options['user'] = array_replace(
                 $container['orm.em.default_options'],
                 [
                     'connection' => 'user',
-                    'mappings' => [
-                        [
-                            'type' => 'php',
-                            'namespace' => 'ARK\Security',
-                            'path' => $srcDir.'/Security',
-                        ],
-                    ],
+                    'mappings' => $container['orm.em.default_options.mappings']['user'],
                 ]
             );
             $options['spatial'] = array_replace(
@@ -258,13 +277,7 @@ class OrmServiceProvider implements ServiceProviderInterface
                         'point' => 'Brick\Geo\Doctrine\Types\PointType',
                         'polygon' => 'Brick\Geo\Doctrine\Types\PolygonType',
                     ],
-                    'mappings' => [
-                        [
-                            'type' => 'php',
-                            'namespace' => 'ARK\Spatial\Entity',
-                            'path' => $srcDir.'/Spatial/Entity',
-                        ],
-                    ],
+                    'mappings' => $container['orm.em.default_options.mappings']['spatial'],
                 ]
             );
 
@@ -340,9 +353,6 @@ class OrmServiceProvider implements ServiceProviderInterface
                     }
 
                     switch ($entity['type']) {
-                        case 'item':
-                            $driver = new ItemMappingDriver($entity['namespace']);
-                            break;
                         case 'php':
                             $driver = new StaticPHPDriver($entity['path']);
                             break;
@@ -425,5 +435,14 @@ class OrmServiceProvider implements ServiceProviderInterface
             $ems = $container['orm.ems'];
             return $ems[$container['orm.ems.default']];
         };
+    }
+
+    private function setMappings(Container $container, string $connection, iterable $mappings) : void
+    {
+        $custom = $container['ark']['orm']['connection'][$connection]['mappings'] ?? [];
+        foreach ($custom as &$mapping) {
+            $mapping['path'] = $container['dir.install'].'/'.$mapping['path'];
+        }
+        $container['orm.em.default_options.mappings'][$connection] = array_merge($mappings, $custom);
     }
 }

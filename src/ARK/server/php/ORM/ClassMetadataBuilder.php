@@ -30,7 +30,7 @@
 namespace ARK\ORM;
 
 use ARK\Vocabulary\Concept;
-use ARK\Workflow\Permission;
+use ARK\Security\Permission;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder as DoctrineClassMetadataBuilder;
 use Doctrine\ORM\Mapping\Builder\FieldBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;

@@ -31,7 +31,7 @@
 namespace ARK\ORM\Console\Command;
 
 use ARK\Console\Command\AbstractCommand;
-use ARK\ORM\Command\GenerateItemEntityMessage;
+use ARK\ORM\Item\GenerateItemEntityHandler;
 use ARK\Service;
 
 class GenerateItemEntityCommand extends AbstractCommand
@@ -51,14 +51,13 @@ class GenerateItemEntityCommand extends AbstractCommand
             } else {
                 $this->write('Generating '.$module['classname']);
                 // TODO get default schema
-                $msg = new GenerateItemEntityMessage(
+                GenerateItemEntityHandler(
                     $module['project'],
                     $module['namespace'],
                     $module['entity'],
                     $module['classname'],
                     ''
                 );
-                GenerateItemEntityHandler($msg);
             }
         }
     }
