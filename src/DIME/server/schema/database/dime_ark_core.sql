@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 02, 2018 at 04:06 PM
+-- Generation Time: Feb 04, 2018 at 02:52 PM
 -- Server version: 10.2.12-MariaDB
--- PHP Version: 7.1.13
+-- PHP Version: 7.2.1
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -82,7 +82,6 @@ INSERT INTO `ark_dataclass` (`dataclass`, `datatype`, `object`, `array`, `span`,
 ('html', 'text', 1, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.html'),
 ('identifier', 'string', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.identifier'),
 ('image', 'item', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 'ARK\\File\\Image', 'ARK\\Form\\Type\\FilePropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\FileType', NULL, 'ARK\\Form\\Type\\ImageCollectionType', NULL, NULL, 0, 0, 1, 0, 'format.image'),
-('institution', 'item', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 'ARK\\Actor\\Institution', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'core.actor.class.institution'),
 ('integer', 'integer', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.integer'),
 ('item', 'item', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'format.item'),
 ('key', 'string', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.key'),
@@ -820,8 +819,8 @@ CREATE TABLE `ark_model_module` (
 --
 
 INSERT INTO `ark_model_module` (`module`, `tbl`, `classname`, `core`, `enabled`, `deprecated`, `keyword`) VALUES
-('actor', 'ark_item_actor', 'ARK\\Actor\\Actor', 1, 1, 0, 'core.actor'),
-('event', 'ark_item_event', 'ARK\\Workflow\\Event', 1, 1, 0, 'core.event'),
+('actor', 'ark_item_actor', 'ARK\\Security\\Actor', 1, 1, 0, 'core.actor'),
+('event', 'ark_item_event', 'ARK\\Entity\\Event', 1, 1, 0, 'core.event'),
 ('file', 'ark_item_file', 'ARK\\File\\File', 1, 1, 0, 'core.file'),
 ('find', 'ark_item_find', 'DIME\\Entity\\Find', 0, 1, 0, 'dime.find'),
 ('message', 'ark_item_message', 'ARK\\Message\\Message', 1, 1, 0, 'core.message'),
@@ -1105,6 +1104,322 @@ INSERT INTO `ark_schema_item` (`attribute`, `dataclass`, `vocabulary`, `minimum`
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `ark_security_grant`
+--
+
+CREATE TABLE `ark_security_grant` (
+  `role` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `permission` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ark_security_grant`
+--
+
+INSERT INTO `ark_security_grant` (`role`, `permission`) VALUES
+('admin', 'core.actor.read'),
+('admin', 'core.actor.update'),
+('admin', 'core.admin'),
+('admin', 'core.admin.system'),
+('admin', 'core.admin.user'),
+('admin', 'core.file.read'),
+('admin', 'core.message.read'),
+('admin', 'core.message.update'),
+('admin', 'core.page.read'),
+('admin', 'dime.find.create'),
+('admin', 'dime.find.filter.finder'),
+('admin', 'dime.find.filter.museum'),
+('admin', 'dime.find.home'),
+('admin', 'dime.find.read'),
+('admin', 'dime.find.read.case'),
+('admin', 'dime.find.read.custody'),
+('admin', 'dime.find.read.finddate'),
+('admin', 'dime.find.read.finder'),
+('admin', 'dime.find.read.location'),
+('admin', 'dime.find.read.museum_id'),
+('admin', 'dime.find.read.owner'),
+('admin', 'dime.find.read.process'),
+('admin', 'dime.find.read.publish'),
+('admin', 'dime.find.read.status'),
+('admin', 'dime.find.read.treasure'),
+('admin', 'dime.find.register.any'),
+('admin', 'dime.find.treasure.claim'),
+('admin', 'dime.find.update'),
+('admin', 'dime.find.update.case'),
+('admin', 'dime.find.update.custody'),
+('admin', 'dime.find.update.finddate'),
+('admin', 'dime.find.update.finder'),
+('admin', 'dime.find.update.location'),
+('admin', 'dime.find.update.museum_id'),
+('admin', 'dime.find.update.owner'),
+('admin', 'dime.find.update.process'),
+('admin', 'dime.find.update.publish'),
+('admin', 'dime.find.update.treasure'),
+('admin', 'dime.find.workflow.action'),
+('admin', 'dime.find.workflow.action.any'),
+('anonymous', 'core.actor.read'),
+('anonymous', 'core.file.read'),
+('anonymous', 'core.page.read'),
+('anonymous', 'core.user.confirm'),
+('anonymous', 'core.user.login'),
+('anonymous', 'core.user.register'),
+('anonymous', 'core.user.reset'),
+('anonymous', 'dime.find.read'),
+('appraiser', 'core.actor.read'),
+('appraiser', 'core.actor.update'),
+('appraiser', 'core.file.read'),
+('appraiser', 'core.message.read'),
+('appraiser', 'core.message.update'),
+('appraiser', 'core.page.read'),
+('appraiser', 'dime.find.filter.finder'),
+('appraiser', 'dime.find.filter.museum'),
+('appraiser', 'dime.find.home'),
+('appraiser', 'dime.find.read'),
+('appraiser', 'dime.find.read.case'),
+('appraiser', 'dime.find.read.museum_id'),
+('appraiser', 'dime.find.read.publish'),
+('appraiser', 'dime.find.read.status'),
+('appraiser', 'dime.find.update'),
+('appraiser', 'dime.find.update.treasure'),
+('curator', 'core.actor.read'),
+('curator', 'core.actor.update'),
+('curator', 'core.file.read'),
+('curator', 'core.message.read'),
+('curator', 'core.message.update'),
+('curator', 'core.page.read'),
+('curator', 'dime.find.filter.finder'),
+('curator', 'dime.find.home'),
+('curator', 'dime.find.read.case'),
+('curator', 'dime.find.read.museum_id'),
+('curator', 'dime.find.read.status'),
+('detectorist', 'core.actor.read'),
+('detectorist', 'core.actor.update'),
+('detectorist', 'core.file.read'),
+('detectorist', 'core.message.read'),
+('detectorist', 'core.message.update'),
+('detectorist', 'core.page.read'),
+('detectorist', 'dime.find.create'),
+('detectorist', 'dime.find.filter.museum'),
+('detectorist', 'dime.find.home'),
+('detectorist', 'dime.find.read'),
+('detectorist', 'dime.find.read.case'),
+('detectorist', 'dime.find.read.museum_id'),
+('detectorist', 'dime.find.read.process'),
+('detectorist', 'dime.find.read.publish'),
+('detectorist', 'dime.find.read.status'),
+('detectorist', 'dime.find.read.treasure'),
+('detectorist', 'dime.find.update'),
+('detectorist', 'dime.find.update.case'),
+('detectorist', 'dime.find.update.publish'),
+('detectorist', 'dime.find.workflow.action'),
+('registrar', 'core.actor.read'),
+('registrar', 'core.actor.update'),
+('registrar', 'core.file.read'),
+('registrar', 'core.message.read'),
+('registrar', 'core.message.update'),
+('registrar', 'dime.find.create'),
+('registrar', 'dime.find.filter.finder'),
+('registrar', 'dime.find.home'),
+('registrar', 'dime.find.read'),
+('registrar', 'dime.find.read.case'),
+('registrar', 'dime.find.read.custody'),
+('registrar', 'dime.find.read.finddate'),
+('registrar', 'dime.find.read.finder'),
+('registrar', 'dime.find.read.location'),
+('registrar', 'dime.find.read.museum_id'),
+('registrar', 'dime.find.read.owner'),
+('registrar', 'dime.find.read.process'),
+('registrar', 'dime.find.read.publish'),
+('registrar', 'dime.find.read.status'),
+('registrar', 'dime.find.read.treasure'),
+('registrar', 'dime.find.register.any'),
+('registrar', 'dime.find.treasure.claim'),
+('registrar', 'dime.find.update'),
+('registrar', 'dime.find.update.case'),
+('registrar', 'dime.find.update.custody'),
+('registrar', 'dime.find.update.finddate'),
+('registrar', 'dime.find.update.finder'),
+('registrar', 'dime.find.update.location'),
+('registrar', 'dime.find.update.museum_id'),
+('registrar', 'dime.find.update.owner'),
+('registrar', 'dime.find.update.process'),
+('registrar', 'dime.find.update.publish'),
+('registrar', 'dime.find.update.treasure'),
+('registrar', 'dime.find.workflow.action'),
+('registrar', 'dime.find.workflow.action.any'),
+('researcher', 'core.actor.read'),
+('researcher', 'core.actor.update'),
+('researcher', 'core.file.read'),
+('researcher', 'core.message.read'),
+('researcher', 'core.message.update'),
+('researcher', 'core.page.read'),
+('researcher', 'dime.find.home'),
+('researcher', 'dime.find.read'),
+('researcher', 'dime.find.read.case'),
+('researcher', 'dime.find.read.finddate'),
+('researcher', 'dime.find.read.location'),
+('researcher', 'dime.find.read.museum_id'),
+('researcher', 'dime.find.read.publish'),
+('researcher', 'dime.find.read.status'),
+('researcher', 'dime.find.read.treasure'),
+('sysadmin', 'core.actor.read'),
+('sysadmin', 'core.actor.update'),
+('sysadmin', 'core.admin'),
+('sysadmin', 'core.admin.system'),
+('sysadmin', 'core.admin.user'),
+('sysadmin', 'core.file.read'),
+('sysadmin', 'core.message.read'),
+('sysadmin', 'core.message.update'),
+('sysadmin', 'core.page.read'),
+('sysadmin', 'dime.find.create'),
+('sysadmin', 'dime.find.filter.finder'),
+('sysadmin', 'dime.find.filter.museum'),
+('sysadmin', 'dime.find.home'),
+('sysadmin', 'dime.find.read'),
+('sysadmin', 'dime.find.read.case'),
+('sysadmin', 'dime.find.read.custody'),
+('sysadmin', 'dime.find.read.finddate'),
+('sysadmin', 'dime.find.read.finder'),
+('sysadmin', 'dime.find.read.location'),
+('sysadmin', 'dime.find.read.museum_id'),
+('sysadmin', 'dime.find.read.owner'),
+('sysadmin', 'dime.find.read.process'),
+('sysadmin', 'dime.find.read.publish'),
+('sysadmin', 'dime.find.read.status'),
+('sysadmin', 'dime.find.read.treasure'),
+('sysadmin', 'dime.find.register.any'),
+('sysadmin', 'dime.find.treasure.claim'),
+('sysadmin', 'dime.find.update'),
+('sysadmin', 'dime.find.update.case'),
+('sysadmin', 'dime.find.update.custody'),
+('sysadmin', 'dime.find.update.finddate'),
+('sysadmin', 'dime.find.update.finder'),
+('sysadmin', 'dime.find.update.location'),
+('sysadmin', 'dime.find.update.museum_id'),
+('sysadmin', 'dime.find.update.owner'),
+('sysadmin', 'dime.find.update.process'),
+('sysadmin', 'dime.find.update.publish'),
+('sysadmin', 'dime.find.update.treasure'),
+('sysadmin', 'dime.find.workflow.action'),
+('user', 'core.actor.read'),
+('user', 'core.actor.update'),
+('user', 'core.file.read'),
+('user', 'core.message.read'),
+('user', 'core.message.update'),
+('user', 'core.page.read');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_security_permission`
+--
+
+CREATE TABLE `ark_security_permission` (
+  `permission` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  `description` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ark_security_permission`
+--
+
+INSERT INTO `ark_security_permission` (`permission`, `keyword`, `enabled`, `description`) VALUES
+('core.actor.create', NULL, 1, NULL),
+('core.actor.delete', NULL, 1, NULL),
+('core.actor.read', NULL, 1, NULL),
+('core.actor.register', NULL, 1, NULL),
+('core.actor.update', NULL, 1, NULL),
+('core.admin', NULL, 1, NULL),
+('core.admin.system', NULL, 1, NULL),
+('core.admin.user', NULL, 1, NULL),
+('core.event.create', NULL, 1, NULL),
+('core.event.delete', NULL, 1, NULL),
+('core.event.read', NULL, 1, NULL),
+('core.event.update', NULL, 1, NULL),
+('core.file.create', NULL, 1, NULL),
+('core.file.delete', NULL, 1, NULL),
+('core.file.read', NULL, 1, NULL),
+('core.file.update', NULL, 1, NULL),
+('core.message.create', NULL, 1, NULL),
+('core.message.delete', NULL, 1, NULL),
+('core.message.read', NULL, 1, NULL),
+('core.message.update', NULL, 1, NULL),
+('core.page.create', NULL, 1, NULL),
+('core.page.delete', NULL, 1, NULL),
+('core.page.read', NULL, 1, NULL),
+('core.page.update', NULL, 1, NULL),
+('core.user.confirm', NULL, 1, NULL),
+('core.user.login', NULL, 1, NULL),
+('core.user.logout', NULL, 1, NULL),
+('core.user.register', NULL, 1, NULL),
+('core.user.reset', NULL, 1, NULL),
+('dime.find.create', NULL, 1, NULL),
+('dime.find.delete', NULL, 1, NULL),
+('dime.find.filter.finder', NULL, 1, NULL),
+('dime.find.filter.museum', NULL, 1, NULL),
+('dime.find.home', NULL, 1, NULL),
+('dime.find.read', NULL, 1, NULL),
+('dime.find.read.case', NULL, 1, NULL),
+('dime.find.read.custody', NULL, 1, NULL),
+('dime.find.read.finddate', NULL, 1, NULL),
+('dime.find.read.finder', NULL, 1, NULL),
+('dime.find.read.location', NULL, 1, NULL),
+('dime.find.read.museum_id', NULL, 1, NULL),
+('dime.find.read.owner', NULL, 1, NULL),
+('dime.find.read.process', NULL, 1, NULL),
+('dime.find.read.publish', NULL, 1, NULL),
+('dime.find.read.status', NULL, 1, NULL),
+('dime.find.read.treasure', NULL, 1, NULL),
+('dime.find.register.any', NULL, 1, NULL),
+('dime.find.treasure.claim', NULL, 1, NULL),
+('dime.find.update', NULL, 1, NULL),
+('dime.find.update.case', NULL, 1, NULL),
+('dime.find.update.custody', NULL, 1, NULL),
+('dime.find.update.finddate', NULL, 1, NULL),
+('dime.find.update.finder', NULL, 1, NULL),
+('dime.find.update.location', NULL, 1, NULL),
+('dime.find.update.museum_id', NULL, 1, NULL),
+('dime.find.update.owner', NULL, 1, NULL),
+('dime.find.update.process', NULL, 1, NULL),
+('dime.find.update.publish', NULL, 1, NULL),
+('dime.find.update.treasure', NULL, 1, NULL),
+('dime.find.workflow.action', NULL, 1, NULL),
+('dime.find.workflow.action.any', NULL, 1, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_security_role`
+--
+
+CREATE TABLE `ark_security_role` (
+  `role` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `agent_for` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `level` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ark_security_role`
+--
+
+INSERT INTO `ark_security_role` (`role`, `agent_for`, `level`, `enabled`, `keyword`) VALUES
+('admin', NULL, 'ROLE_ADMIN', 1, 'core.role.admin'),
+('anonymous', NULL, 'ROLE_ANON', 1, 'core.role.anon'),
+('appraiser', 'museum', 'ROLE_USER', 1, 'dime.role.appraiser'),
+('curator', 'museum', 'ROLE_USER', 1, 'dime.role.curator'),
+('detectorist', NULL, 'ROLE_USER', 1, 'dime.role.detectorist'),
+('registrar', 'museum', 'ROLE_USER', 1, 'dime.role.registrar'),
+('researcher', 'museum', 'ROLE_USER', 1, 'dime.role.researcher'),
+('sysadmin', NULL, 'ROLE_SUPER_ADMIN', 1, 'core.role.admin'),
+('user', NULL, 'ROLE_USER', 1, 'core.role.user');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `ark_translation`
 --
 
@@ -1138,7 +1453,6 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('core.actor.avatar', 'core', 0, 0),
 ('core.actor.biography', 'core', 0, 0),
 ('core.actor.class', 'vocabulary', 0, 0),
-('core.actor.class.institution', 'vocabulary', 0, 0),
 ('core.actor.class.museum', 'vocabulary', 0, 0),
 ('core.actor.class.person', 'vocabulary', 0, 0),
 ('core.actor.email', 'core', 0, 0),
@@ -1153,7 +1467,6 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('core.actor.fullname', 'core', 0, 0),
 ('core.actor.id', 'core', 0, 0),
 ('core.actor.initials', 'core', 0, 0),
-('core.actor.institution', 'core', 0, 0),
 ('core.actor.license', 'core', 0, 0),
 ('core.actor.module', 'core', 0, 0),
 ('core.actor.person', 'core', 0, 0),
@@ -2287,11 +2600,11 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.user.password', 'dime', 0, 0),
 ('dime.user.password.forgot', 'dime', 0, 0),
 ('dime.user.profile', 'dime', 0, 0),
-('dime.user.register', 'dime', 0, 0);
-INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
+('dime.user.register', 'dime', 0, 0),
 ('dime.user.register.success', 'dime', 0, 0),
 ('dime.user.terms', 'dime', 0, 0),
-('dime.user.terms.v1', 'dime', 0, 0),
+('dime.user.terms.v1', 'dime', 0, 0);
+INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
 ('dime.user.update', 'dime', 0, 0),
 ('dime.user.update.failure', 'dime', 0, 0),
 ('file.type.audio', 'core', 0, 0),
@@ -3150,7 +3463,6 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'core.actor.address', 'default', 'Adresse', NULL),
 ('da', 'core.actor.avatar', 'default', 'Foto', NULL),
 ('da', 'core.actor.biography', 'default', 'Biografi', NULL),
-('da', 'core.actor.class.institution', 'default', 'Institution', NULL),
 ('da', 'core.actor.class.museum', 'default', 'Museum', NULL),
 ('da', 'core.actor.class.person', 'default', 'actor_class_person(Rolle)', NULL),
 ('da', 'core.actor.email', 'default', 'E-mail', NULL),
@@ -3158,7 +3470,6 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'core.actor.fullname', 'default', 'Navn', NULL),
 ('da', 'core.actor.id', 'default', 'Aktør ID', NULL),
 ('da', 'core.actor.initials', 'default', 'Initialer', NULL),
-('da', 'core.actor.institution', 'default', 'Institution', NULL),
 ('da', 'core.actor.module', 'default', 'Aktør', NULL),
 ('da', 'core.actor.person', 'default', 'actor_person(Rolle)', NULL),
 ('da', 'core.actor.schema', 'default', 'Aktør', NULL),
@@ -3259,7 +3570,6 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'core.user.terms.agree', 'default', 'Jeg accepterer vilkårene for DIME.', ''),
 ('da', 'core.user.username', 'default', 'Brugernavn', NULL),
 ('da', 'core.users', 'resource', 'brugere', NULL),
-('da', 'core.visibility', 'default', 'Publikationsstatus', NULL),
 ('da', 'core.visibility.private', 'default', 'Privat', NULL),
 ('da', 'core.visibility.public', 'default', 'Offentlig', NULL),
 ('da', 'core.visibility.restricted', 'default', 'Begrænset', NULL),
@@ -3691,7 +4001,6 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.find.update', 'success', 'Fundoplysningerne blev opdateret', NULL),
 ('da', 'dime.find.update.reported', 'default', 'Rapporteringen afsendt til museet.', ''),
 ('da', 'dime.find.update.submitted', 'default', 'Fund- og fundoplysninger er sendt/indleveret til museet', ''),
-('da', 'dime.find.visibility', 'default', 'Offentliggørelse', NULL),
 ('da', 'dime.find.weight', 'default', 'Vægt', NULL),
 ('da', 'dime.home', 'default', 'Hjem', NULL),
 ('da', 'dime.home', 'resource', 'hjem', NULL),
@@ -3773,12 +4082,12 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.kommune.herlev', 'official', 'Herlev Kommune', NULL),
 ('da', 'dime.kommune.herning', 'default', 'Herning', NULL),
 ('da', 'dime.kommune.herning', 'official', 'Herning Kommune', NULL),
-('da', 'dime.kommune.hillerod', 'default', 'Hillerød', NULL);
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('da', 'dime.kommune.hillerod', 'default', 'Hillerød', NULL),
 ('da', 'dime.kommune.hillerod', 'official', 'Hillerød Kommune', NULL),
 ('da', 'dime.kommune.hjorring', 'default', 'Hjørring', NULL),
 ('da', 'dime.kommune.hjorring', 'official', 'Hjørring Kommune', NULL),
-('da', 'dime.kommune.hojetaastrup', 'default', 'Høje-Taastrup', NULL),
+('da', 'dime.kommune.hojetaastrup', 'default', 'Høje-Taastrup', NULL);
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('da', 'dime.kommune.hojetaastrup', 'official', 'Høje-Taastrup Kommune', NULL),
 ('da', 'dime.kommune.holbaek', 'default', 'Holbæk', NULL),
 ('da', 'dime.kommune.holbaek', 'official', 'Holbæk Kommune', NULL),
@@ -4076,7 +4385,6 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'core.actor.address', 'default', 'Address', ''),
 ('en', 'core.actor.avatar', 'default', 'Photo', ''),
 ('en', 'core.actor.biography', 'default', 'Biography', ''),
-('en', 'core.actor.class.institution', 'default', 'core.actor.type.institution', NULL),
 ('en', 'core.actor.class.museum', 'default', 'Museum', NULL),
 ('en', 'core.actor.class.person', 'default', 'core.actor.type.person', NULL),
 ('en', 'core.actor.email', 'default', 'E-mail', ''),
@@ -4085,7 +4393,6 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'core.actor.fullname', 'default', 'Name', NULL),
 ('en', 'core.actor.id', 'default', 'Actor ID', NULL),
 ('en', 'core.actor.initials', 'default', 'Initials', ''),
-('en', 'core.actor.institution', 'default', 'Institution', NULL),
 ('en', 'core.actor.license', 'default', 'Photo License', ''),
 ('en', 'core.actor.module', 'default', 'Actor', NULL),
 ('en', 'core.actor.person', 'default', 'Person', NULL),
@@ -4197,7 +4504,6 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'core.user.terms.v1', 'default', '<H2>Terms and Conditions</H2><P>v1.0 dated 1 June 2017</P><P>Lorem Ipsem...</P>', ''),
 ('en', 'core.user.username', 'default', 'Username', ''),
 ('en', 'core.users', 'resource', 'users', ''),
-('en', 'core.visibility', 'default', 'Publication Status', ''),
 ('en', 'core.visibility.private', 'default', 'Private', ''),
 ('en', 'core.visibility.public', 'default', 'Public', ''),
 ('en', 'core.visibility.restricted', 'default', 'Restricted', ''),
@@ -4540,15 +4846,15 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.custody.requested', 'default', 'Requested by Museum', NULL),
 ('en', 'dime.find.custody.sent', 'default', 'Sent to Museum', NULL),
 ('en', 'dime.find.dating', 'default', 'Dating', NULL),
-('en', 'dime.find.dating', 'help', 'Here you have two input options:\r\n\r\n1) In the drop down menu, you can specify a date period (eg Viking Period) or enter \'undated\' if you are unsure about the date.\r\n2) In the Advanced Dates menu you can specify a start and end date both as a period or year number. It is important that you specify BOTH start and end dates. For example, if you have found a coin from 1687 you indicate 1687 in both fields.', NULL);
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.find.dating', 'help', 'Here you have two input options:\r\n\r\n1) In the drop down menu, you can specify a date period (eg Viking Period) or enter \'undated\' if you are unsure about the date.\r\n2) In the Advanced Dates menu you can specify a start and end date both as a period or year number. It is important that you specify BOTH start and end dates. For example, if you have found a coin from 1687 you indicate 1687 in both fields.', NULL),
 ('en', 'dime.find.description', 'default', 'Description', NULL),
 ('en', 'dime.find.event', 'default', 'Event', ''),
 ('en', 'dime.find.event.accessioned', 'default', 'Accessioned by museum', ''),
 ('en', 'dime.find.event.appraised', 'default', 'Assessed as Treasure', ''),
 ('en', 'dime.find.event.claimed', 'default', 'Sent for Treasure assessment', ''),
 ('en', 'dime.find.event.classified', 'default', 'Classified', NULL),
-('en', 'dime.find.event.deleted', 'default', 'Deleted', ''),
+('en', 'dime.find.event.deleted', 'default', 'Deleted', '');
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'dime.find.event.destroyed', 'default', 'Artefact accidentally destroyed', ''),
 ('en', 'dime.find.event.discarded', 'default', 'Artefact discarded', ''),
 ('en', 'dime.find.event.edited', 'default', 'Edited', NULL),
@@ -4872,7 +5178,6 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.treasure', 'default', 'Treasure', NULL),
 ('en', 'dime.find.update', 'default', 'Update', ''),
 ('en', 'dime.find.update', 'success', 'The find was successfully updated.', ''),
-('en', 'dime.find.visibility', 'default', 'Publication', NULL),
 ('en', 'dime.find.weight', 'default', 'Weight', 'Core Property Weight'),
 ('en', 'dime.home', 'default', 'Home', NULL),
 ('en', 'dime.home', 'resource', 'home', NULL),
@@ -5176,8 +5481,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.role.researcher', 'default', 'Researcher', ''),
 ('en', 'dime.save', 'default', 'Save', NULL),
 ('en', 'dime.schema.find', 'default', 'Find', NULL),
-('en', 'dime.schema.image', 'default', 'Image', NULL);
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.schema.image', 'default', 'Image', NULL),
 ('en', 'dime.schema.location', 'default', 'Location', NULL),
 ('en', 'dime.search', 'default', 'Search', NULL),
 ('en', 'dime.search.finds.mine', 'default', 'My Finds', NULL),
@@ -5186,7 +5490,8 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.treasure', 'resource', 'treasure', NULL),
 ('en', 'dime.treasure.appraisal', 'default', 'Under Appraisal', NULL),
 ('en', 'dime.treasure.not', 'default', 'Not Treasure Trove', NULL),
-('en', 'dime.treasure.pending', 'default', 'Pending Assessment', NULL),
+('en', 'dime.treasure.pending', 'default', 'Pending Assessment', NULL);
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'dime.treasure.treasure', 'default', 'Treasure Trove', NULL),
 ('en', 'dime.user.actor.museum', 'default', 'Associated Museum', ''),
 ('en', 'dime.user.dashboard.finds', 'default', 'You have recorded %count% finds.', NULL),
@@ -6185,8 +6490,6 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('dime_find_filter', '', 1, 4, 0, 'core_widget_choice', NULL, 'dime.find.process', 'status', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"style\": \"width:95%\"}}', NULL, NULL),
 ('dime_find_filter', '', 1, 6, 0, 'core_widget_choice', NULL, 'dime.treasure', 'treasure', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"style\": \"width:95%\"}}', NULL, NULL),
 ('dime_find_filter', '', 1, 8, 0, 'core_widget_submit', NULL, NULL, 'clear', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.clear', NULL, NULL, NULL, NULL),
-('dime_find_filter', '', 4, 0, 0, 'core_widget_choice', NULL, 'core.visibility', 'visibility', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"style\": \"width:95%\"}}', NULL, NULL),
-('dime_find_filter', '', 4, 2, 0, 'core_widget_choice', NULL, 'dime.find.custody', 'custody', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"style\": \"width:95%\"}}', NULL, NULL),
 ('dime_find_front_table', '', 0, 0, 2, 'dime_find_class', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_front_table', '', 0, 0, 4, 'dime_find_material', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_front_table', '', 0, 0, 6, 'dime_find_municipality', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
@@ -6244,11 +6547,11 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('dime_find_table', '', 0, 0, 24, 'dime_find_finder_id', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_table', '', 0, 0, 26, 'dime_find_finder_place', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_table', '', 0, 0, 28, 'dime_find_id', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 30, 'dime_find_issuer', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `map`, `vocabulary`, `name`, `width`, `label`, `help`, `placeholder`, `choices`, `required`, `action_schema`, `action`, `view_permission`, `edit_permission`, `mode`, `sanitise`, `visible`, `value_modus`, `parameter_modus`, `format_modus`, `display_property`, `display_pattern`, `display_parameter`, `display_format`, `export_property`, `export_pattern`, `export_parameter`, `export_format`, `enabled`, `deprecated`, `keyword`, `template`, `options`, `form_type`, `form_options`) VALUES
+('dime_find_table', '', 0, 0, 30, 'dime_find_issuer', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_table', '', 0, 0, 32, 'dime_find_length', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_table', '', 0, 0, 34, 'dime_find_location', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 36, 'dime_find_material', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_table', '', 0, 0, 36, 'dime_find_material', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `map`, `vocabulary`, `name`, `width`, `label`, `help`, `placeholder`, `choices`, `required`, `action_schema`, `action`, `view_permission`, `edit_permission`, `mode`, `sanitise`, `visible`, `value_modus`, `parameter_modus`, `format_modus`, `display_property`, `display_pattern`, `display_parameter`, `display_format`, `export_property`, `export_pattern`, `export_parameter`, `export_format`, `enabled`, `deprecated`, `keyword`, `template`, `options`, `form_type`, `form_options`) VALUES
 ('dime_find_table', '', 0, 0, 38, 'dime_find_mint', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_table', '', 0, 0, 40, 'dime_find_municipality', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_table', '', 0, 0, 42, 'dime_find_museum', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
@@ -7110,7 +7413,7 @@ CREATE TABLE `ark_vocabulary` (
 --
 
 INSERT INTO `ark_vocabulary` (`concept`, `type`, `source`, `namespace`, `entity`, `closed`, `transitions`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
-('core.actor.class', 'list', 'ARK Core', 'ARK\\Actor', 'Actor', 1, 0, 1, 0, 'core.actor.class', 'Actor Type'),
+('core.actor.class', 'list', 'ARK Core', 'ARK\\Security', 'Actor', 1, 0, 1, 0, 'core.actor.class', 'Actor Type'),
 ('core.event.class', 'list', 'ARK Core', 'ARK\\Workflow', 'Event', 1, 0, 1, 0, 'core.event.class', 'Core Event'),
 ('core.file.class', 'list', 'ARK Core', 'ARK\\File', 'File', 1, 0, 1, 0, 'core.file.class', 'File Type'),
 ('core.file.status', 'list', 'ARK Core', NULL, NULL, 1, 0, 1, 0, 'core.file.status', 'File Status'),
@@ -7904,10 +8207,9 @@ CREATE TABLE `ark_vocabulary_term` (
 --
 
 INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `namespace`, `entity`, `seq`, `is_default`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
-('core.actor.class', 'actor', NULL, 'ARK\\Actor', 'Actor', NULL, 0, 0, 1, 0, 'core.actor.class', ''),
-('core.actor.class', 'institution', NULL, 'ARK\\Actor', 'Institution', NULL, 0, 0, 1, 0, 'core.actor.class.institution', ''),
+('core.actor.class', 'actor', NULL, 'ARK\\Security', 'Actor', NULL, 0, 0, 1, 0, 'core.actor.class', ''),
 ('core.actor.class', 'museum', NULL, 'DIME\\Entity', 'Museum', NULL, 0, 0, 1, 0, 'core.actor.class.museum', ''),
-('core.actor.class', 'person', NULL, 'ARK\\Actor', 'Person', NULL, 0, 0, 1, 0, 'core.actor.class.person', ''),
+('core.actor.class', 'person', NULL, 'ARK\\Security', 'Person', NULL, 0, 0, 1, 0, 'core.actor.class.person', ''),
 ('core.event.class', 'accessioned', NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'dime.find.event.accessioned', ''),
 ('core.event.class', 'activated', NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'core.actor.event.activated', ''),
 ('core.event.class', 'appraised', NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'dime.find.event.appraised', ''),
@@ -8418,9 +8720,9 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `namespace`, `ent
 ('dime.find.subtype', 'coin.danish.early', NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'dime.find.subtype.coin.danish.early', ''),
 ('dime.find.subtype', 'coin.danish.hvide', NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'dime.find.subtype.coin.danish.hvide', ''),
 ('dime.find.subtype', 'coin.danish.klipping', NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'dime.find.subtype.coin.danish.klipping', ''),
-('dime.find.subtype', 'coin.danish.søsling', NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'dime.find.subtype.coin.danish.søsling', '');
+('dime.find.subtype', 'coin.danish.søsling', NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'dime.find.subtype.coin.danish.søsling', ''),
+('dime.find.subtype', 'coin.danish.sterling', NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'dime.find.subtype.coin.danish.sterling', '');
 INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `namespace`, `entity`, `seq`, `is_default`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
-('dime.find.subtype', 'coin.danish.sterling', NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'dime.find.subtype.coin.danish.sterling', ''),
 ('dime.find.subtype', 'coin.danish.unknown', NULL, NULL, NULL, NULL, 1, 0, 1, 0, 'dime.find.subtype.coin.danish.unknown', ''),
 ('dime.find.subtype', 'coin.foreign', NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'dime.find.subtype.coin.foreign', ''),
 ('dime.find.subtype', 'coin.foreign.hohlpfennig', NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'dime.find.subtype.coin.foreign.hohlpfennig', ''),
@@ -8892,9 +9194,9 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `namespace`, `ent
 ('language', 'gbz', 'dari.zoroastrian', NULL, NULL, NULL, 0, 0, 1, 0, 'language.dari.zoroastrian', ''),
 ('language', 'gd', 'gaelic.scottish', NULL, NULL, NULL, 0, 0, 1, 0, 'language.gaelic.scottish', ''),
 ('language', 'gez', 'geez', NULL, NULL, NULL, 0, 0, 1, 0, 'language.geez', ''),
-('language', 'gil', 'gilbertese', NULL, NULL, NULL, 0, 0, 1, 0, 'language.gilbertese', '');
+('language', 'gil', 'gilbertese', NULL, NULL, NULL, 0, 0, 1, 0, 'language.gilbertese', ''),
+('language', 'gl', 'galician', NULL, NULL, NULL, 0, 0, 1, 0, 'language.galician', '');
 INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `namespace`, `entity`, `seq`, `is_default`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
-('language', 'gl', 'galician', NULL, NULL, NULL, 0, 0, 1, 0, 'language.galician', ''),
 ('language', 'glk', 'gilaki', NULL, NULL, NULL, 0, 0, 1, 0, 'language.gilaki', ''),
 ('language', 'gmh', 'german.middlehigh', NULL, NULL, NULL, 0, 0, 1, 0, 'language.german.middlehigh', ''),
 ('language', 'gn', 'guarani', NULL, NULL, NULL, 0, 0, 1, 0, 'language.guarani', ''),
@@ -9644,213 +9946,6 @@ INSERT INTO `ark_workflow_condition` (`schma`, `action`, `class`, `attribute`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ark_workflow_grant`
---
-
-CREATE TABLE `ark_workflow_grant` (
-  `role` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `permission` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `ark_workflow_grant`
---
-
-INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
-('admin', 'core.actor.read'),
-('admin', 'core.actor.update'),
-('admin', 'core.admin'),
-('admin', 'core.admin.system'),
-('admin', 'core.admin.user'),
-('admin', 'core.file.read'),
-('admin', 'core.message.read'),
-('admin', 'core.message.update'),
-('admin', 'core.page.read'),
-('admin', 'dime.find.create'),
-('admin', 'dime.find.filter.finder'),
-('admin', 'dime.find.filter.museum'),
-('admin', 'dime.find.home'),
-('admin', 'dime.find.read'),
-('admin', 'dime.find.read.case'),
-('admin', 'dime.find.read.custody'),
-('admin', 'dime.find.read.finddate'),
-('admin', 'dime.find.read.finder'),
-('admin', 'dime.find.read.location'),
-('admin', 'dime.find.read.museum_id'),
-('admin', 'dime.find.read.owner'),
-('admin', 'dime.find.read.process'),
-('admin', 'dime.find.read.publish'),
-('admin', 'dime.find.read.status'),
-('admin', 'dime.find.read.treasure'),
-('admin', 'dime.find.register.any'),
-('admin', 'dime.find.treasure.claim'),
-('admin', 'dime.find.update'),
-('admin', 'dime.find.update.case'),
-('admin', 'dime.find.update.custody'),
-('admin', 'dime.find.update.finddate'),
-('admin', 'dime.find.update.finder'),
-('admin', 'dime.find.update.location'),
-('admin', 'dime.find.update.museum_id'),
-('admin', 'dime.find.update.owner'),
-('admin', 'dime.find.update.process'),
-('admin', 'dime.find.update.publish'),
-('admin', 'dime.find.update.treasure'),
-('admin', 'dime.find.workflow.action'),
-('admin', 'dime.find.workflow.action.any'),
-('anonymous', 'core.actor.read'),
-('anonymous', 'core.file.read'),
-('anonymous', 'core.page.read'),
-('anonymous', 'core.user.confirm'),
-('anonymous', 'core.user.login'),
-('anonymous', 'core.user.register'),
-('anonymous', 'core.user.reset'),
-('anonymous', 'dime.find.read'),
-('appraiser', 'core.actor.read'),
-('appraiser', 'core.actor.update'),
-('appraiser', 'core.file.read'),
-('appraiser', 'core.message.read'),
-('appraiser', 'core.message.update'),
-('appraiser', 'core.page.read'),
-('appraiser', 'dime.find.filter.finder'),
-('appraiser', 'dime.find.filter.museum'),
-('appraiser', 'dime.find.home'),
-('appraiser', 'dime.find.read'),
-('appraiser', 'dime.find.read.case'),
-('appraiser', 'dime.find.read.museum_id'),
-('appraiser', 'dime.find.read.publish'),
-('appraiser', 'dime.find.read.status'),
-('appraiser', 'dime.find.update'),
-('appraiser', 'dime.find.update.treasure'),
-('curator', 'core.actor.read'),
-('curator', 'core.actor.update'),
-('curator', 'core.file.read'),
-('curator', 'core.message.read'),
-('curator', 'core.message.update'),
-('curator', 'core.page.read'),
-('curator', 'dime.find.filter.finder'),
-('curator', 'dime.find.home'),
-('curator', 'dime.find.read.case'),
-('curator', 'dime.find.read.museum_id'),
-('curator', 'dime.find.read.status'),
-('detectorist', 'core.actor.read'),
-('detectorist', 'core.actor.update'),
-('detectorist', 'core.file.read'),
-('detectorist', 'core.message.read'),
-('detectorist', 'core.message.update'),
-('detectorist', 'core.page.read'),
-('detectorist', 'dime.find.create'),
-('detectorist', 'dime.find.filter.museum'),
-('detectorist', 'dime.find.home'),
-('detectorist', 'dime.find.read'),
-('detectorist', 'dime.find.read.case'),
-('detectorist', 'dime.find.read.museum_id'),
-('detectorist', 'dime.find.read.process'),
-('detectorist', 'dime.find.read.publish'),
-('detectorist', 'dime.find.read.status'),
-('detectorist', 'dime.find.read.treasure'),
-('detectorist', 'dime.find.update'),
-('detectorist', 'dime.find.update.case'),
-('detectorist', 'dime.find.update.publish'),
-('detectorist', 'dime.find.workflow.action'),
-('registrar', 'core.actor.read'),
-('registrar', 'core.actor.update'),
-('registrar', 'core.file.read'),
-('registrar', 'core.message.read'),
-('registrar', 'core.message.update'),
-('registrar', 'dime.find.create'),
-('registrar', 'dime.find.filter.finder'),
-('registrar', 'dime.find.home'),
-('registrar', 'dime.find.read'),
-('registrar', 'dime.find.read.case'),
-('registrar', 'dime.find.read.custody'),
-('registrar', 'dime.find.read.finddate'),
-('registrar', 'dime.find.read.finder'),
-('registrar', 'dime.find.read.location'),
-('registrar', 'dime.find.read.museum_id'),
-('registrar', 'dime.find.read.owner'),
-('registrar', 'dime.find.read.process'),
-('registrar', 'dime.find.read.publish'),
-('registrar', 'dime.find.read.status'),
-('registrar', 'dime.find.read.treasure'),
-('registrar', 'dime.find.register.any'),
-('registrar', 'dime.find.treasure.claim'),
-('registrar', 'dime.find.update'),
-('registrar', 'dime.find.update.case'),
-('registrar', 'dime.find.update.custody'),
-('registrar', 'dime.find.update.finddate'),
-('registrar', 'dime.find.update.finder'),
-('registrar', 'dime.find.update.location'),
-('registrar', 'dime.find.update.museum_id'),
-('registrar', 'dime.find.update.owner'),
-('registrar', 'dime.find.update.process'),
-('registrar', 'dime.find.update.publish'),
-('registrar', 'dime.find.update.treasure'),
-('registrar', 'dime.find.workflow.action'),
-('registrar', 'dime.find.workflow.action.any'),
-('researcher', 'core.actor.read'),
-('researcher', 'core.actor.update'),
-('researcher', 'core.file.read'),
-('researcher', 'core.message.read'),
-('researcher', 'core.message.update'),
-('researcher', 'core.page.read'),
-('researcher', 'dime.find.home'),
-('researcher', 'dime.find.read'),
-('researcher', 'dime.find.read.case'),
-('researcher', 'dime.find.read.finddate'),
-('researcher', 'dime.find.read.location'),
-('researcher', 'dime.find.read.museum_id'),
-('researcher', 'dime.find.read.publish'),
-('researcher', 'dime.find.read.status'),
-('researcher', 'dime.find.read.treasure'),
-('sysadmin', 'core.actor.read'),
-('sysadmin', 'core.actor.update'),
-('sysadmin', 'core.admin'),
-('sysadmin', 'core.admin.system'),
-('sysadmin', 'core.admin.user'),
-('sysadmin', 'core.file.read'),
-('sysadmin', 'core.message.read'),
-('sysadmin', 'core.message.update'),
-('sysadmin', 'core.page.read'),
-('sysadmin', 'dime.find.create'),
-('sysadmin', 'dime.find.filter.finder'),
-('sysadmin', 'dime.find.filter.museum'),
-('sysadmin', 'dime.find.home'),
-('sysadmin', 'dime.find.read'),
-('sysadmin', 'dime.find.read.case'),
-('sysadmin', 'dime.find.read.custody'),
-('sysadmin', 'dime.find.read.finddate'),
-('sysadmin', 'dime.find.read.finder'),
-('sysadmin', 'dime.find.read.location'),
-('sysadmin', 'dime.find.read.museum_id'),
-('sysadmin', 'dime.find.read.owner'),
-('sysadmin', 'dime.find.read.process'),
-('sysadmin', 'dime.find.read.publish'),
-('sysadmin', 'dime.find.read.status'),
-('sysadmin', 'dime.find.read.treasure'),
-('sysadmin', 'dime.find.register.any'),
-('sysadmin', 'dime.find.treasure.claim'),
-('sysadmin', 'dime.find.update'),
-('sysadmin', 'dime.find.update.case'),
-('sysadmin', 'dime.find.update.custody'),
-('sysadmin', 'dime.find.update.finddate'),
-('sysadmin', 'dime.find.update.finder'),
-('sysadmin', 'dime.find.update.location'),
-('sysadmin', 'dime.find.update.museum_id'),
-('sysadmin', 'dime.find.update.owner'),
-('sysadmin', 'dime.find.update.process'),
-('sysadmin', 'dime.find.update.publish'),
-('sysadmin', 'dime.find.update.treasure'),
-('sysadmin', 'dime.find.workflow.action'),
-('user', 'core.actor.read'),
-('user', 'core.actor.update'),
-('user', 'core.file.read'),
-('user', 'core.message.read'),
-('user', 'core.message.update'),
-('user', 'core.page.read');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `ark_workflow_notify`
 --
 
@@ -9886,115 +9981,6 @@ INSERT INTO `ark_workflow_notify` (`id`, `schma`, `action`, `class`, `attribute`
 (41, 'dime.find', 'request', 'find', 'finder', NULL, NULL),
 (55, 'dime.find', 'submit', 'find', 'museum', NULL, NULL),
 (56, 'dime.find', 'claim', 'find', 'finder', NULL, NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ark_workflow_permission`
---
-
-CREATE TABLE `ark_workflow_permission` (
-  `permission` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `description` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `ark_workflow_permission`
---
-
-INSERT INTO `ark_workflow_permission` (`permission`, `keyword`, `enabled`, `description`) VALUES
-('core.actor.create', NULL, 1, NULL),
-('core.actor.delete', NULL, 1, NULL),
-('core.actor.read', NULL, 1, NULL),
-('core.actor.register', NULL, 1, NULL),
-('core.actor.update', NULL, 1, NULL),
-('core.admin', NULL, 1, NULL),
-('core.admin.system', NULL, 1, NULL),
-('core.admin.user', NULL, 1, NULL),
-('core.event.create', NULL, 1, NULL),
-('core.event.delete', NULL, 1, NULL),
-('core.event.read', NULL, 1, NULL),
-('core.event.update', NULL, 1, NULL),
-('core.file.create', NULL, 1, NULL),
-('core.file.delete', NULL, 1, NULL),
-('core.file.read', NULL, 1, NULL),
-('core.file.update', NULL, 1, NULL),
-('core.message.create', NULL, 1, NULL),
-('core.message.delete', NULL, 1, NULL),
-('core.message.read', NULL, 1, NULL),
-('core.message.update', NULL, 1, NULL),
-('core.page.create', NULL, 1, NULL),
-('core.page.delete', NULL, 1, NULL),
-('core.page.read', NULL, 1, NULL),
-('core.page.update', NULL, 1, NULL),
-('core.user.confirm', NULL, 1, NULL),
-('core.user.login', NULL, 1, NULL),
-('core.user.logout', NULL, 1, NULL),
-('core.user.register', NULL, 1, NULL),
-('core.user.reset', NULL, 1, NULL),
-('dime.find.create', NULL, 1, NULL),
-('dime.find.delete', NULL, 1, NULL),
-('dime.find.filter.finder', NULL, 1, NULL),
-('dime.find.filter.museum', NULL, 1, NULL),
-('dime.find.home', NULL, 1, NULL),
-('dime.find.read', NULL, 1, NULL),
-('dime.find.read.case', NULL, 1, NULL),
-('dime.find.read.custody', NULL, 1, NULL),
-('dime.find.read.finddate', NULL, 1, NULL),
-('dime.find.read.finder', NULL, 1, NULL),
-('dime.find.read.location', NULL, 1, NULL),
-('dime.find.read.museum_id', NULL, 1, NULL),
-('dime.find.read.owner', NULL, 1, NULL),
-('dime.find.read.process', NULL, 1, NULL),
-('dime.find.read.publish', NULL, 1, NULL),
-('dime.find.read.status', NULL, 1, NULL),
-('dime.find.read.treasure', NULL, 1, NULL),
-('dime.find.register.any', NULL, 1, NULL),
-('dime.find.treasure.claim', NULL, 1, NULL),
-('dime.find.update', NULL, 1, NULL),
-('dime.find.update.case', NULL, 1, NULL),
-('dime.find.update.custody', NULL, 1, NULL),
-('dime.find.update.finddate', NULL, 1, NULL),
-('dime.find.update.finder', NULL, 1, NULL),
-('dime.find.update.location', NULL, 1, NULL),
-('dime.find.update.museum_id', NULL, 1, NULL),
-('dime.find.update.owner', NULL, 1, NULL),
-('dime.find.update.process', NULL, 1, NULL),
-('dime.find.update.publish', NULL, 1, NULL),
-('dime.find.update.treasure', NULL, 1, NULL),
-('dime.find.workflow.action', NULL, 1, NULL),
-('dime.find.workflow.action.any', NULL, 1, NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ark_workflow_role`
---
-
-CREATE TABLE `ark_workflow_role` (
-  `role` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `agent_for` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `level` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `ark_workflow_role`
---
-
-INSERT INTO `ark_workflow_role` (`role`, `agent_for`, `level`, `enabled`, `keyword`) VALUES
-('admin', NULL, 'ROLE_ADMIN', 1, 'core.role.admin'),
-('anonymous', NULL, 'ROLE_ANON', 1, 'core.role.anon'),
-('appraiser', 'museum', 'ROLE_USER', 1, 'dime.role.appraiser'),
-('curator', 'museum', 'ROLE_USER', 1, 'dime.role.curator'),
-('detectorist', NULL, 'ROLE_USER', 1, 'dime.role.detectorist'),
-('registrar', 'museum', 'ROLE_USER', 1, 'dime.role.registrar'),
-('researcher', 'museum', 'ROLE_USER', 1, 'dime.role.researcher'),
-('sysadmin', NULL, 'ROLE_SUPER_ADMIN', 1, 'core.role.admin'),
-('user', NULL, 'ROLE_USER', 1, 'core.role.user');
 
 -- --------------------------------------------------------
 
@@ -10331,6 +10317,28 @@ ALTER TABLE `ark_schema_item`
   ADD KEY `vocabulary_foreign` (`vocabulary`) USING BTREE;
 
 --
+-- Indexes for table `ark_security_grant`
+--
+ALTER TABLE `ark_security_grant`
+  ADD PRIMARY KEY (`role`,`permission`),
+  ADD KEY `role_foreign` (`role`) USING BTREE,
+  ADD KEY `permission_foreign` (`permission`) USING BTREE;
+
+--
+-- Indexes for table `ark_security_permission`
+--
+ALTER TABLE `ark_security_permission`
+  ADD PRIMARY KEY (`permission`),
+  ADD KEY `keyword_foreign` (`keyword`) USING BTREE;
+
+--
+-- Indexes for table `ark_security_role`
+--
+ALTER TABLE `ark_security_role`
+  ADD PRIMARY KEY (`role`),
+  ADD KEY `keyword_foreign` (`keyword`) USING BTREE;
+
+--
 -- Indexes for table `ark_translation`
 --
 ALTER TABLE `ark_translation`
@@ -10550,14 +10558,6 @@ ALTER TABLE `ark_workflow_condition`
   ADD KEY `attribute_foreign` (`schma`,`class`,`attribute`) USING BTREE;
 
 --
--- Indexes for table `ark_workflow_grant`
---
-ALTER TABLE `ark_workflow_grant`
-  ADD PRIMARY KEY (`role`,`permission`),
-  ADD KEY `role_foreign` (`role`) USING BTREE,
-  ADD KEY `permission_foreign` (`permission`) USING BTREE;
-
---
 -- Indexes for table `ark_workflow_notify`
 --
 ALTER TABLE `ark_workflow_notify`
@@ -10566,20 +10566,6 @@ ALTER TABLE `ark_workflow_notify`
   ADD KEY `keyword_foreign` (`keyword`) USING BTREE,
   ADD KEY `action_foreign` (`schma`,`action`) USING BTREE,
   ADD KEY `role_foreign` (`role`) USING BTREE;
-
---
--- Indexes for table `ark_workflow_permission`
---
-ALTER TABLE `ark_workflow_permission`
-  ADD PRIMARY KEY (`permission`),
-  ADD KEY `keyword_foreign` (`keyword`) USING BTREE;
-
---
--- Indexes for table `ark_workflow_role`
---
-ALTER TABLE `ark_workflow_role`
-  ADD PRIMARY KEY (`role`),
-  ADD KEY `keyword_foreign` (`keyword`) USING BTREE;
 
 --
 -- Indexes for table `ark_workflow_trigger`
@@ -10773,10 +10759,10 @@ ALTER TABLE `ark_model_association`
 ALTER TABLE `ark_model_attribute`
   ADD CONSTRAINT `model_attribte_event_constraint` FOREIGN KEY (`vocabulary`,`event`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `model_attribute_dataclass_constraint` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `model_attribute_edit_constraint` FOREIGN KEY (`edit_permission`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `model_attribute_edit_constraint` FOREIGN KEY (`edit_permission`) REFERENCES `ark_security_permission` (`permission`) ON UPDATE CASCADE,
   ADD CONSTRAINT `model_attribute_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `model_attribute_schema_constraint` FOREIGN KEY (`schma`) REFERENCES `ark_model_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `model_attribute_view_constraint` FOREIGN KEY (`view_permission`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `model_attribute_view_constraint` FOREIGN KEY (`view_permission`) REFERENCES `ark_security_permission` (`permission`) ON UPDATE CASCADE,
   ADD CONSTRAINT `model_attribute_vocabulary_constraint` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
 
 --
@@ -10796,12 +10782,12 @@ ALTER TABLE `ark_model_root`
 -- Constraints for table `ark_model_schema`
 --
 ALTER TABLE `ark_model_schema`
-  ADD CONSTRAINT `model_schema_edit_constraint` FOREIGN KEY (`update_permission`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `model_schema_edit_constraint` FOREIGN KEY (`update_permission`) REFERENCES `ark_security_permission` (`permission`) ON UPDATE CASCADE,
   ADD CONSTRAINT `model_schema_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON UPDATE CASCADE,
   ADD CONSTRAINT `model_schema_module_constraint` FOREIGN KEY (`module`) REFERENCES `ark_model_module` (`module`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `model_schema_new_constraint` FOREIGN KEY (`create_permission`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `model_schema_remove_constraint` FOREIGN KEY (`delete_permission`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `model_schema_view_constraint` FOREIGN KEY (`read_permission`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `model_schema_new_constraint` FOREIGN KEY (`create_permission`) REFERENCES `ark_security_permission` (`permission`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `model_schema_remove_constraint` FOREIGN KEY (`delete_permission`) REFERENCES `ark_security_permission` (`permission`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `model_schema_view_constraint` FOREIGN KEY (`read_permission`) REFERENCES `ark_security_permission` (`permission`) ON UPDATE CASCADE,
   ADD CONSTRAINT `model_schema_vocabulary_constraint` FOREIGN KEY (`class_vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
 
 --
@@ -10840,6 +10826,25 @@ ALTER TABLE `ark_schema_item`
   ADD CONSTRAINT `schema_item_vocabulary_constraint` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
 
 --
+-- Constraints for table `ark_security_grant`
+--
+ALTER TABLE `ark_security_grant`
+  ADD CONSTRAINT `workflow_grant_permission_constraint` FOREIGN KEY (`permission`) REFERENCES `ark_security_permission` (`permission`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `workflow_grant_role_constraint` FOREIGN KEY (`role`) REFERENCES `ark_security_role` (`role`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `ark_security_permission`
+--
+ALTER TABLE `ark_security_permission`
+  ADD CONSTRAINT `workflow_permission_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints for table `ark_security_role`
+--
+ALTER TABLE `ark_security_role`
+  ADD CONSTRAINT `workflow_role_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
 -- Constraints for table `ark_translation`
 --
 ALTER TABLE `ark_translation`
@@ -10876,12 +10881,12 @@ ALTER TABLE `ark_translation_role`
 --
 ALTER TABLE `ark_view_cell`
   ADD CONSTRAINT `view_cell_action_constraint` FOREIGN KEY (`action_schema`,`action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `view_cell_edit_constraint` FOREIGN KEY (`edit_permission`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `view_cell_edit_constraint` FOREIGN KEY (`edit_permission`) REFERENCES `ark_security_permission` (`permission`) ON UPDATE CASCADE,
   ADD CONSTRAINT `view_cell_element_constraint` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `view_cell_group_constraint` FOREIGN KEY (`grp`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `view_cell_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `view_cell_map_constraint` FOREIGN KEY (`map`) REFERENCES `ark_map` (`map`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `view_cell_view_constraint` FOREIGN KEY (`view_permission`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `view_cell_view_constraint` FOREIGN KEY (`view_permission`) REFERENCES `ark_security_permission` (`permission`) ON UPDATE CASCADE,
   ADD CONSTRAINT `view_cell_vocabulary_constraint` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
 
 --
@@ -10925,13 +10930,13 @@ ALTER TABLE `ark_view_nav`
 --
 ALTER TABLE `ark_view_page`
   ADD CONSTRAINT `view_page_content_constraint` FOREIGN KEY (`content`) REFERENCES `ark_view_element` (`element`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `view_page_edit_constraint` FOREIGN KEY (`edit`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `view_page_edit_constraint` FOREIGN KEY (`edit`) REFERENCES `ark_security_permission` (`permission`) ON UPDATE CASCADE,
   ADD CONSTRAINT `view_page_element_constraint` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `view_page_footer_constraint` FOREIGN KEY (`footer`) REFERENCES `ark_view_element` (`element`) ON UPDATE CASCADE,
   ADD CONSTRAINT `view_page_header_constraint` FOREIGN KEY (`header`) REFERENCES `ark_view_element` (`element`) ON UPDATE CASCADE,
   ADD CONSTRAINT `view_page_keyword_contraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `view_page_sidebar_constraint` FOREIGN KEY (`sidebar`) REFERENCES `ark_view_element` (`element`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `view_page_view_constraint` FOREIGN KEY (`view`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `view_page_view_constraint` FOREIGN KEY (`view`) REFERENCES `ark_security_permission` (`permission`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_table`
@@ -11015,7 +11020,7 @@ ALTER TABLE `ark_workflow_agency`
 --
 ALTER TABLE `ark_workflow_allow`
   ADD CONSTRAINT `workflow_allow_action_constraint` FOREIGN KEY (`schma`,`action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `workflow_allow_role_constraint` FOREIGN KEY (`role`) REFERENCES `ark_workflow_role` (`role`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `workflow_allow_role_constraint` FOREIGN KEY (`role`) REFERENCES `ark_security_role` (`role`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_workflow_condition`
@@ -11025,32 +11030,13 @@ ALTER TABLE `ark_workflow_condition`
   ADD CONSTRAINT `workflow_condition_attribute_constraint` FOREIGN KEY (`schma`,`class`,`attribute`) REFERENCES `ark_model_attribute` (`schma`, `class`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `ark_workflow_grant`
---
-ALTER TABLE `ark_workflow_grant`
-  ADD CONSTRAINT `workflow_grant_permission_constraint` FOREIGN KEY (`permission`) REFERENCES `ark_workflow_permission` (`permission`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `workflow_grant_role_constraint` FOREIGN KEY (`role`) REFERENCES `ark_workflow_role` (`role`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
 -- Constraints for table `ark_workflow_notify`
 --
 ALTER TABLE `ark_workflow_notify`
   ADD CONSTRAINT `workflow_notify_action_constraint` FOREIGN KEY (`schma`,`action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `workflow_notify_attribute_constraint` FOREIGN KEY (`schma`,`class`,`attribute`) REFERENCES `ark_model_attribute` (`schma`, `class`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `workflow_notify_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `workflow_notify_role_constraint` FOREIGN KEY (`role`) REFERENCES `ark_workflow_role` (`role`) ON UPDATE CASCADE;
-
---
--- Constraints for table `ark_workflow_permission`
---
-ALTER TABLE `ark_workflow_permission`
-  ADD CONSTRAINT `workflow_permission_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
-
---
--- Constraints for table `ark_workflow_role`
---
-ALTER TABLE `ark_workflow_role`
-  ADD CONSTRAINT `workflow_role_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `workflow_notify_role_constraint` FOREIGN KEY (`role`) REFERENCES `ark_security_role` (`role`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_workflow_trigger`

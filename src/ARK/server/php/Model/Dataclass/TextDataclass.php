@@ -29,7 +29,7 @@
 
 namespace ARK\Model\Dataclass;
 
-use ARK\Actor\Actor;
+use ARK\Security\Actor;
 use ARK\Model\Attribute;
 use ARK\Model\Fragment\Fragment;
 use ARK\Model\LocalText;

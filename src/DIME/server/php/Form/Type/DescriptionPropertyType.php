@@ -35,7 +35,7 @@ use ARK\Model\LocalText;
 use ARK\Model\Property;
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\Workflow\Event;
+use ARK\Entity\Event;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 

@@ -29,7 +29,7 @@
 
 namespace ARK\Model\Fragment;
 
-use ARK\Actor\Actor;
+use ARK\Security\Actor;
 use ARK\Model\Attribute;
 use ARK\Model\Item;
 use ARK\Model\Schema\Module;

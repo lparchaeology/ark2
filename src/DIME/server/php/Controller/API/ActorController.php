@@ -29,7 +29,7 @@
 
 namespace DIME\Controller\API;
 
-use ARK\Actor\Actor;
+use ARK\Security\Actor;
 use ARK\Framework\FormController;
 use ARK\Model\Item;
 use ARK\ORM\ORM;

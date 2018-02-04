@@ -29,10 +29,11 @@
 
 namespace ARK\Workflow;
 
-use ARK\Actor\Actor;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\Security\Actor;
+use ARK\Security\Role;
 
 class Allow
 {

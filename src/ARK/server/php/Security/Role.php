@@ -27,15 +27,13 @@
  * @since      2.0
  */
 
-namespace ARK\Workflow;
+namespace ARK\Security;
 
-use ARK\Actor\Actor;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
 use ARK\Vocabulary\Term;
-use ARK\Workflow\Security\ActorRole;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -157,7 +155,7 @@ class Role
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_workflow_role');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_security_role');
         $builder->setReadOnly();
 
         // Key
@@ -170,6 +168,6 @@ class Role
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Relationships
-        $builder->addManyToManyField('permissions', Permission::class, 'ark_workflow_grant', 'role', 'permission');
+        $builder->addManyToManyField('permissions', Permission::class, 'ark_security_grant', 'role', 'permission');
     }
 }

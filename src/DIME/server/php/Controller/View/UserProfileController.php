@@ -29,7 +29,7 @@
 
 namespace DIME\Controller\View;
 
-use ARK\Actor\Actor;
+use ARK\Security\Actor;
 use ARK\ORM\ORM;
 use ARK\Service;
 use DIME\DIME;

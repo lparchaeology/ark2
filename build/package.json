@@ -38,7 +38,7 @@
         "bootstrap-table": "^1.11.2",
         "csscomb": "^4.2.0",
         "csslint": "^1.0.5",
-        "eslint": "^4.16.0",
+        "eslint": "^4.17.0",
         "graceful-fs": "^4.1.11",
         "gulp": "^3.9.1",
         "gulp-autoprefixer": "^4.1.0",

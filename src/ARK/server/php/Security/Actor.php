@@ -27,16 +27,13 @@
  * @since      2.0
  */
 
-namespace ARK\Actor;
+namespace ARK\Security;
 
 use ARK\Model\Item;
 use ARK\Model\ItemTrait;
 use ARK\Model\LocalText;
 use ARK\Service;
 use ARK\Workflow\Action;
-use ARK\Workflow\Permission;
-use ARK\Workflow\Security\ActorRole;
-use ARK\Workflow\Security\ActorUser;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 

@@ -29,15 +29,11 @@
 
 namespace ARK\Security;
 
-use ARK\Actor\Actor;
 use ARK\Framework\Application;
 use ARK\Model\Attribute;
 use ARK\Model\Item;
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\Workflow\Role;
-use ARK\Workflow\Security\ActorRole;
-use ARK\Workflow\Security\ActorUser;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;

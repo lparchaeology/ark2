@@ -30,7 +30,6 @@
 
 namespace ARK\Security;
 
-use ARK\Actor\Actor;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
@@ -38,7 +37,6 @@ use ARK\Security\Validator\PasswordStrength;
 use ARK\Service;
 use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
-use ARK\Workflow\Security\ActorUser;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

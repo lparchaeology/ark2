@@ -9,6 +9,19 @@
     "spatial": {
         "driver": "mysql"
     },
+    "orm": {
+        "connection": {
+            "data": {
+                "mappings": [
+                    {
+                        "type": "php",
+                        "namespace": "DIME\\Entity",
+                        "path": "src/DIME/server/php/Entity"
+                    }
+                ]
+            }
+        }
+    },
     "mailer": {
         "enabled": true,
         "use_spool": true,

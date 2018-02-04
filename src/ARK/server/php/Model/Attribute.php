@@ -29,7 +29,7 @@
 
 namespace ARK\Model;
 
-use ARK\Actor\Actor;
+use ARK\Security\Actor;
 use ARK\Model\Dataclass\Dataclass;
 use ARK\Model\Fragment\Fragment;
 use ARK\ORM\ClassMetadata;

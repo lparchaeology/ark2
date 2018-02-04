@@ -29,15 +29,15 @@
 
 namespace ARK\Framework\Console\Command;
 
-use ARK\Actor\Actor;
-use ARK\Actor\Person;
+use ARK\Security\Actor;
+use ARK\Security\Person;
 use ARK\ARK;
 use ARK\Database\Console\Command\DatabaseCommand;
 use ARK\Framework\Application;
 use ARK\ORM\ORM;
 use ARK\Security\User;
 use ARK\Service;
-use ARK\Workflow\Role;
+use ARK\Security\Role;
 use Exception;
 
 class SiteMigrateLoadCommand extends DatabaseCommand

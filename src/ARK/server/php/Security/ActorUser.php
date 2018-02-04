@@ -27,12 +27,10 @@
  * @since      2.0
  */
 
-namespace ARK\Workflow\Security;
+namespace ARK\Security;
 
-use ARK\Actor\Actor;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use ARK\Security\User;
 use ARK\Service;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -130,7 +128,7 @@ class ActorUser
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_workflow_actor_user');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_security_actor_user');
 
         // Key
         $builder->addManyToOneKey('actor', Actor::class, 'actor', 'id');

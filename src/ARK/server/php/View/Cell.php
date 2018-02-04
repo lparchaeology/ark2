@@ -38,7 +38,7 @@ use ARK\ORM\ClassMetadataBuilder;
 use ARK\Service;
 use ARK\Vocabulary\Concept;
 use ARK\Workflow\Action;
-use ARK\Workflow\Permission;
+use ARK\Security\Permission;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
 

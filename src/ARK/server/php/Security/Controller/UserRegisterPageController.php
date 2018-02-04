@@ -29,8 +29,8 @@
 
 namespace ARK\Security\Controller;
 
-use ARK\Actor\Actor;
-use ARK\Actor\Person;
+use ARK\Security\Actor;
+use ARK\Security\Person;
 use ARK\Framework\PageController;
 use ARK\ORM\ORM;
 use ARK\Security\User;

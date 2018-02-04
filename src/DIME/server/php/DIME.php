@@ -29,8 +29,8 @@
 
 namespace DIME;
 
-use ARK\Actor\Actor;
-use ARK\Actor\Person;
+use ARK\Security\Actor;
+use ARK\Security\Person;
 use ARK\File\File;
 use ARK\File\MediaType;
 use ARK\Message\Notification;

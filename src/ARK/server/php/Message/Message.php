@@ -29,13 +29,13 @@
 
 namespace ARK\Message;
 
-use ARK\Actor\Actor;
 use ARK\ARK;
 use ARK\Model\Item;
 use ARK\Model\ItemTrait;
 use ARK\Model\LocalText;
+use ARK\Security\Actor;
+use ARK\Security\Role;
 use ARK\Service;
-use ARK\Workflow\Role;
 use DateTime;
 
 class Message implements Item

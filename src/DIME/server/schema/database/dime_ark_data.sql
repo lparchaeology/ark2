@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 15, 2018 at 05:01 PM
+-- Generation Time: Feb 04, 2018 at 02:06 PM
 -- Server version: 10.2.12-MariaDB
--- PHP Version: 7.1.13
+-- PHP Version: 7.2.1
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -918,6 +918,57 @@ INSERT INTO `ark_item_page` (`id`, `module`, `schma`, `class`, `status`, `visibi
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `ark_security_actor_role`
+--
+
+CREATE TABLE `ark_security_actor_role` (
+  `actor` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `role` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `agent_for` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  `expires_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ark_security_actor_role`
+--
+
+INSERT INTO `ark_security_actor_role` (`actor`, `role`, `agent_for`, `enabled`, `expires_at`) VALUES
+('admin', 'admin', 'admin', 1, NULL),
+('anonymous', 'anonymous', 'anonymous', 1, NULL),
+('detectorist', 'detectorist', 'detectorist', 1, NULL),
+('registrar', 'registrar', 'NJM', 1, NULL),
+('researcher', 'researcher', 'NJM', 1, NULL),
+('sysadmin', 'sysadmin', 'sysadmin', 1, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_security_actor_user`
+--
+
+CREATE TABLE `ark_security_actor_user` (
+  `actor` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  `expires_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ark_security_actor_user`
+--
+
+INSERT INTO `ark_security_actor_user` (`actor`, `user`, `enabled`, `expires_at`) VALUES
+('admin', 'admin', 1, NULL),
+('anonymous', 'anonymous', 1, NULL),
+('detectorist', 'detectorist', 1, NULL),
+('registrar', 'registrar', 1, NULL),
+('researcher', 'researcher', 1, NULL),
+('sysadmin', 'sysadmin', 1, NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `ark_sequence`
 --
 
@@ -935,8 +986,7 @@ CREATE TABLE `ark_sequence` (
 --
 
 INSERT INTO `ark_sequence` (`module`, `parent`, `sequence`, `idx`, `min`, `max`) VALUES
-('DIME', '', 'detectorist_id', 1, NULL, NULL),
-('object', '', 'fid', 18, NULL, NULL);
+('object', '', 'fid', 7, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -970,57 +1020,6 @@ CREATE TABLE `ark_sequence_reserve` (
   `min` int(11) NOT NULL,
   `max` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ark_workflow_actor_role`
---
-
-CREATE TABLE `ark_workflow_actor_role` (
-  `actor` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `role` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `agent_for` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `expires_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `ark_workflow_actor_role`
---
-
-INSERT INTO `ark_workflow_actor_role` (`actor`, `role`, `agent_for`, `enabled`, `expires_at`) VALUES
-('admin', 'admin', 'admin', 1, NULL),
-('anonymous', 'anonymous', 'anonymous', 1, NULL),
-('detectorist', 'detectorist', 'detectorist', 1, NULL),
-('registrar', 'registrar', 'NJM', 1, NULL),
-('researcher', 'researcher', 'NJM', 1, NULL),
-('sysadmin', 'sysadmin', 'sysadmin', 1, NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ark_workflow_actor_user`
---
-
-CREATE TABLE `ark_workflow_actor_user` (
-  `actor` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `user` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `expires_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `ark_workflow_actor_user`
---
-
-INSERT INTO `ark_workflow_actor_user` (`actor`, `user`, `enabled`, `expires_at`) VALUES
-('admin', 'admin', 1, NULL),
-('anonymous', 'anonymous', 1, NULL),
-('detectorist', 'detectorist', 1, NULL),
-('registrar', 'registrar', 1, NULL),
-('researcher', 'researcher', 1, NULL),
-('sysadmin', 'sysadmin', 1, NULL);
 
 --
 -- Indexes for dumped tables
@@ -1225,6 +1224,21 @@ ALTER TABLE `ark_item_page`
   ADD KEY `label` (`label`) USING BTREE;
 
 --
+-- Indexes for table `ark_security_actor_role`
+--
+ALTER TABLE `ark_security_actor_role`
+  ADD PRIMARY KEY (`actor`,`role`,`agent_for`),
+  ADD KEY `actor_foreign` (`actor`) USING BTREE,
+  ADD KEY `agent_foreign` (`agent_for`) USING BTREE;
+
+--
+-- Indexes for table `ark_security_actor_user`
+--
+ALTER TABLE `ark_security_actor_user`
+  ADD PRIMARY KEY (`actor`,`user`),
+  ADD KEY `actor_foreign` (`actor`) USING BTREE;
+
+--
 -- Indexes for table `ark_sequence`
 --
 ALTER TABLE `ark_sequence`
@@ -1243,21 +1257,6 @@ ALTER TABLE `ark_sequence_lock`
 ALTER TABLE `ark_sequence_reserve`
   ADD PRIMARY KEY (`module`,`parent`,`sequence`,`block`),
   ADD KEY `sequence_foreign` (`module`,`parent`,`sequence`) USING BTREE;
-
---
--- Indexes for table `ark_workflow_actor_role`
---
-ALTER TABLE `ark_workflow_actor_role`
-  ADD PRIMARY KEY (`actor`,`role`,`agent_for`),
-  ADD KEY `actor_foreign` (`actor`) USING BTREE,
-  ADD KEY `agent_foreign` (`agent_for`) USING BTREE;
-
---
--- Indexes for table `ark_workflow_actor_user`
---
-ALTER TABLE `ark_workflow_actor_user`
-  ADD PRIMARY KEY (`actor`,`user`),
-  ADD KEY `actor_foreign` (`actor`) USING BTREE;
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -1291,7 +1290,7 @@ ALTER TABLE `ark_fragment_date`
 -- AUTO_INCREMENT for table `ark_fragment_datetime`
 --
 ALTER TABLE `ark_fragment_datetime`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=132;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=158;
 
 --
 -- AUTO_INCREMENT for table `ark_fragment_decimal`
@@ -1309,25 +1308,25 @@ ALTER TABLE `ark_fragment_float`
 -- AUTO_INCREMENT for table `ark_fragment_integer`
 --
 ALTER TABLE `ark_fragment_integer`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 
 --
 -- AUTO_INCREMENT for table `ark_fragment_item`
 --
 ALTER TABLE `ark_fragment_item`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=829;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=897;
 
 --
 -- AUTO_INCREMENT for table `ark_fragment_spatial`
 --
 ALTER TABLE `ark_fragment_spatial`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=129;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=133;
 
 --
 -- AUTO_INCREMENT for table `ark_fragment_string`
 --
 ALTER TABLE `ark_fragment_string`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2395;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2506;
 
 --
 -- AUTO_INCREMENT for table `ark_fragment_text`
@@ -1345,7 +1344,7 @@ ALTER TABLE `ark_fragment_time`
 -- AUTO_INCREMENT for table `ark_sequence_lock`
 --
 ALTER TABLE `ark_sequence_lock`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=105;
 
 --
 -- Constraints for dumped tables
@@ -1430,6 +1429,19 @@ ALTER TABLE `ark_fragment_time`
   ADD CONSTRAINT `fragment_time_object_constraint` FOREIGN KEY (`object`) REFERENCES `ark_fragment_object` (`fid`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `ark_security_actor_role`
+--
+ALTER TABLE `ark_security_actor_role`
+  ADD CONSTRAINT `workflow_actor_role_actor_constraint` FOREIGN KEY (`actor`) REFERENCES `ark_item_actor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `workflow_actor_role_agent_constraint` FOREIGN KEY (`agent_for`) REFERENCES `ark_item_actor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `ark_security_actor_user`
+--
+ALTER TABLE `ark_security_actor_user`
+  ADD CONSTRAINT `workflow_actor_user_actor_constraint` FOREIGN KEY (`actor`) REFERENCES `ark_item_actor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `ark_sequence_lock`
 --
 ALTER TABLE `ark_sequence_lock`
@@ -1440,19 +1452,6 @@ ALTER TABLE `ark_sequence_lock`
 --
 ALTER TABLE `ark_sequence_reserve`
   ADD CONSTRAINT `sequence_reserve_sequence_constraint` FOREIGN KEY (`module`,`parent`,`sequence`) REFERENCES `ark_sequence` (`module`, `parent`, `sequence`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `ark_workflow_actor_role`
---
-ALTER TABLE `ark_workflow_actor_role`
-  ADD CONSTRAINT `workflow_actor_role_actor_constraint` FOREIGN KEY (`actor`) REFERENCES `ark_item_actor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `workflow_actor_role_agent_constraint` FOREIGN KEY (`agent_for`) REFERENCES `ark_item_actor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `ark_workflow_actor_user`
---
-ALTER TABLE `ark_workflow_actor_user`
-  ADD CONSTRAINT `workflow_actor_user_actor_constraint` FOREIGN KEY (`actor`) REFERENCES `ark_item_actor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 

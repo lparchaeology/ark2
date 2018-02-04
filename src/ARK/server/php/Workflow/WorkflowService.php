@@ -29,8 +29,8 @@
 
 namespace ARK\Workflow;
 
-use ARK\Actor\Actor;
-use ARK\Actor\Person;
+use ARK\Security\Actor;
+use ARK\Security\Person;
 use ARK\Model\Attribute;
 use ARK\Model\Item;
 use ARK\Model\LocalText;
@@ -39,7 +39,7 @@ use ARK\ORM\ORM;
 use ARK\Security\User;
 use ARK\Service;
 use ARK\Workflow\Exception\WorkflowException;
-use ARK\Workflow\Security\ActorUser;
+use ARK\Security\ActorUser;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 

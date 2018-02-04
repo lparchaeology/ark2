@@ -29,7 +29,7 @@
 
 namespace DIME\Controller\View;
 
-use ARK\Actor\Person;
+use ARK\Security\Person;
 use ARK\ORM\ORM;
 use Symfony\Component\HttpFoundation\Request;
 

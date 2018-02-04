@@ -27,7 +27,7 @@
  * @since      2.0
  */
 
-namespace ARK\Workflow;
+namespace ARK\Security;
 
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
@@ -71,7 +71,7 @@ class Permission
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_workflow_permission');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_security_permission');
         $builder->setReadOnly();
 
         // Key
@@ -82,6 +82,6 @@ class Permission
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Relationships
-        $builder->addManyToManyField('roles', Role::class, 'ark_workflow_grant', 'permission', 'role');
+        $builder->addManyToManyField('roles', Role::class, 'ark_security_grant', 'permission', 'role');
     }
 }

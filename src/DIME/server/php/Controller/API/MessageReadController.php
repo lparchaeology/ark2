@@ -30,7 +30,7 @@
 
 namespace DIME\Controller\API;
 
-use ARK\Actor\Actor;
+use ARK\Security\Actor;
 use ARK\Http\JsonResponse;
 use ARK\Message\Message;
 use ARK\ORM\ORM;

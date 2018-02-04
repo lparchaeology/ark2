@@ -29,7 +29,7 @@
 
 namespace ARK\Framework\Controller;
 
-use ARK\Actor\Actor;
+use ARK\Security\Actor;
 use ARK\Framework\PageController;
 use ARK\Http\Exception\ItemNotFoundHttpException;
 use ARK\ORM\ORM;

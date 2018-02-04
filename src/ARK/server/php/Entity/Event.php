@@ -27,12 +27,12 @@
  * @since      2.0
  */
 
-namespace ARK\Workflow;
+namespace ARK\Entity;
 
-use ARK\Actor\Actor;
 use ARK\ARK;
 use ARK\Model\Item;
 use ARK\Model\ItemTrait;
+use ARK\Security\Actor;
 
 class Event implements Item
 {

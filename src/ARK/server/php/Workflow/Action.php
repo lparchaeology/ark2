@@ -29,7 +29,7 @@
 
 namespace ARK\Workflow;
 
-use ARK\Actor\Actor;
+use ARK\Security\Actor;
 use ARK\Message\Notification;
 use ARK\Model\Attribute;
 use ARK\Model\Item;

@@ -29,13 +29,13 @@
 
 namespace ARK\View;
 
-use ARK\Actor\Actor;
+use ARK\Security\Actor;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
 use ARK\Vocabulary\Term;
-use ARK\Workflow\Permission;
+use ARK\Security\Permission;
 
 class Page extends Element
 {

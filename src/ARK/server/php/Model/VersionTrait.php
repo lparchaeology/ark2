@@ -29,7 +29,7 @@
 
 namespace ARK\Model;
 
-use ARK\Actor\Actor;
+use ARK\Security\Actor;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Service;
 use DateTime;

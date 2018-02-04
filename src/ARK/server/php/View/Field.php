@@ -29,7 +29,7 @@
 
 namespace ARK\View;
 
-use ARK\Actor\Actor;
+use ARK\Security\Actor;
 use ARK\Form\Type\StaticType;
 use ARK\Model\Item;
 use ARK\Model\KeywordTrait;

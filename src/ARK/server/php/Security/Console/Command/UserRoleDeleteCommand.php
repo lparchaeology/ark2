@@ -34,8 +34,8 @@ use ARK\Console\Command\AbstractCommand;
 use ARK\ORM\ORM;
 use ARK\Security\User;
 use ARK\Service;
-use ARK\Workflow\Role;
-use ARK\Workflow\Security\ActorRole;
+use ARK\Security\Role;
+use ARK\Security\ActorRole;
 
 class UserRoleDeleteCommand extends AbstractCommand
 {

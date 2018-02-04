@@ -29,7 +29,7 @@
 
 namespace ARK\Workflow;
 
-use ARK\Actor\Actor;
+use ARK\Security\Actor;
 use ARK\Model\Item;
 use ARK\Model\Schema\SchemaAttribute;
 use ARK\ORM\ClassMetadata;

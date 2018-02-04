@@ -8,7 +8,7 @@
 
 namespace DIME\Entity;
 
-use ARK\Actor\Actor;
+use ARK\Security\Actor;
 
 class Museum extends Actor
 {

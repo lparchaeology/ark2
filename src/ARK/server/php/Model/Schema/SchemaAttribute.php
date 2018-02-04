@@ -33,7 +33,7 @@ use ARK\Model\Attribute;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Vocabulary\Term;
-use ARK\Workflow\Permission;
+use ARK\Security\Permission;
 
 class SchemaAttribute extends Attribute
 {

@@ -29,13 +29,13 @@
 
 namespace DIME\Controller\API;
 
-use ARK\Actor\Actor;
+use ARK\Security\Actor;
 use ARK\Framework\FormController;
 use ARK\ORM\ORM;
 use ARK\Security\User;
 use ARK\Service;
 use ARK\Translation\Translation;
-use ARK\Workflow\Role;
+use ARK\Security\Role;
 use DIME\DIME;
 use DIME\Entity\Museum;
 use Symfony\Component\Form\Form;

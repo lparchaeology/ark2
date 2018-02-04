@@ -315,7 +315,7 @@ class SiteMigrateMapCommand extends SiteMigrateInfoCommand
         $module['project'] = 'ARK';
         $module['namespace'] = 'ARK\Actor';
         $module['entity'] = 'Site';
-        $module['classname'] = 'ARK\Actor\Actor';
+        $module['classname'] = 'ARK\Security\Actor';
         $module['tbl'] = 'ark_item_site';
         $module['core'] = true;
         $module['keyword'] = 'core.module.actor';
