@@ -264,8 +264,6 @@ trait ItemTrait
         $classname = get_called_class();
         $entity = Service::database()->getEntityForClassName($classname);
         if (!$entity || ($entity['subclasses'] && !$entity['superclass'])) {
-            dump($classname);
-            dump($entity);
             return;
         }
         $classnames[] = $entity['classname'];
