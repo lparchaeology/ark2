@@ -66,6 +66,7 @@ $(document).ready(function () {
             //'initialPreviewAsData': true,
             'minFileCount': 0,
             'maxFileCount': 3,
+            'maxFileSize': 8192,
             'deleteUrl': "../true.json",
             'uploadUrl': "../api/internal/file",
             'uploadAsync': false,
@@ -103,14 +104,13 @@ $(document).ready(function () {
             var thumbnails = $('.file-preview-success');
             console.log(thumbnails);
             console.log(thumbnails.length);
-
             var response = $("#find_image_existing").data('uploadResponse');
+            console.log(response);
             var uploadPreview = $("#find_image_existing").data('uploadPreview');
             for (index in response){
                 var thumbnail = thumbnails.length - response.length + parseInt(index);
                 uploadPreview[response[index]]=thumbnails[thumbnail];
             }
-            console.log({"uploadPreview":uploadPreview});
         }).on('filesuccessremove', function (event, id) {
             var form_root_array = $(this).closest(".file-input").find("input[type=file]").attr('id').split("_");
             form_root_array.splice(-1, 1);
