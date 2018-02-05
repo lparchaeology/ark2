@@ -71,13 +71,14 @@ class Message implements Item
     {
         $dispatches = [];
         foreach ($recipients as $recipient) {
-            $dispatches[]['status'] = 'unread';
+            $dispatch['status'] = 'unread';
             if ($recipient instanceof Actor) {
-                $dispatches[]['recipient'] = $recipient;
+                $dispatch['recipient'] = $recipient;
             }
             if ($recipient instanceof Role) {
-                $dispatches[]['role'] = $recipient->id();
+                $dispatch['role'] = $recipient->id();
             }
+            $dispatches[] = $dispatch;
         }
         $this->setValue('recipients', $dispatches);
     }

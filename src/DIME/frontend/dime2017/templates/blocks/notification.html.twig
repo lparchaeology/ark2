@@ -6,7 +6,7 @@
         <br/>
         {{ notification.event.subject.schema | translate ~ ' ' ~  notification.event.subject.id }}
     </a>
-    <span class="markasread" href="{{ path('api.internal.message.read') }}"
+    <span class="markasread" href="{{ path('dime.api.message.read') }}"
     message="{{ notification.id }}"
     recipient="{{ workflow.actor.id }}">
         &times;

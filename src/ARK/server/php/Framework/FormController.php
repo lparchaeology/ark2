@@ -92,6 +92,7 @@ abstract class FormController extends Controller
             $json['status'] = $e->getCode();
             $json['message'] = $e->getMessage();
         }
+        dump($json);
         return new JsonResponse($json);
     }
 
