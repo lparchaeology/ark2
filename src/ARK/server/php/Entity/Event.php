@@ -33,6 +33,7 @@ use ARK\ARK;
 use ARK\Model\Item;
 use ARK\Model\ItemTrait;
 use ARK\Security\Actor;
+use ARK\Workflow\Action;
 
 class Event implements Item
 {
