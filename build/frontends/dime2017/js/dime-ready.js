@@ -205,4 +205,46 @@ $(document).ready(function () {
         });
         $(this).closest('form#action').find('#action_selected').val(items);
     });
+
+    //This will detect for form changes and alert the user if data will be closest
+    var is_dirty = false;
+    window.answer = false;
+
+    // after a short delay so we don't catch our changes attach a listener to input to see if the form gets changed
+    setTimeout(function () {
+      $("form#find").each(function(){
+        $(this).find(':input').change(function() {
+            console.log("dirty");
+              if(!is_dirty){
+                  // When the user changes a field on this page, set our is_dirty flag.
+                  is_dirty = true;
+              }
+          });
+        });
+      }, 300);
+
+    // sadly we can't intercept browser events because of "security", we can capture anchor clicks
+    $('a').mousedown(function(e) {
+        if(is_dirty) {
+            // if the user navigates away from this page via an anchor link,
+            //    popup a new bootbox confirmation.
+            bootbox.confirm(Translator.trans("dime.confirmnavigation"), function(response){
+              console.log(response);
+              window.answer = response;
+              if (response){
+                e.target.click();
+              }
+            });
+        }
+    });
+
+    // if the other link doesn't activate (answer) then use the default catch - Even Facey B is stuck with this workaround
+    window.onbeforeunload = function() {
+    if((is_dirty)&&(!window.answer)){
+                // call this if the box wasn't shown.
+        return Translator.trans("dime.confirmnavigation");
+        }
+    };
+
+
 });

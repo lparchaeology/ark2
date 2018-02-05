@@ -26,4 +26,8 @@ $('document').ready(function () {
 
     $('.icon-user-focus').on("click", { "target": this }, adminUserSelected);
 
+    $('table.bootstrap-table').on('page-change.bs.table', function(){
+      $('.icon-user-focus').on("click", { "target": this }, adminUserSelected);
+    });
+
 });
