@@ -29,7 +29,7 @@
 
 namespace ARK\Workflow;
 
-use ARK\Security\Actor;
+use ARK\Entity\Event;
 use ARK\Message\Notification;
 use ARK\Model\Attribute;
 use ARK\Model\Item;
@@ -39,6 +39,7 @@ use ARK\Model\Schema\Schema;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
+use ARK\Security\Actor;
 use ARK\Vocabulary\Term;
 use ARK\Workflow\Exception\ActionConditionNotMetException;
 use ARK\Workflow\Exception\ActionNoAgencyException;

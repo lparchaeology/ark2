@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 05, 2018 at 11:29 AM
+-- Generation Time: Feb 05, 2018 at 01:23 PM
 -- Server version: 10.2.12-MariaDB
 -- PHP Version: 7.1.13
 
@@ -75,7 +75,7 @@ INSERT INTO `ark_dataclass` (`dataclass`, `datatype`, `object`, `array`, `span`,
 ('dispatch', 'object', 1, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, 1, 0, 'format.recipient'),
 ('distance', 'decimal', 0, 0, 0, 0, NULL, NULL, NULL, 'unit', 'distance', NULL, 'ARK\\Form\\Type\\UnitPropertyType', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, 1, 1, 1, 0, 'format.distance'),
 ('email', 'string', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.email'),
-('event', 'item', 1, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 'ARK\\Workflow\\Event', NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, 1, 0, 'format.event'),
+('event', 'item', 1, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 'ARK\\Entity\\Event', NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, 1, 0, 'format.event'),
 ('false', 'boolean', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.boolean'),
 ('file', 'item', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 'ARK\\File\\File', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\FileType', NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'format.file'),
 ('float', 'float', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.float'),
@@ -7420,7 +7420,7 @@ CREATE TABLE `ark_vocabulary` (
 
 INSERT INTO `ark_vocabulary` (`concept`, `type`, `source`, `namespace`, `entity`, `closed`, `transitions`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
 ('core.actor.class', 'list', 'ARK Core', 'ARK\\Security', 'Actor', 1, 0, 1, 0, 'core.actor.class', 'Actor Type'),
-('core.event.class', 'list', 'ARK Core', 'ARK\\Workflow', 'Event', 1, 0, 1, 0, 'core.event.class', 'Core Event'),
+('core.event.class', 'list', 'ARK Core', 'ARK\\Entity', 'Event', 1, 0, 1, 0, 'core.event.class', 'Core Event'),
 ('core.file.class', 'list', 'ARK Core', 'ARK\\File', 'File', 1, 0, 1, 0, 'core.file.class', 'File Type'),
 ('core.file.status', 'list', 'ARK Core', NULL, NULL, 1, 0, 1, 0, 'core.file.status', 'File Status'),
 ('core.form.modus', 'list', 'ARK Core', NULL, NULL, 1, 0, 1, 0, 'core.form.mode', 'Form field modes'),
