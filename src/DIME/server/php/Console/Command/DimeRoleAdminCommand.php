@@ -29,8 +29,8 @@
 
 namespace DIME\Console\Command;
 
-use ARK\Actor\Actor;
-use ARK\Actor\Person;
+use ARK\Security\Actor;
+use ARK\Security\Person;
 use ARK\ARK;
 use ARK\Console\Command\AbstractCommand;
 use ARK\ORM\ORM;

@@ -44,6 +44,9 @@ class MessageController extends FormController
     {
         $id = $request->attributes->get('id');
         $data['message'] = ORM::find(Message::class, $id);
+        dump($data['message']);
+        dump($data['message']->value('event')->value('id'));
+        dump($data['message']->value('event'));
         return $data;
     }
 

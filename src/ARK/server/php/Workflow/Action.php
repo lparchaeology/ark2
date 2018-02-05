@@ -248,6 +248,7 @@ class Action
             // Create Event
             $event = new Event($actor, $this, $item);
             ORM::persist($event);
+            dump($event);
             // Apply Updates
             foreach ($this->updates as $update) {
                 $update->apply($actor, $item, $subject);
@@ -258,6 +259,7 @@ class Action
             if ($recipients) {
                 $notification = new Notification($actor, $recipients, $event, $message);
                 ORM::persist($notification);
+                dump($notification);
             }
         }
     }
