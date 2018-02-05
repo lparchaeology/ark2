@@ -29,6 +29,7 @@
 
 namespace ARK\Framework\Provider;
 
+use ARK\Form\Extension\DataCollector\FormDataCollector;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Provider\VarDumperServiceProvider;
@@ -41,10 +42,18 @@ class DebugServiceProvider implements ServiceProviderInterface
     {
         // Must always have registered, otherwise stray dump() calls will crash app
         $container->register(new VarDumperServiceProvider());
+
+        // All other debug features only if turned on
         if ($container['debug']) {
             $container->register(new WebProfilerServiceProvider(), [
                 'profiler.cache_dir' => $container['dir.cache'].'/profiler',
             ]);
+
+            // HACK Fix to stop form profiler exhausting memory on large forms/tables
+            $container->extend('data_collectors.form.collector', function ($app) {
+                return new FormDataCollector();
+            });
+
             // HACK Fix to work-around bug in the profiler not finding the dump template
             $container['profiler.templates_path.debug'] = function () {
                 $r = new \ReflectionClass('Symfony\Bundle\DebugBundle\DependencyInjection\Configuration');
@@ -56,9 +65,10 @@ class DebugServiceProvider implements ServiceProviderInterface
                 'dev_area',
                 ['pattern' => '^/(_(profiler|wdt)|css|images|js)/', 'anonymous' => true]
             );
+
             // Modified Translation template for editing translations
             $container['data_collector.templates'] = $container->extend('data_collector.templates', function ($templates) {
-                $templates[] = array('translation', 'profiler/translation.html.twig');
+                $templates[] = ['translation', 'profiler/translation.html.twig'];
                 return $templates;
             });
         }
