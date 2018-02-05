@@ -29,6 +29,7 @@
 
 namespace DIME\Form\Type;
 
+use ARK\Entity\Event;
 use ARK\Form\Type\AbstractPropertyType;
 use ARK\Model\Property;
 use ARK\ORM\ORM;
