@@ -34,6 +34,7 @@ use ARK\ORM\ORM;
 use ARK\Security\User;
 use ARK\Service;
 use ARK\Translation\Translation;
+use ARK\Vocabulary\Vocabulary;
 use DIME\Entity\Museum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\Form;
@@ -59,7 +60,13 @@ class AdminUserController extends DimePageController
     public function buildData(Request $request)
     {
         $query = $request->query->all();
-        $users = isset($query['status']) ? User::findByStatus($query['status']) : User::findAll();
+        $status = $query['status'] ?? null;
+        if ($status) {
+            $data['filter']['status'] = Vocabulary::findTerm('core.security.user.status', $status);
+            $users = User::findByStatus($status);
+        } else {
+            $users = User::findAll();
+        }
 
         $actors = [];
         foreach ($users as $user) {
