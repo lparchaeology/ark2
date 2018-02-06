@@ -1,4 +1,5 @@
 // Pure JavaScript code for routing
+// Global object using Revealing Module pattern
 
 var Router = (function () {
 
