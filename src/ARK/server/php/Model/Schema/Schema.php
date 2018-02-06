@@ -38,6 +38,7 @@ use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
+use ARK\Routing\Route;
 use ARK\Security\Permission;
 use ARK\Vocabulary\Concept;
 use ARK\Vocabulary\Term;
@@ -52,6 +53,7 @@ class Schema
 
     protected $name;
     protected $module;
+    protected $route;
     protected $hasSubclassEntities;
     protected $classAttributeName;
     protected $generator;
@@ -85,6 +87,11 @@ class Schema
     public function module() : Module
     {
         return $this->module;
+    }
+
+    public function route() : ?Route
+    {
+        return $this->route;
     }
 
     public function hasSubclassEntities() : bool
@@ -241,6 +248,7 @@ class Schema
 
         // Associations
         $builder->addRequiredManyToOneField('module', Module::class);
+        $builder->addManyToOneField('route', Route::class);
         $builder->addVocabularyField('class_vocabulary', 'classVocabulary');
         $builder->addPermissionField('create_permission', 'createPermission');
         $builder->addPermissionField('read_permission', 'readPermission');

@@ -4,7 +4,7 @@
     <a class = "messagetext" href="{{ path('dime.home.messages' ) }}">
         {{ notification.event.term | translate }}
         <br/>
-        {{ notification.event.subject.schema | translate ~ ' ' ~  notification.event.subject.id }}
+        {{ notification.event.object.schema | translate ~ ' ' ~  notification.event.object.id }}
     </a>
     <span class="markasread" href="{{ path('dime.api.message.read') }}"
     message="{{ notification.id }}"

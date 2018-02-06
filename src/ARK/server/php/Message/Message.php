@@ -30,13 +30,17 @@
 namespace ARK\Message;
 
 use ARK\ARK;
+use ARK\Model\Fragment\ItemFragment;
 use ARK\Model\Item;
 use ARK\Model\ItemTrait;
 use ARK\Model\LocalText;
+use ARK\ORM\ORM;
 use ARK\Security\Actor;
 use ARK\Security\Role;
 use ARK\Service;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 class Message implements Item
 {
@@ -136,5 +140,67 @@ class Message implements Item
             }
         }
         return false;
+    }
+
+    public static function findSentBy(Actor $actor) : Collection
+    {
+        $frags = ORM::findBy(
+            ItemFragment::class,
+            [
+                'module' => 'message',
+                'attribute' => 'sender',
+                'parameter' => 'actor',
+                'value' => $actor->id(),
+            ]
+        );
+        $messages = new ArrayCollection();
+        foreach ($frags as $frag) {
+            $message = $frag->owner();
+            $messages->set((int) $message->id(), $message);
+        }
+        return $messages;
+    }
+
+    public static function findReceivedBy(Actor $actor) : Collection
+    {
+        $frags = ORM::findBy(
+            ItemFragment::class,
+            [
+                'module' => 'message',
+                'attribute' => 'recipient',
+                'parameter' => 'actor',
+                'value' => $actor->id(),
+            ]
+        );
+        $messages = new ArrayCollection();
+        foreach ($frags as $frag) {
+            $message = $frag->owner();
+            $messages->set((int) $message->id(), $message);
+        }
+        return $messages;
+    }
+
+    public static function findUnreadBy(Actor $actor) : Collection
+    {
+        $received = self::findReceivedBy($actor);
+        $unread = new ArrayCollection();
+        foreach ($received as $id => $message) {
+            if (!$message->wasReadBy($actor)) {
+                $unread->set($id, $message);
+            }
+        }
+        return $unread;
+    }
+
+    public static function findReadBy(Actor $actor) : Collection
+    {
+        $received = self::findReceivedBy($actor);
+        $read = new ArrayCollection();
+        foreach ($received as $id => $message) {
+            if ($message->wasReadBy($actor)) {
+                $read->set($id, $message);
+            }
+        }
+        return $read;
     }
 }

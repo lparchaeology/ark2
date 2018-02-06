@@ -248,6 +248,16 @@ trait ItemTrait
         ORM::remove($this);
     }
 
+    public function sourcePath() : string
+    {
+        return Service::itemPath($this);
+    }
+
+    public function sourceUrl() : string
+    {
+        return Service::itemUrl($this);
+    }
+
     public static function find(string $id) : ?self
     {
         return ORM::find(get_called_class(), $id);

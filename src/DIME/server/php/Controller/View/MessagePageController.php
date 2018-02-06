@@ -50,7 +50,8 @@ class MessagePageController extends DimePageController
     public function buildData(Request $request)
     {
         $actor = Service::workflow()->actor();
-        $status = $request->query->get('status');
+        $status = $request->query->get('status') ?? 'unread';
+        $data['filter']['status'] = Vocabulary::findTerm('dime.message.status.search', $status);
         $data['messages']['items'] = DIME::getNotifications($actor, $status);
         $msg = $request->query->get('id');
         if ($msg) {

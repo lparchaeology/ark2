@@ -29,13 +29,13 @@
 
 namespace DIME;
 
-use ARK\Security\Actor;
-use ARK\Security\Person;
 use ARK\File\File;
 use ARK\File\MediaType;
-use ARK\Message\Notification;
+use ARK\Message\Message;
 use ARK\Model\Fragment\DateFragment;
 use ARK\ORM\ORM;
+use ARK\Security\Actor;
+use ARK\Security\Person;
 use ARK\Service;
 use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
@@ -93,19 +93,43 @@ class DIME
         return null;
     }
 
-    public static function getNotifications(Actor $actor, string $status = null) : Collection
+    public static function getNotifications(Actor $actor, string $status = 'unread') : Collection
     {
         if ($actor->id() === 'anonymous') {
             return new ArrayCollection();
         }
-        $msgIds = Service::database()->getActorMessages($actor->id(), $status);
-        foreach ($actor->roles() as $role) {
-            $msgIds = array_merge($msgIds, Service::database()->getRoleMessages($role->role()->id(), $status));
-            if ($role->isAgent()) {
-                $msgIds = array_merge($msgIds, Service::database()->getActorMessages($role->agentFor()->id(), $status));
+
+        $messages = [];
+
+        if ($status === 'unread') {
+            $messages = Message::findUnreadBy($actor)->toArray();
+            foreach ($actor->agencies() as $agentFor) {
+                $messages = array_merge($messages, Message::findUnreadBy($agentFor)->toArray());
             }
         }
-        return ORM::findBy(Notification::class, ['id' => $msgIds], ['created' => 'DESC']);
+
+        if ($status === 'read') {
+            $messages = Message::findReadBy($actor)->toArray();
+            foreach ($actor->agencies() as $agentFor) {
+                $messages = array_merge($messages, Message::findReadBy($agentFor)->toArray());
+            }
+        }
+
+        if ($status === 'received' || $status === 'all') {
+            $messages = Message::findReceivedBy($actor)->toArray();
+            foreach ($actor->agencies() as $agentFor) {
+                $messages = array_merge($messages, Message::findReceivedBy($agentFor)->toArray());
+            }
+        }
+
+        if ($status === 'sent' || $status === 'all') {
+            $messages = array_merge($messages, Message::findSentBy($actor)->toArray());
+            foreach ($actor->agencies() as $agentFor) {
+                $messages = array_merge($messages, Message::findSentBy($agentFor)->toArray());
+            }
+        }
+        krsort($messages);
+        return new ArrayCollection(array_values($messages));
     }
 
     public static function publishFinds(Actor $actor = null) : iterable
