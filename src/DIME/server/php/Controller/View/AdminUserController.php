@@ -59,7 +59,7 @@ class AdminUserController extends DimePageController
                 $actors->add($user->actor());
             }
         }
-        $data['actors']['items'] = new ArrayCollection($actors);
+        $data['actors']['items'] = $actors;
 
         $data['actor'] = null;
         $data['user'] = null;
