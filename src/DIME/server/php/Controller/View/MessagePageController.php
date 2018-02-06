@@ -44,7 +44,6 @@ class MessagePageController extends DimePageController
     {
         $state = parent::buildState($request, $data);
         $state['event_vocabulary'] = Vocabulary::find('core.event.class');
-        dump($state);
         return $state;
     }
 
@@ -60,8 +59,6 @@ class MessagePageController extends DimePageController
                 $data['message'] = $message;
             }
         }
-        dump($data);
-        dump($data['messages']['items'][0]->value('recipients'));
         return $data;
     }
 
