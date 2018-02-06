@@ -58,6 +58,7 @@ class User implements AdvancedUserInterface, Serializable
     protected $name;
     protected $level = 'ROLE_ANON';
     protected $levels;
+    protected $system = false;
     protected $enabled = false;
     protected $activated = false;
     protected $verified = false;
@@ -179,6 +180,11 @@ class User implements AdvancedUserInterface, Serializable
             return Vocabulary::findTerm('core.security.user.status', 'verified');
         }
         return Vocabulary::findTerm('core.security.user.status', 'registered');
+    }
+
+    public function isSystemUser() : bool
+    {
+        return $this->system;
     }
 
     // AdvancedUserInterface
@@ -448,6 +454,11 @@ class User implements AdvancedUserInterface, Serializable
         }
     }
 
+    public function actor() : Actor
+    {
+        return Actor::find($this->id());
+    }
+
     public function actors() : iterable
     {
         $aus = ORM::findBy(ActorUser::class, ['user' => $this->id()]);
@@ -581,6 +592,7 @@ class User implements AdvancedUserInterface, Serializable
         $builder->addStringField('password', 255);
         $builder->addStringField('name', 100);
         $builder->addStringField('level', 30);
+        $builder->addField('system', 'boolean');
         $builder->addField('enabled', 'boolean');
         $builder->addField('activated', 'boolean');
         $builder->addField('verified', 'boolean');

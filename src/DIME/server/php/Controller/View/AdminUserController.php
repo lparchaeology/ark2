@@ -42,21 +42,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class AdminUserController extends DimePageController
 {
-    public function buildState(Request $request, $data) : iterable
-    {
-        $state = parent::buildState($request, $data);
-        $state['image'] = 'avatar';
-        $select['choices'] = ORM::findAll(Museum::class);
-        $select['choice_value'] = 'id';
-        $select['choice_name'] = 'id';
-        $select['choice_label'] = 'fullname';
-        $select['multiple'] = false;
-        $select['placeholder'] = Translation::translate('core.placeholder');
-        $state['select']['museum'] = $select;
-        $state['controls']['actor'] = true;
-        return $state;
-    }
-
     public function buildData(Request $request)
     {
         $query = $request->query->all();
@@ -68,18 +53,37 @@ class AdminUserController extends DimePageController
             $users = User::findAll();
         }
 
-        $actors = [];
+        $actors = new ArrayCollection();
         foreach ($users as $user) {
-            $actors = array_merge($actors, $user->actors()->toArray());
+            if (!$user->isSystemUser()) {
+                $actors->add($user->actor());
+            }
         }
         $data['actors']['items'] = new ArrayCollection($actors);
 
         $data['actor'] = null;
         $data['user'] = null;
         $data['roles'] = null;
-        $actor = Service::workflow()->actor();
-        $data['action'] = Service::workflow()->actions($actor, $actor);
         return $data;
+    }
+
+    public function buildState(Request $request, $data) : iterable
+    {
+        $state = parent::buildState($request, $data);
+
+        $state['image'] = 'avatar';
+
+        $select['choices'] = ORM::findAll(Museum::class);
+        $select['choice_value'] = 'id';
+        $select['choice_name'] = 'id';
+        $select['choice_label'] = 'fullname';
+        $select['multiple'] = false;
+        $select['placeholder'] = Translation::translate('core.placeholder');
+        $state['select']['museum'] = $select;
+
+        $state['controls']['actor'] = true;
+
+        return $state;
     }
 
     public function processForm(Request $request, Form $form) : void
@@ -106,6 +110,9 @@ class AdminUserController extends DimePageController
 
     protected function item($data) : ?Item
     {
-        return Service::workflow()->actor();
+        if (isset($data['filter']['status']) && $data['actors']['items']->count() > 0) {
+            return $data['actors']['items']->first();
+        }
+        return null;
     }
 }
