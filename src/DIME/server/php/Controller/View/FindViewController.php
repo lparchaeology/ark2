@@ -71,82 +71,82 @@ class FindViewController extends DimePageController
         $id = $request->attributes->get('id');
         $parameters['id'] = $id;
         $request->attributes->set('parameters', $parameters);
-
-        $actor = Service::workflow()->actor();
         $clicked = $form->getClickedButton()->getName();
-        $update = false;
-        $alert = null;
 
+        // If Clone button clicked, redirect to the add page
+        if ($clicked === 'clone') {
+            $request->attributes->set('redirect', 'dime.finds.add');
+            return;
+        }
+
+        // Setup for Action processing
+        $action = null;
+        $actor = Service::workflow()->actor();
+        $find = null;
+        $agency = null;
+        $message = null;
+
+        // Get the Find
         if ($form->getName() === 'find') {
             $find = $form->getData();
         } elseif ($form->getName() === 'workflow') {
             $find = ORM::find(Find::class, $id);
-            $message = null;
             if (isset($form['message'])) {
                 $message = $form['message']->getData();
                 $message = $message ? new LocalText($message, Service::locale()) : null;
             }
         }
 
-        if ($clicked === 'clone') {
-            $request->attributes->set('redirect', 'dime.finds.add');
-        }
-
+        // Get the Action to be applied to the Find
         if ($clicked === 'save') {
-            Service::workflow()->apply($actor, 'edit', $find);
-            $alert = 'dime.find.update.saved';
-            $update = true;
+            // If clicked Save button then Edit
+            $action = Action::find($find->schema()->id(), 'edit');
+        } elseif ($clicked === 'apply') {
+            // If clicked Apply button then selected Action
+            $action = $form['actions']->getNormData();
+        } else {
+            // Otherwise clicked a custom button with Action name
+            $action = Action::find($find->schema()->id(), $clicked);
         }
 
-        if (in_array($clicked, ['report', 'submit', 'send'], true)) {
-            $action = Action::find($find->schema()->id(), $clicked);
-            $action->apply($actor, $find, $find->value('museum'), $message);
-            $alert = $action->keyword().'.success';
-            $update = true;
+        // If we don't have an Action, redisplay...
+        if (!$action) {
+            return;
         }
 
-        if ($clicked === 'withhold') {
-            $action = Action::find($find->schema()->id(), $clicked);
-            Service::workflow()->apply($actor, 'withhold', $find);
+        // If one of the Send actions, get the Museum to send to
+        if (in_array($action->name(), ['report', 'submit', 'send'], true)) {
+            $agency = $find->value('museum');
+        }
+
+        // Apply the Action
+        $action->apply($actor, $find, $agency, $message);
+
+        // If Withhold, set the 1 year embargo period
+        if ($action->name() === 'withhold') {
             $publish = ARK::timestamp();
             $publish->add(new DateInterval('P1Y'));
             $find->setValue('publish', $publish);
-            $alert = $action->keyword().'.success';
-            $update = true;
         }
 
-        if (in_array($clicked, ['publish', 'discard', 'destroy', 'lose', 'recover'], true)) {
-            $action = Action::find($find->schema()->id(), $clicked);
-            $action->apply($actor, $find, null, $message);
-            $alert = $action->keyword().'.success';
-            $update = true;
+        // If Claim, generate the Treasure PDF
+        if ($action->name() === 'claim') {
+            $file = DIME::generateTreasureClaimFile([$find], $find->value('museum'), $find->value('finder'), $actor);
+            $find->setValue('claim', $file);
         }
 
-        if ($clicked === 'apply') {
-            $action = $form['actions']->getNormData();
-            if ($action) {
-                $action->apply($actor, $find, null, $message);
-                $alert = $action->keyword().'.success';
-                $update = true;
-            }
-            if ($action->name() === 'claim') {
-                $file = DIME::generateTreasureClaimFile([$find], $find->value('museum'), $find->value('finder'), $actor);
-                $find->setValue('claim', $file);
-            }
+        // Save the changes
+        ORM::flush($find);
+
+        // HACK Workaround bug in ObjectFragment not rehydrating...
+        if (isset($file)) {
+            $frag = ORM::findOneBy(StringFragment::class, ['module' => 'file', 'item' => $file->id(), 'attribute' => 'name']);
+            $frag->setValue('Danefae'.$file->id().'.pdf');
+            ORM::flush($frag);
         }
 
-        if ($update) {
-            ORM::flush($find);
-            // HACK Workaround bug in ObjectFragment not rehydrating...
-            if (isset($file)) {
-                $frag = ORM::findOneBy(StringFragment::class, ['module' => 'file', 'item' => $file->id(), 'attribute' => 'name']);
-                $frag->setValue('Danefae'.$file->id().'.pdf');
-                ORM::flush($frag);
-            }
-        }
-        if ($alert) {
-            Service::view()->addSuccessFlash($alert);
-        }
+        // Show the Action success message
+        Service::view()->addSuccessFlash($action->keyword().'.success');
     }
 
     protected function item($data) : ?Item
