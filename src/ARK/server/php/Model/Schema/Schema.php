@@ -54,6 +54,7 @@ class Schema
     protected $name;
     protected $module;
     protected $route;
+    protected $hasAbstractSuperclass;
     protected $hasSubclassEntities;
     protected $classAttributeName;
     protected $generator;
@@ -92,6 +93,11 @@ class Schema
     public function route() : ?Route
     {
         return $this->route;
+    }
+
+    public function hasAbstractSuperclass() : bool
+    {
+        return $this->hasAbstractSuperclass;
     }
 
     public function hasSubclassEntities() : bool
@@ -239,6 +245,7 @@ class Schema
 
         // Fields
         $builder->addMappedStringField('class_attribute', 'classAttributeName', 30);
+        $builder->addMappedField('abstract', 'hasAbstractSuperclass', 'boolean');
         $builder->addMappedField('subclasses', 'hasSubclassEntities', 'boolean');
         $builder->addStringField('generator', 30);
         $builder->addStringField('sequence', 30);
@@ -290,7 +297,7 @@ class Schema
         $this->subclassNames = [];
         $this->superclass = $this->module->id();
         $baseClassName = $this->classVocabulary->classname();
-        foreach ($this->classVocabulary->terms() as $classTerm) {
+        foreach ($this->classVocabulary->terms(true) as $classTerm) {
             $class = $classTerm->name();
             $this->model[$class]['attributes'] = [];
             $this->model[$class]['associations'] = [];

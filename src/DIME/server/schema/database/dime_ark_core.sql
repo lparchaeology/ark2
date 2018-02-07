@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 07, 2018 at 03:38 PM
+-- Generation Time: Feb 07, 2018 at 04:12 PM
 -- Server version: 10.2.12-MariaDB
 -- PHP Version: 7.1.13
 
@@ -896,6 +896,7 @@ CREATE TABLE `ark_model_schema` (
   `route` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `class_vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `class_attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '''class''',
+  `abstract` tinyint(1) NOT NULL DEFAULT 0,
   `subclasses` tinyint(1) NOT NULL DEFAULT 0,
   `generator` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `sequence` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -913,13 +914,13 @@ CREATE TABLE `ark_model_schema` (
 -- Dumping data for table `ark_model_schema`
 --
 
-INSERT INTO `ark_model_schema` (`schma`, `module`, `route`, `class_vocabulary`, `class_attribute`, `subclasses`, `generator`, `sequence`, `visibility`, `create_permission`, `read_permission`, `update_permission`, `delete_permission`, `enabled`, `deprecated`, `keyword`) VALUES
-('core.actor', 'actor', NULL, 'core.actor.class', 'class', 1, 'assigned', NULL, 'restricted', 'core.actor.create', 'core.actor.read', 'core.actor.update', 'core.actor.delete', 1, 0, 'core.actor'),
-('core.event', 'event', NULL, 'core.event.class', 'class', 0, 'sequence', 'id', 'restricted', 'core.event.create', 'core.event.read', 'core.event.update', 'core.event.delete', 1, 0, 'core.event'),
-('core.file', 'file', NULL, 'core.file.class', 'class', 1, 'sequence', 'id', 'restricted', 'core.file.create', 'core.event.read', 'core.file.update', 'core.file.delete', 1, 0, 'core.file'),
-('core.message', 'message', NULL, 'core.message.class', 'class', 1, 'sequence', 'id', 'restricted', 'core.message.create', 'core.message.read', 'core.message.update', 'core.message.delete', 1, 0, 'core.message'),
-('core.page', 'page', NULL, 'core.page.class', 'class', 0, 'assigned', NULL, 'public', 'core.page.create', NULL, 'core.page.update', 'core.page.delete', 1, 0, 'core.page'),
-('dime.find', 'find', 'dime.finds.view', 'dime.find.class', 'class', 0, 'sequence', 'id', 'public', 'dime.find.create', 'dime.find.read', 'dime.find.update', 'dime.find.delete', 1, 0, 'dime.find');
+INSERT INTO `ark_model_schema` (`schma`, `module`, `route`, `class_vocabulary`, `class_attribute`, `abstract`, `subclasses`, `generator`, `sequence`, `visibility`, `create_permission`, `read_permission`, `update_permission`, `delete_permission`, `enabled`, `deprecated`, `keyword`) VALUES
+('core.actor', 'actor', NULL, 'core.actor.class', 'class', 0, 1, 'assigned', NULL, 'restricted', 'core.actor.create', 'core.actor.read', 'core.actor.update', 'core.actor.delete', 1, 0, 'core.actor'),
+('core.event', 'event', NULL, 'core.event.class', 'class', 0, 0, 'sequence', 'id', 'restricted', 'core.event.create', 'core.event.read', 'core.event.update', 'core.event.delete', 1, 0, 'core.event'),
+('core.file', 'file', NULL, 'core.file.class', 'class', 1, 1, 'sequence', 'id', 'restricted', 'core.file.create', 'core.event.read', 'core.file.update', 'core.file.delete', 1, 0, 'core.file'),
+('core.message', 'message', NULL, 'core.message.class', 'class', 0, 1, 'sequence', 'id', 'restricted', 'core.message.create', 'core.message.read', 'core.message.update', 'core.message.delete', 1, 0, 'core.message'),
+('core.page', 'page', NULL, 'core.page.class', 'class', 0, 0, 'assigned', NULL, 'public', 'core.page.create', NULL, 'core.page.update', 'core.page.delete', 1, 0, 'core.page'),
+('dime.find', 'find', 'dime.finds.view', 'dime.find.class', 'class', 1, 0, 'sequence', 'id', 'public', 'dime.find.create', 'dime.find.read', 'dime.find.update', 'dime.find.delete', 1, 0, 'dime.find');
 
 -- --------------------------------------------------------
 
@@ -8670,7 +8671,7 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `namespace`, `ent
 ('dime.find.class', 'accessory', NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'dime.find.class.accessory', ''),
 ('dime.find.class', 'coin', NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'dime.find.class.coin', ''),
 ('dime.find.class', 'fibula', NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'dime.find.class.fibula', ''),
-('dime.find.class', 'find', NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'dime.find.class', ''),
+('dime.find.class', 'find', NULL, NULL, NULL, NULL, 0, 0, 0, 0, 'dime.find.class', ''),
 ('dime.find.class', 'metal', NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'dime.find.class.metal', ''),
 ('dime.find.class', 'military', NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'dime.find.class.military', ''),
 ('dime.find.class', 'tool', NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'dime.find.class.tool', ''),

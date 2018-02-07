@@ -432,8 +432,7 @@ class Database
                 ark_vocabulary as vocabulary,
                 ark_model_schema AS schma,
                 ark_model_module AS module
-            WHERE term.enabled = TRUE
-            AND vocabulary.concept = term.concept
+            WHERE vocabulary.concept = term.concept
             AND vocabulary.enabled = TRUE
             AND schma.class_vocabulary = vocabulary.concept
             AND schma.enabled = TRUE
