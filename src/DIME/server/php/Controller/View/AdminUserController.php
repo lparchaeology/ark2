@@ -34,6 +34,7 @@ use ARK\ORM\ORM;
 use ARK\Security\User;
 use ARK\Service;
 use ARK\Translation\Translation;
+use ARK\Vocabulary\Vocabulary;
 use DIME\Entity\Museum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\Form;
@@ -41,10 +42,37 @@ use Symfony\Component\HttpFoundation\Request;
 
 class AdminUserController extends DimePageController
 {
+    public function buildData(Request $request)
+    {
+        $query = $request->query->all();
+        $status = $query['status'] ?? null;
+        if ($status) {
+            $data['filter']['status'] = Vocabulary::findTerm('core.security.user.status', $status);
+            $users = User::findByStatus($status);
+        } else {
+            $users = User::findAll();
+        }
+
+        $actors = new ArrayCollection();
+        foreach ($users as $user) {
+            if (!$user->isSystemUser()) {
+                $actors->add($user->actor());
+            }
+        }
+        $data['actors']['items'] = $actors;
+
+        $data['actor'] = null;
+        $data['user'] = null;
+        $data['roles'] = null;
+        return $data;
+    }
+
     public function buildState(Request $request, $data) : iterable
     {
         $state = parent::buildState($request, $data);
+
         $state['image'] = 'avatar';
+
         $select['choices'] = ORM::findAll(Museum::class);
         $select['choice_value'] = 'id';
         $select['choice_name'] = 'id';
@@ -52,27 +80,10 @@ class AdminUserController extends DimePageController
         $select['multiple'] = false;
         $select['placeholder'] = Translation::translate('core.placeholder');
         $state['select']['museum'] = $select;
+
         $state['controls']['actor'] = true;
+
         return $state;
-    }
-
-    public function buildData(Request $request)
-    {
-        $query = $request->query->all();
-        $users = isset($query['status']) ? User::findByStatus($query['status']) : User::findAll();
-
-        $actors = [];
-        foreach ($users as $user) {
-            $actors = array_merge($actors, $user->actors()->toArray());
-        }
-        $data['actors']['items'] = new ArrayCollection($actors);
-
-        $data['actor'] = null;
-        $data['user'] = null;
-        $data['roles'] = null;
-        $actor = Service::workflow()->actor();
-        $data['action'] = Service::workflow()->actions($actor, $actor);
-        return $data;
     }
 
     public function processForm(Request $request, Form $form) : void
@@ -99,6 +110,9 @@ class AdminUserController extends DimePageController
 
     protected function item($data) : ?Item
     {
-        return Service::workflow()->actor();
+        if (isset($data['filter']['status']) && $data['actors']['items']->count() > 0) {
+            return $data['actors']['items']->first();
+        }
+        return null;
     }
 }

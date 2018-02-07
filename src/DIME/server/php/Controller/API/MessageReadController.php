@@ -30,12 +30,13 @@
 
 namespace DIME\Controller\API;
 
-use ARK\Security\Actor;
 use ARK\Http\JsonResponse;
 use ARK\Message\Message;
 use ARK\ORM\ORM;
+use ARK\Security\Actor;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 class MessageReadController
 {
@@ -43,30 +44,33 @@ class MessageReadController
     {
         try {
             $content = json_decode($request->getContent(), true);
-            $message = $content['message'];
-            $message = ORM::find(Message::class, $message);
-            $recipient = $content['recipient'];
-            $recipient = ORM::find(Actor::class, $recipient);
+            $message = Message::find($content['message']);
+            $recipient = Actor::find($content['recipient']);
             $data['result'] = false;
-            if ($message) {
-                $data['message'] = $message->id();
+            $data['message'] = $message->id();
+            $data['recipient'] = $recipient->id();
+            $recipients = [];
+            if ($message->isRecipient($recipient)) {
+                $recipients[] = $recipient;
             }
-            if ($recipient) {
-                $data['recipient'] = $recipient->id();
+            foreach ($recipient->agencies() as $agentFor) {
+                if ($message->isRecipient($agentFor)) {
+                    $recipients[] = $agentFor;
+                }
             }
-            if ($message && $recipient) {
-                $data['is_recipient'] = $message->isRecipient($recipient);
-            }
-            if ($message && $recipient && $message->isRecipient($recipient)) {
-                $message->markAsRead($recipient);
+            $data['is_recipient'] = count($recipients) > 0;
+            if ($data['is_recipient']) {
+                foreach ($recipients as $recipient) {
+                    $message->markAsRead($recipient);
+                }
                 $data['result'] = true;
                 ORM::persist($message);
                 ORM::flush($message);
             } else {
                 $data['error']['code'] = '9999';
-                $data['error']['message'] = 'Message or Recipient Not Found';
+                $data['error']['message'] = 'Actor is not a recipient of or agent for the message';
             }
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $data['error']['code'] = $e->getCode();
             $data['error']['message'] = $e->getMessage();
         }

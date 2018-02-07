@@ -32,6 +32,7 @@ namespace ARK;
 use ARK\Database\Connection;
 use ARK\Database\Database;
 use ARK\Framework\Application;
+use ARK\Model\Item;
 use ARK\Security\SecurityService;
 use ARK\Spatial\SpatialService;
 use ARK\Translation\TranslationService;
@@ -113,6 +114,18 @@ class Service
     public static function redirectPath(string $path, iterable $parmameters = [], int $status = 302) : Response
     {
         return self::$app->redirect(self::path($path, $parmameters), $status);
+    }
+
+    public static function itemPath(Item $item, iterable $parameters = [], bool $relative = false) : string
+    {
+        $parameters['id'] = $item->id();
+        return self::path($item->schema()->route()->id(), $parameters, $relative);
+    }
+
+    public static function itemUrl(Item $item, iterable $parameters = [], bool $relative = false) : string
+    {
+        $parameters['id'] = $item->id();
+        return self::url($item->schema()->route()->id(), $parameters, $relative);
     }
 
     public static function filePath(string $id, iterable $parameters = [], bool $relative = false) : string

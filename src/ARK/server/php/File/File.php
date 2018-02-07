@@ -152,7 +152,7 @@ abstract class File implements Item
 
     public function sourceUrl() : string
     {
-        return Service::imageUrl($this->id());
+        return Service::fileUrl($this->id());
     }
 
     public static function find(string $id) : ?self

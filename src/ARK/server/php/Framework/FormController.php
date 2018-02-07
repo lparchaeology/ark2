@@ -50,7 +50,6 @@ abstract class FormController extends Controller
             $parent['state'] = array_replace_recursive($group->defaultState(), $parent['state']);
             $parent['options'] = [];
             $view = $group->buildView($parent);
-            //dump($view);
             if ($view['state']['mode'] === 'deny') {
                 throw new AccessDeniedException('core.error.access.denied');
             }
@@ -92,7 +91,7 @@ abstract class FormController extends Controller
             $json['status'] = $e->getCode();
             $json['message'] = $e->getMessage();
         }
-        dump($json);
+        //dump($json);
         return new JsonResponse($json);
     }
 

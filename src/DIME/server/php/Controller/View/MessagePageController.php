@@ -44,14 +44,14 @@ class MessagePageController extends DimePageController
     {
         $state = parent::buildState($request, $data);
         $state['event_vocabulary'] = Vocabulary::find('core.event.class');
-        dump($state);
         return $state;
     }
 
     public function buildData(Request $request)
     {
         $actor = Service::workflow()->actor();
-        $status = $request->query->get('status');
+        $status = $request->query->get('status') ?? 'unread';
+        $data['filter']['status'] = Vocabulary::findTerm('dime.message.status.search', $status);
         $data['messages']['items'] = DIME::getNotifications($actor, $status);
         $msg = $request->query->get('id');
         if ($msg) {
@@ -60,8 +60,6 @@ class MessagePageController extends DimePageController
                 $data['message'] = $message;
             }
         }
-        dump($data);
-        dump($data['messages']['items'][0]->value('recipients'));
         return $data;
     }
 

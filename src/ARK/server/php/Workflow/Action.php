@@ -248,18 +248,18 @@ class Action
             // Create Event
             $event = new Event($actor, $this, $item);
             ORM::persist($event);
-            dump($event);
+
             // Apply Updates
             foreach ($this->updates as $update) {
                 $update->apply($actor, $item, $subject);
             }
+
             // Trigger Actions
             // Send Notifications
             $recipients = $this->notify($item);
-            if ($recipients) {
+            if (count($recipients) > 0) {
                 $notification = new Notification($actor, $recipients, $event, $message);
                 ORM::persist($notification);
-                dump($notification);
             }
         }
     }

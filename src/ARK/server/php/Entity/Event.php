@@ -39,12 +39,12 @@ class Event implements Item
 {
     use ItemTrait;
 
-    public function __construct(Actor $agent, Action $action, Item $item)
+    public function __construct(Actor $agent, Action $action, Item $object)
     {
         $this->construct('core.event');
-        $this->setParent($item);
+        $this->setParent($object);
         $this->setValue('agents', [$agent]);
-        $this->setValue('subject', $item);
+        $this->setValue('object', $object);
         $this->setValue('class', $action->event());
         $this->setValue('occurred', ARK::timestamp());
     }
@@ -59,9 +59,9 @@ class Event implements Item
         return $this->value('agent');
     }
 
-    public function subject()
+    public function object()
     {
-        return $this->parent();
+        return $this->value('object');
     }
 
     public function occurredAt()

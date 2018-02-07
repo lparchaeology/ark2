@@ -38,6 +38,7 @@ use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
+use ARK\Routing\Route;
 use ARK\Security\Permission;
 use ARK\Vocabulary\Concept;
 use ARK\Vocabulary\Term;
@@ -52,6 +53,8 @@ class Schema
 
     protected $name;
     protected $module;
+    protected $route;
+    protected $hasAbstractSuperclass;
     protected $hasSubclassEntities;
     protected $classAttributeName;
     protected $generator;
@@ -85,6 +88,16 @@ class Schema
     public function module() : Module
     {
         return $this->module;
+    }
+
+    public function route() : ?Route
+    {
+        return $this->route;
+    }
+
+    public function hasAbstractSuperclass() : bool
+    {
+        return $this->hasAbstractSuperclass;
     }
 
     public function hasSubclassEntities() : bool
@@ -232,6 +245,7 @@ class Schema
 
         // Fields
         $builder->addMappedStringField('class_attribute', 'classAttributeName', 30);
+        $builder->addMappedField('abstract', 'hasAbstractSuperclass', 'boolean');
         $builder->addMappedField('subclasses', 'hasSubclassEntities', 'boolean');
         $builder->addStringField('generator', 30);
         $builder->addStringField('sequence', 30);
@@ -241,6 +255,7 @@ class Schema
 
         // Associations
         $builder->addRequiredManyToOneField('module', Module::class);
+        $builder->addManyToOneField('route', Route::class);
         $builder->addVocabularyField('class_vocabulary', 'classVocabulary');
         $builder->addPermissionField('create_permission', 'createPermission');
         $builder->addPermissionField('read_permission', 'readPermission');
@@ -282,7 +297,7 @@ class Schema
         $this->subclassNames = [];
         $this->superclass = $this->module->id();
         $baseClassName = $this->classVocabulary->classname();
-        foreach ($this->classVocabulary->terms() as $classTerm) {
+        foreach ($this->classVocabulary->terms(true) as $classTerm) {
             $class = $classTerm->name();
             $this->model[$class]['attributes'] = [];
             $this->model[$class]['associations'] = [];

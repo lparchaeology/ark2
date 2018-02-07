@@ -34,6 +34,8 @@ use ARK\Model\Attribute;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Service;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 class ObjectFragment extends Fragment
 {
@@ -43,12 +45,12 @@ class ObjectFragment extends Fragment
     {
         // TODO Use ORM Generator properly in metadata??? Or persist does auto?
         $this->fid = Service::database()->data()->generateSequence('object', '', 'fid');
+        $this->children = new ArrayCollection();
     }
 
     public function children(Attribute $attribute) : Collection
     {
-        if ($this->children->isEmpty()) {
-            $this->children = new ArrayCollection();
+        if ($this->children === null || $this->children->isEmpty()) {
             $key = [
                'module' => $this->module,
                'item' => $this->item,

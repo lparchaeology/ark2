@@ -208,19 +208,25 @@ class ScalarPropertyType extends AbstractPropertyType
     // TODO This probably needs to be done in a more generic way elsewhere.
     protected function mapDisplayValue($display, ?string $valueName, iterable $options)
     {
-        if ($display instanceof Item) {
-            $property = $options['property'];
-            $id = $display->id();
-            if ($display->hasAttribute($property)) {
+        // If set, get the property to display
+        $property = $options['property'];
+        if ($property) {
+            $id = ($display instanceof Item) ? $display->id() : null;
+            if ($display instanceof Item && $display->hasAttribute($property)) {
                 $display = $display->value($property);
             } elseif (method_exists($display, $property)) {
                 $display = $display->$property();
-                if ($options['pattern'] === 'a') {
-                    return '<a href="'.$display.'" >'.$id.'</a>';
-                }
-            } else {
-                return $display->id();
             }
+            if (is_string($display) && $options['pattern'] === 'a') {
+                return '<a href="'.$display.'" >'.$id.'</a>';
+            }
+        }
+        // Display an Item as either a link or just the ID
+        if ($display instanceof Item) {
+            if ($options['pattern'] === 'a') {
+                return '<a href="'.$display->sourcePath().'" >'.$display->id().'</a>';
+            }
+            return $display->id();
         }
         if ($display instanceof Term) {
             return $display->keyword();

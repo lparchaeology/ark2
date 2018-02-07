@@ -7,7 +7,7 @@
   <button type="button" id="modal_mapbtn" name="modal_mapbtn" class="btn btn-default" data-toggle="modal" data-target="#map-modal">MAP</button>
 
   <div class="modal fade" id="map-modal" tabindex="-1" role="dialog" aria-labelledby="datingModal" aria-hidden="true" style="display: none;">
-    <div class="mapmodalwrapper" style="width:100vw;height:100vw;">
+    <div class="mapmodalwrapper">
         <div id="mapmodal" class="mappick"></div>
         <button id="getuserlocation" class="btn mapmodal-button getuserlocation">{{ 'dime.getuserlocation' | translate }}</button>
         <button id="mappickclose" class="btn mapmodal-button mappickclose" data-dismiss="modal">{{ 'dime.close' | translate }}</button>
@@ -20,12 +20,20 @@
   </script>
 
 
-    <div class="mappick-fields"  >
+    <div class="mappick-fields" style="display:none;">
 
         <div class="mappick-utm">
           {{ form_widget(form.utmEasting, {'attr': {'class': 'mappick-utm-control'}}) }}
           {{ form_widget(form.utmNorthing, {'attr': {'class': 'mappick-utm-control'}}) }}
         </div>
+        <div class="mappick-decimal">
+            {{ form_widget(form.easting) }}
+            {{ form_widget(form.northing) }}
+        </div>
+
+        {{ form_row(form.geometry) }}
+        {{ form_row(form.srid) }}
+        {{ form_row(form.format) }}
 
     </div>
 

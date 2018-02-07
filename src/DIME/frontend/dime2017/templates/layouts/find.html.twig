@@ -48,14 +48,13 @@
     <script>
 
     window.watchForChanges = Array(
-    {% spaceless %}
-    {% for field in forms.find %}
-      "{{ field.vars.id }}"{% if not loop.last %}, {% endif %}
-    {% endfor %}
-    {% endspaceless %}
+      {% spaceless %}
+        {% for field in forms.find %}
+          "{{ field.vars.id }}"{% if not loop.last %}, {% endif %}
+        {% endfor %}
+      {% endspaceless %}
     );
 
-    {#}{% for field in forms.find %}{{ dump (field.vars) }}{% endfor %}#}
     </script>
 
 </div>
