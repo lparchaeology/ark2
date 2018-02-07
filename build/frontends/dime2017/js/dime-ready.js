@@ -210,18 +210,33 @@ $(document).ready(function () {
     var is_dirty = false;
     window.answer = false;
 
-    // after a short delay so we don't catch our changes attach a listener to input to see if the form gets changed
-    setTimeout(function () {
-      $("form#find").each(function(){
-        $(this).find(':input').change(function() {
+    for ( id in window.watchForChanges ){
+      console.log('input#'+window.watchForChanges[id]+'_value');
+      $('input#'+window.watchForChanges[id]+'_value').on('change',function() {
+          console.log("dirty");
+            if(!is_dirty){
+                is_dirty = true;
+            }
+        });
+        $('select#'+window.watchForChanges[id]+'_term').on('change',function() {
             console.log("dirty");
               if(!is_dirty){
-                  // When the user changes a field on this page, set our is_dirty flag.
                   is_dirty = true;
               }
           });
-        });
-      }, 300);
+        $('textarea#'+window.watchForChanges[id]+'_content').on('change',function() {
+            console.log("dirty");
+              if(!is_dirty){
+                  is_dirty = true;
+              }
+          });
+    }
+    $('#find_secondary_term').find(':input').on('change',function() {
+        console.log("dirty");
+          if(!is_dirty){
+              is_dirty = true;
+          }
+      });
 
     // sadly we can't intercept browser events because of "security", we can capture anchor clicks
     $('a').mousedown(function(e) {

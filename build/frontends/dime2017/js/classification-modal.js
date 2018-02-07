@@ -52,7 +52,9 @@ var initTimeline = function () {
     var select2Options = {
         sorter: classSorter,
     };
+    if(typeof container != 'undefined'){
 
+    }
     container.customTimeExists = function customTimeExists(timeid) {
         var promise = new Promise(function (resolve) {
             window.setTimeout(function () {

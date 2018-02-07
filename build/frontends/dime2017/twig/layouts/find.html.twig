@@ -10,7 +10,7 @@
 
     {{ form_start(forms.find) }}
 
-    <div class="col-md-6">
+    <div class="col-md-6 findtwig">
         {% for child in itemCol1 %}
             {{ child.element.renderView(child, forms, forms.find) | raw }}
         {% endfor %}
@@ -44,5 +44,18 @@
         {% endif %}
 
     </div>
+
+    <script>
+
+    window.watchForChanges = Array(
+    {% spaceless %}
+    {% for field in forms.find %}
+      "{{ field.vars.id }}"{% if not loop.last %}, {% endif %}
+    {% endfor %}
+    {% endspaceless %}
+    );
+
+    {#}{% for field in forms.find %}{{ dump (field.vars) }}{% endfor %}#}
+    </script>
 
 </div>

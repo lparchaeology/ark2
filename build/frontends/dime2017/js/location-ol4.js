@@ -1,4 +1,4 @@
-function initialisePickMap() {
+function initialisePickMap(target) {
     var removefeature = null;
 
     proj4.defs("EPSG:32633", "+proj=utm +zone=33 +datum=WGS84 +units=m +no_defs");
@@ -7,6 +7,8 @@ function initialisePickMap() {
     var mapPickSource = new ol.source.Vector({
         wrapX: false,
     });
+
+    $('#mapmodal').data('mapPickSource',mapPickSource);
 
     var mapPickLayers = [
         new ol.layer.Tile({
@@ -47,10 +49,11 @@ function initialisePickMap() {
     var mapPickMap = new ol.Map({
         layers: mapPickLayers,
         loadTilesWhileInteracting: true,
-        target: 'mappick',
+        target: target,
         view: mapPickView,
         controls: [new ol.control.FullScreen(), new ol.control.Zoom()],
     });
+
 
     var draw = new ol.interaction.Draw({
         source: mapPickSource,
@@ -239,18 +242,23 @@ function initialisePickMap() {
         });
     }
 
+    function confirmLocation(feature){
+      bootbox.confirm(Translator.trans("dime.mappick.newpointconfirmmessage"), function (result) {
+          if (result) {
+              var coords = feature.getGeometry().getCoordinates();
+              var map = makeMapPoint(coords[0], coords[1]);
+              var decimal = mapToDecimal(map);
+              updateLocation(decimal);
+          } else {
+              setMap(getDecimal());
+          }
+      });
+    };
+
+    $('#'+target).data('confirmLocation', confirmLocation );
+
     draw.on('drawend', function (e) {
-        bootbox.confirm(Translator.trans("dime.mappick.newpointconfirmmessage"), function (result) {
-            if (result) {
-                var feature = e.feature;
-                var coords = feature.getGeometry().getCoordinates();
-                var map = makeMapPoint(coords[0], coords[1]);
-                var decimal = mapToDecimal(map);
-                updateLocation(decimal);
-            } else {
-                setMap(getDecimal());
-            }
-        });
+        confirmLocation(e.feature);
     });
 
     $('.mappick-fields input').on('change', function () {
@@ -288,4 +296,6 @@ function initialisePickMap() {
     var decimal = getDecimal();
     setMap(decimal);
     setUtm(decimal);
+
+    return mapPickMap;
 }

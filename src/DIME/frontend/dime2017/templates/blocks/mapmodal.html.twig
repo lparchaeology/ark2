@@ -1,0 +1,36 @@
+{# Block to write out correctly formatted field value #}
+{% block mapmodal %}
+
+
+<div class="form-group">
+
+  <button type="button" id="modal_mapbtn" name="modal_mapbtn" class="btn btn-default" data-toggle="modal" data-target="#map-modal">MAP</button>
+
+  <div class="modal fade" id="map-modal" tabindex="-1" role="dialog" aria-labelledby="datingModal" aria-hidden="true" style="display: none;">
+    <div class="mapmodalwrapper" style="width:100vw;height:100vw;">
+        <div id="mapmodal" class="mappick"></div>
+        <button id="getuserlocation" class="btn mapmodal-button getuserlocation">{{ 'dime.getuserlocation' | translate }}</button>
+        <button id="mappickclose" class="btn mapmodal-button mappickclose" data-dismiss="modal">{{ 'dime.close' | translate }}</button>
+    </div>
+  </div>
+
+
+  <script>
+      var mapPin = "{{ asset('images/icons/pin.png', 'frontend') }}";
+  </script>
+
+
+    <div class="mappick-fields"  >
+
+        <div class="mappick-utm">
+          {{ form_widget(form.utmEasting, {'attr': {'class': 'mappick-utm-control'}}) }}
+          {{ form_widget(form.utmNorthing, {'attr': {'class': 'mappick-utm-control'}}) }}
+        </div>
+
+    </div>
+
+    {% do form.setRendered %}
+
+</div>
+
+{% endblock mapmodal %}

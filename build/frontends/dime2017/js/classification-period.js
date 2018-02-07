@@ -37,7 +37,7 @@ var initPeriod = function () {
                 return period;
             }
 
-            if($('#find_classify').length==1){
+            if( $('#find_classify').length==1 && $('#modal_mapbtn').length==0 ){
                 initTimeline();
             }
         });
