@@ -54,8 +54,12 @@
                         {{- form_widget(form.custody) -}}
                     </div>
                     <div class="col-sm-3">
+                        {{- form_label(form.find_date) -}}<br/>
+                        {{- form_widget(form.find_date) -}}
                     </div>
                     <div class="col-sm-3">
+                        {{- form_label(form.find_date_span) -}}<br/>
+                        {{- form_widget(form.find_date_span) -}}
                     </div>
                 </div>
 
@@ -96,5 +100,7 @@
     {% do form.clear.setRendered %}
     {% do form.visibility.setRendered %}
     {% do form.custody.setRendered %}
+    {% do form.find_date.setRendered %}
+    {% do form.find_date_span.setRendered %}
 
 {{ form_end(form) }}

@@ -297,6 +297,29 @@ class DIME
             $results['custody'] = $conn->fetchAllColumn($sql, 'item', $params, $types);
         }
 
+        // Do the Date queries, i.e. Find Date
+        $pre = "
+            SELECT item
+            FROM ark_fragment_date
+            WHERE module = 'find'
+        ";
+        if (isset($query['find_date']) && isset($query['find_date_span'])) {
+            $sql = $pre.'AND attribute = ? AND value >= ? AND value <= ?';
+            $params = [
+                'finddate',
+                $query['find_date'],
+                $query['find_date_span'],
+            ];
+            $results['find_date'] = $conn->fetchAllColumn($sql, 'item', $params);
+        } elseif (isset($query['find_date'])) {
+            $sql = $pre.'AND attribute = ? AND value = ?';
+            $params = [
+                'finddate',
+                $query['find_date'],
+            ];
+            $results['find_date'] = $conn->fetchAllColumn($sql, 'item', $params);
+        }
+
         // Do the linked Item queries, i.e. Actors
         $pre = "
             SELECT item

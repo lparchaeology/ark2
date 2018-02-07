@@ -29,16 +29,17 @@
 
 namespace DIME\Controller\View;
 
-use ARK\Security\Actor;
-use ARK\Security\Person;
 use ARK\File\File;
 use ARK\ORM\ORM;
+use ARK\Security\Actor;
+use ARK\Security\Person;
 use ARK\Service;
 use ARK\Translation\Translation;
 use ARK\View\Page;
 use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
 use ARK\Workflow\Action;
+use DateTime;
 use DIME\DIME;
 use DIME\Entity\Find;
 use DIME\Entity\Museum;
@@ -164,6 +165,14 @@ class FindListController extends DimePageController
                 $custody = (is_array($query['custody']) ? $query['custody'] : [$query['custody']]);
                 $custody = Vocabulary::findTerms('dime.find.custody', $custody);
                 $data['filters']['custody'] = $custody->first();
+            }
+
+            // Set the selected Find Date query values in the Find Date pickers.
+            if (isset($query['find_date'])) {
+                $data['filters']['find_date'] = new DateTime($query['find_date']);
+            }
+            if (isset($query['find_date_span'])) {
+                $data['filters']['find_date_span'] = new DateTime($query['find_date_span']);
             }
         } else {
             // Public finds search excludes anything not yet reviewed, but don't include in query string or filter dropdown
@@ -354,6 +363,8 @@ class FindListController extends DimePageController
             $treasures = $form['treasure']->getData();
             $visibility = $form['visibility']->getData();
             $custody = $form['custody']->getData();
+            $findDate = $form['find_date']->getData();
+            $findDateSpan = $form['find_date_span']->getData();
             $query = [];
             if ($municipalities) {
                 $query['municipality'] = $this->queryName($municipalities);
@@ -384,6 +395,12 @@ class FindListController extends DimePageController
             }
             if ($custody) {
                 $query['custody'] = $this->queryName($custody);
+            }
+            if ($findDate) {
+                $query['find_date'] = $findDate->format('Y-m-d');
+            }
+            if ($findDateSpan) {
+                $query['find_date_span'] = $findDateSpan->format('Y-m-d');
             }
             $request->attributes->set('parameters', $query);
         }
