@@ -76,6 +76,17 @@ var Location = (function (baseSource, pinIconSrc, center, extent, zoom, target) 
         return [null, null];
     };
 
+    var setCoordinates = function setCoordinates(coords) {
+        if (isNaN(coords[0]) || isNaN(coords[0])) {
+            return;
+        }
+        var feature = new ol.Feature({ geometry: new ol.geom.Point(coords), });
+        this.clear();
+        this.locationSource.addFeature(feature);
+        this.map.getView().setCenter(coords);
+        this.map.getView().setZoom(12);
+    };
+
     var makeDecimal = function makeDecimal(value) {
         return parseFloat(parseFloat(value).toFixed(6));
     };
@@ -94,24 +105,32 @@ var Location = (function (baseSource, pinIconSrc, center, extent, zoom, target) 
         };
     };
 
-    var setCoordinates = function setCoordinates(coords) {
-        if (isNaN(coords[0]) || isNaN(coords[0])) {
+    var setLocation = function setLocation(location) {
+        if (isNaN(location.easting) || isNaN(location.northing)) {
             return;
         }
-        var feature = new ol.Feature({ geometry: new ol.geom.Point(coords), });
-        this.clear();
-        this.locationSource.addFeature(feature);
-        this.map.getView().setCenter(coords);
-        this.map.getView().setZoom(12);
+        var coords = [location.easting, location.northing];
+        if (location.srid !== this.mapSrid) {
+            coords = ol.proj.transform(coords, 'EPSG:' + location.srid, this.mapEpsg);
+        }
+        this.setCoordinates(coords);
+    };
+
+    var geolocate = function geolocate() {
+        var geolocation = new ol.Geolocation({
+            projection: this.mapView.getProjection(),
+        });
+        this.setCoordinates(geolocation.getPosition());
+        return geolocation.getAccuracy();
     };
 
     this.init(baseSource, pinIconSrc, center, extent, zoom, target);
 
     return {
-        coordinates: coordinates,
-        setCoordinates: setCoordinates,
         location: location,
+        setLocation: setLocation,
         clear: clear,
+        geolocate: geolocate,
     };
 
 });
