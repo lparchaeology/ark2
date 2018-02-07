@@ -105,6 +105,7 @@
                 "core": [
                     "js/alert.js",
                     "js/form.js",
+                    "js/location.js",
                     "js/pageedit.js",
                     "js/routing.js",
                     "js/utilities.js",
