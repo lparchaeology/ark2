@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 07, 2018 at 05:20 PM
+-- Generation Time: Feb 08, 2018 at 10:51 AM
 -- Server version: 10.2.12-MariaDB
 -- PHP Version: 7.1.13
 
@@ -6534,8 +6534,8 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('dime_find_metadata', '', 0, 0, 4, 'dime_find_case', NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_news', '', 0, 0, 0, 'dime_find_list_public', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_photo', '', 0, 0, 1, 'dime_find_images', NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_register', '', 0, 0, 2, 'dime_find_location', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.find.coordinates', 'blocks/mappick.html.twig', NULL, NULL, NULL),
-('dime_find_register', '', 0, 0, 4, 'dime_find_images', NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_register', '', 0, 0, 0, 'dime_find_location', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.find.coordinates', 'blocks/mapmodal.html.twig', NULL, NULL, NULL),
+('dime_find_register', '', 0, 0, 2, 'dime_find_images', NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, 'blocks/photomodal.html.twig', NULL, NULL, NULL),
 ('dime_find_register', '', 0, 0, 6, 'dime_find_class', NULL, NULL, NULL, NULL, 1, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_register', '', 0, 0, 8, 'dime_find_material', NULL, NULL, NULL, NULL, 1, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_register', '', 0, 0, 10, 'dime_find_finder_id', NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
@@ -7071,7 +7071,7 @@ INSERT INTO `ark_view_form` (`element`, `name`, `mode`, `method`, `action`, `key
 ('dime_find_filter', 'filters', NULL, NULL, NULL, NULL, 'layouts/filters.html.twig', NULL),
 ('dime_find_item', 'find', NULL, NULL, NULL, NULL, 'layouts/grid.html.twig', NULL),
 ('dime_find_map', 'map', 'view', NULL, NULL, NULL, 'layouts/map.html.twig', NULL),
-('dime_find_register', 'find', NULL, NULL, NULL, NULL, NULL, NULL),
+('dime_find_register', 'find', NULL, NULL, NULL, NULL, 'layouts/register.html.twig', NULL),
 ('dime_find_status', 'status', NULL, NULL, NULL, NULL, 'layouts/grid.html.twig', NULL),
 ('dime_find_workflow', 'workflow', NULL, NULL, NULL, NULL, 'layouts/grid.html.twig', NULL),
 ('dime_message_filter', 'filter', NULL, NULL, NULL, NULL, NULL, NULL),
