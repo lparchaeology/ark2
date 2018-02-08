@@ -2,15 +2,18 @@
 {% block photomodal %}
 
 
+<div class="col-xs-6">
+
 <div class="form-group">
 
-  <button type="button" id="modal_photobtn" name="modal_photobtn" class="btn btn-default" data-toggle="modal" data-target="#photo-modal">PHOTO</button>
-
+<div class="register-button">
+  <button type="button" id="modal_photobtn" name="modal_photobtn" class="btn btn-default" data-toggle="modal" data-target="#photo-modal"><span class="glyphicon glyphicon-camera" aria-hidden="true"></span></button>
+</div>
     <div class="modal fade" id="photo-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
         <div class="modal-dialog">
-          <div class="filemodal">
+          <div class="filemodal loginmodal-container dime">
             {% spaceless %}
-                {{ form_row(form.file) }}
+                {{ form_row(form.file, { 'label': false }) }}
             {% endspaceless %}
           </div>
         </div>
@@ -19,6 +22,9 @@
         {{ form_row(form.existing) }}
     </div>
     {% do form.setRendered %}
+</div>
+</div>
+
 </div>
 
 {% endblock photomodal %}

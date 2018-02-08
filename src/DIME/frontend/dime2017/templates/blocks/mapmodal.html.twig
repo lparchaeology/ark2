@@ -2,15 +2,24 @@
 {% block mapmodal %}
 
 
+<div class="row register-buttons">
+<div class="col-xs-6">
 <div class="form-group">
 
-  <button type="button" id="modal_mapbtn" name="modal_mapbtn" class="btn btn-default" data-toggle="modal" data-target="#map-modal">MAP</button>
-
+<div class="register-button">
+  <button type="button" id="modal_mapbtn" name="modal_mapbtn" class="btn btn-default" data-toggle="modal" data-target="#map-modal"><span class="glyphicon glyphicon-screenshot" aria-hidden="true"></button>
+</div>
   <div class="modal fade" id="map-modal" tabindex="-1" role="dialog" aria-labelledby="datingModal" aria-hidden="true" style="display: none;">
     <div class="mapmodalwrapper">
         <div id="mapmodal" class="mappick"></div>
-        <button id="getuserlocation" class="btn mapmodal-button getuserlocation">{{ 'dime.getuserlocation' | translate }}</button>
-        <button id="mappickclose" class="btn mapmodal-button mappickclose" data-dismiss="modal">{{ 'dime.close' | translate }}</button>
+        <div class="row register-buttons">
+          <div class="col-xs-6 register-button">
+            <button id="getuserlocation" class="btn mapmodal-button getuserlocation">{{ 'dime.getuserlocation' | translate }}</button>
+          </div>
+          <div class="col-xs-6 register-button">
+            <button id="mappickclose" class="btn mapmodal-button mappickclose" data-dismiss="modal">{{ 'dime.close' | translate }}</button>
+          </div>
+        </div>
     </div>
   </div>
 
@@ -39,6 +48,7 @@
 
     {% do form.setRendered %}
 
+    </div>
 </div>
 
 {% endblock mapmodal %}
