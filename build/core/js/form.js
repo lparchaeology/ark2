@@ -100,7 +100,7 @@ var FormMapper = (function () {
                 mapDataToForm(value, form);
             } else if (data[id].name === 'static') {
                 mapDataToStaticField(value, id);
-            } else {
+            } else if ($.type(form) !== 'undefined' && $.type(form.elements) !== 'undefined') {
                 var field = form.elements.namedItem(id);
                 mapDataToField(value, field);
             }
