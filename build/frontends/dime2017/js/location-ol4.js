@@ -8,7 +8,7 @@ function initialisePickMap(target) {
         wrapX: false,
     });
 
-    $('#mapmodal').data('mapPickSource',mapPickSource);
+    $(target).data('mapPickSource',mapPickSource);
 
     var mapPickLayers = [
         new ol.layer.Tile({

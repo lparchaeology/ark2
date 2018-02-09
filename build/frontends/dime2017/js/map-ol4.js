@@ -1,3 +1,31 @@
+findSource = new ol.source.Vector();
+
+function getPointsFromTable() {
+    var features = [];
+
+    var format = new ol.format.WKT();
+
+    data = $(".dime-table").bootstrapTable('getData', {useCurrentPage:'true'});
+    console.log(data.length);
+
+    findSource.clear();
+
+    for (row in data){
+        id = data[row]._data['unique-id'];
+        feature = format.readFeature(points[id], {
+            dataProjection: 'EPSG:4326',
+            featureProjection: 'EPSG:3857'
+        });
+        feature.set('ark_id', id.toString());
+        findSource.addFeature(feature);
+    }
+    findSource.refresh();
+    view = map.getView();
+    extent = findSource.getExtent();
+    view.fit(extent);
+
+}
+
 function initialiseMapView() {
     var layers = [];
     for (var i = 0; i < mapConfig.layers.length; ++i) {
@@ -34,8 +62,6 @@ function initialiseMapView() {
 
     if (points.length > 0) {
 
-        features = [];
-
         var style = new ol.style.Style({
             image: new ol.style.Circle({
                 radius: 5,
@@ -43,20 +69,9 @@ function initialiseMapView() {
                 stroke: new ol.style.Stroke({ color: '#000', width: 1 })
             })
         });
-
-        var format = new ol.format.WKT();
-
-        for (id in points) {
-            feature = format.readFeature(points[id], {
-                dataProjection: 'EPSG:4326',
-                featureProjection: 'EPSG:3857'
-            });
-            feature.set('ark_id', id);
-            features.push(feature);
-        }
-
+        
         var layer = new ol.layer.Vector({
-            source: new ol.source.Vector({ features: features }),
+            source: findSource,
             style: style
         });
 
@@ -64,10 +79,6 @@ function initialiseMapView() {
 
         layer.set('selectable', true);
         map.addLayer(layer);
-
-        view = map.getView();
-        extent = layer.getSource().getExtent();
-        view.fit(extent);
 
         var select = new ol.interaction.Select({
             layers: function (layer) {

@@ -140,6 +140,7 @@
                 "custom": [
                     "js/map-ol4.js",
                     "js/location-ol4.js",
+                    "js/modal-ol4.js",
                     "js/map-ready.js",
                     "js/location-ready.js"
                 ]
