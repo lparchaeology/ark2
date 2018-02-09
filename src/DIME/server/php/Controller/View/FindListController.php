@@ -392,6 +392,7 @@ class FindListController extends DimePageController
                 $message = $action->keyword();
                 Service::view()->addSuccessFlash($message);
             }
+            $request->attributes->set('parameters', $request->query->all());
         }
 
         if ($clicked === 'search') {

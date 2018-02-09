@@ -29,17 +29,17 @@
 
 namespace ARK\Workflow;
 
-use ARK\Security\Actor;
-use ARK\Security\Person;
 use ARK\Model\Attribute;
 use ARK\Model\Item;
 use ARK\Model\LocalText;
 use ARK\Model\Schema\Schema;
 use ARK\ORM\ORM;
+use ARK\Security\Actor;
+use ARK\Security\ActorUser;
+use ARK\Security\Person;
 use ARK\Security\User;
 use ARK\Service;
 use ARK\Workflow\Exception\WorkflowException;
-use ARK\Security\ActorUser;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 

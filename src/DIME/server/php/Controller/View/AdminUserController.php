@@ -31,6 +31,7 @@ namespace DIME\Controller\View;
 
 use ARK\Model\Item;
 use ARK\ORM\ORM;
+use ARK\Security\Actor;
 use ARK\Security\User;
 use ARK\Service;
 use ARK\Translation\Translation;
@@ -86,8 +87,13 @@ class AdminUserController extends DimePageController
         $state['select']['museum'] = $select;
 
         $status = $query['status'] ?? null;
+        $actor = $data['actors']['items']->first();
         $actions = new ArrayCollection();
-        if (count($actions) > 0) {
+        if ($status && $actor) {
+            $admin = Service::workflow()->actor();
+            $actions = Service::workflow()->actionable($admin, $actor);
+        }
+        if ($actions->count() > 0) {
             $state['workflow']['mode'] = 'edit';
             $state['actions'] = $actions;
             $select['choices'] = $state['actions'];
@@ -117,27 +123,35 @@ class AdminUserController extends DimePageController
             $request->attributes->set('parameters', $query);
         }
 
-        if ($submitted === 'actions') {
+        if ($submitted === 'action') {
             $action = $form['actions']->getData();
             $selected = $form['selected']->getData();
             $admin = Service::workflow()->actor();
             foreach ($selected as $id) {
                 $actor = Actor::find($id);
-                Service::workflow()->apply($admin, $action, $actor);
+                Service::workflow()->apply($admin, $action->name(), $actor);
                 ORM::persist($actor);
 
                 $user = User::find($id);
-                switch ($action->id()) {
+                switch ($action->name()) {
+                    case 'disable':
+                        $user->disable();
+                        break;
+                    case 'enable':
+                        $user->enable();
+                        break;
                     case 'lock':
                         $user->lock();
                         break;
-                    case 'unlock':
-                        $user->unlock();
+                    case 'verify':
+                        $user->verify();
                         break;
                 }
                 ORM::persist($user);
             }
             ORM::flush();
+
+            $request->attributes->set('parameters', $request->query->all());
         }
     }
 
