@@ -55,10 +55,14 @@ class MuseumController extends FormController
 
     public function processForm(Request $request, Form $form) : void
     {
+        dump($form);
         $id = $request->attributes->get('id');
+        dump($id);
         $submitted = $form->getConfig()->getName();
+        dump($submitted);
         if ($submitted === 'museum') {
             $museum = $form->getData();
+            dump($museum);
             ORM::flush($museum);
             $request->attributes->set('_status', 'success');
             $request->attributes->set('_message', 'dime.admin.museum.updated');

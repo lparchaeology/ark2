@@ -47,6 +47,7 @@ use ARK\Security\Console\Command\UserPasswordResetCommand;
 use ARK\Security\Console\Command\UserPasswordSetCommand;
 use ARK\Security\Console\Command\UserRoleAddCommand;
 use ARK\Security\Console\Command\UserRoleDeleteCommand;
+use ARK\Security\Console\Command\UserStatusCheckCommand;
 use ARK\Security\Console\Command\UserVerifyCommand;
 use ARK\Spatial\Console\Command\SpatialRebuildCommand;
 use ARK\Translation\Console\Command\TranslationAddCommand;
@@ -82,6 +83,7 @@ class Console extends AbstractConsole
         $this->add(new UserPasswordResetCommand());
         $this->add(new UserRoleAddCommand());
         $this->add(new UserRoleDeleteCommand());
+        $this->add(new UserStatusCheckCommand());
         $this->add(new UserVerifyCommand());
 
         // View Commands

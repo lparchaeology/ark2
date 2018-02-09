@@ -31,6 +31,7 @@ namespace DIME\Controller\View;
 
 use ARK\Model\Item;
 use ARK\ORM\ORM;
+use ARK\Security\Actor;
 use ARK\Security\User;
 use ARK\Service;
 use ARK\Translation\Translation;
@@ -55,11 +56,14 @@ class AdminUserController extends DimePageController
 
         $actors = new ArrayCollection();
         foreach ($users as $user) {
-            if (!$user->isSystemUser()) {
+            if ($user->isSystemUser()) {
+                $users->removeElement($user);
+            } else {
                 $actors->add($user->actor());
             }
         }
         $data['actors']['items'] = $actors;
+        $data['users'] = $users;
 
         $data['actor'] = null;
         $data['user'] = null;
@@ -70,6 +74,7 @@ class AdminUserController extends DimePageController
     public function buildState(Request $request, $data) : iterable
     {
         $state = parent::buildState($request, $data);
+        $query = $request->query->all();
 
         $state['image'] = 'avatar';
 
@@ -81,6 +86,25 @@ class AdminUserController extends DimePageController
         $select['placeholder'] = Translation::translate('core.placeholder');
         $state['select']['museum'] = $select;
 
+        $status = $query['status'] ?? null;
+        $actor = $data['actors']['items']->first();
+        $actions = new ArrayCollection();
+        if ($status && $actor) {
+            $admin = Service::workflow()->actor();
+            $actions = Service::workflow()->actionable($admin, $actor);
+        }
+        if ($actions->count() > 0) {
+            $state['workflow']['mode'] = 'edit';
+            $state['actions'] = $actions;
+            $select['choices'] = $state['actions'];
+            $select['choice_value'] = 'name';
+            $select['choice_name'] = 'name';
+            $select['choice_label'] = 'keyword';
+            $select['multiple'] = false;
+            $select['placeholder'] = Translation::translate('core.placeholder');
+            $state['select']['actions'] = $select;
+        }
+
         $state['controls']['actor'] = true;
 
         return $state;
@@ -89,6 +113,7 @@ class AdminUserController extends DimePageController
     public function processForm(Request $request, Form $form) : void
     {
         $submitted = $form->getConfig()->getName();
+
         if ($submitted === 'filter') {
             $status = $form['status']->getData();
             $query = [];
@@ -96,15 +121,37 @@ class AdminUserController extends DimePageController
                 $query['status'] = $status->name();
             }
             $request->attributes->set('parameters', $query);
-            return;
         }
-        if ($submitted === 'actions') {
+
+        if ($submitted === 'action') {
             $action = $form['actions']->getData();
-            $agent = Service::workflow()->actor();
-            Service::workflow()->apply($agent, $action, $actor);
-            ORM::persist($actor);
-            ORM::flush($actor);
-            return;
+            $selected = $form['selected']->getData();
+            $admin = Service::workflow()->actor();
+            foreach ($selected as $id) {
+                $actor = Actor::find($id);
+                Service::workflow()->apply($admin, $action->name(), $actor);
+                ORM::persist($actor);
+
+                $user = User::find($id);
+                switch ($action->name()) {
+                    case 'disable':
+                        $user->disable();
+                        break;
+                    case 'enable':
+                        $user->enable();
+                        break;
+                    case 'lock':
+                        $user->lock();
+                        break;
+                    case 'verify':
+                        $user->verify();
+                        break;
+                }
+                ORM::persist($user);
+            }
+            ORM::flush();
+
+            $request->attributes->set('parameters', $request->query->all());
         }
     }
 

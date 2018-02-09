@@ -133,8 +133,8 @@ class FindListController extends DimePageController
             if ($myfinds) {
                 $data['filters']['finder'] = $actor;
                 $query['finder'] = [$data['filters']['finder']->id()];
-            } elseif ($filterFinders && isset($query['finder'])) {
-                $finder = Actor::find($query['finder']);
+            } elseif ($filterFinders && isset($query['finder'][0])) {
+                $finder = Actor::find($query['finder'][0]);
                 $data['filters']['finder'] = $finder;
             }
 
@@ -226,51 +226,92 @@ class FindListController extends DimePageController
         $state = parent::buildState($request, $data);
         $actor = $state['actor'];
         $query = $request->query->all();
-        // If on the users home search/action page, then enable advanced filtering
+
+        // If on the users home search/action page, then enable advanced filtering and actions
         $advanced = ($request->attributes->get('_route') === 'dime.home.finds');
+        $haveFinds = count($data['finds']['items'] ?? []) > 0;
 
-        if ($advanced) {
-            // Enable find list actions if we have finds and a single status is selected
-            $haveFinds = count($data['finds']['items']) > 0;
+        // If Advanced mode and we have Finds selected, see what Actions could be applied
+        if ($advanced && $haveFinds) {
+            // Set up some flags for what query inputs we have
             $haveStatus = count($query['status'] ?? []) === 1;
-            $canAction = $actor->hasPermission('dime.find.workflow.action') && $haveFinds && $haveStatus;
+            $haveTreasure = count($query['treasure'] ?? []) === 1;
+            $haveFinder = count($query['finder'] ?? []) === 1;
+            $haveCustody = count($query['custody'] ?? []) === 1;
+            $haveVisibility = count($query['visibility'] ?? []) === 1;
+            $haveMuseum = count($query['museum'] ?? []) === 1;
+            $museum = $haveMuseum ? Museum::find($query['museum'][0]) : null;
 
-            // Enable Treasure Claim processing iff search is for Evaluated finds with Pending treasure status
+            // Enable find list actions if we have finds and a single status is selected
+            $canAction = $haveFinds && $actor->hasPermission('dime.find.workflow.action');
+
+            // Enable Treasure Claim processing iff search is for Finds sent to the Museum
             // for a single Finder and a single Museum the user is an Agent for.
-            // If the user can do Treasure Claim processing
-            $canClaim = $actor->hasPermission('dime.find.treasure.claim')
-                && $haveFinds
+            $canClaim = $haveMuseum
+                && $haveFinder
                 && $haveStatus
-                && count($query['finder'] ?? []) === 1
-                && isset($query['museum'])
-                && count($query['museum']) === 1
-                && ORM::find(Museum::class, $query['museum'][0])
-                && $actor->isAgentFor(ORM::find(Museum::class, $query['museum'][0]));
+                && $haveCustody
+                && $actor->hasPermission('dime.find.treasure.claim')
+                && $actor->isAgentFor($museum);
 
-            if ($canAction || $canClaim) {
-                if ($canAction) {
-                    $statusAttribute = $data['finds']['items']->first()->schema()->attribute('process');
-                    $actions = Service::workflow()->attributeActions($statusAttribute, $query['status']);
-                } else {
-                    $actions = new ArrayCollection();
-                }
-                if ($canClaim) {
-                    $claim = ORM::find(Action::class, ['schma' => 'dime.find', 'action' => 'claim']);
-                    $actions->add($claim);
-                }
-                if (count($actions) > 0) {
-                    $state['workflow']['mode'] = 'edit';
-                    $state['actions'] = $actions;
-                    $select['choices'] = $state['actions'];
-                    $select['choice_value'] = 'name';
-                    $select['choice_name'] = 'name';
-                    $select['choice_label'] = 'keyword';
-                    $select['multiple'] = false;
-                    $select['placeholder'] = Translation::translate('core.placeholder');
-                    $state['select']['actions'] = $select;
+            $actions = [];
+            $item = $data['finds']['items']->first();
+
+            // Get the Process Status Actions
+            if ($haveStatus) {
+                $attribute = $item->schema()->attribute('process');
+                $statusActions = Service::workflow()->attributeActions($attribute, $query['status']);
+                $actions = array_merge($actions, $statusActions->toArray());
+            }
+
+            // Get the Treasure Status Actions
+            if ($haveTreasure) {
+                $attribute = $item->schema()->attribute('treasure');
+                $treasureActions = Service::workflow()->attributeActions($attribute, $query['treasure']);
+                $actions = array_merge($actions, $treasureActions->toArray());
+            }
+
+            // Get the Custody Status Actions
+            if ($haveCustody) {
+                $attribute = $item->schema()->attribute('custody');
+                $custodyActions = Service::workflow()->attributeActions($attribute, $query['custody']);
+                $actions = array_merge($actions, $custodyActions->toArray());
+            }
+
+            // Get the Visibility Status Actions
+            if ($haveVisibility) {
+                $attribute = $item->schema()->attribute('visibility');
+                $visibilityActions = Service::workflow()->attributeActions($attribute, $query['visibility']);
+                $actions = array_merge($actions, $visibilityActions->toArray());
+            }
+
+            // Check the Actions can be performed
+            foreach ($actions as $key => $action) {
+                if ($key === 'claim' && !$canClaim) {
+                    unset($actions[$key]);
+                } elseif (!Service::workflow()->can($actor, $key, $item)) {
+                    unset($actions[$key]);
                 }
             }
 
+            // Populate the set of Actions that can be applied
+            if (count($actions) > 0) {
+                $state['workflow']['mode'] = 'edit';
+                $state['actions'] = $actions;
+                $select['choices'] = $state['actions'];
+                $select['choice_value'] = 'name';
+                $select['choice_name'] = 'name';
+                $select['choice_label'] = 'keyword';
+                $select['multiple'] = false;
+                $select['placeholder'] = Translation::translate('core.placeholder');
+                $state['select']['actions'] = $select;
+            }
+            // TODO Hide the Action widget???
+        }
+
+        // If Advanced mode then set up the Advanced filter widgets
+        if ($advanced) {
+            unset($select);
             $select['choice_value'] = 'id';
             $select['choice_name'] = 'id';
             $select['choice_label'] = 'fullname';
@@ -317,6 +358,7 @@ class FindListController extends DimePageController
             }
             $state['select']['finder'] = $select;
         }
+
         return $state;
     }
 
@@ -350,6 +392,7 @@ class FindListController extends DimePageController
                 $message = $action->keyword();
                 Service::view()->addSuccessFlash($message);
             }
+            $request->attributes->set('parameters', $request->query->all());
         }
 
         if ($clicked === 'search') {

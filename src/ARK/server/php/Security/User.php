@@ -522,7 +522,7 @@ class User implements AdvancedUserInterface, Serializable
 
     public static function find(string $id) : ?self
     {
-        return ORM::find($id);
+        return ORM::find(self::class, $id);
     }
 
     public static function findAll() : ?Collection

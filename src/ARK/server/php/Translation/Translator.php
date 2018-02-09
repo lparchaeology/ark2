@@ -63,6 +63,10 @@ class Translator extends SymfonyTranslator
             $id = $id->id();
         }
 
+        if (!is_string($id)) {
+            return '';
+        }
+
         if ($role instanceof Role) {
             $role = $role->id();
         }
