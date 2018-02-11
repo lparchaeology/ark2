@@ -29,7 +29,6 @@
 
 namespace ARK\Model\Fragment;
 
-use ARK\Security\Actor;
 use ARK\Model\Attribute;
 use ARK\Model\Item;
 use ARK\Model\Schema\Module;
@@ -37,6 +36,7 @@ use ARK\Model\VersionTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
+use ARK\Security\Actor;
 use ARK\Service;
 use DateTime;
 
@@ -219,6 +219,9 @@ abstract class Fragment
     public static function buildSubclassMetadata(ClassMetadata $metadata, string $class) : void
     {
         $datatype = Service::database()->getFragmentDatatype($class);
+        if (!$datatype || !$datatype['enabled']) {
+            return;
+        }
         $builder = new ClassMetadataBuilder($metadata, $datatype['data_table']);
         $builder->addGeneratedKey('fid');
         if ($datatype['storage_type'] === 'string') {
