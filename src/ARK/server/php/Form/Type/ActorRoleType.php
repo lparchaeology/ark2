@@ -29,14 +29,25 @@
 
 namespace ARK\Form\Type;
 
+use ARK\Security\ActorRole;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class UserRoleType extends AbstractType
+class ActorRoleType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
+        $builder->add('actor');
         $builder->add('role');
-        $builder->add('museum');
-        $builder->add('expiry');
+        $builder->add('agentFor');
+        $builder->add('expiresAt');
+    }
+
+    public function configureOptions(OptionsResolver $resolver) : void
+    {
+        $resolver->setDefaults([
+            'data_class' => ActorRole::class,
+        ]);
     }
 }

@@ -32,6 +32,7 @@ namespace ARK\Security;
 use ARK\Model\Item;
 use ARK\Model\ItemTrait;
 use ARK\Model\LocalText;
+use ARK\ORM\ClassMetadata;
 use ARK\Service;
 use ARK\Workflow\Action;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -41,9 +42,14 @@ class Actor implements Item
 {
     use ItemTrait;
 
+    protected $roles;
+    protected $users;
+
     public function __construct(string $schema = 'core.actor')
     {
         $this->construct($schema);
+        $this->roles = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function fullname() : string
@@ -68,7 +74,7 @@ class Actor implements Item
     {
         $agencies = new ArrayCollection();
         foreach ($this->roles() as $role) {
-            if ($role->agentFor()) {
+            if ($role->isEnabled() && $role->agentFor()) {
                 $agencies->add($role->agentFor());
             }
         }
@@ -78,7 +84,7 @@ class Actor implements Item
     public function hasRole($role) : bool
     {
         foreach ($this->roles() as $has) {
-            if ($has->role() === $role or $has->role()->id() === $role) {
+            if ($has->isEnabled() && ($has->role() === $role || $has->role()->id() === $role)) {
                 return true;
             }
         }
@@ -87,12 +93,12 @@ class Actor implements Item
 
     public function roles() : Collection
     {
-        return ActorRole::findByActor($this);
+        return $this->roles;
     }
 
     public function users() : Collection
     {
-        return ActorUser::findByActor($this);
+        return $this->users;
     }
 
     public function hasPermission($permission = null) : bool
@@ -116,5 +122,14 @@ class Actor implements Item
     public function canAction(Action $action, Item $item, $attribute = null) : bool
     {
         return Service::workflow()->can($this, $action, $item, $attribute);
+    }
+
+    public static function loadMetadata(ClassMetadata $metadata) : void
+    {
+        $builder = ItemTrait::loadItemMetadata($metadata, get_called_class());
+        if ($builder) {
+            $builder->addOneToManyField('roles', ActorRole::class, 'actor');
+            $builder->addOneToManyField('users', ActorUser::class, 'actor');
+        }
     }
 }

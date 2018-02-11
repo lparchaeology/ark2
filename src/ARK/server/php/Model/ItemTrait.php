@@ -268,10 +268,14 @@ trait ItemTrait
         return ORM::findAll(get_called_class());
     }
 
-    public static function loadMetadata(ClassMetadata $metadata) : void
+    public static function loadMetadata(ClassMetadata $metadata)
+    {
+        return self::loadItemMetadata($metadata, get_called_class());
+    }
+
+    public static function loadItemMetadata(ClassMetadata $metadata, string $classname)
     {
         // Table
-        $classname = get_called_class();
         $entity = Service::database()->getEntityForClassName($classname);
         if (!$entity || ($entity['subclasses'] && !$entity['superclass'])) {
             return;
@@ -310,6 +314,7 @@ trait ItemTrait
         VersionTrait::buildVersionMetadata($builder);
         $metadata->setItemEntity(true);
         $metadata->setClassNames($classnames);
+        return $builder;
     }
 
     public static function loadClassNames() : iterable
