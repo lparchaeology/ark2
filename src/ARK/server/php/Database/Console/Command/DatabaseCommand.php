@@ -124,6 +124,8 @@ abstract class DatabaseCommand extends AbstractCommand
             $config['user'] = $user;
         }
         $config['password'] = $this->askPassword($config['user']);
+        $types = $configs['types'] ?? [];
+        $this->loadTypes($types);
         return $config;
     }
 

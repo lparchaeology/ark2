@@ -29,13 +29,12 @@
 
 namespace ARK\Database;
 
-use DoctrineXml\Parser as XmlParser;
+use Doctrine\DBAL\Platforms\AbstractPlatform;
 use DoctrineXml\Checker;
 use DoctrineXml\Normalizer;
-use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Exception;
-use SimpleXMLElement;
+use DoctrineXml\Parser as XmlParser;
 use DoctrineXml\Utilities;
+use Exception;
 
 class Parser extends XmlParser
 {
@@ -49,7 +48,7 @@ class Parser extends XmlParser
                 $xml = Normalizer::normalizeString($xml);
             }
             if ($checkXml) {
-                $errors = Checker::checkString($xml);
+                //$errors = Checker::checkString($xml);
                 if (isset($errors)) {
                     throw new Exception(implode("\n", $errors));
                 }

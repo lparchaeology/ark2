@@ -29,14 +29,14 @@
 
 namespace ARK\Framework\Provider;
 
-use Brick\Geo\Doctrine\Types\GeometryCollectionType;
-use Brick\Geo\Doctrine\Types\GeometryType;
-use Brick\Geo\Doctrine\Types\LineStringType;
-use Brick\Geo\Doctrine\Types\MultiLineStringType;
-use Brick\Geo\Doctrine\Types\MultiPointType;
-use Brick\Geo\Doctrine\Types\MultiPolygonType;
-use Brick\Geo\Doctrine\Types\PointType;
-use Brick\Geo\Doctrine\Types\PolygonType;
+use ARK\Spatial\Doctrine\Types\GeometryCollectionType;
+use ARK\Spatial\Doctrine\Types\GeometryType;
+use ARK\Spatial\Doctrine\Types\LineStringType;
+use ARK\Spatial\Doctrine\Types\MultiLineStringType;
+use ARK\Spatial\Doctrine\Types\MultiPointType;
+use ARK\Spatial\Doctrine\Types\MultiPolygonType;
+use ARK\Spatial\Doctrine\Types\PointType;
+use ARK\Spatial\Doctrine\Types\PolygonType;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Ramsey\Uuid\Doctrine\UuidType;

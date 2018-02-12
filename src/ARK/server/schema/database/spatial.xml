@@ -1,2 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.concrete5.org/doctrine-xml/0.5"/>
+<schema xmlns="http://www.concrete5.org/doctrine-xml/0.5">
+    <table name="ark_spatial_fragment">
+        <field name="fid" type="integer">
+            <autoincrement/>
+            <key/>
+            <notnull/>
+        </field>
+        <field name="module" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="item" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="attribute" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="type" type="string" size="10">
+            <notnull/>
+        </field>
+        <field name="geometry" type="geometry">
+            <notnull/>
+        </field>
+        <field name="srid" type="string" size="30">
+            <notnull/>
+        </field>
+        <index name="item">
+            <col>module</col>
+            <col>item</col>
+        </index>
+        <index name="attribute">
+            <col>module</col>
+            <col>attribute</col>
+        </index>
+        <index name="geometry">
+            <col>geometry</col>
+        </index>
+        <opt for="mysql" engine="MyISAM" collate="utf8mb4_unicode_ci" charset="utf8mb4" />
+    </table>
+    <table name="ark_spatial_term">
+        <field name="fid" type="integer">
+            <autoincrement/>
+            <key/>
+            <notnull/>
+        </field>
+        <field name="concept" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="term" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="level" type="string" size="10">
+            <default value="full" />
+            <notnull/>
+        </field>
+        <field name="type" type="string" size="10">
+            <notnull/>
+        </field>
+        <field name="geometry" type="geometry">
+            <notnull/>
+        </field>
+        <field name="srid" type="string" size="30">
+            <notnull/>
+        </field>
+        <index name="term">
+            <col>concept</col>
+            <col>term</col>
+        </index>
+        <index name="geometry">
+            <col>geometry</col>
+        </index>
+        <opt for="mysql" engine="MyISAM" collate="utf8mb4_unicode_ci" charset="utf8mb4" />
+    </table>
+</schema>

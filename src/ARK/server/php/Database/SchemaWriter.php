@@ -112,7 +112,7 @@ class SchemaWriter
         }
         $xml = $root->asXML();
         $xml = Normalizer::normalizeString($xml);
-        $errors = Checker::checkString($xml);
+        //$errors = Checker::checkString($xml);
         if (isset($errors)) {
             throw new Exception(implode("\n", $errors));
         }
