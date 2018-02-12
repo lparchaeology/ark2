@@ -32,15 +32,14 @@ namespace ARK\Framework;
 use ARK\Api\JsonApi\Http\JsonApiRequest;
 use ARK\ARK;
 use ARK\Framework\Provider\ApiServiceProvider;
-use ARK\Framework\Provider\DbalServiceProvider;
 use ARK\Framework\Provider\DebugServiceProvider;
+use ARK\Framework\Provider\DoctrineServiceProvider;
 use ARK\Framework\Provider\FileServiceProvider;
 use ARK\Framework\Provider\FormServiceProvider;
 use ARK\Framework\Provider\JsonSchemaServiceProvider;
 use ARK\Framework\Provider\LocaleServiceProvider;
 use ARK\Framework\Provider\LoggerServiceProvider;
 use ARK\Framework\Provider\MailerServiceProvider;
-use ARK\Framework\Provider\OrmServiceProvider;
 use ARK\Framework\Provider\RoutingServiceProvider;
 use ARK\Framework\Provider\SecurityServiceProvider;
 use ARK\Framework\Provider\SpatialServiceProvider;
@@ -99,13 +98,11 @@ class Application extends AbstractApplication
         $this->register(new SessionServiceProvider());
 
         // Enable the Database
-        // - Optional on Use: Logger, Stopwatch
-        $this->register(new DbalServiceProvider());
-        // - Optional on Use: DBAL, Cache
-        $this->register(new OrmServiceProvider());
+        // - Optional on Use: Logger, Stopwatch, Cache
+        $this->register(new DoctrineServiceProvider());
 
         // Enable the Spatial functions
-        // - Required on boot: DBAL
+        // - Required on boot: Doctrine
         $this->register(new SpatialServiceProvider());
 
         $this->register(new SerializerServiceProvider());
@@ -117,7 +114,7 @@ class Application extends AbstractApplication
         $this->register(new FormServiceProvider());
 
         // Enable Forms
-        // - On Register: ORM, Validator, Form
+        // - On Register: Doctrine, Validator, Form
         // - Optional on Use:
         $this->register(new DoctrineOrmManagerRegistryProvider());
 
@@ -125,9 +122,9 @@ class Application extends AbstractApplication
         $this->register(new RoutingServiceProvider());
 
         // Enable Security
-        // - On Register: Forms, Validator, Mailer, DBAL/ORM, Routing
+        // - On Register: Forms, Validator, Mailer, Doctrine, Routing
         // - Required on Use: Logger
-        // - Optional on Use: Session, Twig, Mailer, URL Generator, Translator, Console, ORM
+        // - Optional on Use: Session, Twig, Mailer, URL Generator, Translator, Console, Doctrine
         $this->register(new SecurityServiceProvider());
 
         // Enable Translation

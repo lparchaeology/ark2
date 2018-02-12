@@ -57,6 +57,11 @@ class ARK
         return realpath(__DIR__.'/../../../..');
     }
 
+    public static function vendorDir() : string
+    {
+        return self::installDir().'/vendor';
+    }
+
     public static function varDir() : string
     {
         return self::installDir().'/var';

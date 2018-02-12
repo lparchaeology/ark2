@@ -30,14 +30,21 @@
 namespace ARK\Framework\Provider;
 
 /*
- * Simplified/Extended version of dflydev/doctrine-orm-service-provider.
+ * Simplified/Merged/Extended version of Silex/DoctrineServiceProvider and
+ * dflydev/doctrine-orm-service-provider.
  *
  * (c) Dragonfly Development Inc.
  */
 
+use ARK\Database\Connection;
+use ARK\Database\Database;
 use ARK\ORM\Driver\StaticPHPDriver;
 use ARK\ORM\EntityManager;
+use Doctrine\Common\EventManager;
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
+use Doctrine\DBAL\Configuration as DbalConfiguration;
+use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Logging\DebugStack;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager as DoctrineEntityManager;
@@ -49,16 +56,114 @@ use Doctrine\ORM\Mapping\Driver\YamlDriver;
 use Gedmo\DoctrineExtensions;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use Ramsey\Uuid\Doctrine\UuidType;
+use Symfony\Bridge\Doctrine\Logger\DbalLogger;
 
-/**
- * Doctrine ORM Pimple Service Provider.
- *
- * @author Beau Simensen <beau@dflydev.com>
- */
-class OrmServiceProvider implements ServiceProviderInterface
+class DoctrineServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $container) : void
     {
+        // Doctrine DBAL Config
+        $container['dbs.options.initializer'] = $container->protect(function () use ($container) : void {
+            static $initialized = false;
+            if ($initialized) {
+                return;
+            }
+            $initialized = true;
+            // TODO Better error checking for missing files and invalid JSON.
+            $container['dbs.settings'] = json_decode(file_get_contents($container['dir.config'].'/database.json'), true);
+            $options['core'] = $this->mergeConfig($container['dbs.settings'], 'core');
+            $options['data'] = $this->mergeConfig($container['dbs.settings'], 'data');
+            $options['user'] = $this->mergeConfig($container['dbs.settings'], 'user');
+            if (isset($container['dbs.settings']['connections']['spatial'])) {
+                $options['spatial'] = $this->mergeConfig($container['dbs.settings'], 'spatial');
+            }
+            $container['dbs.options'] = $options;
+            $container['dbs.default'] = 'data';
+        });
+
+        $container['dbs.config'] = function ($container) {
+            $container['dbs.options.initializer']();
+
+            $configs = new Container();
+            $logger = $container['logger'] ?? null;
+            $stopwatch = $container['stopwatch'] ?? null;
+            foreach ($container['dbs.options'] as $name => $options) {
+                $configs[$name] = new DbalConfiguration();
+                if ($logger) {
+                    $sqlLogger = $container['debug'] ? new DebugStack($logger, $stopwatch) : new DbalLogger($logger, $stopwatch);
+                    $configs[$name]->setSQLLogger($sqlLogger);
+                }
+            }
+
+            return $configs;
+        };
+
+        $container['dbs.event_manager'] = function ($container) {
+            $container['dbs.options.initializer']();
+
+            $managers = new Container();
+            foreach ($container['dbs.options'] as $name => $options) {
+                $managers[$name] = new EventManager();
+            }
+
+            return $managers;
+        };
+
+        $container['dbs.types'] = [
+            'uuid' => UuidType::class,
+        ];
+
+        $container['dbs'] = function ($container) {
+            $container['dbs.options.initializer']();
+
+            $dbs = new Container();
+            foreach ($container['dbs.options'] as $name => $options) {
+                $config = $container['dbs.config'][$name];
+                $manager = $container['dbs.event_manager'][$name];
+                $dbs[$name] = function ($dbs) use ($options, $config, $manager) {
+                    return DriverManager::getConnection($options, $config, $manager);
+                };
+            }
+
+            foreach ((array) $container['dbs.types'] as $typeName => $typeClass) {
+                if (Type::hasType($typeName)) {
+                    Type::overrideType($typeName, $typeClass);
+                } else {
+                    Type::addType($typeName, $typeClass);
+                }
+            }
+
+            return $dbs;
+        };
+
+        $container['db.config'] = function ($container) {
+            $dbs = $container['dbs.config'];
+            return $dbs[$container['dbs.default']];
+        };
+
+        $container['db.event_manager'] = function ($container) {
+            $dbs = $container['dbs.event_manager'];
+            return $dbs[$container['dbs.default']];
+        };
+
+        $container['db'] = function ($container) {
+            $dbs = $container['dbs'];
+            return $dbs[$container['dbs.default']];
+        };
+
+        $container['database'] = function ($container) {
+            return new Database($container);
+        };
+
+        // Doctrine ORM Config
+
+        /*
+         * Doctrine ORM Pimple Service Provider.
+         *
+         * @author Beau Simensen <beau@dflydev.com>
+         */
+
         $container['orm.proxies_dir'] = $container['dir.cache'].'/doctrine/proxies';
 
         $container['orm.default_cache'] = ['driver' => 'array'];
@@ -435,6 +540,14 @@ class OrmServiceProvider implements ServiceProviderInterface
             $ems = $container['orm.ems'];
             return $ems[$container['orm.ems.default']];
         };
+    }
+
+    private function mergeConfig(array $settings, $conn)
+    {
+        $connection = $settings['connections'][$conn];
+        $connection['wrapperClass'] = Connection::class;
+        $server = $settings['servers'][$connection['server']];
+        return array_merge($server, $connection);
     }
 
     private function setMappings(Container $container, string $connection, iterable $mappings) : void

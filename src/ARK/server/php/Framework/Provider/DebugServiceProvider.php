@@ -29,12 +29,13 @@
 
 namespace ARK\Framework\Provider;
 
+use ARK\ARK;
 use ARK\Form\Extension\DataCollector\FormDataCollector;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Provider\VarDumperServiceProvider;
 use Silex\Provider\WebProfilerServiceProvider;
-use Sorien\Provider\DoctrineProfilerServiceProvider;
+use Symfony\Bridge\Doctrine\DataCollector\DoctrineDataCollector;
 
 class DebugServiceProvider implements ServiceProviderInterface
 {
@@ -59,18 +60,33 @@ class DebugServiceProvider implements ServiceProviderInterface
                 $r = new \ReflectionClass('Symfony\Bundle\DebugBundle\DependencyInjection\Configuration');
                 return dirname(dirname($r->getFileName())).'/Resources/views';
             };
-            $container->register(new DoctrineProfilerServiceProvider());
+
+            // Doctrine Profiler
+            $container->extend('data_collectors', function ($collectors, $app) {
+                $collectors['db'] = function ($app) {
+                    $collector = new DoctrineDataCollector($app['doctrine']);
+                    foreach ($app['doctrine']->getConnections() as $name => $conn) {
+                        $collector->addLogger($name, $conn->getConfiguration()->getSQLLogger());
+                    }
+                    return $collector;
+                };
+                return $collectors;
+            });
+
+            $container['data_collector.templates'] = $container->extend('data_collector.templates', function ($templates) {
+                // Cloned Database template
+                $templates[] = ['db', 'profiler/db.html.twig'];
+                // Modified Translation template for editing translations
+                $templates[] = ['translation', 'profiler/translation.html.twig'];
+                return $templates;
+            });
+
+            // Allow anonymous access to profiler!
             $container->extendArray(
                 'security.firewalls',
                 'dev_area',
                 ['pattern' => '^/(_(profiler|wdt)|css|images|js)/', 'anonymous' => true]
             );
-
-            // Modified Translation template for editing translations
-            $container['data_collector.templates'] = $container->extend('data_collector.templates', function ($templates) {
-                $templates[] = ['translation', 'profiler/translation.html.twig'];
-                return $templates;
-            });
         }
     }
 }
