@@ -29,10 +29,11 @@
 
 namespace ARK\Model;
 
-use ARK\Security\Actor;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\Security\Actor;
 use ARK\Service;
 use DateTime;
+use Ramsey\Uuid\Uuid;
 
 trait VersionTrait
 {
@@ -80,6 +81,7 @@ trait VersionTrait
             $this->creator = $this->modifier;
             $this->created = $this->modified;
         }
+        $this->version = Uuid::uuid4();
     }
 
     public static function buildVersionMetadata(ClassMetadataBuilder $builder) : void
@@ -88,6 +90,6 @@ trait VersionTrait
         $builder->addField('modified', 'datetime');
         $builder->addManyToOneField('creator', Actor::class, 'creator', 'id');
         $builder->addField('created', 'datetime');
-        $builder->addStringField('version', 128);
+        $builder->addField('version', 'uuid');
     }
 }

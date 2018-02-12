@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK DBAL Service Provider
+ * ARK DBAL Service Provider.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -32,20 +32,21 @@ namespace ARK\Framework\Provider;
 
 use ARK\Database\Database;
 use Doctrine\Common\EventManager;
-use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Configuration as DbalConfiguration;
+use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Types\Type;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 // TODO See if we want to use the Bridge instead or Sorien?
 //use Symfony\Bridge\Doctrine\Logger\DbalLogger;
+use Ramsey\Uuid\Doctrine\UuidType;
 use Sorien\Logger\DbalLogger;
 
 class DbalServiceProvider implements ServiceProviderInterface
 {
-    public function register(Container $app)
+    public function register(Container $app) : void
     {
-        $app['dbs.options.initializer'] = $app->protect(function () use ($app) {
+        $app['dbs.options.initializer'] = $app->protect(function () use ($app) : void {
             static $initialized = false;
             if ($initialized) {
                 return;
@@ -68,7 +69,7 @@ class DbalServiceProvider implements ServiceProviderInterface
 
             $configs = new Container();
             $addLogger = isset($app['logger']) && $app['logger'] !== null;
-            $stopwatch = isset($app['stopwatch']) ? $app['stopwatch'] : null;
+            $stopwatch = $app['stopwatch'] ?? null;
             foreach ($app['dbs.options'] as $name => $options) {
                 $configs[$name] = new DbalConfiguration();
                 if ($addLogger) {
@@ -90,7 +91,9 @@ class DbalServiceProvider implements ServiceProviderInterface
             return $managers;
         };
 
-        $app['dbs.types'] = [];
+        $app['dbs.types'] = [
+            'uuid' => UuidType::class,
+        ];
 
         $app['dbs'] = function ($app) {
             $app['dbs.options.initializer']();
@@ -139,7 +142,7 @@ class DbalServiceProvider implements ServiceProviderInterface
     {
         $connection = $settings['connections'][$conn];
         $connection['wrapperClass'] = 'ARK\\Database\\Connection';
-        $server =  $settings['servers'][$connection['server']];
+        $server = $settings['servers'][$connection['server']];
         return array_merge($server, $connection);
     }
 }
