@@ -7,11 +7,6 @@ $(document).ready(function () {
           window.mapcollection.clear();
           getPointsFromTable();
         });
-        /*
-        $(".dime-table").on('page-change.bs.table', function (e) {
-          getPointsFromTable();
-        });
-        */
     }
 
     if ($('#mapmodal').length) {
