@@ -32,6 +32,7 @@ namespace ARK\Framework;
 use ARK\Api\JsonApi\Http\JsonApiRequest;
 use ARK\ARK;
 use ARK\Framework\Provider\ApiServiceProvider;
+use ARK\Framework\Provider\DbalServiceProvider;
 use ARK\Framework\Provider\DebugServiceProvider;
 use ARK\Framework\Provider\DoctrineServiceProvider;
 use ARK\Framework\Provider\FileServiceProvider;
@@ -99,6 +100,7 @@ class Application extends AbstractApplication
 
         // Enable the Database
         // - Optional on Use: Logger, Stopwatch, Cache
+        $this->register(new DbalServiceProvider());
         $this->register(new DoctrineServiceProvider());
 
         // Enable the Spatial functions

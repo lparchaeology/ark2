@@ -33,6 +33,7 @@ use ARK\ARK;
 use ARK\Console\Command\AbstractCommand;
 use ARK\Database\AdminConnection;
 use ARK\Database\Connection;
+use ARK\Database\Database;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
 use Symfony\Component\Console\Question\ChoiceQuestion;
@@ -62,6 +63,8 @@ abstract class DatabaseCommand extends AbstractCommand
     protected function getSiteConnection(string $site, string $db, string $user = null) : Connection
     {
         $connections = ARK::siteDatabaseConfig($site, true);
+        $types = $connections['types'] ?? [];
+        $this->loadTypes($types);
         $config = $connections[$db];
         if ($user) {
             $config['user'] = $user;
@@ -93,6 +96,18 @@ abstract class DatabaseCommand extends AbstractCommand
             throw $e;
         }
         return $connection;
+    }
+
+    protected function loadTypes($types = []) : void
+    {
+        $app = $this->app();
+        if (!isset($app['dbs.types'])) {
+            $types = array_merge($app['dbs.types.default'], $app['dbs.types.spatial'], $types);
+            foreach ($types as $name => $class) {
+                Database::setType($name, $class);
+            }
+            $app['dbs.types'] = $types;
+        }
     }
 
     protected function chooseServerConfig(string $text = null, string $user = null) : iterable

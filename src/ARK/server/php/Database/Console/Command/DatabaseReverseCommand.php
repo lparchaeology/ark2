@@ -43,30 +43,27 @@ class DatabaseReverseCommand extends DatabaseCommand
     protected function doExecute() : void
     {
         $site = $this->askChoice('Please choose the site to reverse engineer', ARK::sites());
-        $config = $this->chooseServerConfig();
-        $dbprefix = $site.'_ark_';
-        $this->reverse($dbprefix, 'core', $config);
-        $this->reverse($dbprefix, 'data', $config);
-        $this->reverse($dbprefix, 'spatial', $config);
-        $this->reverse($dbprefix, 'user', $config);
+        $this->reverse($site, 'core');
+        $this->reverse($site, 'data');
+        $this->reverse($site, 'spatial');
+        $this->reverse($site, 'user');
     }
 
-    private function reverse(string $prefix, string $name, iterable $config) : void
+    private function reverse(string $site, string $db) : void
     {
         // Get the Admin Connection
-        $dbname = $prefix.$name;
-        $config['dbname'] = $dbname;
-        $admin = $this->getConnection($config);
+        $admin = $this->getSiteConnection($site, $db);
 
-        $path = ARK::namespaceDir('ARK')."/server/schema/database/$name.xml";
+        $path = ARK::namespaceDir('ARK')."/server/schema/database/$db.xml";
         try {
             $admin->extractSchema($path, true);
         } catch (DBALException $e) {
-            $this->writeException("FAILED: Extract Schema from database $dbname failed", $e);
+            dump($e);
+            $this->writeException("FAILED: Extract Schema from database $db failed", $e);
             return;
         }
 
         $admin->close();
-        $this->write("SUCCESS: Schema for $dbname extracted to file $path");
+        $this->write("SUCCESS: Schema for $db extracted to file $path");
     }
 }

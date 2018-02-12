@@ -32,6 +32,7 @@ namespace ARK\Database;
 use ARK\ARK;
 use ARK\Service;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Type;
 
 class Database
 {
@@ -410,6 +411,16 @@ class Database
         ];
 
         return $this->data()->fetchAssoc($sql, $params);
+    }
+
+    // Load the Global custom Types
+    public static function setType(string $name, string $class) : void
+    {
+        if (Type::hasType($name)) {
+            Type::overrideType($name, $class);
+        } else {
+            Type::addType($name, $class);
+        }
     }
 
     private function loadEntities() : void

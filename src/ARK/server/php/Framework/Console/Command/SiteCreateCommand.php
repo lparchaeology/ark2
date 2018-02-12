@@ -30,8 +30,8 @@
 namespace ARK\Framework\Console\Command;
 
 use ARK\ARK;
-use ARK\Database\Console\Command\DatabaseCommand;
 use ARK\Console\ProcessTrait;
+use ARK\Database\Console\Command\DatabaseCommand;
 use Doctrine\DBAL\DBALException;
 use Exception;
 use Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder;
@@ -175,11 +175,8 @@ class SiteCreateCommand extends DatabaseCommand
                 $this->write("Loading $db schema into database $dbname...");
                 $admin->beginTransaction();
                 try {
-                    // TODO Need to add Doctrine spatial types!
-                    if ($db !== 'spatial') {
-                        $admin->loadSchema(ARK::namespaceDir('ARK')."/server/schema/database/$db.xml");
-                        $admin->commit();
-                    }
+                    $admin->loadSchema(ARK::namespaceDir('ARK')."/server/schema/database/$db.xml");
+                    $admin->commit();
                     $this->write(" * Loaded $db schema...");
                 } catch (DBALException $e) {
                     $this->writeException("Load Schema to database $dbname failed", $e);

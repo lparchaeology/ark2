@@ -40,14 +40,6 @@ use ARK\Database\Connection;
 use ARK\Database\Database;
 use ARK\ORM\Driver\StaticPHPDriver;
 use ARK\ORM\EntityManager;
-use Brick\Geo\Doctrine\Types\GeometryCollectionType;
-use Brick\Geo\Doctrine\Types\GeometryType;
-use Brick\Geo\Doctrine\Types\LineStringType;
-use Brick\Geo\Doctrine\Types\MultiLineStringType;
-use Brick\Geo\Doctrine\Types\MultiPointType;
-use Brick\Geo\Doctrine\Types\MultiPolygonType;
-use Brick\Geo\Doctrine\Types\PointType;
-use Brick\Geo\Doctrine\Types\PolygonType;
 use Doctrine\Common\EventManager;
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
 use Doctrine\DBAL\Configuration as DbalConfiguration;
@@ -64,7 +56,6 @@ use Doctrine\ORM\Mapping\Driver\YamlDriver;
 use Gedmo\DoctrineExtensions;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use Ramsey\Uuid\Doctrine\UuidType;
 use Symfony\Bridge\Doctrine\Logger\DbalLogger;
 
 class DoctrineServiceProvider implements ServiceProviderInterface
@@ -72,23 +63,6 @@ class DoctrineServiceProvider implements ServiceProviderInterface
     public function register(Container $container) : void
     {
         // Doctrine DBAL Config
-
-        // Custom DBAL types - Note these are global to Doctrine, not per connection
-        // Required custom types
-        $container['dbs.types.default'] = [
-            'uuid' => UuidType::class,
-        ];
-        // Spatial Types to add only if using a Spatial Connection
-        $container['dbs.types.spatial'] = [
-            'GeometryCollection' => GeometryCollectionType::class,
-            'geometry' => GeometryType::class,
-            'linestring' => LineStringType::class,
-            'multilinestring' => MultiLineStringType::class,
-            'multipoint' => MultiPointType::class,
-            'multipolygon' => MultiPolygonType::class,
-            'point' => PointType::class,
-            'polygon' => PolygonType::class,
-        ];
 
         $container['dbs.options.initializer'] = $container->protect(function () use ($container) : void {
             static $initialized = false;
@@ -120,7 +94,7 @@ class DoctrineServiceProvider implements ServiceProviderInterface
             }
             $container['dbs.types'] = $types;
             foreach ($types as $name => $class) {
-                $this->setType($name, $class);
+                Database::setType($name, $class);
             }
         });
 
@@ -552,16 +526,6 @@ class DoctrineServiceProvider implements ServiceProviderInterface
             $ems = $container['orm.ems'];
             return $ems[$container['orm.ems.default']];
         };
-    }
-
-    // Load the Global custom Types
-    private function setType(string $name, string $class) : void
-    {
-        if (Type::hasType($name)) {
-            Type::overrideType($name, $class);
-        } else {
-            Type::addType($name, $class);
-        }
     }
 
     private function mergeConfig(array $settings, $conn)
