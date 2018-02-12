@@ -40,6 +40,14 @@ use ARK\Database\Connection;
 use ARK\Database\Database;
 use ARK\ORM\Driver\StaticPHPDriver;
 use ARK\ORM\EntityManager;
+use Brick\Geo\Doctrine\Types\GeometryCollectionType;
+use Brick\Geo\Doctrine\Types\GeometryType;
+use Brick\Geo\Doctrine\Types\LineStringType;
+use Brick\Geo\Doctrine\Types\MultiLineStringType;
+use Brick\Geo\Doctrine\Types\MultiPointType;
+use Brick\Geo\Doctrine\Types\MultiPolygonType;
+use Brick\Geo\Doctrine\Types\PointType;
+use Brick\Geo\Doctrine\Types\PolygonType;
 use Doctrine\Common\EventManager;
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
 use Doctrine\DBAL\Configuration as DbalConfiguration;
@@ -64,22 +72,56 @@ class DoctrineServiceProvider implements ServiceProviderInterface
     public function register(Container $container) : void
     {
         // Doctrine DBAL Config
+
+        // Custom DBAL types - Note these are global to Doctrine, not per connection
+        // Required custom types
+        $container['dbs.types.default'] = [
+            'uuid' => UuidType::class,
+        ];
+        // Spatial Types to add only if using a Spatial Connection
+        $container['dbs.types.spatial'] = [
+            'GeometryCollection' => GeometryCollectionType::class,
+            'geometry' => GeometryType::class,
+            'linestring' => LineStringType::class,
+            'multilinestring' => MultiLineStringType::class,
+            'multipoint' => MultiPointType::class,
+            'multipolygon' => MultiPolygonType::class,
+            'point' => PointType::class,
+            'polygon' => PolygonType::class,
+        ];
+
         $container['dbs.options.initializer'] = $container->protect(function () use ($container) : void {
             static $initialized = false;
             if ($initialized) {
                 return;
             }
             $initialized = true;
+
+            $types = $container['dbs.types.default'];
+
             // TODO Better error checking for missing files and invalid JSON.
             $container['dbs.settings'] = json_decode(file_get_contents($container['dir.config'].'/database.json'), true);
+
             $options['core'] = $this->mergeConfig($container['dbs.settings'], 'core');
             $options['data'] = $this->mergeConfig($container['dbs.settings'], 'data');
             $options['user'] = $this->mergeConfig($container['dbs.settings'], 'user');
+
             if (isset($container['dbs.settings']['connections']['spatial'])) {
                 $options['spatial'] = $this->mergeConfig($container['dbs.settings'], 'spatial');
+                $types = array_merge($types, $container['dbs.types.spatial']);
             }
+
             $container['dbs.options'] = $options;
             $container['dbs.default'] = 'data';
+
+            // Load the custom Types
+            if (isset($container['dbs.settings']['types'])) {
+                $types = array_merge($types, $container['dbs.settings']['types']);
+            }
+            $container['dbs.types'] = $types;
+            foreach ($types as $name => $class) {
+                $this->setType($name, $class);
+            }
         });
 
         $container['dbs.config'] = function ($container) {
@@ -110,10 +152,6 @@ class DoctrineServiceProvider implements ServiceProviderInterface
             return $managers;
         };
 
-        $container['dbs.types'] = [
-            'uuid' => UuidType::class,
-        ];
-
         $container['dbs'] = function ($container) {
             $container['dbs.options.initializer']();
 
@@ -124,14 +162,6 @@ class DoctrineServiceProvider implements ServiceProviderInterface
                 $dbs[$name] = function ($dbs) use ($options, $config, $manager) {
                     return DriverManager::getConnection($options, $config, $manager);
                 };
-            }
-
-            foreach ((array) $container['dbs.types'] as $typeName => $typeClass) {
-                if (Type::hasType($typeName)) {
-                    Type::overrideType($typeName, $typeClass);
-                } else {
-                    Type::addType($typeName, $typeClass);
-                }
             }
 
             return $dbs;
@@ -372,16 +402,6 @@ class DoctrineServiceProvider implements ServiceProviderInterface
                 $container['orm.em.default_options'],
                 [
                     'connection' => 'spatial',
-                    'types' => [
-                        'GeometryCollection' => 'Brick\Geo\Doctrine\Types\GeometryCollectionType',
-                        'geometry' => 'Brick\Geo\Doctrine\Types\GeometryType',
-                        'linestring' => 'Brick\Geo\Doctrine\Types\LineStringType',
-                        'multilinestring' => 'Brick\Geo\Doctrine\Types\MultiLineStringType',
-                        'multipoint' => 'Brick\Geo\Doctrine\Types\MultiPointType',
-                        'multipolygon' => 'Brick\Geo\Doctrine\Types\MultiPolygonType',
-                        'point' => 'Brick\Geo\Doctrine\Types\PointType',
-                        'polygon' => 'Brick\Geo\Doctrine\Types\PolygonType',
-                    ],
                     'mappings' => $container['orm.em.default_options.mappings']['spatial'],
                 ]
             );
@@ -488,14 +508,6 @@ class DoctrineServiceProvider implements ServiceProviderInterface
                 //DoctrineExtensions::registerAnnotations();
                 $config->setMetadataDriverImpl($chain);
 
-                foreach ((array) $options['types'] as $typeName => $typeClass) {
-                    if (Type::hasType($typeName)) {
-                        Type::overrideType($typeName, $typeClass);
-                    } else {
-                        Type::addType($typeName, $typeClass);
-                    }
-                }
-
                 $configs[$name] = $config;
             }
 
@@ -540,6 +552,16 @@ class DoctrineServiceProvider implements ServiceProviderInterface
             $ems = $container['orm.ems'];
             return $ems[$container['orm.ems.default']];
         };
+    }
+
+    // Load the Global custom Types
+    private function setType(string $name, string $class) : void
+    {
+        if (Type::hasType($name)) {
+            Type::overrideType($name, $class);
+        } else {
+            Type::addType($name, $class);
+        }
     }
 
     private function mergeConfig(array $settings, $conn)

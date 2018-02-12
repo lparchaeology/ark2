@@ -24,5 +24,6 @@
             "server": "server",
             "dbname": "user"
         }
-    }
+    },
+    "types": []
 }
