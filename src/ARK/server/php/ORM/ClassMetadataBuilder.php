@@ -29,8 +29,8 @@
 
 namespace ARK\ORM;
 
-use ARK\Vocabulary\Concept;
 use ARK\Security\Permission;
+use ARK\Vocabulary\Concept;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder as DoctrineClassMetadataBuilder;
 use Doctrine\ORM\Mapping\Builder\FieldBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
@@ -102,6 +102,19 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
             );
         }
         return $builder->build();
+    }
+
+    public function addFragmentField($name, $fragment)
+    {
+        return $this->addCompositeOneToManyField(
+            $name,
+            $fragment,
+            'item',
+            [
+                ['column' => 'module', 'nullable' => false],
+                ['column' => 'id', 'reference' => 'item', 'nullable' => false],
+            ]
+        );
     }
 
     public function addOneToManyCascadeField(

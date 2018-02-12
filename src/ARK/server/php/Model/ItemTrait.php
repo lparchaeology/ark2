@@ -29,6 +29,19 @@
 
 namespace ARK\Model;
 
+use ARK\Model\Fragment\BlobFragment;
+use ARK\Model\Fragment\BooleanFragment;
+use ARK\Model\Fragment\DateFragment;
+use ARK\Model\Fragment\DateTimeFragment;
+use ARK\Model\Fragment\DecimalFragment;
+use ARK\Model\Fragment\FloatFragment;
+use ARK\Model\Fragment\IntegerFragment;
+use ARK\Model\Fragment\ItemFragment;
+use ARK\Model\Fragment\ObjectFragment;
+use ARK\Model\Fragment\SpatialFragment;
+use ARK\Model\Fragment\StringFragment;
+use ARK\Model\Fragment\TextFragment;
+use ARK\Model\Fragment\TimeFragment;
 use ARK\Model\Schema\Schema;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
@@ -61,6 +74,19 @@ trait ItemTrait
     protected $label;
     protected $properties;
     protected $meta;
+    protected $blobs;
+    protected $booleans;
+    protected $dates;
+    protected $datetimes;
+    protected $decimals;
+    protected $floats;
+    protected $integers;
+    protected $items;
+    protected $objects;
+    protected $spatials;
+    protected $strings;
+    protected $texts;
+    protected $times;
 
     public function id() : string
     {
@@ -268,10 +294,14 @@ trait ItemTrait
         return ORM::findAll(get_called_class());
     }
 
-    public static function loadMetadata(ClassMetadata $metadata) : void
+    public static function loadMetadata(ClassMetadata $metadata)
+    {
+        return self::loadItemMetadata($metadata, get_called_class());
+    }
+
+    public static function loadItemMetadata(ClassMetadata $metadata, string $classname)
     {
         // Table
-        $classname = get_called_class();
         $entity = Service::database()->getEntityForClassName($classname);
         if (!$entity || ($entity['subclasses'] && !$entity['superclass'])) {
             return;
@@ -308,8 +338,52 @@ trait ItemTrait
         $builder->addStringField('idx', 30);
         $builder->addStringField('label', 30);
         VersionTrait::buildVersionMetadata($builder);
+
         $metadata->setItemEntity(true);
         $metadata->setClassNames($classnames);
+
+        // Fragment Associations
+        $datatypes = Service::database()->getDatatypes();
+        if (isset($datatypes['blob']) && $datatypes['blob']['enabled']) {
+            $builder->addFragmentField('blobs', BlobFragment::class);
+        }
+        if (isset($datatypes['boolean']) && $datatypes['boolean']['enabled']) {
+            $builder->addFragmentField('booleans', BooleanFragment::class);
+        }
+        if (isset($datatypes['date']) && $datatypes['date']['enabled']) {
+            $builder->addFragmentField('dates', DateFragment::class);
+        }
+        if (isset($datatypes['datetime']) && $datatypes['datetime']['enabled']) {
+            $builder->addFragmentField('datetimes', DateTimeFragment::class);
+        }
+        if (isset($datatypes['decimal']) && $datatypes['decimal']['enabled']) {
+            $builder->addFragmentField('decimals', DecimalFragment::class);
+        }
+        if (isset($datatypes['float']) && $datatypes['float']['enabled']) {
+            $builder->addFragmentField('floats', FloatFragment::class);
+        }
+        if (isset($datatypes['integer']) && $datatypes['integer']['enabled']) {
+            $builder->addFragmentField('integers', IntegerFragment::class);
+        }
+        if (isset($datatypes['item']) && $datatypes['item']['enabled']) {
+            $builder->addFragmentField('items', ItemFragment::class);
+        }
+        if (isset($datatypes['object']) && $datatypes['object']['enabled']) {
+            $builder->addFragmentField('objects', ObjectFragment::class);
+        }
+        if (isset($datatypes['spatial']) && $datatypes['spatial']['enabled']) {
+            $builder->addFragmentField('spatials', SpatialFragment::class);
+        }
+        if (isset($datatypes['string']) && $datatypes['string']['enabled']) {
+            $builder->addFragmentField('strings', StringFragment::class);
+        }
+        if (isset($datatypes['text']) && $datatypes['text']['enabled']) {
+            $builder->addFragmentField('texts', TextFragment::class);
+        }
+        if (isset($datatypes['time']) && $datatypes['time']['enabled']) {
+            $builder->addFragmentField('times', TimeFragment::class);
+        }
+        return $builder;
     }
 
     public static function loadClassNames() : iterable
