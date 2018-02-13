@@ -51,6 +51,7 @@ use ARK\Security\Console\Command\UserStatusCheckCommand;
 use ARK\Security\Console\Command\UserVerifyCommand;
 use ARK\Spatial\Console\Command\SpatialRebuildCommand;
 use ARK\Translation\Console\Command\TranslationAddCommand;
+use ARK\Translation\Console\Command\TranslationDumpCommand;
 use ARK\View\Console\Command\ViewPageDumpCommand;
 use ARK\Workflow\Console\Command\WorkflowActionDumpCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand;
@@ -72,6 +73,7 @@ class Console extends AbstractConsole
 
         // Translation Commands
         $this->add(new TranslationAddCommand());
+        $this->add(new TranslationDumpCommand());
 
         // User Commands
         $this->add(new UserCreateCommand());

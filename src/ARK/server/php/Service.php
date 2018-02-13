@@ -63,9 +63,17 @@ class Service
         self::$app = $app;
     }
 
-    public static function config() : iterable
+    public static function config($key = null)
     {
+        if ($key) {
+            return self::$app['ark'][$key] ?? null;
+        }
         return self::$app['ark'];
+    }
+
+    public static function siteDir() : string
+    {
+        return ARK::siteDir(self::config('site'));
     }
 
     public static function configDir() : string
