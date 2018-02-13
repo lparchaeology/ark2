@@ -51,7 +51,11 @@ abstract class AbstractApplication extends Application
     public function extendArray(string $id, string $key, $value) : void
     {
         $array = $this[$id] ?? [];
-        $array[$key] = $value;
+        if ($key) {
+            $array[$key] = $value;
+        } else {
+            $array[] = $value;
+        }
         $this[$id] = $array;
     }
 

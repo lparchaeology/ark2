@@ -1,9 +1,19 @@
 {% block scripts -%}
 
+{% set translations %}
+    {% include 'messages.' ~ app.locale ~ '.json' %}
+{% endset %}
+
 <!-- Router js -->
 <script>
     Router.setBasePath('{{ routing.base_path }}');
     Router.setRoutes(JSON.parse("{{ routing.routes | json_encode() | escape('js') }}"))
+    var translations = {
+        "fallback": JSON.parse("{{ app.locale_fallbacks | json_encode() | escape('js') }}"),
+        "defaultDomain": "messages",
+        "translations": {{ translations }}
+    }
+    Translator.fromJSON(translations);
 </script>
 
 {%- endblock scripts %}

@@ -90,6 +90,7 @@ class ViewServiceProvider implements ServiceProviderInterface
         });
         $container['twig.path'] = [
             $container['dir.site'].'/templates/'.$container['ark']['view']['frontend'],
+            $container['dir.site'].'/translations',
         ];
         $container['twig.form.templates'] = [
             'blocks/forms.html.twig',

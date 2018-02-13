@@ -3,7 +3,8 @@
     "debug": false,
     "locale": {
         "default": "da",
-        "locales": ["da", "en"],
+        "active": ["da", "en"],
+        "fallbacks": ["da", "en"],
         "timezone": "UTC"
     },
     "spatial": {
