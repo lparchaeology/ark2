@@ -1,21 +1,20 @@
 {% block scripts -%}
 
+{% set translations %}
+    {% include "messages.locale.json" %}
+{% endset %}
+
+{% set ark = {'modules': state.modules, 'actor': workflow.actor.id} %}
+
 <script>
     Router.setBasePath('{{ routing.base_path }}');
-    Router.setRoutes(JSON.parse("{{ routing.routes | json_encode() | escape('js') }}"))
-    // TODO Do proper loading of translations, not ad-hoc
-    Translator.add("dime.dropdown.undef", "{{ 'dime.dropdown.undef' | translate }}");
-    Translator.add("dime.user.update.success", "{{ 'dime.user.update.success' | translate }}");
-    Translator.add("dime.user.update.failure", "{{ 'dime.user.update.failure' | translate }}");
-    Translator.add("dime.mappick.newpointconfirmmessage", "{{ 'dime.mappick.newpointconfirmmessage' | translate }}");
-    Translator.add("dime.mappick.invalidpointlocation", "{{ 'dime.mappick.invalidpointlocation' | translate }}");
-    Translator.add("dime.confirmfiledeletion", "{{ 'dime.confirmfiledeletion' | translate }}");
-    Translator.add("core.message.class.message", "{{ 'core.message.class.message' | translate }}");
-    Translator.add("core.message.class.notification", "{{ 'core.message.class.notification' | translate }}");
-    Translator.add("core.message.class.mail", "{{ 'core.message.class.mail' | translate }}");
-</script>
-{% set ark = {'modules': state.modules, 'actor': workflow.actor.id} %}
-<script>
+    Router.setRoutes(JSON.parse("{{ routing.routes | json_encode() | escape('js') }}"));
+    var translations = {
+        "fallback": "{{ fallback }}",
+        "defaultDomain": "messages",
+        "translations": {{ translations }}
+    }
+    Translator.fromJSON(translations);
     var ark = JSON.parse("{{ ark | json_encode() | escape('js') }}");
     var path = "{{ path('dime.front') | escape('js') }}";
 </script>
