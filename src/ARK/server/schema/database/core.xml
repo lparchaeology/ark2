@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.concrete5.org/doctrine-xml/0.5">
+<schema xmlns="http://www.concrete5.org/doctrine-xml/0.6">
     <table name="ark_dataclass">
         <field name="dataclass" type="string" size="30">
             <key/>
@@ -181,9 +181,7 @@
             <key/>
             <notnull/>
         </field>
-        <field name="pattern" type="string" size="255">
-            <notnull/>
-        </field>
+        <field name="pattern" type="string" size="255"/>
         <field name="unicode" type="string" size="50"/>
         <field name="php" type="string" size="30"/>
         <field name="preset" type="date"/>
@@ -197,9 +195,7 @@
             <key/>
             <notnull/>
         </field>
-        <field name="pattern" type="string" size="255">
-            <notnull/>
-        </field>
+        <field name="pattern" type="string" size="255"/>
         <field name="unicode" type="string" size="50"/>
         <field name="php" type="string" size="50"/>
         <field name="preset" type="datetime"/>
@@ -392,9 +388,7 @@
             <key/>
             <notnull/>
         </field>
-        <field name="pattern" type="string" size="255">
-            <notnull/>
-        </field>
+        <field name="pattern" type="string" size="255"/>
         <field name="unicode" type="string" size="50"/>
         <field name="php" type="string" size="50"/>
         <field name="preset" type="time"/>
@@ -625,9 +619,9 @@
         <field name="view_class" type="string" size="100">
             <notnull/>
         </field>
+        <field name="keyword" type="string" size="100"/>
         <field name="ticket" type="string" size="100"/>
         <field name="ticket_expiry" type="datetime"/>
-        <field name="keyword" type="string" size="100"/>
         <field name="options" type="string" size="4000"/>
         <index name="keyword_foreign">
             <col>keyword</col>
@@ -701,7 +695,7 @@
         <index name="schema2_foreign">
             <col>schema2</col>
         </index>
-        <index name="IDX_41B96315D79572D9">
+        <index name="model_foreign">
             <col>model</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
@@ -739,8 +733,12 @@
         </field>
         <field name="vocabulary" type="string" size="30"/>
         <field name="event" type="string" size="30"/>
-        <field name="edit" type="string" size="30"/>
-        <field name="view" type="string" size="30"/>
+        <field name="visibility" type="string" size="30">
+            <default value="public"/>
+            <notnull/>
+        </field>
+        <field name="view_permission" type="string" size="30"/>
+        <field name="edit_permission" type="string" size="30"/>
         <field name="span" type="boolean">
             <default value="0"/>
             <notnull/>
@@ -761,8 +759,84 @@
             <default value="0"/>
             <notnull/>
         </field>
-        <field name="visibility" type="string" size="30">
-            <default value="public"/>
+        <field name="enabled" type="boolean">
+            <default value="1"/>
+            <notnull/>
+        </field>
+        <field name="deprecated" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="keyword" type="string" size="100"/>
+        <index name="dataclass_foreign">
+            <col>dataclass</col>
+        </index>
+        <index name="vocabulary_foreign">
+            <col>vocabulary</col>
+        </index>
+        <index name="view_foreign">
+            <col>view_permission</col>
+        </index>
+        <index name="edit_foreign">
+            <col>edit_permission</col>
+        </index>
+        <index name="keyword_foreign">
+            <col>keyword</col>
+        </index>
+        <index name="schema_foreign">
+            <col>schma</col>
+        </index>
+        <index name="schema_attribte_event_constraint">
+            <col>vocabulary</col>
+            <col>event</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="model_attribte_event_constraint" table="ark_vocabulary_term" onupdate="cascade" ondelete="set null">
+            <column local="vocabulary" foreign="concept"/>
+            <column local="event" foreign="term"/>
+        </references>
+        <references name="model_attribute_dataclass_constraint" table="ark_dataclass" onupdate="cascade">
+            <column local="dataclass" foreign="dataclass"/>
+        </references>
+        <references name="model_attribute_edit_constraint" table="ark_security_permission" onupdate="cascade">
+            <column local="edit_permission" foreign="permission"/>
+        </references>
+        <references name="model_attribute_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+            <column local="keyword" foreign="keyword"/>
+        </references>
+        <references name="model_attribute_schema_constraint" table="ark_model_schema" onupdate="cascade" ondelete="cascade">
+            <column local="schma" foreign="schma"/>
+        </references>
+        <references name="model_attribute_view_constraint" table="ark_security_permission" onupdate="cascade">
+            <column local="view_permission" foreign="permission"/>
+        </references>
+        <references name="model_attribute_vocabulary_constraint" table="ark_vocabulary" onupdate="cascade">
+            <column local="vocabulary" foreign="concept"/>
+        </references>
+    </table>
+    <table name="ark_model_item">
+        <field name="attribute" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="dataclass" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="vocabulary" type="string" size="30"/>
+        <field name="minimum" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="maximum" type="integer">
+            <default value="1"/>
+            <notnull/>
+        </field>
+        <field name="unique_values" type="integer">
+            <default value="1"/>
+            <notnull/>
+        </field>
+        <field name="additional_values" type="integer">
+            <default value="0"/>
             <notnull/>
         </field>
         <field name="enabled" type="boolean">
@@ -780,103 +854,11 @@
         <index name="vocabulary_foreign">
             <col>vocabulary</col>
         </index>
-        <index name="view_foreign">
-            <col>view</col>
-        </index>
-        <index name="edit_foreign">
-            <col>edit</col>
-        </index>
-        <index name="keyword_foreign">
-            <col>keyword</col>
-        </index>
-        <index name="schema_foreign">
-            <col>schma</col>
-        </index>
-        <index name="schema_attribte_event_constraint">
-            <col>vocabulary</col>
-            <col>event</col>
-        </index>
-        <index name="IDX_3E664505FDE1EB53ED4B199F">
-            <col>schma</col>
-            <col>class</col>
-        </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="model_attribte_event_constraint" table="ark_vocabulary_term" onupdate="cascade" ondelete="set null">
-            <column local="vocabulary" foreign="concept"/>
-            <column local="event" foreign="term"/>
-        </references>
-        <references name="model_attribute_dataclass_constraint" table="ark_dataclass" onupdate="cascade">
+        <references name="schema_item_dataclass_constraint" table="ark_dataclass" onupdate="cascade">
             <column local="dataclass" foreign="dataclass"/>
         </references>
-        <references name="model_attribute_edit_constraint" table="ark_workflow_permission" onupdate="cascade">
-            <column local="edit" foreign="permission"/>
-        </references>
-        <references name="model_attribute_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="set null">
-            <column local="keyword" foreign="keyword"/>
-        </references>
-        <references name="model_attribute_schema_constraint" table="ark_model_class" onupdate="cascade" ondelete="cascade">
-            <column local="schma" foreign="schma"/>
-            <column local="class" foreign="class"/>
-        </references>
-        <references name="model_attribute_view_constraint" table="ark_workflow_permission" onupdate="cascade">
-            <column local="view" foreign="permission"/>
-        </references>
-        <references name="model_attribute_vocabulary_constraint" table="ark_vocabulary" onupdate="cascade">
-            <column local="vocabulary" foreign="concept"/>
-        </references>
-    </table>
-    <table name="ark_model_class">
-        <field name="schma" type="string" size="30">
-            <key/>
-            <notnull/>
-        </field>
-        <field name="class" type="string" size="30">
-            <key/>
-            <notnull/>
-        </field>
-        <field name="vocabulary" type="string" size="30"/>
-        <field name="namespace" type="string" size="50">
-            <notnull/>
-        </field>
-        <field name="entity" type="string" size="30">
-            <notnull/>
-        </field>
-        <field name="classname" type="string" size="100"/>
-        <field name="superclass" type="boolean">
-            <default value="0"/>
-            <notnull/>
-        </field>
-        <field name="instantiable" type="boolean">
-            <default value="1"/>
-            <notnull/>
-        </field>
-        <field name="enabled" type="boolean">
-            <default value="1"/>
-            <notnull/>
-        </field>
-        <field name="deprecated" type="boolean">
-            <default value="0"/>
-            <notnull/>
-        </field>
-        <index name="schema_foreign">
-            <col>schma</col>
-        </index>
-        <index name="model_class_class_constraint">
-            <col>vocabulary</col>
-            <col>class</col>
-        </index>
-        <index name="IDX_384DC2009099C97B">
-            <col>vocabulary</col>
-        </index>
-        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="model_class_class_constraint" table="ark_vocabulary_term" onupdate="cascade">
-            <column local="vocabulary" foreign="concept"/>
-            <column local="class" foreign="term"/>
-        </references>
-        <references name="model_class_schema_constraint" table="ark_model_schema" onupdate="cascade" ondelete="cascade">
-            <column local="schma" foreign="schma"/>
-        </references>
-        <references name="model_class_vocabulary_constraint" table="ark_vocabulary" onupdate="cascade">
+        <references name="schema_item_vocabulary_constraint" table="ark_vocabulary" onupdate="cascade">
             <column local="vocabulary" foreign="concept"/>
         </references>
     </table>
@@ -885,10 +867,10 @@
             <key/>
             <notnull/>
         </field>
-        <field name="resource" type="string" size="30">
+        <field name="tbl" type="string" size="50">
             <notnull/>
         </field>
-        <field name="tbl" type="string" size="50">
+        <field name="classname" type="string" size="50">
             <notnull/>
         </field>
         <field name="core" type="boolean">
@@ -907,10 +889,6 @@
         <index name="tbl_unique">
             <unique/>
             <col>tbl</col>
-        </index>
-        <index name="resource_unique">
-            <unique/>
-            <col>resource</col>
         </index>
         <index name="keyword_foreign">
             <col>keyword</col>
@@ -968,29 +946,34 @@
         <field name="module" type="string" size="30">
             <notnull/>
         </field>
+        <field name="route" type="string" size="30"/>
+        <field name="class_vocabulary" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="class_attribute" type="string" size="30">
+            <default value="class"/>
+            <notnull/>
+        </field>
+        <field name="abstract" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
         <field name="subclasses" type="boolean">
             <default value="0"/>
             <notnull/>
         </field>
-        <field name="entities" type="boolean">
-            <default value="0"/>
-            <notnull/>
-        </field>
-        <field name="attribute" type="string" size="30"/>
-        <field name="vocabulary" type="string" size="30"/>
         <field name="generator" type="string" size="30">
             <notnull/>
         </field>
         <field name="sequence" type="string" size="30"/>
-        <field name="event" type="string" size="30"/>
         <field name="visibility" type="string" size="30">
             <default value="restricted"/>
             <notnull/>
         </field>
-        <field name="new" type="string" size="30"/>
-        <field name="view" type="string" size="30"/>
-        <field name="remove" type="string" size="30"/>
-        <field name="edit" type="string" size="30"/>
+        <field name="create_permission" type="string" size="30"/>
+        <field name="read_permission" type="string" size="30"/>
+        <field name="update_permission" type="string" size="30"/>
+        <field name="delete_permission" type="string" size="30"/>
         <field name="enabled" type="boolean">
             <default value="1"/>
             <notnull/>
@@ -1004,32 +987,29 @@
             <col>module</col>
         </index>
         <index name="vocabulary_foreign">
-            <col>vocabulary</col>
+            <col>class_vocabulary</col>
         </index>
         <index name="keyword_foreign">
             <col>keyword</col>
         </index>
         <index name="new_foreign">
-            <col>new</col>
+            <col>create_permission</col>
         </index>
         <index name="remove_foreign">
-            <col>remove</col>
+            <col>delete_permission</col>
         </index>
         <index name="edit_foreign">
-            <col>edit</col>
+            <col>update_permission</col>
         </index>
         <index name="view_foreign">
-            <col>view</col>
+            <col>read_permission</col>
         </index>
-        <index name="event_foreign">
-            <col>event</col>
+        <index name="route_foreign">
+            <col>route</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="model_schema_edit_constraint" table="ark_workflow_permission" onupdate="cascade">
-            <column local="edit" foreign="permission"/>
-        </references>
-        <references name="model_schema_event_constraint" table="ark_vocabulary">
-            <column local="event" foreign="concept"/>
+        <references name="model_schema_edit_constraint" table="ark_security_permission" onupdate="cascade">
+            <column local="update_permission" foreign="permission"/>
         </references>
         <references name="model_schema_keyword_constraint" table="ark_translation" onupdate="cascade">
             <column local="keyword" foreign="keyword"/>
@@ -1037,17 +1017,20 @@
         <references name="model_schema_module_constraint" table="ark_model_module" onupdate="cascade" ondelete="cascade">
             <column local="module" foreign="module"/>
         </references>
-        <references name="model_schema_new_constraint" table="ark_workflow_permission" onupdate="cascade">
-            <column local="new" foreign="permission"/>
+        <references name="model_schema_new_constraint" table="ark_security_permission" onupdate="cascade">
+            <column local="create_permission" foreign="permission"/>
         </references>
-        <references name="model_schema_remove_constraint" table="ark_workflow_permission" onupdate="cascade">
-            <column local="remove" foreign="permission"/>
+        <references name="model_schema_remove_constraint" table="ark_security_permission" onupdate="cascade">
+            <column local="delete_permission" foreign="permission"/>
         </references>
-        <references name="model_schema_view_constraint" table="ark_workflow_permission" onupdate="cascade">
-            <column local="view" foreign="permission"/>
+        <references name="model_schema_route_constraint" table="ark_route" onupdate="cascade" ondelete="set null">
+            <column local="route" foreign="route"/>
+        </references>
+        <references name="model_schema_view_constraint" table="ark_security_permission" onupdate="cascade">
+            <column local="read_permission" foreign="permission"/>
         </references>
         <references name="model_schema_vocabulary_constraint" table="ark_vocabulary" onupdate="cascade">
-            <column local="vocabulary" foreign="concept"/>
+            <column local="class_vocabulary" foreign="concept"/>
         </references>
     </table>
     <table name="ark_model_subschema">
@@ -1117,18 +1100,20 @@
             <default value="0"/>
             <notnull/>
         </field>
-        <field name="page" type="string" size="30"/>
+        <field name="view" type="string" size="30"/>
         <field name="redirect" type="string" size="30"/>
-        <field name="controller" type="string" size="100"/>
+        <field name="controller" type="string" size="100">
+            <notnull/>
+        </field>
         <index name="page_foreign">
-            <col>page</col>
+            <col>view</col>
         </index>
         <index name="redirect_foreign">
             <col>redirect</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="route_page_constraint" table="ark_view_page" onupdate="cascade" ondelete="set null">
-            <column local="page" foreign="element"/>
+        <references name="route_page_constraint" table="ark_view_element" onupdate="cascade" ondelete="set null">
+            <column local="view" foreign="element"/>
         </references>
         <references name="route_redirect_constraint" table="ark_route" onupdate="cascade" ondelete="set null">
             <column local="redirect" foreign="route"/>
@@ -1167,63 +1152,79 @@
         <index name="language_foreign">
             <col>language</col>
         </index>
-        <index name="IDX_EDDCDD4F2C42079">
+        <index name="route_foreign">
             <col>route</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="ark_route_path_language_constraint" table="ark_translation_language" onupdate="cascade" ondelete="cascade">
+        <references name="ark_route_path_language_constraint" table="ark_translation_language" onupdate="cascade">
             <column local="language" foreign="language"/>
         </references>
         <references name="ark_route_path_route_constraint" table="ark_route" onupdate="cascade" ondelete="cascade">
             <column local="route" foreign="route"/>
         </references>
     </table>
-    <table name="ark_schema_item">
-        <field name="attribute" type="string" size="30">
+    <table name="ark_security_grant">
+        <field name="role" type="string" size="30">
             <key/>
             <notnull/>
         </field>
-        <field name="dataclass" type="string" size="30">
+        <field name="permission" type="string" size="30">
+            <key/>
             <notnull/>
         </field>
-        <field name="vocabulary" type="string" size="30"/>
-        <field name="minimum" type="integer">
-            <default value="0"/>
+        <index name="role_foreign">
+            <col>role</col>
+        </index>
+        <index name="permission_foreign">
+            <col>permission</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="workflow_grant_permission_constraint" table="ark_security_permission" onupdate="cascade" ondelete="cascade">
+            <column local="permission" foreign="permission"/>
+        </references>
+        <references name="workflow_grant_role_constraint" table="ark_security_role" onupdate="cascade" ondelete="cascade">
+            <column local="role" foreign="role"/>
+        </references>
+    </table>
+    <table name="ark_security_permission">
+        <field name="permission" type="string" size="30">
+            <key/>
             <notnull/>
         </field>
-        <field name="maximum" type="integer">
+        <field name="keyword" type="string" size="100"/>
+        <field name="enabled" type="boolean">
             <default value="1"/>
             <notnull/>
         </field>
-        <field name="unique_values" type="integer">
-            <default value="1"/>
+        <field name="description" type="string" size="100"/>
+        <index name="keyword_foreign">
+            <col>keyword</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="workflow_permission_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+            <column local="keyword" foreign="keyword"/>
+        </references>
+    </table>
+    <table name="ark_security_role">
+        <field name="role" type="string" size="30">
+            <key/>
             <notnull/>
         </field>
-        <field name="additional_values" type="integer">
-            <default value="0"/>
+        <field name="agent_for" type="string" size="30"/>
+        <field name="level" type="string" size="20">
             <notnull/>
         </field>
         <field name="enabled" type="boolean">
             <default value="1"/>
             <notnull/>
         </field>
-        <field name="deprecated" type="boolean">
-            <default value="0"/>
-            <notnull/>
-        </field>
         <field name="keyword" type="string" size="100"/>
-        <index name="dataclass_foreign">
-            <col>dataclass</col>
-        </index>
-        <index name="vocabulary_foreign">
-            <col>vocabulary</col>
+        <index name="keyword_foreign">
+            <col>keyword</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="schema_item_dataclass_constraint" table="ark_dataclass" onupdate="cascade">
-            <column local="dataclass" foreign="dataclass"/>
-        </references>
-        <references name="schema_item_vocabulary_constraint" table="ark_vocabulary" onupdate="cascade">
-            <column local="vocabulary" foreign="concept"/>
+        <references name="workflow_role_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+            <column local="keyword" foreign="keyword"/>
         </references>
     </table>
     <table name="ark_translation">
@@ -1294,6 +1295,7 @@
         </field>
         <field name="role" type="string" size="10">
             <key/>
+            <default value="default"/>
             <notnull/>
         </field>
         <field name="text" type="text">
@@ -1452,7 +1454,7 @@
             <column local="action_schema" foreign="schma"/>
             <column local="action" foreign="action"/>
         </references>
-        <references name="view_cell_edit_constraint" table="ark_workflow_permission" onupdate="cascade">
+        <references name="view_cell_edit_constraint" table="ark_security_permission" onupdate="cascade">
             <column local="edit_permission" foreign="permission"/>
         </references>
         <references name="view_cell_element_constraint" table="ark_view_element" onupdate="cascade" ondelete="cascade">
@@ -1461,13 +1463,13 @@
         <references name="view_cell_group_constraint" table="ark_view_element" onupdate="cascade" ondelete="cascade">
             <column local="grp" foreign="element"/>
         </references>
+        <references name="view_cell_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+            <column local="keyword" foreign="keyword"/>
+        </references>
         <references name="view_cell_map_constraint" table="ark_map" onupdate="cascade">
             <column local="map" foreign="map"/>
         </references>
-        <references name="view_cell_translation_constraint" table="ark_translation">
-            <column local="keyword" foreign="keyword"/>
-        </references>
-        <references name="view_cell_view_constraint" table="ark_workflow_permission" onupdate="cascade">
+        <references name="view_cell_view_constraint" table="ark_security_permission" onupdate="cascade">
             <column local="view_permission" foreign="permission"/>
         </references>
         <references name="view_cell_vocabulary_constraint" table="ark_vocabulary" onupdate="cascade">
@@ -1534,7 +1536,7 @@
         <references name="view_field_element_constraint" table="ark_view_element" onupdate="cascade" ondelete="cascade">
             <column local="element" foreign="element"/>
         </references>
-        <references name="view_field_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+        <references name="view_field_keyword" table="ark_translation" onupdate="cascade" ondelete="set null">
             <column local="keyword" foreign="keyword"/>
         </references>
     </table>
@@ -1547,13 +1549,9 @@
         <field name="mode" type="string" size="10"/>
         <field name="method" type="string" size="10"/>
         <field name="action" type="string" size="30"/>
-        <field name="template" type="string" size="100">
-            <default value="NULL"/>
-        </field>
-        <field name="form_type" type="string" size="100">
-            <default value="NULL"/>
-        </field>
         <field name="keyword" type="string" size="100"/>
+        <field name="template" type="string" size="100"/>
+        <field name="form_type" type="string" size="100"/>
         <index name="keyword_foreign">
             <col>keyword</col>
         </index>
@@ -1578,9 +1576,9 @@
         </field>
         <field name="name" type="string" size="30"/>
         <field name="mode" type="string" size="10"/>
+        <field name="keyword" type="string" size="100"/>
         <field name="template" type="string" size="100"/>
         <field name="form_type" type="string" size="100"/>
-        <field name="keyword" type="string" size="100"/>
         <index name="keyword_foreign">
             <col>keyword</col>
         </index>
@@ -1609,8 +1607,8 @@
         </field>
         <field name="icon" type="string" size="50"/>
         <field name="route" type="string" size="50"/>
-        <field name="template" type="string" size="100"/>
         <field name="keyword" type="string" size="100"/>
+        <field name="template" type="string" size="100"/>
         <field name="uri" type="string" size="2038"/>
         <index name="sequence_unique">
             <unique/>
@@ -1653,8 +1651,8 @@
         </field>
         <field name="view" type="string" size="30"/>
         <field name="edit" type="string" size="30"/>
-        <field name="template" type="string" size="100"/>
         <field name="keyword" type="string" size="100"/>
+        <field name="template" type="string" size="100"/>
         <index name="navbar_foreign">
             <col>header</col>
         </index>
@@ -1680,7 +1678,7 @@
         <references name="view_page_content_constraint" table="ark_view_element" onupdate="cascade">
             <column local="content" foreign="element"/>
         </references>
-        <references name="view_page_edit_constraint" table="ark_workflow_permission" onupdate="cascade">
+        <references name="view_page_edit_constraint" table="ark_security_permission" onupdate="cascade">
             <column local="edit" foreign="permission"/>
         </references>
         <references name="view_page_element_constraint" table="ark_view_element" onupdate="cascade" ondelete="cascade">
@@ -1698,7 +1696,7 @@
         <references name="view_page_sidebar_constraint" table="ark_view_element" onupdate="cascade">
             <column local="sidebar" foreign="element"/>
         </references>
-        <references name="view_page_view_constraint" table="ark_workflow_permission" onupdate="cascade">
+        <references name="view_page_view_constraint" table="ark_security_permission" onupdate="cascade">
             <column local="view" foreign="permission"/>
         </references>
     </table>
@@ -1763,9 +1761,9 @@
         </field>
         <field name="pagination" type="integer"/>
         <field name="selection" type="string" size="10"/>
+        <field name="keyword" type="string" size="100"/>
         <field name="classes" type="string" size="100"/>
         <field name="template" type="string" size="100"/>
-        <field name="keyword" type="string" size="100"/>
         <field name="url" type="string" size="2038"/>
         <index name="keyword_foreign">
             <col>keyword</col>
@@ -1774,7 +1772,7 @@
         <references name="view_table_element_constraint" table="ark_view_element" onupdate="cascade" ondelete="cascade">
             <column local="element" foreign="element"/>
         </references>
-        <references name="view_table_keyword_contraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+        <references name="viewtable_keyword_contraint" table="ark_translation" onupdate="cascade" ondelete="set null">
             <column local="keyword" foreign="keyword"/>
         </references>
     </table>
@@ -1842,10 +1840,12 @@
         </field>
         <field name="name" type="string" size="30"/>
         <field name="choices" type="string" size="30"/>
-        <field name="template" type="string" size="100"/>
         <field name="keyword" type="string" size="100"/>
+        <field name="template" type="string" size="100"/>
         <field name="form_type" type="string" size="100"/>
-        <field name="form_options" type="string" size="4000"/>
+        <field name="form_options" type="string" size="4000">
+            <notnull/>
+        </field>
         <index name="keyword_foreign">
             <col>keyword</col>
         </index>
@@ -1868,6 +1868,8 @@
         <field name="source" type="string" size="30">
             <notnull/>
         </field>
+        <field name="namespace" type="string" size="50"/>
+        <field name="entity" type="string" size="30"/>
         <field name="closed" type="boolean">
             <default value="1"/>
             <notnull/>
@@ -1885,7 +1887,7 @@
             <notnull/>
         </field>
         <field name="keyword" type="string" size="100"/>
-        <field name="description" type="string" size="100"/>
+        <field name="description" type="text" size="65535"/>
         <index name="type_foreign">
             <col>type</col>
         </index>
@@ -1909,7 +1911,7 @@
             <key/>
             <notnull/>
         </field>
-        <field name="name" type="string" size="30">
+        <field name="parameter" type="string" size="30">
             <key/>
             <notnull/>
         </field>
@@ -2018,6 +2020,8 @@
             <notnull/>
         </field>
         <field name="alias" type="string" size="50"/>
+        <field name="namespace" type="string" size="50"/>
+        <field name="entity" type="string" size="30"/>
         <field name="seq" type="integer"/>
         <field name="is_default" type="boolean">
             <default value="0"/>
@@ -2069,16 +2073,7 @@
             <default value="0"/>
             <notnull/>
         </field>
-        <field name="enabled" type="boolean">
-            <default value="0"/>
-            <notnull/>
-        </field>
-        <field name="deprecated" type="boolean">
-            <default value="0"/>
-            <notnull/>
-        </field>
         <field name="keyword" type="string" size="100"/>
-        <field name="description" type="string" size="100"/>
         <index name="keyword_foreign">
             <col>keyword</col>
         </index>
@@ -2135,7 +2130,7 @@
         <references name="workflow_action_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="set null">
             <column local="keyword" foreign="keyword"/>
         </references>
-        <references name="workflow_action_schema_constraint" table="ark_schema" onupdate="cascade" ondelete="cascade">
+        <references name="workflow_action_schema_constraint" table="ark_model_schema" onupdate="cascade" ondelete="cascade">
             <column local="schma" foreign="schma"/>
         </references>
         <references name="workflow_action_term_constraint" table="ark_vocabulary_term" onupdate="cascade">
@@ -2156,17 +2151,23 @@
             <key/>
             <notnull/>
         </field>
-        <field name="operator" type="string" size="10">
-            <default value="eq"/>
-            <notnull/>
-        </field>
         <field name="attribute" type="string" size="30">
             <key/>
+            <notnull/>
+        </field>
+        <field name="grp" type="integer">
+            <key/>
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="operator" type="string" size="10">
+            <default value="eq"/>
             <notnull/>
         </field>
         <field name="condition_attribute" type="string" size="30"/>
         <field name="condition_operator" type="string" size="10"/>
         <field name="condition_value" type="string" size="4000"/>
+        <field name="condition_actor" type="boolean"/>
         <index name="attribute_foreign">
             <col>schma</col>
             <col>class</col>
@@ -2186,12 +2187,12 @@
             <column local="schma" foreign="schma"/>
             <column local="action" foreign="action"/>
         </references>
-        <references name="workflow_agency_attribute_constraint" table="ark_schema_attribute" onupdate="cascade" ondelete="cascade">
+        <references name="workflow_agency_attribute_constraint" table="ark_model_attribute" onupdate="cascade" ondelete="cascade">
             <column local="schma" foreign="schma"/>
             <column local="class" foreign="class"/>
             <column local="attribute" foreign="attribute"/>
         </references>
-        <references name="workflow_agency_condition_constraint" table="ark_schema_attribute" onupdate="cascade" ondelete="cascade">
+        <references name="workflow_agency_condition_attribute_constraint" table="ark_model_attribute" onupdate="cascade" ondelete="cascade">
             <column local="schma" foreign="schma"/>
             <column local="class" foreign="class"/>
             <column local="condition_attribute" foreign="attribute"/>
@@ -2229,7 +2230,7 @@
             <column local="schma" foreign="schma"/>
             <column local="action" foreign="action"/>
         </references>
-        <references name="workflow_allow_role_constraint" table="ark_workflow_role" onupdate="cascade" ondelete="cascade">
+        <references name="workflow_allow_role_constraint" table="ark_security_role" onupdate="cascade" ondelete="cascade">
             <column local="role" foreign="role"/>
         </references>
     </table>
@@ -2274,33 +2275,10 @@
             <column local="schma" foreign="schma"/>
             <column local="action" foreign="action"/>
         </references>
-        <references name="workflow_condition_attribute_constraint" table="ark_schema_attribute" onupdate="cascade" ondelete="cascade">
+        <references name="workflow_condition_attribute_constraint" table="ark_model_attribute" onupdate="cascade" ondelete="cascade">
             <column local="schma" foreign="schma"/>
             <column local="class" foreign="class"/>
             <column local="attribute" foreign="attribute"/>
-        </references>
-    </table>
-    <table name="ark_workflow_grant">
-        <field name="role" type="string" size="30">
-            <key/>
-            <notnull/>
-        </field>
-        <field name="permission" type="string" size="30">
-            <key/>
-            <notnull/>
-        </field>
-        <index name="role_foreign">
-            <col>role</col>
-        </index>
-        <index name="permission_foreign">
-            <col>permission</col>
-        </index>
-        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="workflow_grant_permission_constraint" table="ark_workflow_permission" onupdate="cascade" ondelete="cascade">
-            <column local="permission" foreign="permission"/>
-        </references>
-        <references name="workflow_grant_role_constraint" table="ark_workflow_role" onupdate="cascade" ondelete="cascade">
-            <column local="role" foreign="role"/>
         </references>
     </table>
     <table name="ark_workflow_notify">
@@ -2320,7 +2298,7 @@
         </field>
         <field name="attribute" type="string" size="30"/>
         <field name="role" type="string" size="30"/>
-        <field name="keyword" type="string" size="30"/>
+        <field name="keyword" type="string" size="100"/>
         <index name="attribute_foreign">
             <col>schma</col>
             <col>class</col>
@@ -2341,7 +2319,7 @@
             <column local="schma" foreign="schma"/>
             <column local="action" foreign="action"/>
         </references>
-        <references name="workflow_notify_attribute_constraint" table="ark_schema_attribute" onupdate="cascade" ondelete="cascade">
+        <references name="workflow_notify_attribute_constraint" table="ark_model_attribute" onupdate="cascade" ondelete="cascade">
             <column local="schma" foreign="schma"/>
             <column local="class" foreign="class"/>
             <column local="attribute" foreign="attribute"/>
@@ -2349,49 +2327,8 @@
         <references name="workflow_notify_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="set null">
             <column local="keyword" foreign="keyword"/>
         </references>
-        <references name="workflow_notify_role_constraint" table="ark_workflow_role" onupdate="cascade">
+        <references name="workflow_notify_role_constraint" table="ark_security_role" onupdate="cascade">
             <column local="role" foreign="role"/>
-        </references>
-    </table>
-    <table name="ark_workflow_permission">
-        <field name="permission" type="string" size="30">
-            <key/>
-            <notnull/>
-        </field>
-        <field name="enabled" type="boolean">
-            <default value="1"/>
-            <notnull/>
-        </field>
-        <field name="keyword" type="string" size="100"/>
-        <field name="description" type="string" size="100"/>
-        <index name="keyword_foreign">
-            <col>keyword</col>
-        </index>
-        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="workflow_permission_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="set null">
-            <column local="keyword" foreign="keyword"/>
-        </references>
-    </table>
-    <table name="ark_workflow_role">
-        <field name="role" type="string" size="30">
-            <key/>
-            <notnull/>
-        </field>
-        <field name="agent_for" type="string" size="30"/>
-        <field name="level" type="string" size="20">
-            <notnull/>
-        </field>
-        <field name="enabled" type="boolean">
-            <default value="1"/>
-            <notnull/>
-        </field>
-        <field name="keyword" type="string" size="100"/>
-        <index name="keyword_foreign">
-            <col>keyword</col>
-        </index>
-        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="workflow_role_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="set null">
-            <column local="keyword" foreign="keyword"/>
         </references>
     </table>
     <table name="ark_workflow_trigger">
@@ -2474,12 +2411,12 @@
             <column local="schma" foreign="schma"/>
             <column local="action" foreign="action"/>
         </references>
-        <references name="workflow_update_agency_constraint" table="ark_schema_attribute" onupdate="cascade" ondelete="cascade">
+        <references name="workflow_update_agency_constraint" table="ark_model_attribute" onupdate="cascade" ondelete="cascade">
             <column local="schma" foreign="schma"/>
             <column local="class" foreign="class"/>
             <column local="source" foreign="attribute"/>
         </references>
-        <references name="workflow_update_attribute_constraint" table="ark_schema_attribute" onupdate="cascade" ondelete="cascade">
+        <references name="workflow_update_attribute_constraint" table="ark_model_attribute" onupdate="cascade" ondelete="cascade">
             <column local="schma" foreign="schma"/>
             <column local="class" foreign="class"/>
             <column local="attribute" foreign="attribute"/>

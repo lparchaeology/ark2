@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.concrete5.org/doctrine-xml/0.5">
+<schema xmlns="http://www.concrete5.org/doctrine-xml/0.6">
     <table name="ark_security_account">
         <field name="user" type="string" size="30">
             <key/>
@@ -64,6 +64,10 @@
         </field>
         <field name="password" type="string" size="255"/>
         <field name="name" type="string" size="100"/>
+        <field name="system" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
         <field name="activated" type="boolean">
             <default value="0"/>
             <notnull/>

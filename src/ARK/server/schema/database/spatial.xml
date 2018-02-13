@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.concrete5.org/doctrine-xml/0.5">
+<schema xmlns="http://www.concrete5.org/doctrine-xml/0.6">
     <table name="ark_spatial_fragment">
         <field name="fid" type="integer">
             <autoincrement/>
@@ -33,9 +33,10 @@
             <col>attribute</col>
         </index>
         <index name="geometry">
+            <spatial/>
             <col>geometry</col>
         </index>
-        <opt for="mysql" engine="MyISAM" collate="utf8mb4_unicode_ci" charset="utf8mb4" />
+        <opt for="mysql" engine="MyISAM" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
     </table>
     <table name="ark_spatial_term">
         <field name="fid" type="integer">
@@ -50,7 +51,7 @@
             <notnull/>
         </field>
         <field name="level" type="string" size="10">
-            <default value="full" />
+            <default value="full"/>
             <notnull/>
         </field>
         <field name="type" type="string" size="10">
@@ -67,8 +68,9 @@
             <col>term</col>
         </index>
         <index name="geometry">
+            <spatial/>
             <col>geometry</col>
         </index>
-        <opt for="mysql" engine="MyISAM" collate="utf8mb4_unicode_ci" charset="utf8mb4" />
+        <opt for="mysql" engine="MyISAM" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
     </table>
 </schema>

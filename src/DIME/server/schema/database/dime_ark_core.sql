@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 09, 2018 at 04:26 PM
+-- Generation Time: Feb 13, 2018 at 12:56 PM
 -- Server version: 10.2.12-MariaDB
 -- PHP Version: 7.1.13
 
@@ -219,7 +219,7 @@ INSERT INTO `ark_dataclass_boolean` (`dataclass`, `preset`) VALUES
 
 CREATE TABLE `ark_dataclass_date` (
   `dataclass` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `pattern` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `pattern` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `unicode` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `php` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `preset` date DEFAULT NULL
@@ -242,8 +242,8 @@ INSERT INTO `ark_dataclass_date` (`dataclass`, `pattern`, `unicode`, `php`, `pre
 
 CREATE TABLE `ark_dataclass_datetime` (
   `dataclass` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `pattern` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `unicode` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `pattern` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `unicode` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `php` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `preset` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -253,7 +253,7 @@ CREATE TABLE `ark_dataclass_datetime` (
 --
 
 INSERT INTO `ark_dataclass_datetime` (`dataclass`, `pattern`, `unicode`, `php`, `preset`) VALUES
-('datetime', '^([0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])$', '', 'c', NULL);
+('datetime', '^([0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])$', NULL, 'c', NULL);
 
 -- --------------------------------------------------------
 
@@ -385,7 +385,7 @@ CREATE TABLE `ark_dataclass_spatial` (
   `geometry` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Point',
   `has_z` tinyint(1) NOT NULL DEFAULT 1,
   `has_m` tinyint(1) NOT NULL DEFAULT 0,
-  `format` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT 'NULL',
+  `format` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `srid` int(11) NOT NULL DEFAULT 0,
   `envelope` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `preset` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL
@@ -470,8 +470,8 @@ INSERT INTO `ark_dataclass_text` (`dataclass`, `mediatype`, `min_length`, `max_l
 
 CREATE TABLE `ark_dataclass_time` (
   `dataclass` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `pattern` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `unicode` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `pattern` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `unicode` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `php` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `preset` time DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -481,7 +481,7 @@ CREATE TABLE `ark_dataclass_time` (
 --
 
 INSERT INTO `ark_dataclass_time` (`dataclass`, `pattern`, `unicode`, `php`, `preset`) VALUES
-('time', '^(2[0-3]|[01][0-9]):([0-5][0-9])$', '', 'H:i:s', NULL);
+('time', '^(2[0-3]|[01][0-9]):([0-5][0-9])$', NULL, 'H:i:s', NULL);
 
 -- --------------------------------------------------------
 
@@ -609,7 +609,7 @@ CREATE TABLE `ark_map_legend` (
   `visible` tinyint(1) NOT NULL DEFAULT 0,
   `enabled` tinyint(1) NOT NULL DEFAULT 1,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `options` varchar(4000) COLLATE utf8mb4_unicode_ci NOT NULL
+  `options` varchar(4000) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -666,7 +666,7 @@ CREATE TABLE `ark_model` (
   `model` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT 1,
   `deprecated` tinyint(1) NOT NULL DEFAULT 0,
-  `keyword` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -708,7 +708,7 @@ CREATE TABLE `ark_model_attribute` (
   `vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `event` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '''public''',
-  `view_permission` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT 'NULL',
+  `view_permission` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `edit_permission` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `span` tinyint(1) NOT NULL DEFAULT 0,
   `minimum` int(11) NOT NULL DEFAULT 0,
@@ -903,7 +903,7 @@ CREATE TABLE `ark_model_schema` (
   `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'restricted',
   `create_permission` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `read_permission` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `update_permission` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT 'NULL',
+  `update_permission` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `delete_permission` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT 1,
   `deprecated` tinyint(1) NOT NULL DEFAULT 0,
@@ -6369,7 +6369,7 @@ CREATE TABLE `ark_view_cell` (
   `export_format` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT 1,
   `deprecated` tinyint(1) NOT NULL DEFAULT 0,
-  `keyword` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `template` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `options` varchar(4000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -6966,7 +6966,7 @@ CREATE TABLE `ark_view_field` (
   `export_pattern` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `export_parameter` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `export_format` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `keyword` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `template` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `form_options` varchar(4000) COLLATE utf8mb4_unicode_ci DEFAULT NULL
@@ -7051,7 +7051,7 @@ CREATE TABLE `ark_view_form` (
   `mode` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `method` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `action` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `keyword` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `template` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -7104,7 +7104,7 @@ CREATE TABLE `ark_view_group` (
   `element` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `mode` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `keyword` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `template` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -7186,7 +7186,7 @@ CREATE TABLE `ark_view_nav` (
   `seperator` tinyint(1) NOT NULL DEFAULT 0,
   `icon` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `route` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `keyword` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `template` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `uri` varchar(2038) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -7221,7 +7221,7 @@ CREATE TABLE `ark_view_page` (
   `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'restricted',
   `view` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `edit` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `keyword` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `template` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -7273,7 +7273,7 @@ INSERT INTO `ark_view_page` (`element`, `mode`, `header`, `sidebar`, `content`, 
 CREATE TABLE `ark_view_table` (
   `element` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `mode` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT 'NULL',
+  `mode` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `caption` tinyint(1) NOT NULL DEFAULT 1,
   `header` tinyint(1) NOT NULL DEFAULT 1,
   `footer` tinyint(1) NOT NULL DEFAULT 0,
@@ -7290,7 +7290,7 @@ CREATE TABLE `ark_view_table` (
   `columns` tinyint(1) NOT NULL DEFAULT 1,
   `pagination` int(11) DEFAULT NULL,
   `selection` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `keyword` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `classes` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `template` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `url` varchar(2038) COLLATE utf8mb4_unicode_ci DEFAULT NULL
@@ -7356,7 +7356,7 @@ CREATE TABLE `ark_view_type` (
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `layout` tinyint(1) NOT NULL DEFAULT 0,
   `class` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT 'NULL',
+  `form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `template` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -7384,7 +7384,7 @@ CREATE TABLE `ark_view_widget` (
   `element` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `choices` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `keyword` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `template` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `form_options` varchar(4000) COLLATE utf8mb4_unicode_ci NOT NULL
@@ -9998,7 +9998,7 @@ CREATE TABLE `ark_workflow_notify` (
   `class` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `role` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `keyword` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -10274,7 +10274,8 @@ ALTER TABLE `ark_model_association`
   ADD KEY `keyword_foreign` (`keyword`),
   ADD KEY `schema_foreign` (`schma`),
   ADD KEY `schema1_foreign` (`schema1`),
-  ADD KEY `schema2_foreign` (`schema2`);
+  ADD KEY `schema2_foreign` (`schema2`),
+  ADD KEY `model_foreign` (`model`);
 
 --
 -- Indexes for table `ark_model_attribute`
@@ -10350,14 +10351,16 @@ ALTER TABLE `ark_route`
 -- Indexes for table `ark_route_parameter`
 --
 ALTER TABLE `ark_route_parameter`
-  ADD PRIMARY KEY (`route`,`parameter`);
+  ADD PRIMARY KEY (`route`,`parameter`) USING BTREE,
+  ADD KEY `route_foreign` (`route`) USING BTREE;
 
 --
 -- Indexes for table `ark_route_path`
 --
 ALTER TABLE `ark_route_path`
   ADD PRIMARY KEY (`route`,`language`),
-  ADD KEY `language_foreign` (`language`) USING BTREE;
+  ADD KEY `language_foreign` (`language`) USING BTREE,
+  ADD KEY `route_foreign` (`route`);
 
 --
 -- Indexes for table `ark_security_grant`
