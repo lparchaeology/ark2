@@ -30,6 +30,7 @@
 
 namespace ARK\Framework\Provider;
 
+use ARK\Workflow\Console\Command\WorkflowActionDumpCommand;
 use ARK\Workflow\WorkflowService;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -38,6 +39,7 @@ class WorkflowServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $container) : void
     {
+        $container->addCommand(WorkflowActionDumpCommand::class);
         $container['workflow'] = function () {
             return new WorkflowService();
         };

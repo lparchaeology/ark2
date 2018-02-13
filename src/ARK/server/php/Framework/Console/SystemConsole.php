@@ -53,7 +53,6 @@ class SystemConsole extends AbstractConsole
 
         // System Commands
         $this->add(new SystemAboutCommand());
-        $this->add(new CacheClearCommand());
         $this->add(new SecurityCheckerCommand(new SecurityChecker()));
 
         // Database Commands

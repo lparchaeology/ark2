@@ -30,6 +30,7 @@
 namespace ARK\Framework\Provider;
 
 use ARK\Framework\ControllerProvider;
+use ARK\Routing\Console\Command\RouteDumpCommand;
 use ARK\Routing\Router;
 use ARK\Service;
 use Exception;
@@ -61,6 +62,8 @@ class RoutingServiceProvider extends SilexRoutingServiceProvider
             $chain->add(new Router());
             return $chain;
         };
+
+        $container->addCommand(RouteDumpCommand::class);
 
         $container->mount('/', new ControllerProvider());
         $container->flush();

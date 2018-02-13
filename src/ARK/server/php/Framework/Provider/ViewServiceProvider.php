@@ -33,6 +33,7 @@ namespace ARK\Framework\Provider;
 use ARK\ARK;
 use ARK\Service;
 use ARK\Twig\Extension\TranslateExtension;
+use ARK\View\Console\Command\ViewPageDumpCommand;
 use ARK\View\ViewService;
 use Knp\Snappy\Image;
 use Knp\Snappy\Pdf;
@@ -98,6 +99,8 @@ class ViewServiceProvider implements ServiceProviderInterface
         $container['twig.options'] = [
             'cache' => $container['dir.cache'].'/twig',
         ];
+
+        $container->addCommand(ViewPageDumpCommand::class);
 
         // Enable render to PDF or Image
         $container['renderer.pdf.binary'] = $container['ark']['view']['renderer']['pdf'];

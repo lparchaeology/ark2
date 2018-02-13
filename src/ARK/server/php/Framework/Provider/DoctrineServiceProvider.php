@@ -37,7 +37,11 @@ namespace ARK\Framework\Provider;
  */
 
 use ARK\Database\Connection;
+use ARK\Database\Console\Command\DatabaseDropTablesCommand;
+use ARK\Database\Console\Command\DatabaseImportCommand;
+use ARK\Database\Console\Command\DatabaseTruncateCommand;
 use ARK\Database\Database;
+use ARK\ORM\Console\Command\GenerateItemEntityCommand;
 use ARK\ORM\Driver\StaticPHPDriver;
 use ARK\ORM\EntityManager;
 use Doctrine\Common\EventManager;
@@ -45,6 +49,11 @@ use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
 use Doctrine\DBAL\Configuration as DbalConfiguration;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Logging\DebugStack;
+use Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand;
+use Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand;
+use Doctrine\DBAL\Migrations\Tools\Console\Command\StatusCommand;
+use Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand;
+use Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager as DoctrineEntityManager;
@@ -155,6 +164,19 @@ class DoctrineServiceProvider implements ServiceProviderInterface
             $dbs = $container['dbs'];
             return $dbs[$container['dbs.default']];
         };
+
+        $container->addCommands([
+            DatabaseDropTablesCommand::class,
+            DatabaseImportCommand::class,
+            DatabaseTruncateCommand::class,
+            GenerateItemEntityCommand::class,
+            //ExecuteCommand::class,
+            //MigrateCommand::class,
+            //StatusCommand::class,
+            //VersionCommand::class,
+        ]);
+        //$container->addHelper();
+        //$this->getHelperSet()->set(new ConnectionHelper($this->app['db']), 'db');
 
         $container['database'] = function ($container) {
             return new Database($container);

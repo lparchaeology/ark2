@@ -30,35 +30,8 @@
 namespace ARK\Framework\Console;
 
 use ARK\ARK;
-use ARK\Database\Console\Command\DatabaseDropTablesCommand;
-use ARK\Database\Console\Command\DatabaseImportCommand;
-use ARK\Database\Console\Command\DatabaseTruncateCommand;
 use ARK\Framework\Application;
-use ARK\Framework\Console\Command\CacheClearCommand;
 use ARK\Framework\Console\Command\SiteAboutCommand;
-use ARK\ORM\Console\Command\GenerateItemEntityCommand;
-use ARK\Routing\Console\Command\RouteDumpCommand;
-use ARK\Security\Console\Command\UserCreateCommand;
-use ARK\Security\Console\Command\UserDeleteCommand;
-use ARK\Security\Console\Command\UserDisableCommand;
-use ARK\Security\Console\Command\UserEnableCommand;
-use ARK\Security\Console\Command\UserListCommand;
-use ARK\Security\Console\Command\UserPasswordResetCommand;
-use ARK\Security\Console\Command\UserPasswordSetCommand;
-use ARK\Security\Console\Command\UserRoleAddCommand;
-use ARK\Security\Console\Command\UserRoleDeleteCommand;
-use ARK\Security\Console\Command\UserStatusCheckCommand;
-use ARK\Security\Console\Command\UserVerifyCommand;
-use ARK\Spatial\Console\Command\SpatialRebuildCommand;
-use ARK\Translation\Console\Command\TranslationAddCommand;
-use ARK\Translation\Console\Command\TranslationDumpCommand;
-use ARK\View\Console\Command\ViewPageDumpCommand;
-use ARK\Workflow\Console\Command\WorkflowActionDumpCommand;
-use Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand;
-use Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand;
-use Doctrine\DBAL\Migrations\Tools\Console\Command\StatusCommand;
-use Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand;
-use Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper;
 
 class Console extends AbstractConsole
 {
@@ -66,51 +39,8 @@ class Console extends AbstractConsole
     {
         parent::__construct('ARK Site Admin Console', new Application($site));
 
-        // System Commands
+        // Site Commands
         $this->add(new SiteAboutCommand());
-        $this->add(new CacheClearCommand());
-        $this->add(new RouteDumpCommand());
-
-        // Translation Commands
-        $this->add(new TranslationAddCommand());
-        $this->add(new TranslationDumpCommand());
-
-        // User Commands
-        $this->add(new UserCreateCommand());
-        $this->add(new UserDeleteCommand());
-        $this->add(new UserDisableCommand());
-        $this->add(new UserEnableCommand());
-        $this->add(new UserListCommand());
-        $this->add(new UserPasswordSetCommand());
-        $this->add(new UserPasswordResetCommand());
-        $this->add(new UserRoleAddCommand());
-        $this->add(new UserRoleDeleteCommand());
-        $this->add(new UserStatusCheckCommand());
-        $this->add(new UserVerifyCommand());
-
-        // View Commands
-        $this->add(new ViewPageDumpCommand());
-
-        // Workflow Commands
-        $this->add(new WorkflowActionDumpCommand());
-
-        // Database Commands
-        $this->add(new DatabaseDropTablesCommand());
-        $this->add(new DatabaseImportCommand());
-        $this->add(new DatabaseTruncateCommand());
-
-        // ORM Commands
-        $this->add(new GenerateItemEntityCommand());
-
-        // Spatial Commands
-        $this->add(new SpatialRebuildCommand());
-
-        // Doctrine Migrations Commands, just the ones needed for production
-        //$this->getHelperSet()->set(new ConnectionHelper($this->app['db']), 'db');
-        //$this->add(new ExecuteCommand());
-        //$this->add(new MigrateCommand());
-        //$this->add(new StatusCommand());
-        //$this->add(new VersionCommand());
 
         // Add custom commands
         $commands = $this->app['ark']['console']['commands'] ?? [];

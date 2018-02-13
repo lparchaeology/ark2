@@ -30,6 +30,7 @@
 namespace ARK\Framework;
 
 use ARK\ARK;
+use ARK\Framework\Console\Command\CacheClearCommand;
 use Silex\Application;
 use Symfony\Component\Debug\Debug;
 use Symfony\Component\Debug\ErrorHandler;
@@ -42,11 +43,30 @@ abstract class AbstractApplication extends Application
     {
         mb_internal_encoding('UTF-8');
         parent::__construct();
+        $this['console.commands'] = [
+            CacheClearCommand::class,
+        ];
+        $this['console.helpers'] = [];
     }
 
     abstract public function cacheDir() : string;
 
     abstract public function logDir() : string;
+
+    public function addCommand(string $command) : void
+    {
+        $this->extendArray('console.commands', '', $command);
+    }
+
+    public function addHelper(string $helper) : void
+    {
+        $this->extendArray('console.helpers', '', $helper);
+    }
+
+    public function addCommands(iterable $commands) : void
+    {
+        $this['console.commands'] = array_merge($this['console.commands'], $commands);
+    }
 
     public function extendArray(string $id, string $key, $value) : void
     {

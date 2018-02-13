@@ -29,6 +29,17 @@
 
 namespace ARK\Framework\Provider;
 
+use ARK\Security\Console\Command\UserCreateCommand;
+use ARK\Security\Console\Command\UserDeleteCommand;
+use ARK\Security\Console\Command\UserDisableCommand;
+use ARK\Security\Console\Command\UserEnableCommand;
+use ARK\Security\Console\Command\UserListCommand;
+use ARK\Security\Console\Command\UserPasswordResetCommand;
+use ARK\Security\Console\Command\UserPasswordSetCommand;
+use ARK\Security\Console\Command\UserRoleAddCommand;
+use ARK\Security\Console\Command\UserRoleDeleteCommand;
+use ARK\Security\Console\Command\UserStatusCheckCommand;
+use ARK\Security\Console\Command\UserVerifyCommand;
 use ARK\Security\SecurityService;
 use ARK\Security\UserProvider;
 use ARK\Security\Validator\PasswordStrength;
@@ -52,6 +63,20 @@ class SecurityServiceProvider implements ServiceProviderInterface
         $container['security'] = function ($app) {
             return new SecurityService($app);
         };
+
+        $container->addCommands([
+            UserCreateCommand::class,
+            UserDeleteCommand::class,
+            UserDisableCommand::class,
+            UserEnableCommand::class,
+            UserListCommand::class,
+            UserPasswordSetCommand::class,
+            UserPasswordResetCommand::class,
+            UserRoleAddCommand::class,
+            UserRoleDeleteCommand::class,
+            UserStatusCheckCommand::class,
+            UserVerifyCommand::class,
+        ]);
 
         // Site specific settings
         $settings = $container['ark']['security'];

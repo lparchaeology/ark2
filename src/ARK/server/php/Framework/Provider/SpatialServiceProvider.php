@@ -30,6 +30,7 @@
 
 namespace ARK\Framework\Provider;
 
+use ARK\Spatial\Console\Command\SpatialRebuildCommand;
 use ARK\Spatial\SpatialService;
 use Brick\Geo\Doctrine\Functions\AreaFunction;
 use Brick\Geo\Doctrine\Functions\BufferFunction;
@@ -103,6 +104,8 @@ class SpatialServiceProvider implements ServiceProviderInterface
         $container['spatial.proj'] = function ($app) {
             return new Proj4php();
         };
+
+        $container->addCommand(SpatialRebuildCommand::class);
 
         $container['spatial'] = function ($app) {
             return new SpatialService($app);

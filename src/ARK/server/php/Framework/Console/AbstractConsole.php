@@ -47,6 +47,12 @@ abstract class AbstractConsole extends SymfonyConsole
     {
         parent::__construct($name, ARK::version());
         $this->app = $app;
+        foreach($app['console.commands'] as $command) {
+            $this->add(new $command());
+        }
+        foreach($app['console.helpers'] as $helper) {
+            $this->getHelperSet()->set(new $helper());
+        }
         $this->getHelperSet()->set(new FileChooserHelper());
     }
 
