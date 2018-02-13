@@ -30,6 +30,8 @@
 namespace ARK\Database;
 
 use ARK\ARK;
+use ARK\Database\DoctrineXML\Parser;
+use ARK\Database\DoctrineXML\Writer;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
 
@@ -96,7 +98,7 @@ class AdminConnection extends Connection
 
     public function extractSchema(string $schemaPath, bool $overwrite = true) : void
     {
-        SchemaWriter::fromConnection($this, $schemaPath, $overwrite);
+        Writer::fromConnection($this, $schemaPath, $overwrite);
     }
 
     public function table(string $table) : Table

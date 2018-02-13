@@ -27,7 +27,7 @@
  * @since      2.0
  */
 
-namespace ARK\Database;
+namespace ARK\Database\DoctrineXML;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
@@ -37,13 +37,11 @@ use Doctrine\DBAL\Schema\ForeignKeyConstraint;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
-use DoctrineXml\Checker;
-use DoctrineXml\Normalizer;
 use Exception;
 use ReflectionClass;
 use SimpleXMLElement;
 
-class SchemaWriter
+class Writer
 {
     /**
      * @param Connection    $connection
@@ -98,9 +96,9 @@ class SchemaWriter
             throw new Exception('File '.$filename.' already exists');
         }
         $header = '<?xml version="1.0" encoding="UTF-8"?>';
-        $ns = 'http://www.concrete5.org/doctrine-xml/0.5';
+        $ns = 'http://www.concrete5.org/doctrine-xml/0.6';
         $xsi = 'http://www.w3.org/2001/XMLSchema-instance';
-        $xsd = 'http://concrete5.github.io/doctrine-xml/doctrine-xml-0.5.xsd';
+        $xsd = 'http://concrete5.github.io/doctrine-xml/doctrine-xml-0.6.xsd';
         $doc = "$header\n<schema xmlns=\"$ns\" xmlns:xsi=\"$xsi\" xsi:schemaLocation=\"$ns $xsd\"></schema>";
         $root = new SimpleXMLElement($doc);
         $tables = $schema->getTables();
@@ -111,8 +109,8 @@ class SchemaWriter
             static::addTable($root, $table, $platform, $connection);
         }
         $xml = $root->asXML();
-        //$xml = Normalizer::normalizeString($xml);
-        //$errors = Checker::checkString($xml);
+        $xml = Normalizer::normalizeString($xml);
+        $errors = Checker::checkString($xml);
         if (isset($errors)) {
             throw new Exception(implode("\n", $errors));
         }

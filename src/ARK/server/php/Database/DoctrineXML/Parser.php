@@ -27,13 +27,12 @@
  * @since      2.0
  */
 
-namespace ARK\Database;
+namespace ARK\Database\DoctrineXML;
 
+use ARK\Database\ParserSchema;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
-use DoctrineXml\Checker;
-use DoctrineXml\Normalizer;
 use DoctrineXml\Parser as XmlParser;
 use DoctrineXml\Utilities;
 use Exception;
@@ -51,7 +50,7 @@ class Parser extends XmlParser
                 $xml = Normalizer::normalizeString($xml);
             }
             if ($checkXml) {
-                //$errors = Checker::checkString($xml);
+                $errors = Checker::checkString($xml);
                 if (isset($errors)) {
                     throw new Exception(implode("\n", $errors));
                 }
@@ -82,7 +81,7 @@ class Parser extends XmlParser
         return $schema;
     }
 
-    protected static function parseIndex(Schema $schema, Table $table, SimpleXMLElement $xIndex, AbstractPlatform $platform)
+    protected static function parseIndex(Schema $schema, Table $table, SimpleXMLElement $xIndex, AbstractPlatform $platform) : void
     {
         $s = (string) $xIndex['name'];
         $indexName = ($s === '') ? null : $s;
