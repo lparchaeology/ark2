@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Spatial Type.
+ * ARK Spatial Exception.
  *
  * Copyright (C) 2018  L - P : Heritage LLP.
  *
@@ -27,22 +27,8 @@
  * @since      2.0
  */
 
-namespace ARK\Spatial\Doctrine\Types;
+namespace ARK\Spatial\Exception;
 
-class MultiLineStringType extends AbstractSpatialType
+class InvalidValueException extends GeometryException
 {
-    public function getName() : string
-    {
-        return 'multilinestring';
-    }
-
-    public function getGeometryName() : string
-    {
-        return 'MultiLineString';
-    }
-
-    public function getSqlName() : string
-    {
-        return 'MULTILINESTRING';
-    }
 }
