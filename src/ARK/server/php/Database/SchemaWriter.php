@@ -111,7 +111,7 @@ class SchemaWriter
             static::addTable($root, $table, $platform, $connection);
         }
         $xml = $root->asXML();
-        $xml = Normalizer::normalizeString($xml);
+        //$xml = Normalizer::normalizeString($xml);
         //$errors = Checker::checkString($xml);
         if (isset($errors)) {
             throw new Exception(implode("\n", $errors));
@@ -253,6 +253,9 @@ class SchemaWriter
         }
         if ($index->hasFlag('FULLTEXT')) {
             $element->addChild('fulltext');
+        }
+        if ($index->hasFlag('SPATIAL')) {
+            $element->addChild('spatial');
         }
         foreach ($columns as $column) {
             $element->addChild('col', $column);

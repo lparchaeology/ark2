@@ -30,11 +30,14 @@
 namespace ARK\Database;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Schema\Table;
 use DoctrineXml\Checker;
 use DoctrineXml\Normalizer;
 use DoctrineXml\Parser as XmlParser;
 use DoctrineXml\Utilities;
 use Exception;
+use SimpleXMLElement;
 
 class Parser extends XmlParser
 {
@@ -77,5 +80,27 @@ class Parser extends XmlParser
         }
 
         return $schema;
+    }
+
+    protected static function parseIndex(Schema $schema, Table $table, SimpleXMLElement $xIndex, AbstractPlatform $platform)
+    {
+        $s = (string) $xIndex['name'];
+        $indexName = ($s === '') ? null : $s;
+        $fieldNames = [];
+        foreach ($xIndex->col as $col) {
+            $fieldNames[] = (string) $col;
+        }
+        if (isset($xIndex->unique)) {
+            $table->addUniqueIndex($fieldNames, $indexName);
+        } else {
+            $flags = [];
+            if (isset($xIndex->fulltext)) {
+                $flags[] = 'FULLTEXT';
+            }
+            if (isset($xIndex->spatial)) {
+                $flags[] = 'SPATIAL';
+            }
+            $table->addIndex($fieldNames, $indexName, $flags);
+        }
     }
 }
