@@ -46,6 +46,7 @@ use DIME\Entity\Museum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Connection;
+use Exception;
 
 class DIME
 {
@@ -85,7 +86,11 @@ class DIME
             $user = $credentials['user'];
             $password = $credentials['password'];
             $path = "https://services.kortforsyningen.dk/service?request=GetTicket&login=$user&password=$password";
-            $ticket = file_get_contents($path);
+            try {
+                $ticket = file_get_contents($path);
+            } catch (Exception $e) {
+                $ticket = null;
+            }
             if (mb_strlen($ticket) === 32) {
                 return $ticket;
             }
