@@ -121,7 +121,6 @@ class TranslationServiceProvider implements ServiceProviderInterface, EventListe
         };
 
         $app['translator.domains'] = [];
-        $app['locale_fallbacks'] = $app['ark']['locale']['fallbacks'];
         $app['translator.cache_dir'] = null;
 
         $app->addCommands([
