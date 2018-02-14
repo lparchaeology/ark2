@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 13, 2018 at 12:56 PM
+-- Generation Time: Feb 14, 2018 at 02:32 PM
 -- Server version: 10.2.12-MariaDB
--- PHP Version: 7.1.13
+-- PHP Version: 7.1.14
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -1488,6 +1488,9 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('core.button.search', 'core', 0, 0),
 ('core.button.select', 'core', 0, 0),
 ('core.button.send', 'core', 0, 0),
+('core.csv.enclosure', 'core', 0, 0),
+('core.csv.filename', 'core', 0, 0),
+('core.csv.separator', 'core', 0, 0),
 ('core.datatype.blob', 'vocabulary', 0, 0),
 ('core.datatype.boolean', 'vocabulary', 0, 0),
 ('core.datatype.date', 'vocabulary', 0, 0),
@@ -2600,11 +2603,11 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.user.actor.museum', 'dime', 0, 0),
 ('dime.user.dashboard.faq', 'dime', 0, 0),
 ('dime.user.dashboard.finds', 'dime', 0, 1),
-('dime.user.dashboard.notifications', 'dime', 0, 1),
+('dime.user.dashboard.notifications', 'dime', 0, 1);
+INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
 ('dime.user.dashboard.text', 'dime', 0, 0),
 ('dime.user.dashboard.title', 'dime', 0, 0),
-('dime.user.detectorist.id', 'dime', 0, 0);
-INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
+('dime.user.detectorist.id', 'dime', 0, 0),
 ('dime.user.login', 'dime', 0, 0),
 ('dime.user.name', 'dime', 0, 0),
 ('dime.user.password', 'dime', 0, 0),
@@ -3493,6 +3496,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'core.button.search', 'default', 'Søg', NULL),
 ('da', 'core.button.select', 'default', 'Vælg', NULL),
 ('da', 'core.button.send', 'default', 'Send', NULL),
+('da', 'core.csv.enclosure', 'default', '\"', NULL),
+('da', 'core.csv.filename', 'default', 'export', NULL),
+('da', 'core.csv.separator', 'default', ';', NULL),
 ('da', 'core.error.form.invalid.error', 'default', 'Der er fejl i formularen', ''),
 ('da', 'core.event', 'default', 'begivenhed', ''),
 ('da', 'core.event.class.viewed', 'default', 'Vist', NULL),
@@ -4093,10 +4099,10 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.kommune.hillerod', 'default', 'Hillerød', NULL),
 ('da', 'dime.kommune.hillerod', 'official', 'Hillerød Kommune', NULL),
 ('da', 'dime.kommune.hjorring', 'default', 'Hjørring', NULL),
-('da', 'dime.kommune.hjorring', 'official', 'Hjørring Kommune', NULL),
-('da', 'dime.kommune.hojetaastrup', 'default', 'Høje-Taastrup', NULL),
-('da', 'dime.kommune.hojetaastrup', 'official', 'Høje-Taastrup Kommune', NULL);
+('da', 'dime.kommune.hjorring', 'official', 'Hjørring Kommune', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('da', 'dime.kommune.hojetaastrup', 'default', 'Høje-Taastrup', NULL),
+('da', 'dime.kommune.hojetaastrup', 'official', 'Høje-Taastrup Kommune', NULL),
 ('da', 'dime.kommune.holbaek', 'default', 'Holbæk', NULL),
 ('da', 'dime.kommune.holbaek', 'official', 'Holbæk Kommune', NULL),
 ('da', 'dime.kommune.holstebro', 'default', 'Holstebro', NULL),
@@ -4427,6 +4433,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'core.button.search', 'default', 'Search', NULL),
 ('en', 'core.button.select', 'default', 'Select', ''),
 ('en', 'core.button.send', 'default', 'Send', ''),
+('en', 'core.csv.enclosure', 'default', '\"', NULL),
+('en', 'core.csv.filename', 'default', 'export', NULL),
+('en', 'core.csv.separator', 'default', ',', NULL),
 ('en', 'core.event.class.viewed', 'default', 'Viewed', ''),
 ('en', 'core.event.edited', 'default', 'Edited', NULL),
 ('en', 'core.events', 'resource', 'events', NULL),

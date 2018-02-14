@@ -20,6 +20,16 @@ $(document).ready(function () {
         maxView: 0,
     });
 
+    // Overide the default Table Export settings
+    $.extend($.fn.bootstrapTable.defaults, {
+        exportTypes: ['csv'],
+        exportOptions: {
+            csvEnclosure: Translator.trans('core.csv.enclosure'),
+            csvSeparator: Translator.trans('core.csv.separator'),
+            fileName: Translator.trans('core.csv.filename'),
+        },
+    });
+
     // HACK To add columns of checkboxes
     $("#find_secondary_term").css("width", "100%");
     $(".checkbox").addClass("col-xs-4 col-sm-4 ");
@@ -81,23 +91,23 @@ $(document).ready(function () {
             var find_image_existing_null = $("#find_image_existing > input[value='null']").length;
             var rawindex = 0;
 
-            while (find_image_existing_null > 0 && rawindex in response ){
-                console.log({"find_image_existing_null":find_image_existing_null});
+            while (find_image_existing_null > 0 && rawindex in response) {
+                console.log({ "find_image_existing_null": find_image_existing_null });
                 $("#find_image_existing > input[value='null']").first(0).val(response[rawindex]);
-                rawindex +=1;
+                rawindex += 1;
                 find_image_existing_null = $("#find_image_existing > input[value='null']").length;
             }
-            if ( rawindex < response.length ){
-                for (index in response){
-                    if (index < rawindex){
+            if (rawindex < response.length) {
+                for (index in response) {
+                    if (index < rawindex) {
                         continue;
                     }
-                    var removePreview = $("#find_image_existing_" + (2-index).toString()).val();
+                    var removePreview = $("#find_image_existing_" + (2 - index).toString()).val();
                     console.log(removePreview);
-                    if(removePreview!=null){
+                    if (removePreview != null) {
                         $(uploadPreview[removePreview]).find('button.kv-file-remove').click();
                     }
-                    $("#find_image_existing_" + (2-index).toString()).val(response[index]);
+                    $("#find_image_existing_" + (2 - index).toString()).val(response[index]);
                 }
             }
         }).on('filebatchuploadcomplete', function (event, file, extra) {
@@ -107,9 +117,9 @@ $(document).ready(function () {
             var response = $("#find_image_existing").data('uploadResponse');
             console.log(response);
             var uploadPreview = $("#find_image_existing").data('uploadPreview');
-            for (index in response){
+            for (index in response) {
                 var thumbnail = thumbnails.length - response.length + parseInt(index);
-                uploadPreview[response[index]]=thumbnails[thumbnail];
+                uploadPreview[response[index]] = thumbnails[thumbnail];
             }
         }).on('filesuccessremove', function (event, id) {
             var form_root_array = $(this).closest(".file-input").find("input[type=file]").attr('id').split("_");
@@ -136,7 +146,7 @@ $(document).ready(function () {
             }
         }).on("filepredelete", function (event) {
             var abort = true;
-            bootbox.confirm(Translator.trans("dime.confirmfiledeletion"), function(result) { abort = !result; });
+            bootbox.confirm(Translator.trans("dime.confirmfiledeletion"), function (result) { abort = !result; });
             return abort;
         })
     });
@@ -210,54 +220,54 @@ $(document).ready(function () {
     var is_dirty = false;
     window.answer = false;
 
-    for ( id in window.watchForChanges ){
-      console.log('input#'+window.watchForChanges[id]+'_value');
-      $('input#'+window.watchForChanges[id]+'_value').on('change',function() {
-          console.log("dirty");
-            if(!is_dirty){
+    for (id in window.watchForChanges) {
+        console.log('input#' + window.watchForChanges[id] + '_value');
+        $('input#' + window.watchForChanges[id] + '_value').on('change', function () {
+            console.log("dirty");
+            if (!is_dirty) {
                 is_dirty = true;
             }
         });
-        $('select#'+window.watchForChanges[id]+'_term').on('change',function() {
+        $('select#' + window.watchForChanges[id] + '_term').on('change', function () {
             console.log("dirty");
-              if(!is_dirty){
-                  is_dirty = true;
-              }
-          });
-        $('textarea#'+window.watchForChanges[id]+'_content').on('change',function() {
+            if (!is_dirty) {
+                is_dirty = true;
+            }
+        });
+        $('textarea#' + window.watchForChanges[id] + '_content').on('change', function () {
             console.log("dirty");
-              if(!is_dirty){
-                  is_dirty = true;
-              }
-          });
+            if (!is_dirty) {
+                is_dirty = true;
+            }
+        });
     }
-    $('#find_secondary_term').find(':input').on('change',function() {
+    $('#find_secondary_term').find(':input').on('change', function () {
         console.log("dirty");
-          if(!is_dirty){
-              is_dirty = true;
-          }
-      });
+        if (!is_dirty) {
+            is_dirty = true;
+        }
+    });
 
     // sadly we can't intercept browser events because of "security", we can capture anchor clicks
-    $('a').mousedown(function(e) {
-        if(is_dirty) {
+    $('a').mousedown(function (e) {
+        if (is_dirty) {
             // if the user navigates away from this page via an anchor link,
             //    popup a new bootbox confirmation.
-            bootbox.confirm(Translator.trans("dime.confirmnavigation"), function(response){
-              console.log(response);
-              window.answer = response;
-              if (response){
-                e.target.click();
-              }
+            bootbox.confirm(Translator.trans("dime.confirmnavigation"), function (response) {
+                console.log(response);
+                window.answer = response;
+                if (response) {
+                    e.target.click();
+                }
             });
         }
     });
 
     // if the other link doesn't activate (answer) then use the default catch - Even Facey B is stuck with this workaround
-    window.onbeforeunload = function() {
-    if((is_dirty)&&(!window.answer)){
-                // call this if the box wasn't shown.
-        return Translator.trans("dime.confirmnavigation");
+    window.onbeforeunload = function () {
+        if ((is_dirty) && (!window.answer)) {
+            // call this if the box wasn't shown.
+            return Translator.trans("dime.confirmnavigation");
         }
     };
 
