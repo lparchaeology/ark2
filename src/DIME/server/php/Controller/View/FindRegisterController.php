@@ -67,6 +67,8 @@ class FindRegisterController extends DimePageController
         ORM::persist($find);
         Service::workflow()->apply($actor, 'record', $find);
         ORM::flush($find);
+        $parameters['prev'] = $find->id();
+        $request->attributes->set('parameters', $parameters);
         Service::view()->addSuccessFlash('dime.find.registered', ['id' => $find->id()]);
     }
 
