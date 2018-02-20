@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 20, 2018 at 04:59 PM
+-- Generation Time: Feb 20, 2018 at 10:44 PM
 -- Server version: 10.2.12-MariaDB
--- PHP Version: 7.1.14
+-- PHP Version: 7.2.2
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -7088,10 +7088,10 @@ INSERT INTO `ark_view_form` (`element`, `name`, `mode`, `method`, `action`, `key
 ('core_user_filter', 'filter', NULL, NULL, NULL, NULL, NULL, NULL),
 ('core_user_login', NULL, NULL, 'POST', 'core.user.check', NULL, 'user/layouts/login.html.twig', NULL),
 ('core_user_password_change', 'password_change', NULL, NULL, NULL, 'core.user.password.change', NULL, NULL),
-('core_user_password_set', 'password_set', NULL, NULL, NULL, 'core.user.password.set', NULL, NULL),
+('core_user_password_set', 'password_set', 'edit', NULL, NULL, 'core.user.password.set', NULL, NULL),
 ('core_user_register', NULL, NULL, NULL, NULL, NULL, 'user/layouts/register.html.twig', NULL),
 ('core_user_reset', NULL, NULL, NULL, NULL, NULL, 'user/layouts/reset.html.twig', NULL),
-('core_user_role_add', 'role_add', NULL, NULL, NULL, 'core.user.role.add', NULL, NULL),
+('core_user_role_add', 'role_add', 'edit', NULL, NULL, 'core.user.role.add', NULL, NULL),
 ('core_workflow_action_form', 'action', NULL, NULL, NULL, 'core.workflow.action', NULL, NULL),
 ('dime_admin_register_page', NULL, NULL, NULL, NULL, 'core.admin.user.register', NULL, NULL),
 ('dime_find_add', 'find', NULL, NULL, NULL, NULL, NULL, NULL),
@@ -7102,14 +7102,14 @@ INSERT INTO `ark_view_form` (`element`, `name`, `mode`, `method`, `action`, `key
 ('dime_find_status', 'status', NULL, NULL, NULL, NULL, 'layouts/grid.html.twig', NULL),
 ('dime_find_workflow', 'workflow', NULL, NULL, NULL, NULL, 'layouts/grid.html.twig', NULL),
 ('dime_message_filter', 'filter', NULL, NULL, NULL, NULL, NULL, NULL),
-('dime_message_item', 'message', NULL, NULL, NULL, 'core.message', NULL, NULL),
-('dime_museum_form', 'museum', NULL, NULL, NULL, 'core.actor.class.museum', NULL, NULL),
+('dime_message_item', 'message', 'edit', NULL, NULL, 'core.message', NULL, NULL),
+('dime_museum_form', 'museum', 'edit', NULL, NULL, 'core.actor.class.museum', NULL, NULL),
 ('dime_profile_view', 'actor', NULL, NULL, NULL, 'dime.profile', NULL, NULL),
 ('dime_treasure_claimant', 'claimant', NULL, NULL, NULL, NULL, NULL, NULL),
 ('dime_treasure_find', NULL, NULL, NULL, NULL, NULL, 'layouts/table.html.twig', NULL),
 ('dime_treasure_museum', 'museum', NULL, NULL, NULL, NULL, NULL, NULL),
 ('dime_treasure_sender', 'treasure_sender', NULL, NULL, NULL, NULL, NULL, NULL),
-('dime_user_actor', 'actor', NULL, NULL, NULL, 'dime.user.profile', NULL, NULL),
+('dime_user_actor', 'actor', 'edit', NULL, NULL, 'dime.user.profile', NULL, NULL),
 ('dime_user_actor_role', 'actor_role', NULL, NULL, NULL, 'core.user.role', NULL, NULL),
 ('dime_user_filter', 'filter', NULL, NULL, NULL, NULL, NULL, NULL),
 ('dime_user_register', NULL, NULL, NULL, NULL, NULL, 'user/layouts/register.html.twig', NULL);

@@ -48,6 +48,8 @@ abstract class FormController extends Controller
             $parent['data'] = $this->buildData($request);
             $parent['state'] = $this->buildState($request, $parent['data']);
             $parent['state'] = array_replace_recursive($group->defaultState(), $parent['state']);
+            // TODO Set mode correctly!!!
+            $parent['state']['mode'] = $group->mode();
             $parent['options'] = [];
             $view = $group->buildView($parent);
             if ($view['state']['mode'] === 'deny') {
