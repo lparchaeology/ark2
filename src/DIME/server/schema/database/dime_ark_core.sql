@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 14, 2018 at 02:32 PM
+-- Generation Time: Feb 20, 2018 at 04:59 PM
 -- Server version: 10.2.12-MariaDB
 -- PHP Version: 7.1.14
 
@@ -523,7 +523,7 @@ CREATE TABLE `ark_dataclass_type` (
 --
 
 INSERT INTO `ark_dataclass_type` (`datatype`, `number`, `temporal`, `object`, `compound`, `storage_type`, `storage_size`, `value_name`, `parameter_name`, `parameter_vocabulary`, `format_name`, `format_vocabulary`, `spanable`, `model_table`, `model_entity`, `data_table`, `data_entity`, `form_type`, `active_form_type`, `readonly_form_type`, `static_form_type`, `parameter_form_type`, `format_form_type`, `enabled`, `deprecated`, `keyword`) VALUES
-('blob', 0, 0, 0, 1, 'blob', NULL, 'blob', NULL, NULL, 'mediatype', 'mediatype', 0, 'ark_dataclass_blob', 'ARK\\Model\\Dataclass\\BlobDataclass', 'ark_fragment_blob', 'ARK\\Model\\Fragment\\BlobFragment', NULL, NULL, NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', 0, 0, 'core.datatype.blob'),
+('blob', 0, 0, 0, 1, 'blob', NULL, 'blob', NULL, NULL, 'mediatype', 'mediatype', 0, 'ark_dataclass_blob', 'ARK\\Model\\Dataclass\\BlobDataclass', 'ark_fragment_blob', 'ARK\\Model\\Fragment\\BlobFragment', NULL, NULL, NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', 1, 0, 'core.datatype.blob'),
 ('boolean', 0, 0, 0, 0, 'boolean', NULL, NULL, NULL, NULL, NULL, NULL, 0, 'ark_dataclass_boolean', 'ARK\\Model\\Dataclass\\BooleanDataclass', 'ark_fragment_boolean', 'ARK\\Model\\Fragment\\BooleanFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\CheckboxType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, 1, 0, 'core.datatype.boolean'),
 ('date', 0, 1, 0, 0, 'date', NULL, NULL, NULL, NULL, NULL, NULL, 1, 'ark_dataclass_datetime', 'ARK\\Model\\Dataclass\\DateDataclass', 'ark_fragment_date', 'ARK\\Model\\Fragment\\DateFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, 1, 0, 'core.datatype.date'),
 ('datetime', 0, 1, 0, 0, 'datetime', NULL, 'datetime', 'timezone', NULL, NULL, NULL, 1, 'ark_dataclass_datetime', 'ARK\\Model\\Dataclass\\DateTimeDataclass', 'ark_fragment_datetime', 'ARK\\Model\\Fragment\\DateTimeFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateTimeType', NULL, 'ARK\\Form\\Type\\StaticType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, 1, 0, 'core.datatype.datetime'),
@@ -535,7 +535,7 @@ INSERT INTO `ark_dataclass_type` (`datatype`, `number`, `temporal`, `object`, `c
 ('spatial', 0, 0, 0, 1, 'string', 1431655765, 'geometry', 'srid', 'spatial.crs', 'format', 'spatial.format', 0, 'ark_dataclass_spatial', 'ARK\\Model\\Dataclass\\SpatialDataclass', 'ark_fragment_spatial', 'ARK\\Model\\Fragment\\SpatialFragment', 'ARK\\Form\\Type\\WktPropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, 'ARK\\Form\\Type\\StaticType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', 1, 0, 'core.datatype.spatial'),
 ('string', 0, 0, 0, 0, 'string', 4000, NULL, NULL, NULL, NULL, NULL, 1, 'ark_dataclass_string', 'ARK\\Model\\Dataclass\\StringDataclass', 'ark_fragment_string', 'ARK\\Model\\Fragment\\StringFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, 1, 0, 'core.datatype.string'),
 ('text', 0, 0, 0, 1, 'string', 1431655765, 'content', 'language', 'language', 'mediatype', 'mediatype', 0, 'ark_dataclass_text', 'ARK\\Model\\Dataclass\\TextDataclass', 'ark_fragment_text', 'ARK\\Model\\Fragment\\TextFragment', 'ARK\\Form\\Type\\LocalTextPropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextareaType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, 1, 0, 'core.datatype.text'),
-('time', 0, 1, 0, 0, 'time', NULL, NULL, NULL, NULL, NULL, NULL, 1, 'ark_dataclass_datetime', 'ARK\\Model\\Dataclass\\TimeDataclass', 'ark_fragment_time', 'ARK\\Model\\Fragment\\TimeFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TimeType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, 0, 0, 'core.datatype.time');
+('time', 0, 1, 0, 0, 'time', NULL, NULL, NULL, NULL, NULL, NULL, 1, 'ark_dataclass_datetime', 'ARK\\Model\\Dataclass\\TimeDataclass', 'ark_fragment_time', 'ARK\\Model\\Fragment\\TimeFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TimeType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, 1, 0, 'core.datatype.time');
 
 -- --------------------------------------------------------
 
@@ -6394,6 +6394,12 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('core_actor_item', '', 0, 0, 0, 'core_actor_id', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('core_actor_item', '', 0, 0, 1, 'core_actor_fullname', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('core_actor_item', '', 0, 0, 2, 'core_actor_shortname', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('core_actor_role', '', 0, 0, 0, 'core_widget_actor', NULL, NULL, 'actor', NULL, 1, 0, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, 'redact', 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"style\": \"width:95%\"}}', NULL, NULL),
+('core_actor_role', '', 0, 0, 2, 'core_widget_choice', NULL, 'dime.workflow.role', 'role', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.workflow.role', NULL, NULL, NULL, NULL),
+('core_actor_role', '', 0, 0, 4, 'core_widget_actor', NULL, NULL, 'agentFor', NULL, 1, 0, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, 'redact', 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"style\": \"width:95%\"}}', NULL, NULL),
+('core_actor_role', '', 0, 0, 6, 'core_widget_date', NULL, NULL, 'expiresAt', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.user.role.expiry', NULL, NULL, NULL, NULL),
+('core_actor_role_form', '', 0, 0, 0, 'core_actor_role', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, 'ARK\\Form\\Type\\CollectionPropertyType', NULL),
+('core_actor_role_form', '', 0, 0, 2, 'core_widget_submit', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.save', NULL, NULL, NULL, NULL),
 ('core_actor_table', '', 0, 0, 0, 'core_actor_id', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('core_actor_table', '', 0, 0, 1, 'core_actor_class', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('core_actor_table', '', 0, 0, 2, 'core_actor_fullname', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
@@ -6480,6 +6486,8 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('dime_admin_user_page', '', 0, 1, 4, 'core_user_password_set', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_admin_user_page', '', 0, 1, 6, 'core_widget_hr', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_admin_user_page', '', 0, 1, 8, 'core_user_role_add', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_admin_user_page', '', 0, 1, 10, 'core_widget_hr', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_admin_user_page', '', 0, 1, 12, 'core_actor_role_form', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_add', '', 0, 0, 0, 'dime_find_add_case', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_add', '', 0, 0, 2, 'dime_find_event', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_add', '', 0, 0, 4, 'dime_find_geo', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
@@ -6573,7 +6581,8 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('dime_find_table', '', 0, 0, 18, 'dime_find_description', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_table', '', 0, 0, 20, 'dime_find_finddate', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_table', '', 0, 0, 22, 'dime_find_finder', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 24, 'dime_find_finder_id', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_table', '', 0, 0, 24, 'dime_find_finder_id', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `map`, `vocabulary`, `name`, `width`, `label`, `help`, `placeholder`, `choices`, `required`, `action_schema`, `action`, `view_permission`, `edit_permission`, `mode`, `sanitise`, `visible`, `value_modus`, `parameter_modus`, `format_modus`, `display_property`, `display_pattern`, `display_parameter`, `display_format`, `export_property`, `export_pattern`, `export_parameter`, `export_format`, `enabled`, `deprecated`, `keyword`, `template`, `options`, `form_type`, `form_options`) VALUES
 ('dime_find_table', '', 0, 0, 26, 'dime_find_finder_place', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_table', '', 0, 0, 28, 'dime_find_id', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_table', '', 0, 0, 30, 'dime_find_issuer', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
@@ -6582,8 +6591,7 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('dime_find_table', '', 0, 0, 36, 'dime_find_material', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_table', '', 0, 0, 38, 'dime_find_mint', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_table', '', 0, 0, 40, 'dime_find_municipality', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 42, 'dime_find_museum', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `map`, `vocabulary`, `name`, `width`, `label`, `help`, `placeholder`, `choices`, `required`, `action_schema`, `action`, `view_permission`, `edit_permission`, `mode`, `sanitise`, `visible`, `value_modus`, `parameter_modus`, `format_modus`, `display_property`, `display_pattern`, `display_parameter`, `display_format`, `export_property`, `export_pattern`, `export_parameter`, `export_format`, `enabled`, `deprecated`, `keyword`, `template`, `options`, `form_type`, `form_options`) VALUES
+('dime_find_table', '', 0, 0, 42, 'dime_find_museum', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_table', '', 0, 0, 44, 'dime_find_museum_id', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_table', '', 0, 0, 46, 'dime_find_owner', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_table', '', 0, 0, 48, 'dime_find_process', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
@@ -6786,6 +6794,7 @@ INSERT INTO `ark_view_element` (`element`, `type`) VALUES
 ('dime_museum_participating', 'field'),
 ('core_action_select', 'form'),
 ('core_actor_item', 'form'),
+('core_actor_role_form', 'form'),
 ('core_file_item', 'form'),
 ('core_profile_view', 'form'),
 ('core_user_filter', 'form'),
@@ -6816,6 +6825,7 @@ INSERT INTO `ark_view_element` (`element`, `type`) VALUES
 ('dime_user_actor_role', 'form'),
 ('dime_user_filter', 'form'),
 ('dime_user_register', 'form'),
+('core_actor_role', 'grid'),
 ('core_admin_page', 'grid'),
 ('core_admin_user_page', 'grid'),
 ('core_home_page', 'grid'),
@@ -7072,6 +7082,7 @@ CREATE TABLE `ark_view_form` (
 INSERT INTO `ark_view_form` (`element`, `name`, `mode`, `method`, `action`, `keyword`, `template`, `form_type`) VALUES
 ('core_action_select', 'actions', NULL, NULL, NULL, 'core.action.select', NULL, NULL),
 ('core_actor_item', 'actor_item', NULL, NULL, NULL, NULL, NULL, NULL),
+('core_actor_role_form', 'actor_role', NULL, NULL, NULL, 'core.user.role', NULL, NULL),
 ('core_file_item', 'item', 'edit', NULL, NULL, NULL, NULL, NULL),
 ('core_profile_view', 'actor', NULL, NULL, NULL, 'core.profile', NULL, NULL),
 ('core_user_filter', 'filter', NULL, NULL, NULL, NULL, NULL, NULL),
@@ -7123,6 +7134,7 @@ CREATE TABLE `ark_view_group` (
 --
 
 INSERT INTO `ark_view_group` (`element`, `name`, `mode`, `keyword`, `template`, `form_type`) VALUES
+('core_actor_role', 'actor_role', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\CollectionType'),
 ('core_admin_page', NULL, NULL, NULL, NULL, NULL),
 ('core_admin_user_page', NULL, NULL, NULL, NULL, NULL),
 ('core_home_page', NULL, NULL, NULL, NULL, NULL),
@@ -9934,9 +9946,10 @@ INSERT INTO `ark_workflow_allow` (`schma`, `action`, `role`, `operator`) VALUES
 CREATE TABLE `ark_workflow_condition` (
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `action` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `grp` int(11) NOT NULL DEFAULT 0,
   `class` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `grp` int(11) NOT NULL DEFAULT 0,
+  `subattribute` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `operator` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'eq',
   `value` varchar(4000) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -9945,54 +9958,60 @@ CREATE TABLE `ark_workflow_condition` (
 -- Dumping data for table `ark_workflow_condition`
 --
 
-INSERT INTO `ark_workflow_condition` (`schma`, `action`, `class`, `attribute`, `grp`, `operator`, `value`) VALUES
-('core.actor', 'disable', 'person', 'status', 0, 'eq', 'enabled'),
-('core.actor', 'enable', 'person', 'status', 0, 'eq', 'verified'),
-('core.actor', 'enable', 'person', 'status', 2, 'eq', 'locked'),
-('core.actor', 'enable', 'person', 'status', 4, 'eq', 'disabled'),
-('core.actor', 'enable', 'person', 'status', 6, 'eq', 'expired'),
-('core.actor', 'expire', 'person', 'status', 0, 'eq', 'enabled'),
-('core.actor', 'lock', 'person', 'status', 0, 'eq', 'enabled'),
-('core.actor', 'verify', 'person', 'status', 0, 'eq', 'registered'),
-('dime.find', 'accession', 'find', 'process', 0, 'eq', 'reported'),
-('dime.find', 'accession', 'find', 'process', 1, 'eq', 'claimed'),
-('dime.find', 'appraise', 'find', 'process', 0, 'eq', 'claimed'),
-('dime.find', 'appraise', 'find', 'treasure', 0, 'eq', 'appraisal'),
-('dime.find', 'claim', 'find', 'process', 0, 'eq', 'evaluated'),
-('dime.find', 'claim', 'find', 'process', 1, 'eq', 'reported'),
-('dime.find', 'destroy', 'find', 'custody', 0, 'eq', 'held'),
-('dime.find', 'destroy', 'find', 'custody', 1, 'eq', 'requested'),
-('dime.find', 'destroy', 'find', 'custody', 2, 'eq', 'sent'),
-('dime.find', 'discard', 'find', 'custody', 0, 'eq', 'held'),
-('dime.find', 'discard', 'find', 'custody', 1, 'eq', 'requested'),
-('dime.find', 'discard', 'find', 'custody', 2, 'eq', 'sent'),
-('dime.find', 'evaluate', 'find', 'process', 0, 'eq', 'reported'),
-('dime.find', 'lose', 'find', 'custody', 0, 'eq', 'held'),
-('dime.find', 'lose', 'find', 'custody', 1, 'eq', 'requested'),
-('dime.find', 'lose', 'find', 'custody', 2, 'eq', 'sent'),
-('dime.find', 'publish', 'find', 'visibility', 0, 'eq', 'private'),
-('dime.find', 'publish', 'find', 'visibility', 2, 'eq', 'restricted'),
-('dime.find', 'record', 'find', 'process', 0, 'eq', 'recorded'),
-('dime.find', 'recover', 'find', 'custody', 0, 'eq', 'lost'),
-('dime.find', 'recover', 'find', 'custody', 1, 'eq', 'discarded'),
-('dime.find', 'recover', 'find', 'custody', 3, 'eq', 'destroyed'),
-('dime.find', 'reject', 'find', 'process', 0, 'eq', 'reported'),
-('dime.find', 'release', 'find', 'process', 0, 'eq', 'reported'),
-('dime.find', 'release', 'find', 'process', 1, 'eq', 'claimed'),
-('dime.find', 'report', 'find', 'image', 0, 'gt', '0'),
-('dime.find', 'report', 'find', 'image', 1, 'gt', '0'),
-('dime.find', 'report', 'find', 'process', 0, 'eq', 'recorded'),
-('dime.find', 'report', 'find', 'process', 1, 'eq', 'rejected'),
-('dime.find', 'request', 'find', 'custody', 0, 'eq', 'held'),
-('dime.find', 'send', 'find', 'custody', 0, 'eq', 'held'),
-('dime.find', 'send', 'find', 'custody', 1, 'eq', 'requested'),
-('dime.find', 'send', 'find', 'process', 0, 'eq', 'reported'),
-('dime.find', 'send', 'find', 'process', 1, 'eq', 'reported'),
-('dime.find', 'submit', 'find', 'image', 0, 'gt', '0'),
-('dime.find', 'submit', 'find', 'image', 1, 'gt', '0'),
-('dime.find', 'submit', 'find', 'process', 0, 'eq', 'recorded'),
-('dime.find', 'submit', 'find', 'process', 1, 'eq', 'rejected'),
-('dime.find', 'withhold', 'find', 'visibility', 0, 'eq', 'public');
+INSERT INTO `ark_workflow_condition` (`schma`, `action`, `grp`, `class`, `attribute`, `subattribute`, `operator`, `value`) VALUES
+('core.actor', 'disable', 0, 'person', 'status', NULL, 'eq', 'enabled'),
+('core.actor', 'enable', 0, 'person', 'status', NULL, 'eq', 'verified'),
+('core.actor', 'enable', 2, 'person', 'status', NULL, 'eq', 'locked'),
+('core.actor', 'enable', 4, 'person', 'status', NULL, 'eq', 'disabled'),
+('core.actor', 'enable', 6, 'person', 'status', NULL, 'eq', 'expired'),
+('core.actor', 'expire', 0, 'person', 'status', NULL, 'eq', 'enabled'),
+('core.actor', 'lock', 0, 'person', 'status', NULL, 'eq', 'enabled'),
+('core.actor', 'verify', 0, 'person', 'status', NULL, 'eq', 'registered'),
+('dime.find', 'accession', 0, 'find', 'process', NULL, 'eq', 'reported'),
+('dime.find', 'accession', 1, 'find', 'process', NULL, 'eq', 'claimed'),
+('dime.find', 'appraise', 0, 'find', 'process', NULL, 'eq', 'claimed'),
+('dime.find', 'appraise', 0, 'find', 'treasure', NULL, 'eq', 'appraisal'),
+('dime.find', 'claim', 0, 'find', 'process', NULL, 'eq', 'evaluated'),
+('dime.find', 'claim', 1, 'find', 'process', NULL, 'eq', 'reported'),
+('dime.find', 'destroy', 0, 'find', 'custody', NULL, 'eq', 'held'),
+('dime.find', 'destroy', 1, 'find', 'custody', NULL, 'eq', 'requested'),
+('dime.find', 'destroy', 2, 'find', 'custody', NULL, 'eq', 'sent'),
+('dime.find', 'discard', 0, 'find', 'custody', NULL, 'eq', 'held'),
+('dime.find', 'discard', 1, 'find', 'custody', NULL, 'eq', 'requested'),
+('dime.find', 'discard', 2, 'find', 'custody', NULL, 'eq', 'sent'),
+('dime.find', 'evaluate', 0, 'find', 'process', NULL, 'eq', 'reported'),
+('dime.find', 'lose', 0, 'find', 'custody', NULL, 'eq', 'held'),
+('dime.find', 'lose', 1, 'find', 'custody', NULL, 'eq', 'requested'),
+('dime.find', 'lose', 2, 'find', 'custody', NULL, 'eq', 'sent'),
+('dime.find', 'publish', 0, 'find', 'visibility', NULL, 'eq', 'private'),
+('dime.find', 'publish', 2, 'find', 'visibility', NULL, 'eq', 'restricted'),
+('dime.find', 'record', 0, 'find', 'process', NULL, 'eq', 'recorded'),
+('dime.find', 'recover', 0, 'find', 'custody', NULL, 'eq', 'lost'),
+('dime.find', 'recover', 1, 'find', 'custody', NULL, 'eq', 'discarded'),
+('dime.find', 'recover', 3, 'find', 'custody', NULL, 'eq', 'destroyed'),
+('dime.find', 'reject', 0, 'find', 'process', NULL, 'eq', 'reported'),
+('dime.find', 'release', 0, 'find', 'process', NULL, 'eq', 'reported'),
+('dime.find', 'release', 1, 'find', 'process', NULL, 'eq', 'claimed'),
+('dime.find', 'report', 0, 'find', 'image', NULL, 'gt', '0'),
+('dime.find', 'report', 0, 'find', 'museum', 'participating', 'eq', '1'),
+('dime.find', 'report', 0, 'find', 'process', NULL, 'eq', 'recorded'),
+('dime.find', 'report', 1, 'find', 'image', NULL, 'gt', '0'),
+('dime.find', 'report', 1, 'find', 'museum', 'participating', 'eq', '1'),
+('dime.find', 'report', 1, 'find', 'process', NULL, 'eq', 'rejected'),
+('dime.find', 'request', 0, 'find', 'custody', NULL, 'eq', 'held'),
+('dime.find', 'send', 0, 'find', 'custody', NULL, 'eq', 'held'),
+('dime.find', 'send', 0, 'find', 'museum', 'participating', 'eq', '1'),
+('dime.find', 'send', 0, 'find', 'process', NULL, 'eq', 'reported'),
+('dime.find', 'send', 1, 'find', 'custody', NULL, 'eq', 'requested'),
+('dime.find', 'send', 1, 'find', 'museum', 'participating', 'eq', '1'),
+('dime.find', 'send', 1, 'find', 'process', NULL, 'eq', 'reported'),
+('dime.find', 'submit', 0, 'find', 'image', NULL, 'gt', '0'),
+('dime.find', 'submit', 0, 'find', 'museum', 'participating', 'eq', '1'),
+('dime.find', 'submit', 0, 'find', 'process', NULL, 'eq', 'recorded'),
+('dime.find', 'submit', 1, 'find', 'image', NULL, 'gt', '0'),
+('dime.find', 'submit', 1, 'find', 'museum', 'participating', 'eq', '1'),
+('dime.find', 'submit', 1, 'find', 'process', NULL, 'eq', 'rejected'),
+('dime.find', 'withhold', 0, 'find', 'visibility', NULL, 'eq', 'public');
 
 -- --------------------------------------------------------
 
@@ -10608,7 +10627,7 @@ ALTER TABLE `ark_workflow_allow`
 -- Indexes for table `ark_workflow_condition`
 --
 ALTER TABLE `ark_workflow_condition`
-  ADD PRIMARY KEY (`schma`,`action`,`class`,`attribute`,`grp`),
+  ADD PRIMARY KEY (`schma`,`action`,`grp`,`class`,`attribute`),
   ADD KEY `action_foreign` (`schma`,`action`) USING BTREE,
   ADD KEY `attribute_foreign` (`schma`,`class`,`attribute`) USING BTREE;
 

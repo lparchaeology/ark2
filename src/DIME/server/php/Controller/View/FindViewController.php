@@ -83,7 +83,8 @@ class FindViewController extends DimePageController
         $action = null;
         $actor = Service::workflow()->actor();
         $find = null;
-        $agency = null;
+        $museum = null;
+        $participating = false;
         $message = null;
 
         // Get the Find
@@ -116,11 +117,12 @@ class FindViewController extends DimePageController
 
         // If one of the Send actions, get the Museum to send to
         if (in_array($action->name(), ['report', 'submit', 'send'], true)) {
-            $agency = $find->value('museum');
+            $museum = $find->value('museum');
+            $participating = $museum->value('participating');
         }
 
         // Apply the Action
-        $action->apply($actor, $find, $agency, $message);
+        $action->apply($actor, $find, $museum, $message);
 
         // If Withhold, set the 1 year embargo period
         if ($action->name() === 'withhold') {

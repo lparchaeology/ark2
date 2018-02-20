@@ -94,7 +94,7 @@ class Datatype
 
     public function cast($value)
     {
-        if ($this->number) {
+        if ($this->numeric) {
             if ($this->storageType === 'integer') {
                 return (int) $value;
             }
@@ -105,6 +105,9 @@ class Datatype
         }
         if ($this->compound || $this->object) {
             return $value;
+        }
+        if ($this->storageType === 'boolean') {
+            return (bool) $value;
         }
         return (string) $value;
     }

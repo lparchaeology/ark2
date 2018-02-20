@@ -44,6 +44,7 @@ class Condition
     protected $class = '';
     protected $attributeName = '';
     protected $attribute;
+    protected $subattribute;
     protected $operator = 'is';
     protected $grp = 0;
     protected $value = '';
@@ -65,6 +66,11 @@ class Condition
         return $this->attribute;
     }
 
+    public function subattribute() : ?string
+    {
+        return $this->subattribute;
+    }
+
     public function operator() : string
     {
         return $this->operator;
@@ -83,32 +89,35 @@ class Condition
     public function isMet(Item $item) : bool
     {
         $value = $item->value($this->attribute->name());
+        if ($this->subattribute && is_object($value)) {
+            $datatype = $value->schema()->attribute($this->subattribute)->dataclass()->datatype();
+            $value = $value->value($this->subattribute);
+        } else {
+            $datatype = $this->attribute->dataclass()->datatype();
+        }
         if ($value instanceof Term) {
             $value = $value->name();
         }
         if ($value instanceof LocalText) {
             $value = $value->content();
         }
-        if ($this->operator === 'is') {
-            return $value === $this->value;
+        if (is_object($value)) {
+            // TODO throw exception
+            return false;
         }
-        if ($this->operator === 'not') {
-            return $value !== $this->value;
-        }
-        if ($this->attribute->dataclass()->datatype()->isNumeric()) {
-            $lhs = $this->attribute->dataclass()->datatype()->cast($value);
-            $rhs = $this->attribute->dataclass()->datatype()->cast($this->value);
-        } elseif ($this->attribute->hasMultipleOccurrences() || $this->attribute->dataclass()->hasMultipleValues()) {
+        if ($this->attribute->hasMultipleOccurrences() || $this->attribute->dataclass()->hasMultipleValues()) {
             $lhs = count($value);
             $rhs = (int) $this->value;
         } else {
-            $lhs = $value;
-            $rhs = $this->value;
+            $lhs = $datatype->cast($value);
+            $rhs = $datatype->cast($this->value);
         }
         switch ($this->operator) {
+            case 'is':
             case 'eq':
                 // TODO weak comparison!!!
                 return $lhs === $rhs;
+            case 'not':
             case 'ne':
                 // TODO weak comparison!!!
                 return $lhs !== $rhs;
@@ -133,11 +142,12 @@ class Condition
         // Key
         $builder->addStringKey('schma', 30);
         $builder->addMappedStringKey('action', 'actionName', 30);
+        $builder->addKey('grp', 'integer');
         $builder->addStringKey('class', 30);
         $builder->addMappedStringKey('attribute', 'attributeName', 30);
-        $builder->addKey('grp', 'integer');
 
         // Fields
+        $builder->addMappedStringField('subattribute', 'subattribute', 30);
         $builder->addStringField('operator', 10);
         $builder->addStringField('value', 4000);
 

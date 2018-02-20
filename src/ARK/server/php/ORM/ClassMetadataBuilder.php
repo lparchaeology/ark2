@@ -198,7 +198,7 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
     public function addCompositeManyToOneKey(
         string $name,
         string $class,
-        string $joins,
+        iterable $joins,
         string $inverse = null
     ) : self {
         $builder = $this->createManyToOne($name, $class)->makePrimaryKey();
