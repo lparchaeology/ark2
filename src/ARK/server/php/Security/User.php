@@ -454,7 +454,7 @@ class User implements AdvancedUserInterface, Serializable
         }
     }
 
-    public function actor() : Actor
+    public function actor() : ?Actor
     {
         return Actor::find($this->id());
     }

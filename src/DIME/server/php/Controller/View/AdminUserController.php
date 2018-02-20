@@ -56,10 +56,11 @@ class AdminUserController extends DimePageController
 
         $actors = new ArrayCollection();
         foreach ($users as $user) {
+            $actor = $user->actor();
             if ($user->isSystemUser()) {
                 $users->removeElement($user);
-            } else {
-                $actors->add($user->actor());
+            } elseif ($actor) {
+                $actors->add($actor);
             }
         }
         $data['actors']['items'] = $actors;
