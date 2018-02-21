@@ -31,21 +31,34 @@ namespace ARK\Model\Dataclass;
 
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use Symfony\Component\Validator\Constraints\IsFalse;
-use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Type;
 
 class BooleanDataclass extends Dataclass
 {
+    public function emptyValue()
+    {
+        if ($this->hasMultipleValues()) {
+            return [];
+        }
+        if ($this->isAtomic()) {
+            return $this->defaultValue();
+        }
+        $data = [];
+        if ($this->hasFormat()) {
+            $data[$this->formatName()] = null;
+        }
+        if ($this->hasParameter()) {
+            $data[$this->parameterName()] = null;
+        }
+        $data[$this->valueName()] = $this->defaultValue();
+        ksort($data);
+        return $data;
+    }
+
     public function constraints() : iterable
     {
         $constraints = parent::constraints();
         $constraints[] = new Type('bool');
-        if ($this->preset === true) {
-            $constraints[] = new IsTrue();
-        } elseif ($this->preset === false) {
-            $constraints[] = new IsFalse();
-        }
         return $constraints;
     }
 

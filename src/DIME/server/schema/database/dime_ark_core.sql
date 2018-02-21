@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 20, 2018 at 10:44 PM
+-- Generation Time: Feb 21, 2018 at 11:14 AM
 -- Server version: 10.2.12-MariaDB
--- PHP Version: 7.2.2
+-- PHP Version: 7.1.14
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -62,6 +62,7 @@ CREATE TABLE `ark_dataclass` (
 INSERT INTO `ark_dataclass` (`dataclass`, `datatype`, `object`, `array`, `span`, `multiple`, `value_name`, `format_name`, `format_vocabulary`, `parameter_name`, `parameter_vocabulary`, `entity`, `form_type`, `active_form_type`, `readonly_form_type`, `static_form_type`, `parameter_form_type`, `format_form_type`, `sortable`, `searchable`, `enabled`, `deprecated`, `keyword`) VALUES
 ('actor', 'item', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 'ARK\\Security\\Actor', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'core.actor'),
 ('address', 'object', 1, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, 1, 0, 'format.address'),
+('assert', 'boolean', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.boolean'),
 ('blob', 'blob', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'format.blob'),
 ('boolean', 'boolean', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.boolean'),
 ('classification', 'object', 1, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, NULL, NULL, NULL, 0, 1, 1, 0, 'dime.find.classification'),
@@ -76,7 +77,6 @@ INSERT INTO `ark_dataclass` (`dataclass`, `datatype`, `object`, `array`, `span`,
 ('distance', 'decimal', 0, 0, 0, 0, NULL, NULL, NULL, 'unit', 'distance', NULL, 'ARK\\Form\\Type\\UnitPropertyType', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, 1, 1, 1, 0, 'format.distance'),
 ('email', 'string', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.email'),
 ('event', 'item', 1, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 'ARK\\Entity\\Event', NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, 1, 0, 'format.event'),
-('false', 'boolean', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.boolean'),
 ('file', 'item', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 'ARK\\File\\File', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\FileType', NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'format.file'),
 ('float', 'float', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.float'),
 ('html', 'text', 1, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.html'),
@@ -108,8 +108,8 @@ INSERT INTO `ark_dataclass` (`dataclass`, `datatype`, `object`, `array`, `span`,
 ('string', 'string', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.string'),
 ('telephone', 'string', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.telephone'),
 ('term', 'string', 0, 0, 0, 0, 'term', NULL, NULL, 'concept', NULL, 'ARK\\Vocabulary\\Term', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, 1, 1, 1, 0, 'format.identifier'),
+('ternary', 'boolean', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.boolean'),
 ('time', 'time', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.time'),
-('true', 'boolean', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.boolean'),
 ('url', 'text', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.url'),
 ('version', 'object', 1, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 'ARK\\File\\FileVersion', 'ARK\\Form\\Type\\FilePropertyType', NULL, NULL, NULL, NULL, NULL, 0, 1, 1, 0, 'format.fileversion'),
 ('weekdate', 'string', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.weekdate'),
@@ -207,9 +207,9 @@ CREATE TABLE `ark_dataclass_boolean` (
 --
 
 INSERT INTO `ark_dataclass_boolean` (`dataclass`, `preset`) VALUES
-('boolean', NULL),
-('false', 0),
-('true', 1);
+('assert', 1),
+('boolean', 0),
+('ternary', NULL);
 
 -- --------------------------------------------------------
 
@@ -727,17 +727,17 @@ CREATE TABLE `ark_model_attribute` (
 INSERT INTO `ark_model_attribute` (`schma`, `class`, `attribute`, `dataclass`, `vocabulary`, `event`, `visibility`, `view_permission`, `edit_permission`, `span`, `minimum`, `maximum`, `unique_values`, `additional_values`, `enabled`, `deprecated`, `keyword`) VALUES
 ('core.actor', 'actor', 'address', 'address', NULL, NULL, 'public', NULL, NULL, 0, 1, 1, 1, 0, 1, 0, 'core.actor.address'),
 ('core.actor', 'actor', 'avatar', 'image', NULL, NULL, 'public', NULL, NULL, 0, 0, 1, 1, 0, 1, 0, 'core.actor.avatar'),
-('core.actor', 'actor', 'biography', 'plaintext', NULL, NULL, 'public', NULL, NULL, 0, 1, 1, 1, 0, 1, 0, 'core.actor.biography'),
+('core.actor', 'actor', 'biography', 'plaintext', NULL, NULL, 'public', NULL, NULL, 0, 0, 1, 1, 0, 1, 0, 'core.actor.biography'),
 ('core.actor', 'actor', 'class', 'term', 'core.actor.class', NULL, 'restricted', 'core.actor.read', 'core.actor.update', 0, 1, 1, 1, 0, 1, 0, 'core.actor.class'),
 ('core.actor', 'actor', 'email', 'email', NULL, NULL, 'restricted', 'core.actor.read', 'core.actor.update', 0, 1, 1, 1, 0, 1, 0, 'core.actor.email'),
 ('core.actor', 'actor', 'fullname', 'shorttext', NULL, NULL, 'public', NULL, NULL, 0, 1, 1, 1, 0, 1, 0, 'core.actor.fullname'),
 ('core.actor', 'actor', 'id', 'identifier', NULL, NULL, 'restricted', 'core.actor.read', 'core.actor.update', 0, 1, 1, 1, 0, 1, 0, 'core.actor.id'),
 ('core.actor', 'actor', 'initials', 'shorttext', NULL, NULL, 'public', NULL, NULL, 0, 1, 1, 1, 0, 1, 0, 'core.actor.initials'),
-('core.actor', 'actor', 'shortname', 'shorttext', NULL, NULL, 'public', NULL, NULL, 0, 1, 1, 1, 0, 1, 0, 'core.actor.shortname'),
+('core.actor', 'actor', 'shortname', 'shorttext', NULL, NULL, 'public', NULL, NULL, 0, 0, 1, 1, 0, 1, 0, 'core.actor.shortname'),
 ('core.actor', 'actor', 'telephone', 'telephone', NULL, NULL, 'restricted', 'core.actor.read', 'core.actor.update', 0, 1, 1, 1, 0, 1, 0, 'core.actor.telephone'),
 ('core.actor', 'museum', 'municipality', 'term', 'dime.denmark.municipality', NULL, 'public', NULL, NULL, 0, 0, 0, 1, 0, 1, 0, 'dime.actor.municipality'),
-('core.actor', 'museum', 'participating', 'boolean', NULL, NULL, 'public', NULL, NULL, 0, 1, 1, 1, 0, 1, 0, 'dime.actor.participating'),
-('core.actor', 'person', 'detectorist_id', 'identifier', NULL, NULL, 'restricted', 'core.actor.read', 'core.admin.user', 0, 1, 1, 1, 0, 1, 0, 'dime.user.detectorist.id'),
+('core.actor', 'museum', 'participating', 'boolean', NULL, NULL, 'public', NULL, NULL, 0, 0, 1, 1, 0, 1, 0, 'dime.actor.participating'),
+('core.actor', 'person', 'detectorist_id', 'identifier', NULL, NULL, 'restricted', 'core.actor.read', 'core.admin.user', 0, 0, 1, 1, 0, 1, 0, 'dime.user.detectorist.id'),
 ('core.actor', 'person', 'status', 'term', 'core.security.user.status', NULL, 'restricted', 'core.admin.user', 'core.admin.user', 0, 1, 1, 1, 0, 1, 0, 'core.security.user.status'),
 ('core.actor', 'person', 'terms', 'term', 'core.user.terms', NULL, 'restricted', 'core.actor.read', 'core.actor.update', 0, 1, 1, 1, 0, 1, 0, 'core.user.terms'),
 ('core.event', 'event', 'agents', 'actor', NULL, NULL, 'public', NULL, NULL, 0, 1, 0, 1, 0, 1, 0, 'core.event.agent'),
