@@ -1,11 +1,15 @@
 var FormMapper = (function () {
 
     var mapDataToCheckboxField = function mapDataToCheckboxField(data, field) {
+        console.log('mapDataToCheckboxField');
+        console.log(data);
+        console.log(field);
         if (data === field.value) {
             field.checked = true;
         } else {
             data = field.defaultChecked ? field.defaultChecked : false;
         }
+        console.log(field);
     };
 
     var mapDataToDateField = function mapDataToDateField(data, field) {
