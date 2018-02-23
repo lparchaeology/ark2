@@ -31,9 +31,6 @@ namespace ARK\Translation\Console\Command;
 
 use ARK\Console\Command\AbstractCommand;
 use ARK\Service;
-use ARK\Translation\Dumper\JsonFileDumper;
-use ARK\Translation\Loader\DatabaseLoader;
-use Symfony\Component\Translation\Dumper\XliffFileDumper;
 
 class TranslationDumpCommand extends AbstractCommand
 {
@@ -45,17 +42,8 @@ class TranslationDumpCommand extends AbstractCommand
 
     protected function doExecute() : void
     {
-        $this->write('Loading translations...');
-        $loader = new DatabaseLoader();
-        $xliff = new XliffFileDumper();
-        $json = new JsonFileDumper();
-        $options['path'] = Service::siteDir().'/translations';
-        foreach (Service::localeFallbacks() as $locale) {
-            $this->write('Dumping '.$locale);
-            $catalogue = $loader->load(Service::database(), $locale);
-            $xliff->dump($catalogue, $options);
-            $json->dump($catalogue, $options);
-        }
-        $this->write('SUCCESS: Dumped site translation files to '.$options['path']);
+        $this->write('Dumping translations...');
+        Service::translation()->dump();
+        $this->write('SUCCESS: Dumped site translation files');
     }
 }

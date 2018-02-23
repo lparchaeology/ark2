@@ -31,6 +31,7 @@ namespace DIME\Controller\API;
 
 use ARK\Http\JsonResponse;
 use ARK\ORM\ORM;
+use ARK\Service;
 use ARK\Translation\Domain;
 use ARK\Translation\Keyword;
 use Symfony\Component\HttpFoundation\Request;
@@ -77,6 +78,7 @@ class TranslationMessageController
                 // TODO Cater for roles.
                 $translation->setMessage($content['message'], $language, 'default', $content['notes']);
                 ORM::flush($translation);
+                Service::translation()->dump();
                 $json['status'] = 'success';
             }
         } catch (Exception $e) {
