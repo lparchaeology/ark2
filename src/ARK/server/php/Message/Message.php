@@ -30,6 +30,7 @@
 namespace ARK\Message;
 
 use ARK\ARK;
+use ARK\Model\Fragment\DateTimeFragment;
 use ARK\Model\Fragment\ItemFragment;
 use ARK\Model\Item;
 use ARK\Model\ItemTrait;
@@ -129,7 +130,39 @@ class Message implements Item
 
     public function markAsRead(Actor $actor) : void
     {
-        Service::database()->markMessageAsRead($this->id(), $actor->id());
+        $recipient = ORM::findOneBy(
+            ItemFragment::class,
+            [
+                'module' => 'message',
+                'item' => $this->id(),
+                'attribute' => 'recipient',
+                'parameter' => 'actor',
+                'value' => $actor->id(),
+            ]
+        );
+        $read = ORM::findOneBy(
+            DateTimeFragment::class,
+            [
+                'module' => 'message',
+                'item' => $this->id(),
+                'attribute' => 'read',
+                'object' => $recipient->object()->id(),
+            ]
+        );
+        if ($read !== null) {
+            return;
+        }
+        $now = ARK::timestamp();
+        $read = DateTimeFragment::create(
+            'message',
+            $this->id(),
+            $this->attribute('recipients')->dataclass()->attribute('read'),
+            Service::workflow()->actor(),
+            $now,
+            $recipient->object()
+        );
+        $read->setValue($now);
+        ORM::persist($read);
     }
 
     public function wasReadBy(Actor $actor) : bool
