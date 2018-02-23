@@ -165,4 +165,15 @@ abstract class DatabaseCommand extends AbstractCommand
         }
         return $this->askChoice("$text : ", $conn->listDatabases());
     }
+
+    protected function createMigrationConfiguration(AdminConnection $conn, iterable $conf = []) : string
+    {
+        $config = new Configuration($conn, $conf['migrations.output_writer']);
+        $config->setMigrationsDirectory($conf['directory']);
+        $config->setName($conf['name'] ?? 'ARK');
+        $config->setMigrationsNamespace($conf['namespace'] ?? 'ARK\Database\Migrations');
+        $config->setMigrationsTableName($conf['table'] ?? 'ark_migrations');
+        $config->registerMigrationsFromDirectory($conf['directory']);
+        return $config;
+    }
 }
