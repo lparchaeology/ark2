@@ -41,7 +41,7 @@ class Message
     protected $text = '';
     protected $notes = '';
 
-    public function __construct(Translation $key, Language $language, Role $role = null)
+    public function __construct(Keyword $key, Language $language, Role $role = null)
     {
         $this->key = $key;
         $this->language = $language;
@@ -122,7 +122,7 @@ class Message
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_translation_message');
         $builder->addManyToOneKey('language', Language::class);
-        $builder->addManyToOneKey('key', Translation::class, 'keyword');
+        $builder->addManyToOneKey('key', Keyword::class, 'keyword');
         $builder->addManyToOneKey('role', Role::class);
         $builder->addStringField('text', 4294967295);
         $builder->addStringField('notes', 4294967295);
