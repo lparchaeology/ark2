@@ -30,10 +30,9 @@
 namespace DIME\Controller\API;
 
 use ARK\Http\JsonResponse;
-use ARK\Message\Message;
 use ARK\ORM\ORM;
 use ARK\Translation\Domain;
-use ARK\Translation\Translation;
+use ARK\Translation\Keyword;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -43,7 +42,7 @@ class TranslationMessageController
     {
         try {
             $json = [];
-            $translation = ORM::find(Translation::class, $keyword);
+            $translation = ORM::find(Keyword::class, $keyword);
             if ($request->getMethod() === 'GET') {
                 if (!$translation) {
                     $json['status'] = 'error';
@@ -51,7 +50,7 @@ class TranslationMessageController
                     return new JsonResponse($json);
                 }
                 $json['status'] = 'success';
-                $json['keyword'] = $translation->keyword();
+                $json['keyword'] = $translation->id();
                 $json['domain'] = $translation->domain()->id();
                 $json['plural'] = $translation->isPlural();
                 $json['parameters'] = [];
@@ -72,7 +71,7 @@ class TranslationMessageController
                 $content = json_decode($request->getContent(), true);
                 if (!$translation) {
                     $domain = ORM::find(Domain::class, 'dime');
-                    $translation = new Translation($keyword, $domain);
+                    $translation = new Keyword($keyword, $domain);
                     ORM::persist($translation);
                 }
                 // TODO Cater for roles.
