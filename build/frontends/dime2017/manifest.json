@@ -33,7 +33,7 @@
         "fonts": {
             "vendor": {
                 "bootstrap": ["bootstrap-sass/assets/fonts/bootstrap/**/*"],
-                "": ["summernote/dist/font/**/*"]
+                "": ["summernote/dist/font/**/*", "font-awesome/fonts/**/*"]
             },
             "core": {
                 "": ["fonts/**/*"]
@@ -184,6 +184,7 @@
                 {
                     "stream": "main",
                     "vendor": [
+                        "font-awesome/css/font-awesome.css",
                         "select2/dist/css/select2.min.css",
                         "select2-bootstrap-theme/dist/select2-bootstrap.css",
                         "bootstrap-datetime-picker/css/bootstrap-datetimepicker.css",
@@ -191,6 +192,7 @@
                         "bootstrap-table/dist/bootstrap-table.css",
                         "bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.css",
                         "bootstrap-fileinput/css/fileinput.css",
+                        "bootstrap-social/bootstrap-social.css",
                         "vis/dist/vis-timeline-graph2d.min.css"
                     ],
                     "core": [],
