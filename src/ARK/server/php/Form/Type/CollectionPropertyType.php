@@ -37,7 +37,7 @@ class CollectionPropertyType extends AbstractPropertyType
 {
     public function buildForm(FormBuilderInterface $builder, iterable $options) : void
     {
-        dump($options);
+        //dump($options);
         return;
         $this->addForm($builder, $options['state'], 'display');
         $this->addForm($builder, $options['state'], 'static');
