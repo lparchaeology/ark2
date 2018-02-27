@@ -319,19 +319,19 @@ class FindListController extends DimePageController
             // Filter by Museum
             // If the user is explicitly granted permission, they can filter for all museums.
             // Otherwise the user is only able to filter museums they have explicitly granted permission for
-            if ($actor->hasPermission('dime.find.filter.museum')) {
+            // HACK Check for scenario where registrar/researcher is a detectorist but shouldn't be able to see all
+            $museums = $this->museums($actor);
+            if ($museums->count() > 0) {
+                $select['choices'] = $museums;
+                $select['multiple'] = false;
+                $select['placeholder'] = false;
+            } elseif ($actor->hasPermission('dime.find.filter.museum')) {
                 $select['choices'] = ORM::findAll(Museum::class);
                 $select['multiple'] = true;
                 $select['placeholder'] = Translation::translate('core.placeholder');
             } else {
-                $select['choices'] = $this->museums($actor);
-                $select['multiple'] = false;
-                if (count($select['choices']) > 0) {
-                    $select['placeholder'] = false;
-                } else {
-                    $select['placeholder'] = '';
-                    $select['modus'] = 'readonly';
-                }
+                $select['placeholder'] = '';
+                $select['modus'] = 'readonly';
             }
             $state['select']['museum'] = $select;
 
