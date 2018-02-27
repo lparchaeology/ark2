@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 21, 2018 at 11:14 AM
+-- Generation Time: Feb 27, 2018 at 04:56 PM
 -- Server version: 10.2.12-MariaDB
 -- PHP Version: 7.1.14
 
@@ -6540,6 +6540,7 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('dime_find_item', '', 0, 1, 0, 'dime_find_artefact', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_item', '', 0, 1, 2, 'dime_find_update', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_item', '', 0, 1, 4, 'core_widget_submit', NULL, NULL, 'clone', NULL, 1, 0, NULL, NULL, NULL, 'dime.find', 'clone', 'dime.find.create', 'dime.find.create', 'edit', NULL, 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.clone', NULL, NULL, NULL, NULL),
+('dime_find_item', '', 0, 1, 6, 'dime_widget_share', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, 'edit', NULL, 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_list', '', 0, 0, 0, 'dime_find_table', NULL, NULL, 'items', NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_list_action', '', 0, 0, 0, 'dime_find_table', NULL, NULL, 'items', NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_list_action', '', 0, 0, 2, 'core_workflow_action_form', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
@@ -6961,6 +6962,7 @@ INSERT INTO `ark_view_element` (`element`, `type`) VALUES
 ('core_widget_username', 'widget'),
 ('core_widget_vocabulary', 'widget'),
 ('dime_widget_classify', 'widget'),
+('dime_widget_share', 'widget'),
 ('dime_widget_terms', 'widget');
 
 -- --------------------------------------------------------
@@ -7440,7 +7442,8 @@ INSERT INTO `ark_view_widget` (`element`, `name`, `choices`, `keyword`, `templat
 ('core_widget_time', 'time', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TimeType', '{\"widget\": \"single_text\",\"html5\": false, \"attr\": {\"class\": \"timepicker\"}}'),
 ('core_widget_username', '_username', NULL, 'core.user.username', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', ''),
 ('core_widget_vocabulary', 'vocabulary', NULL, NULL, NULL, 'ARK\\Form\\Type\\VocabularyWidgetType', ''),
-('dime_widget_classify', 'classify', NULL, 'dime.find.classify', 'blocks/classification.html.twig', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ButtonType', '{\"attr\":{\"class\":\"disabled\"}}');
+('dime_widget_classify', 'classify', NULL, 'dime.find.classify', 'blocks/classification.html.twig', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ButtonType', '{\"attr\":{\"class\":\"disabled\"}}'),
+('dime_widget_share', 'share', NULL, NULL, 'blocks/share.html.twig', 'ARK\\Form\\Type\\EmptyType', '');
 
 -- --------------------------------------------------------
 
