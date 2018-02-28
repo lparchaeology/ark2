@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 27, 2018 at 04:56 PM
+-- Generation Time: Feb 28, 2018 at 02:40 PM
 -- Server version: 10.2.12-MariaDB
 -- PHP Version: 7.1.14
 
@@ -6540,7 +6540,7 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('dime_find_item', '', 0, 1, 0, 'dime_find_artefact', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_item', '', 0, 1, 2, 'dime_find_update', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_item', '', 0, 1, 4, 'core_widget_submit', NULL, NULL, 'clone', NULL, 1, 0, NULL, NULL, NULL, 'dime.find', 'clone', 'dime.find.create', 'dime.find.create', 'edit', NULL, 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.clone', NULL, NULL, NULL, NULL),
-('dime_find_item', '', 0, 1, 6, 'dime_widget_share', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, 'edit', NULL, 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_item', '', 0, 1, 6, 'dime_widget_share', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, 'edit', NULL, 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.blank', NULL, NULL, NULL, NULL),
 ('dime_find_list', '', 0, 0, 0, 'dime_find_table', NULL, NULL, 'items', NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_list_action', '', 0, 0, 0, 'dime_find_table', NULL, NULL, 'items', NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_list_action', '', 0, 0, 2, 'core_workflow_action_form', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
@@ -6557,8 +6557,9 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('dime_find_register', '', 0, 0, 6, 'dime_find_class', NULL, NULL, NULL, NULL, 1, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_register', '', 0, 0, 8, 'dime_find_material', NULL, NULL, NULL, NULL, 1, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_register', '', 0, 0, 10, 'dime_find_finder_id', NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_register', '', 0, 0, 12, 'dime_find_description', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_register', '', 0, 0, 14, 'core_widget_submit', NULL, NULL, 'save', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'edit', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.find.save', NULL, NULL, NULL, NULL),
+('dime_find_register', '', 0, 0, 12, 'dime_find_case', NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_register', '', 0, 0, 14, 'dime_find_description', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_register', '', 0, 0, 16, 'core_widget_submit', NULL, NULL, 'save', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'edit', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.find.save', NULL, NULL, NULL, NULL),
 ('dime_find_search', '', 0, 0, 0, 'dime_find_filter', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_search', '', 1, 0, 0, 'dime_find_list_public', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_search', '', 1, 1, 0, 'dime_find_map', 'dime_map_public', NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
@@ -6581,9 +6582,9 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('dime_find_table', '', 0, 0, 16, 'dime_find_dating', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_table', '', 0, 0, 18, 'dime_find_description', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_table', '', 0, 0, 20, 'dime_find_finddate', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 22, 'dime_find_finder', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 24, 'dime_find_finder_id', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL);
+('dime_find_table', '', 0, 0, 22, 'dime_find_finder', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `map`, `vocabulary`, `name`, `width`, `label`, `help`, `placeholder`, `choices`, `required`, `action_schema`, `action`, `view_permission`, `edit_permission`, `mode`, `sanitise`, `visible`, `value_modus`, `parameter_modus`, `format_modus`, `display_property`, `display_pattern`, `display_parameter`, `display_format`, `export_property`, `export_pattern`, `export_parameter`, `export_format`, `enabled`, `deprecated`, `keyword`, `template`, `options`, `form_type`, `form_options`) VALUES
+('dime_find_table', '', 0, 0, 24, 'dime_find_finder_id', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_table', '', 0, 0, 26, 'dime_find_finder_place', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_table', '', 0, 0, 28, 'dime_find_id', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_table', '', 0, 0, 30, 'dime_find_issuer', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
@@ -7443,7 +7444,7 @@ INSERT INTO `ark_view_widget` (`element`, `name`, `choices`, `keyword`, `templat
 ('core_widget_username', '_username', NULL, 'core.user.username', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', ''),
 ('core_widget_vocabulary', 'vocabulary', NULL, NULL, NULL, 'ARK\\Form\\Type\\VocabularyWidgetType', ''),
 ('dime_widget_classify', 'classify', NULL, 'dime.find.classify', 'blocks/classification.html.twig', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ButtonType', '{\"attr\":{\"class\":\"disabled\"}}'),
-('dime_widget_share', 'share', NULL, NULL, 'blocks/share.html.twig', 'ARK\\Form\\Type\\EmptyType', '');
+('dime_widget_share', 'share', NULL, NULL, NULL, 'DIME\\Form\\Type\\ShareType', '');
 
 -- --------------------------------------------------------
 
