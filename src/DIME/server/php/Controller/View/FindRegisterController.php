@@ -47,6 +47,14 @@ class FindRegisterController extends DimePageController
         $find->setValue('finddate', 'NOW');
         $find->setValue('process', 'recorded');
         $data['find'] = $find;
+
+        $query = $request->query->all();
+        if (isset($query['prev'])) {
+            $data['prev'] = Find::find($query['prev']);
+        } else {
+            $data['prev'] = null;
+        }
+
         return $data;
     }
 

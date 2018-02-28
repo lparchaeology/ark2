@@ -137,6 +137,11 @@ class FindViewController extends DimePageController
             $find->setValue('claim', $file);
         }
 
+        // If Erase, then hard delete find
+        if ($action->name() === 'erase') {
+            $find->delete();
+        }
+
         // Save the changes
         ORM::flush($find);
 

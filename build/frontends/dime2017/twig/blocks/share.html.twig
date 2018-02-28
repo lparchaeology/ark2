@@ -2,19 +2,21 @@
 
 {% block share %}
 
-{% set sharetext = 'dime.share.text' | translate | url_encode %}
-{% set hashtags = 'dime.share.hashtags' | translate | url_encode %}
-{% set sharelink = global.request.getUri() | url_encode %}
-{% set fb = "https://www.facebook.com/sharer.php?u=" ~ sharelink %}
-{% set plus = "https://plus.google.com/share?url=" ~ sharelink %}
-{% set tweet = "https://twitter.com/intent/tweet?url=" ~ sharelink ~ "&text=" ~ sharetext ~ "&hashtags=" ~ hashtags %}
-{% set pin = "https://pinterest.com/pin/create/button/?url=" ~ sharelink ~ "&description=" ~ sharetext %}
+{% if data.visibility.name == 'public' and data.value('image') | length > 0 %}
 
-<div class="form-group">
+    {% set sharetext = 'dime.share.text' | translate | url_encode %}
+    {% set hashtags = 'dime.share.hashtags' | translate | url_encode %}
+    {% if global.request.attributes.get('_route') == 'dime.finds.register' %}
+        {% set sharelink = data.value('image')[0].sourceUrl() | url_encode %}
+    {% else %}
+        {% set sharelink = global.request.getUri() | url_encode %}
+    {% endif %}
+    {% set fb = "https://www.facebook.com/sharer.php?u=" ~ sharelink %}
+    {% set plus = "https://plus.google.com/share?url=" ~ sharelink %}
+    {% set tweet = "https://twitter.com/intent/tweet?url=" ~ sharelink ~ "&text=" ~ sharetext ~ "&hashtags=" ~ hashtags %}
+    {% set pin = "https://pinterest.com/pin/create/button/?url=" ~ sharelink ~ "&description=" ~ sharetext %}
 
-    <div class="col-xs-12 col-sm-4"></div>
-
-    <div class="form-group-widget col-xs-11 col-sm-7 col-lg-7">
+    <div>
 
         <a class="btn btn-social-icon btn-xs btn-facebook"
            href="{{ fb }}"
@@ -50,6 +52,6 @@
 
     </div>
 
-</div>
+{% endif %}
 
 {% endblock share %}

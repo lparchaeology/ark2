@@ -48,15 +48,16 @@ use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\Item\ItemIdGenerator;
 use ARK\ORM\Item\ItemRepository;
 use ARK\ORM\ORM;
+use ARK\ORM\OrmTrait;
 use ARK\Service;
 use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 trait ItemTrait
 {
     use VersionTrait;
+    use OrmTrait;
 
     protected $id = '';
     protected $module;
@@ -282,16 +283,6 @@ trait ItemTrait
     public function sourceUrl() : string
     {
         return Service::itemUrl($this);
-    }
-
-    public static function find(string $id) : ?self
-    {
-        return ORM::find(get_called_class(), $id);
-    }
-
-    public static function findAll() : Collection
-    {
-        return ORM::findAll(get_called_class());
     }
 
     public static function loadMetadata(ClassMetadata $metadata)

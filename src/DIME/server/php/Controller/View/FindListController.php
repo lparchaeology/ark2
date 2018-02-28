@@ -108,9 +108,8 @@ class FindListController extends DimePageController
                 $query['museum'] = $agencies->first()->id();
             }
             if (isset($query['museum'])) {
-                $museums = ORM::findBy(Museum::class, [
-                    'id' => $query['museum'],
-                ]);
+                $museums = (is_array($query['museum']) ? $query['museum'] : [$query['museum']]);
+                $museums = Museum::findBy(['id' => $museums]);
                 if ($filterMuseums) {
                     $data['filters']['museum'] = $museums->toArray();
                 } else {
@@ -380,6 +379,11 @@ class FindListController extends DimePageController
                 $file = DIME::generateTreasureClaimFile($finds, $finds[0]->value('museum'), $finds[0]->value('finder'), $actor);
                 foreach ($finds as $find) {
                     $find->setValue('claim', $file);
+                }
+            }
+            if ($action->name() === 'erase') {
+                foreach ($finds as $find) {
+                    $find->delete();
                 }
             }
             ORM::flush('data');
