@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 28, 2018 at 03:05 PM
+-- Generation Time: Feb 28, 2018 at 05:15 PM
 -- Server version: 10.2.12-MariaDB
 -- PHP Version: 7.1.14
 
@@ -1931,6 +1931,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.action.disagree', 'dime', 0, 0),
 ('dime.action.discard', 'dime', 0, 0),
 ('dime.action.edit', 'dime', 0, 0),
+('dime.action.erase', 'dime', 0, 0),
 ('dime.action.evaluate', 'dime', 0, 0),
 ('dime.action.export', 'dime', 0, 0),
 ('dime.action.follow', 'dime', 0, 0),
@@ -2603,9 +2604,9 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.treasure.appraisal', 'dime', 0, 0),
 ('dime.treasure.not', 'dime', 0, 0),
 ('dime.treasure.pending', 'dime', 0, 0),
-('dime.treasure.treasure', 'dime', 0, 0),
-('dime.user.actor.museum', 'dime', 0, 0);
+('dime.treasure.treasure', 'dime', 0, 0);
 INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
+('dime.user.actor.museum', 'dime', 0, 0),
 ('dime.user.dashboard.faq', 'dime', 0, 0),
 ('dime.user.dashboard.finds', 'dime', 0, 1),
 ('dime.user.dashboard.notifications', 'dime', 0, 1),
@@ -4808,6 +4809,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.action.destroy', 'default', 'Artefact accidentally destroyed', ''),
 ('en', 'dime.action.discard', 'default', 'Discard the artefact', ''),
 ('en', 'dime.action.edit', 'default', 'Edit find record', NULL),
+('en', 'dime.action.erase', 'default', 'Hard Delete', NULL),
 ('en', 'dime.action.evaluate', 'default', 'Evaluate as potential treasure', ''),
 ('en', 'dime.action.lose', 'default', 'Artefact has been lost', ''),
 ('en', 'dime.action.notify', 'default', 'Notify', ''),
@@ -4876,9 +4878,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.custody.destroyed', 'default', 'Accidentally destroyed', NULL),
 ('en', 'dime.find.custody.discarded', 'default', 'Discarded', NULL),
 ('en', 'dime.find.custody.held', 'default', 'Held by custodian', NULL),
-('en', 'dime.find.custody.lost', 'default', 'Lost', NULL),
-('en', 'dime.find.custody.requested', 'default', 'Requested by Museum', NULL);
+('en', 'dime.find.custody.lost', 'default', 'Lost', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.find.custody.requested', 'default', 'Requested by Museum', NULL),
 ('en', 'dime.find.custody.sent', 'default', 'Sent to Museum', NULL),
 ('en', 'dime.find.dating', 'default', 'Dating', NULL),
 ('en', 'dime.find.dating', 'help', 'Here you have two input options:\r\n\r\n1) In the drop down menu, you can specify a date period (eg Viking Period) or enter \'undated\' if you are unsure about the date.\r\n2) In the Advanced Dates menu you can specify a start and end date both as a period or year number. It is important that you specify BOTH start and end dates. For example, if you have found a coin from 1687 you indicate 1687 in both fields.', NULL),
@@ -5507,9 +5509,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.region.nordjylland', 'default', 'North', NULL),
 ('en', 'dime.region.nordjylland', 'official', 'North Region', NULL),
 ('en', 'dime.region.sjaelland', 'default', 'Zealand', NULL),
-('en', 'dime.region.sjaelland', 'official', 'Zealand Region', NULL),
-('en', 'dime.region.syddanmark', 'default', 'South', NULL);
+('en', 'dime.region.sjaelland', 'official', 'Zealand Region', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.region.syddanmark', 'default', 'South', NULL),
 ('en', 'dime.region.syddanmark', 'official', 'South Region', NULL),
 ('en', 'dime.register.contact', 'default', 'Er du ansat ved et museum og vil have adgang til DIME museumsmodul til registrering af detektorfund kontakt admin: XXXXXXMuseum access to DIME. If you are you employed at a museum and need access to DIME please contact the administrator: XXXXXX', ''),
 ('en', 'dime.register.faq', 'default', 'FAQ', ''),
@@ -9790,6 +9792,7 @@ INSERT INTO `ark_workflow_action` (`schma`, `action`, `event_vocabulary`, `event
 ('dime.find', 'destroy', 'core.event.class', 'destroyed', NULL, 1, 0, 0, 1, 1, 'dime.action.destroy', 'Artefact was destroyed'),
 ('dime.find', 'discard', 'core.event.class', 'discarded', NULL, 1, 0, 0, 1, 1, 'dime.action.discard', 'Artefact was discarded after assessment'),
 ('dime.find', 'edit', 'core.event.class', 'edited', NULL, 0, 0, 0, 0, 1, 'dime.action.edit', 'Edit find record'),
+('dime.find', 'erase', NULL, NULL, NULL, 1, 1, 1, 0, 1, 'dime.action.erase', 'Hard delete find record'),
 ('dime.find', 'evaluate', 'core.event.class', 'evaluated', NULL, 1, 0, 0, 0, 1, 'dime.action.evaluate', 'Local museum evaluates as potential treasure, send to national museum'),
 ('dime.find', 'lose', 'core.event.class', 'lost', NULL, 1, 0, 0, 1, 1, 'dime.action.lose', 'Artefact was lost'),
 ('dime.find', 'publish', 'core.event.class', 'published', NULL, 1, 0, 0, 1, 1, 'dime.action.publish', 'Find record is made public'),
@@ -9932,6 +9935,8 @@ INSERT INTO `ark_workflow_allow` (`schma`, `action`, `role`, `operator`) VALUES
 ('dime.find', 'edit', 'admin', 'is'),
 ('dime.find', 'edit', 'detectorist', 'is'),
 ('dime.find', 'edit', 'registrar', 'is'),
+('dime.find', 'erase', 'admin', 'is'),
+('dime.find', 'erase', 'sysadmin', 'is'),
 ('dime.find', 'evaluate', 'registrar', 'is'),
 ('dime.find', 'record', 'admin', 'is'),
 ('dime.find', 'record', 'detectorist', 'is'),
