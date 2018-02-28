@@ -2,9 +2,15 @@
 
 {% block share %}
 
+{% if data.visibility.name == 'public' and data.value('image') | length > 0 %}
+
     {% set sharetext = 'dime.share.text' | translate | url_encode %}
     {% set hashtags = 'dime.share.hashtags' | translate | url_encode %}
-    {% set sharelink = global.request.getUri() | url_encode %}
+    {% if global.request.attributes.get('_route') == 'dime.finds.register' %}
+        {% set sharelink = data.value('image')[0].sourceUrl() | url_encode %}
+    {% else %}
+        {% set sharelink = global.request.getUri() | url_encode %}
+    {% endif %}
     {% set fb = "https://www.facebook.com/sharer.php?u=" ~ sharelink %}
     {% set plus = "https://plus.google.com/share?url=" ~ sharelink %}
     {% set tweet = "https://twitter.com/intent/tweet?url=" ~ sharelink ~ "&text=" ~ sharetext ~ "&hashtags=" ~ hashtags %}
@@ -45,5 +51,7 @@
         </a>
 
     </div>
+
+{% endif %}
 
 {% endblock share %}
