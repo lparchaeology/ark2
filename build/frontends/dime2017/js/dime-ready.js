@@ -121,6 +121,8 @@ $(document).ready(function () {
                 var thumbnail = thumbnails.length - response.length + parseInt(index);
                 uploadPreview[response[index]] = thumbnails[thumbnail];
             }
+            $('.glyphicon-camera-button-required').hide();
+            $('.glyphicon-camera-button-complete').show();
         }).on('filesuccessremove', function (event, id) {
             var form_root_array = $(this).closest(".file-input").find("input[type=file]").attr('id').split("_");
             form_root_array.splice(-1, 1);

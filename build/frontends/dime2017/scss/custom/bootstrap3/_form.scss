@@ -128,3 +128,24 @@
   font-size: 24px;
   margin:10px;
 }
+
+.glyphicon-mappick-button-required,
+.glyphicon-camera-button-required {
+  color:red;
+}
+
+.glyphicon-mappick-button-complete,
+.glyphicon-camera-button-complete {
+  color:green;
+  display: none;
+}
+
+.register-button .glyphicon-button-status {
+  font-size: 10px;
+  margin:0px;
+  position: absolute;
+}
+
+.photopickclose {
+  float:right;
+}

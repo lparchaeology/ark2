@@ -3,6 +3,7 @@ body{
     //font-family:"gill-sans"
 }
 
+
 /*
 * Icons
 */
@@ -100,4 +101,12 @@ body{
 
 .dime-icon.icon-user-focus {
     background-image: url("../images/icons/edit_user.png");
+}
+
+//Register page stuff
+
+@media (max-width: 767px){
+  .navbar {
+      max-height: 12em;
+  }
 }

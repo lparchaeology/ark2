@@ -8,7 +8,7 @@ function initialisePickMap(target) {
         wrapX: false,
     });
 
-    $(target).data('mapPickSource',mapPickSource);
+    $('#'+target).data('mapPickSource',mapPickSource);
 
     var mapPickLayers = [
         new ol.layer.Tile({
@@ -249,6 +249,8 @@ function initialisePickMap(target) {
               var map = makeMapPoint(coords[0], coords[1]);
               var decimal = mapToDecimal(map);
               updateLocation(decimal);
+              $('.glyphicon-mappick-button-required').hide();
+              $('.glyphicon-mappick-button-complete').show();
           } else {
               setMap(getDecimal());
           }
