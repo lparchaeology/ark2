@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 28, 2018 at 02:40 PM
+-- Generation Time: Feb 28, 2018 at 02:55 PM
 -- Server version: 10.2.12-MariaDB
 -- PHP Version: 7.1.14
 
@@ -2594,6 +2594,9 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.schema.location', 'dime', 0, 0),
 ('dime.search', 'dime', 0, 0),
 ('dime.search.finds.mine', 'dime', 0, 0),
+('dime.share', 'dime', 0, 0),
+('dime.share.hashtags', 'dime', 0, 0),
+('dime.share.text', 'dime', 0, 0),
 ('dime.supportedby', 'dime', 0, 0),
 ('dime.treasure', 'dime', 0, 0),
 ('dime.treasure.appraisal', 'dime', 0, 0),
@@ -2601,10 +2604,10 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.treasure.pending', 'dime', 0, 0),
 ('dime.treasure.treasure', 'dime', 0, 0),
 ('dime.user.actor.museum', 'dime', 0, 0),
-('dime.user.dashboard.faq', 'dime', 0, 0),
-('dime.user.dashboard.finds', 'dime', 0, 1),
-('dime.user.dashboard.notifications', 'dime', 0, 1);
+('dime.user.dashboard.faq', 'dime', 0, 0);
 INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
+('dime.user.dashboard.finds', 'dime', 0, 1),
+('dime.user.dashboard.notifications', 'dime', 0, 1),
 ('dime.user.dashboard.text', 'dime', 0, 0),
 ('dime.user.dashboard.title', 'dime', 0, 0),
 ('dime.user.detectorist.id', 'dime', 0, 0),
@@ -3790,9 +3793,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.find.subtype.accessory.pin', 'default', 'Dragtnål', NULL),
 ('da', 'dime.find.subtype.accessory.tutulus', 'default', 'Tutulus', NULL),
 ('da', 'dime.find.subtype.accessory.unknown', 'default', 'Ubestemt', NULL),
-('da', 'dime.find.subtype.coin.danish', 'default', 'Dansk senmiddaldermønt (c. 1380-1535)', NULL),
-('da', 'dime.find.subtype.coin.danish.civilwar', 'default', 'Dansk borgerkrigsmønt (1242-1380)', NULL),
-('da', 'dime.find.subtype.coin.danish.early', 'default', 'Dansk tidlig middaldermønt (1067-1241)', NULL),
+('da', 'dime.find.subtype.coin.danish', 'default', 'Dansk senmiddaldermønt (1400-1535)', NULL),
+('da', 'dime.find.subtype.coin.danish.civilwar', 'default', '\'Dansk borgerkrigsmønt (1200-1380)', NULL),
+('da', 'dime.find.subtype.coin.danish.early', 'default', 'Dansk tidlig middaldermønt (1067-1199)', NULL),
 ('da', 'dime.find.subtype.coin.danish.hvide', 'default', 'Hvide', NULL),
 ('da', 'dime.find.subtype.coin.danish.klipping', 'default', 'Klipping', NULL),
 ('da', 'dime.find.subtype.coin.danish.other', 'default', 'Anden dansk mønt', NULL),
@@ -4290,7 +4293,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.period.palaeolithic', 'default', 'Pælæolitikum', NULL),
 ('da', 'dime.period.prehistoric', 'default', 'Oldtid', NULL),
 ('da', 'dime.period.reformation', 'default', 'Efterreformatorisk tid', NULL),
-('da', 'dime.period.reformation.modern', 'default', '', 'Efterreformatorisk / nyere tid'),
+('da', 'dime.period.reformation.modern', 'default', 'Efterreformatorisk/moderne tid', NULL),
 ('da', 'dime.period.stone', 'default', 'Stenalder', NULL),
 ('da', 'dime.period.undated', 'default', 'Udateret', NULL),
 ('da', 'dime.period.viking', 'default', 'Vikingetid', NULL),
@@ -4331,6 +4334,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.schema.location', 'default', 'Placering', NULL),
 ('da', 'dime.search', 'default', 'Søg', NULL),
 ('da', 'dime.search.finds.mine', 'default', 'Mine fund', NULL),
+('da', 'dime.share', 'default', 'Del', NULL),
+('da', 'dime.share.hashtags', 'default', 'DIME,danefae', NULL),
+('da', 'dime.share.text', 'default', 'Tjek dette fund på DIME', NULL),
 ('da', 'dime.supportedby', 'default', 'Støttet af', NULL),
 ('da', 'dime.treasure', 'default', 'Danefæ', NULL),
 ('da', 'dime.treasure', 'resource', 'danefae', NULL),
@@ -4869,10 +4875,10 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.custody.discarded', 'default', 'Discarded', NULL),
 ('en', 'dime.find.custody.held', 'default', 'Held by custodian', NULL),
 ('en', 'dime.find.custody.lost', 'default', 'Lost', NULL),
-('en', 'dime.find.custody.requested', 'default', 'Requested by Museum', NULL),
-('en', 'dime.find.custody.sent', 'default', 'Sent to Museum', NULL),
-('en', 'dime.find.dating', 'default', 'Dating', NULL);
+('en', 'dime.find.custody.requested', 'default', 'Requested by Museum', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.find.custody.sent', 'default', 'Sent to Museum', NULL),
+('en', 'dime.find.dating', 'default', 'Dating', NULL),
 ('en', 'dime.find.dating', 'help', 'Here you have two input options:\r\n\r\n1) In the drop down menu, you can specify a date period (eg Viking Period) or enter \'undated\' if you are unsure about the date.\r\n2) In the Advanced Dates menu you can specify a start and end date both as a period or year number. It is important that you specify BOTH start and end dates. For example, if you have found a coin from 1687 you indicate 1687 in both fields.', NULL),
 ('en', 'dime.find.description', 'default', 'Description', NULL),
 ('en', 'dime.find.event', 'default', 'Event', ''),
@@ -4982,9 +4988,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.subtype.accessory.pin', 'default', 'Clothes pin', NULL),
 ('en', 'dime.find.subtype.accessory.tutulus', 'default', 'Tutulus', NULL),
 ('en', 'dime.find.subtype.accessory.unknown', 'default', 'Unknown', ''),
-('en', 'dime.find.subtype.coin.danish', 'default', 'Danish Late Medieval Coins (c. 1380-1535)', NULL),
-('en', 'dime.find.subtype.coin.danish.civilwar', 'default', 'Danish civil war coin (1242-1380)', NULL),
-('en', 'dime.find.subtype.coin.danish.early', 'default', 'Danish Early Medieval Coins (1067-1241)', NULL),
+('en', 'dime.find.subtype.coin.danish', 'default', 'Danish Late Medieval Coins (c. 1400-1535)', NULL),
+('en', 'dime.find.subtype.coin.danish.civilwar', 'default', 'Danish Civil War Coin (1200-1380)', NULL),
+('en', 'dime.find.subtype.coin.danish.early', 'default', 'Danish Early Medieval Coins (1067-1199)', NULL),
 ('en', 'dime.find.subtype.coin.danish.hvide', 'default', 'White', NULL),
 ('en', 'dime.find.subtype.coin.danish.klipping', 'default', 'Klipping', NULL),
 ('en', 'dime.find.subtype.coin.danish.other', 'default', 'Other Danish medieval coin (specify in description field)', NULL),
@@ -5519,6 +5525,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.schema.location', 'default', 'Location', NULL),
 ('en', 'dime.search', 'default', 'Search', NULL),
 ('en', 'dime.search.finds.mine', 'default', 'My Finds', NULL),
+('en', 'dime.share', 'default', 'Share', NULL),
+('en', 'dime.share.hashtags', 'default', 'DIME,danefae', NULL),
+('en', 'dime.share.text', 'default', 'Check out this find on DIME', NULL),
 ('en', 'dime.supportedby', 'default', 'supported by', NULL),
 ('en', 'dime.treasure', 'default', 'Treasure Trove', NULL),
 ('en', 'dime.treasure', 'resource', 'treasure', NULL),
