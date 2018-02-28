@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 28, 2018 at 02:55 PM
+-- Generation Time: Feb 28, 2018 at 03:05 PM
 -- Server version: 10.2.12-MariaDB
 -- PHP Version: 7.1.14
 
@@ -2508,6 +2508,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.material.silver', 'dime', 0, 0),
 ('dime.material.stone', 'dime', 0, 0),
 ('dime.material.tin', 'dime', 0, 0),
+('dime.material.unknown', 'dime', 0, 0),
 ('dime.message.status.search', 'dime', 0, 0),
 ('dime.message.status.search.all', 'dime', 0, 0),
 ('dime.message.status.search.read', 'dime', 0, 0),
@@ -2603,9 +2604,9 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.treasure.not', 'dime', 0, 0),
 ('dime.treasure.pending', 'dime', 0, 0),
 ('dime.treasure.treasure', 'dime', 0, 0),
-('dime.user.actor.museum', 'dime', 0, 0),
-('dime.user.dashboard.faq', 'dime', 0, 0);
+('dime.user.actor.museum', 'dime', 0, 0);
 INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
+('dime.user.dashboard.faq', 'dime', 0, 0),
 ('dime.user.dashboard.finds', 'dime', 0, 1),
 ('dime.user.dashboard.notifications', 'dime', 0, 1),
 ('dime.user.dashboard.text', 'dime', 0, 0),
@@ -4241,6 +4242,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.material.silver', 'default', 'Sølv', NULL),
 ('da', 'dime.material.stone', 'default', 'Sten', NULL),
 ('da', 'dime.material.tin', 'default', 'Tin', NULL),
+('da', 'dime.material.unknown', 'default', 'Ubestemt', NULL),
 ('da', 'dime.message.status.search', 'default', 'Status', NULL),
 ('da', 'dime.message.status.search.all', 'default', 'Alle', NULL),
 ('da', 'dime.message.status.search.read', 'default', 'Læs', NULL),
@@ -5432,6 +5434,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.material.silver', 'default', 'Silver', NULL),
 ('en', 'dime.material.stone', 'default', 'Stone', ''),
 ('en', 'dime.material.tin', 'default', 'Tin', NULL),
+('en', 'dime.material.unknown', 'default', 'Unknown', NULL),
 ('en', 'dime.message.status.search', 'default', 'Status', NULL),
 ('en', 'dime.message.status.search.all', 'default', 'All', NULL),
 ('en', 'dime.message.status.search.read', 'default', 'Read', NULL),
@@ -5505,9 +5508,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.region.nordjylland', 'official', 'North Region', NULL),
 ('en', 'dime.region.sjaelland', 'default', 'Zealand', NULL),
 ('en', 'dime.region.sjaelland', 'official', 'Zealand Region', NULL),
-('en', 'dime.region.syddanmark', 'default', 'South', NULL),
-('en', 'dime.region.syddanmark', 'official', 'South Region', NULL);
+('en', 'dime.region.syddanmark', 'default', 'South', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.region.syddanmark', 'official', 'South Region', NULL),
 ('en', 'dime.register.contact', 'default', 'Er du ansat ved et museum og vil have adgang til DIME museumsmodul til registrering af detektorfund kontakt admin: XXXXXXMuseum access to DIME. If you are you employed at a museum and need access to DIME please contact the administrator: XXXXXX', ''),
 ('en', 'dime.register.faq', 'default', 'FAQ', ''),
 ('en', 'dime.research', 'default', 'Research', NULL),
@@ -9014,6 +9017,7 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `namespace`, `ent
 ('dime.material', 'pb', 'lead', NULL, NULL, NULL, 0, 0, 1, 0, 'dime.material.lead', ''),
 ('dime.material', 'sa', 'tin', NULL, NULL, NULL, 0, 0, 1, 0, 'dime.material.tin', ''),
 ('dime.material', 'stone', 'stone', NULL, NULL, NULL, 0, 0, 1, 0, 'dime.material.stone', ''),
+('dime.material', 'unknown', 'unknown', NULL, NULL, NULL, 1, 0, 1, 0, 'dime.material.unknown', ''),
 ('dime.material', 'xx', 'othermetal', NULL, NULL, NULL, 0, 0, 1, 0, 'dime.material.othermetal', ''),
 ('dime.message.status.search', 'all', NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'dime.message.status.search.all', ''),
 ('dime.message.status.search', 'read', NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'dime.message.status.search.read', ''),
@@ -9269,10 +9273,10 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `namespace`, `ent
 ('language', 'gan', 'chinese.gan', NULL, NULL, NULL, 0, 0, 1, 0, 'language.chinese.gan', ''),
 ('language', 'gay', 'gayo', NULL, NULL, NULL, 0, 0, 1, 0, 'language.gayo', ''),
 ('language', 'gba', 'gbaya', NULL, NULL, NULL, 0, 0, 1, 0, 'language.gbaya', ''),
-('language', 'gbz', 'dari.zoroastrian', NULL, NULL, NULL, 0, 0, 1, 0, 'language.dari.zoroastrian', ''),
-('language', 'gd', 'gaelic.scottish', NULL, NULL, NULL, 0, 0, 1, 0, 'language.gaelic.scottish', ''),
-('language', 'gez', 'geez', NULL, NULL, NULL, 0, 0, 1, 0, 'language.geez', '');
+('language', 'gbz', 'dari.zoroastrian', NULL, NULL, NULL, 0, 0, 1, 0, 'language.dari.zoroastrian', '');
 INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `namespace`, `entity`, `seq`, `is_default`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+('language', 'gd', 'gaelic.scottish', NULL, NULL, NULL, 0, 0, 1, 0, 'language.gaelic.scottish', ''),
+('language', 'gez', 'geez', NULL, NULL, NULL, 0, 0, 1, 0, 'language.geez', ''),
 ('language', 'gil', 'gilbertese', NULL, NULL, NULL, 0, 0, 1, 0, 'language.gilbertese', ''),
 ('language', 'gl', 'galician', NULL, NULL, NULL, 0, 0, 1, 0, 'language.galician', ''),
 ('language', 'glk', 'gilaki', NULL, NULL, NULL, 0, 0, 1, 0, 'language.gilaki', ''),
