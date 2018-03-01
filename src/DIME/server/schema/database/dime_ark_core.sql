@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 01, 2018 at 03:12 PM
+-- Generation Time: Mar 01, 2018 at 04:02 PM
 -- Server version: 10.2.12-MariaDB
 -- PHP Version: 7.1.14
 
@@ -2115,6 +2115,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.find.recipient', 'dime', 0, 0),
 ('dime.find.recorder', 'dime', 0, 0),
 ('dime.find.register', 'dime', 0, 0),
+('dime.find.registered', 'dime', 0, 0),
 ('dime.find.save', 'dime', 0, 0),
 ('dime.find.search', 'dime', 0, 0),
 ('dime.find.secondary.ceramic', 'dime', 0, 0),
@@ -2604,9 +2605,9 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.treasure', 'dime', 0, 0),
 ('dime.treasure.appraisal', 'dime', 0, 0),
 ('dime.treasure.not', 'dime', 0, 0),
-('dime.treasure.pending', 'dime', 0, 0),
-('dime.treasure.treasure', 'dime', 0, 0);
+('dime.treasure.pending', 'dime', 0, 0);
 INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
+('dime.treasure.treasure', 'dime', 0, 0),
 ('dime.user.actor.museum', 'dime', 0, 0),
 ('dime.user.dashboard.faq', 'dime', 0, 0),
 ('dime.user.dashboard.finds', 'dime', 0, 1),
@@ -4948,6 +4949,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.query.set', 'default', 'Your search found %items% finds.', ''),
 ('en', 'dime.find.recipient', 'default', 'Recipient', NULL),
 ('en', 'dime.find.register', 'default', 'Register Find', NULL),
+('en', 'dime.find.registered', 'default', 'Find %id% was registered.', NULL),
 ('en', 'dime.find.save', 'default', 'Save', 'DIME Find Save button'),
 ('en', 'dime.find.search', 'default', 'Search Finds', NULL),
 ('en', 'dime.find.secondary.ceramic', 'default', 'Ceramic', ''),
@@ -5509,9 +5511,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.region.hovedstaden', 'official', 'Capital Region', NULL),
 ('en', 'dime.region.midtjylland', 'default', 'Central', NULL),
 ('en', 'dime.region.midtjylland', 'official', 'Central Region', NULL),
-('en', 'dime.region.nordjylland', 'default', 'North', NULL),
-('en', 'dime.region.nordjylland', 'official', 'North Region', NULL);
+('en', 'dime.region.nordjylland', 'default', 'North', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.region.nordjylland', 'official', 'North Region', NULL),
 ('en', 'dime.region.sjaelland', 'default', 'Zealand', NULL),
 ('en', 'dime.region.sjaelland', 'official', 'Zealand Region', NULL),
 ('en', 'dime.region.syddanmark', 'default', 'South', NULL),
