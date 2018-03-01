@@ -4,7 +4,7 @@
     {% include 'messages.' ~ app.locale ~ '.json' %}
 {% endset %}
 
-{% set ark = {'modules': state.modules, 'actor': workflow.actor.id} %}
+{% set ark = {'actor': workflow.actor.id} %}
 
 <script>
     Router.setBasePath('{{ routing.base_path }}');

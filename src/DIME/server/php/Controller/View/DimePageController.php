@@ -32,7 +32,6 @@ namespace DIME\Controller\View;
 use ARK\Framework\PageController;
 use ARK\Routing\Route;
 use ARK\Service;
-use ARK\Translation\Translation;
 use DIME\DIME;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -46,21 +45,8 @@ abstract class DimePageController extends PageController
         $state['image'] = 'image';
 
         // FIXME Routes to pass into JS, temp hardcode for now, do properly later!
-        $state['modules']['find']['view'] = Service::url('dime.finds.list');
         $state['modules']['find']['route'] = 'dime.finds.view';
-        $state['modules']['find']['resource'] = Translation::translate('dime.find', 'resource');
-        $state['modules']['event']['view'] = null;
-        $state['modules']['event']['route'] = null;
-        $state['modules']['event']['resource'] = Translation::translate('core.event', 'resource');
-        $state['modules']['message']['view'] = null;
-        $state['modules']['message']['route'] = null;
-        $state['modules']['message']['resource'] = Translation::translate('core.message', 'resource');
-        $state['modules']['actor']['view'] = Service::url('dime.profiles.list');
         $state['modules']['actor']['route'] = 'dime.profiles.view';
-        $state['modules']['actor']['resource'] = Translation::translate('core.actor', 'resource');
-        $state['modules']['file']['view'] = null;
-        $state['modules']['file']['route'] = null;
-        $state['modules']['file']['resource'] = Translation::translate('core.file', 'resource');
 
         return $state;
     }
@@ -93,6 +79,14 @@ abstract class DimePageController extends PageController
                     'permission' => 'dime.find.create',
                     'links' => [
                         ['name' => 'dime.find.add', 'active' => false, 'target' => 'dime.finds.add'],
+                    ],
+                ],
+                [
+                    'name' => 'register',
+                    'active' => false,
+                    'permission' => 'dime.find.create',
+                    'links' => [
+                        ['name' => 'dime.find.register', 'active' => false, 'target' => 'dime.finds.register'],
                     ],
                 ],
                 [

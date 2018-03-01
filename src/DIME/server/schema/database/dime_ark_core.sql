@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 28, 2018 at 05:15 PM
+-- Generation Time: Mar 01, 2018 at 09:53 AM
 -- Server version: 10.2.12-MariaDB
 -- PHP Version: 7.1.14
 
@@ -2114,6 +2114,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.find.query.set', 'dime', 0, 1),
 ('dime.find.recipient', 'dime', 0, 0),
 ('dime.find.recorder', 'dime', 0, 0),
+('dime.find.register', 'dime', 0, 0),
 ('dime.find.save', 'dime', 0, 0),
 ('dime.find.search', 'dime', 0, 0),
 ('dime.find.secondary.ceramic', 'dime', 0, 0),
@@ -3748,6 +3749,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.find.query.found', 'default', 'Søgeresultat %items% fund.', ''),
 ('da', 'dime.find.query.set', 'default', 'Søgeresultat %items% fund.', ''),
 ('da', 'dime.find.recipient', 'default', 'Fundmodtager', NULL),
+('da', 'dime.find.register', 'default', 'Register Fund', NULL),
 ('da', 'dime.find.save', 'default', 'Gem', NULL),
 ('da', 'dime.find.search', 'default', 'Søg fund', NULL),
 ('da', 'dime.find.secondary.ceramic', 'default', 'Keramik', NULL),
@@ -4103,9 +4105,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.kommune.herning', 'official', 'Herning Kommune', NULL),
 ('da', 'dime.kommune.hillerod', 'default', 'Hillerød', NULL),
 ('da', 'dime.kommune.hillerod', 'official', 'Hillerød Kommune', NULL),
-('da', 'dime.kommune.hjorring', 'default', 'Hjørring', NULL),
-('da', 'dime.kommune.hjorring', 'official', 'Hjørring Kommune', NULL);
+('da', 'dime.kommune.hjorring', 'default', 'Hjørring', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('da', 'dime.kommune.hjorring', 'official', 'Hjørring Kommune', NULL),
 ('da', 'dime.kommune.hojetaastrup', 'default', 'Høje-Taastrup', NULL),
 ('da', 'dime.kommune.hojetaastrup', 'official', 'Høje-Taastrup Kommune', NULL),
 ('da', 'dime.kommune.holbaek', 'default', 'Holbæk', NULL),
@@ -4877,9 +4879,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.custody', 'default', 'Artefact status', NULL),
 ('en', 'dime.find.custody.destroyed', 'default', 'Accidentally destroyed', NULL),
 ('en', 'dime.find.custody.discarded', 'default', 'Discarded', NULL),
-('en', 'dime.find.custody.held', 'default', 'Held by custodian', NULL),
-('en', 'dime.find.custody.lost', 'default', 'Lost', NULL);
+('en', 'dime.find.custody.held', 'default', 'Held by custodian', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.find.custody.lost', 'default', 'Lost', NULL),
 ('en', 'dime.find.custody.requested', 'default', 'Requested by Museum', NULL),
 ('en', 'dime.find.custody.sent', 'default', 'Sent to Museum', NULL),
 ('en', 'dime.find.dating', 'default', 'Dating', NULL),
@@ -4945,6 +4947,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.query.found', 'default', 'Your search found %items% finds.', ''),
 ('en', 'dime.find.query.set', 'default', 'Your search found %items% finds.', ''),
 ('en', 'dime.find.recipient', 'default', 'Recipient', NULL),
+('en', 'dime.find.register', 'default', 'Register Find', NULL),
 ('en', 'dime.find.save', 'default', 'Save', 'DIME Find Save button'),
 ('en', 'dime.find.search', 'default', 'Search Finds', NULL),
 ('en', 'dime.find.secondary.ceramic', 'default', 'Ceramic', ''),
@@ -5507,10 +5510,10 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.region.midtjylland', 'default', 'Central', NULL),
 ('en', 'dime.region.midtjylland', 'official', 'Central Region', NULL),
 ('en', 'dime.region.nordjylland', 'default', 'North', NULL),
-('en', 'dime.region.nordjylland', 'official', 'North Region', NULL),
-('en', 'dime.region.sjaelland', 'default', 'Zealand', NULL),
-('en', 'dime.region.sjaelland', 'official', 'Zealand Region', NULL);
+('en', 'dime.region.nordjylland', 'official', 'North Region', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.region.sjaelland', 'default', 'Zealand', NULL),
+('en', 'dime.region.sjaelland', 'official', 'Zealand Region', NULL),
 ('en', 'dime.region.syddanmark', 'default', 'South', NULL),
 ('en', 'dime.region.syddanmark', 'official', 'South Region', NULL),
 ('en', 'dime.register.contact', 'default', 'Er du ansat ved et museum og vil have adgang til DIME museumsmodul til registrering af detektorfund kontakt admin: XXXXXXMuseum access to DIME. If you are you employed at a museum and need access to DIME please contact the administrator: XXXXXX', ''),
