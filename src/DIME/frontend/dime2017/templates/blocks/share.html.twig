@@ -2,7 +2,7 @@
 
 {% block share %}
 
-{% if data.visibility.name == 'public' and data.value('image') | length > 0 %}
+{% if data is defined and data is not null and data.visibility.name == 'public' and data.value('image') | length > 0 %}
 
     {% set sharetext = 'dime.share.text' | translate | url_encode %}
     {% set hashtags = 'dime.share.hashtags' | translate | url_encode %}

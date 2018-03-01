@@ -50,9 +50,9 @@ class FindRegisterController extends DimePageController
 
         $query = $request->query->all();
         if (isset($query['prev'])) {
-            $data['prev'] = Find::find($query['prev']);
+            $data['previous'] = Find::find($query['prev']);
         } else {
-            $data['prev'] = null;
+            $data['previous'] = null;
         }
 
         return $data;
