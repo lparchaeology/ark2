@@ -113,6 +113,10 @@ body{
       display:none;
 }
 
+.register-alert.alert {
+  text-align: center;
+}
+
 @media (max-width: 767px){
   .navbar {
       max-height: 12em;
