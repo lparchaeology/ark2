@@ -273,5 +273,11 @@ $(document).ready(function () {
         }
     };
 
+    $('#modal_photobtn').on('click',function(){
+      $('.file-input').find('.glyphicon-folder-open').parent().hide();
+      $('#photo-btn').on('click',function(){
+        $('#find_image_file').click();
+      });
+    });
 
 });

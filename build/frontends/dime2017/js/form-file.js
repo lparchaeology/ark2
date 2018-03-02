@@ -174,11 +174,13 @@ $("#find_class_term").on("change", function () {
         return true;
     };
 });
+
 $("#find_save").on("click", function () {
     if ($(this).closest("form")[0].checkValidity()) {
         window.onbeforeunload = null;
     }
 });
+
 // Apply actions to tables
 $('form#action').find('#action_apply').click(function (e) {
     var table = $(this).closest('form#action').siblings('.table-wrapper-div').find('table.bootstrap-table');

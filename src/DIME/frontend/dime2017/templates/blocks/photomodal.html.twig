@@ -19,7 +19,8 @@
             {% spaceless %}
                 {{ form_row(form.file, { 'label': false }) }}
             {% endspaceless %}
-            <button type="button" id="photopickclose" class="btn mapmodal-button photopickclose" data-dismiss="modal">{{ 'dime.close' | translate }}</button>
+            <div id="photo-btn" class="btn btn-primary btn-lg btn-block" ><span class="glyphicon glyphicon-camera"></span></div>
+            <button type="button" id="photopickclose" class="btn mapmodal-button " data-dismiss="modal">{{ 'dime.close' | translate }}</button>
           </div>
         </div>
         {{ form_row(form.previous) }}
