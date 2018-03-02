@@ -77,6 +77,7 @@ abstract class DimePageController extends PageController
                     'name' => 'add',
                     'active' => false,
                     'permission' => 'dime.find.create',
+                    'op_class' => 'nav-desk',
                     'links' => [
                         ['name' => 'dime.find.add', 'active' => false, 'target' => 'dime.finds.add'],
                     ],
@@ -85,6 +86,7 @@ abstract class DimePageController extends PageController
                     'name' => 'register',
                     'active' => false,
                     'permission' => 'dime.find.create',
+                    'op_class' => 'nav-mobile',
                     'links' => [
                         ['name' => 'dime.find.register', 'active' => false, 'target' => 'dime.finds.register'],
                     ],
@@ -93,6 +95,7 @@ abstract class DimePageController extends PageController
                     'name' => 'mine',
                     'active' => false,
                     'permission' => 'dime.find.home',
+                    'op_class' => '',
                     'links' => [
                         ['name' => 'dime.search.finds.mine', 'active' => false, 'target' => 'dime.home.finds'],
                     ],
@@ -101,6 +104,7 @@ abstract class DimePageController extends PageController
                     'name' => 'search',
                     'active' => false,
                     'permission' => null,
+                    'op_class' => '',
                     'links' => [
                         ['name' => 'dime.find.search', 'active' => false, 'target' => 'dime.finds.list'],
                     ],
@@ -109,6 +113,7 @@ abstract class DimePageController extends PageController
                     'name' => 'admin.users',
                     'active' => false,
                     'permission' => 'core.admin.user',
+                    'op_class' => '',
                     'links' => [
                         ['name' => 'dime.admin.users', 'active' => false, 'target' => 'core.admin.users'],
                     ],
@@ -117,6 +122,7 @@ abstract class DimePageController extends PageController
                     'name' => 'admin.users.register',
                     'active' => false,
                     'permission' => 'core.admin.user',
+                    'op_class' => '',
                     'links' => [
                         ['name' => 'dime.admin.users.register', 'active' => false, 'target' => 'core.admin.users.register'],
                     ],
@@ -125,6 +131,7 @@ abstract class DimePageController extends PageController
                     'name' => 'admin.museums',
                     'active' => false,
                     'permission' => 'core.admin.user',
+                    'op_class' => '',
                     'links' => [
                         ['name' => 'dime.admin.museums', 'active' => false, 'target' => 'dime.admin.museums'],
                     ],

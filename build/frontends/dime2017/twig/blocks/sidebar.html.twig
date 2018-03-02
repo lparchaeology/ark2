@@ -12,21 +12,21 @@
                 {% for group in menus.sidelinks %}
                     {% if security.user.hasPermission(group.permission) %}
                         {% if group.active %}
-                            <li class="list-group-item dime-listhead normal">
+                            <li class="list-group-item dime-listhead normal {{ group.op_class }}">
                                 <span class="dime-icon icon-{{ group.name }} normal"></span>
                             </li>
                         {% else %}
-                            <li class="list-group-item dime-listhead small">
+                            <li class="list-group-item dime-listhead small {{ group.op_class }}">
                                 <span class="dime-icon icon-{{ group.name }} small"></span>
                             </li>
                         {% endif %}
                         {% for link in group.links %}
                             {% if link.active %}
-                                <li class="active list-group-item navlist">
+                                <li class="active list-group-item navlist {{ group.op_class }}">
                                     {% include "blocks/link.html.twig" with {'link': link} %}
                                 </li>
                             {% else %}
-                                <li class="list-group-item navlist">
+                                <li class="list-group-item navlist {{ group.op_class }}">
                                     {% include "blocks/link.html.twig" with {'link': link} %}
                                 </li>
                             {% endif %}

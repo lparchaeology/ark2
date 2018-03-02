@@ -5,13 +5,19 @@
     <div class="col-md-3  dimehome dimehometool" >
         {% include "blocks/notifications.html.twig" %}
     </div>
-    <div class="col-md-3 dimehome dimehometool" >
+    <div class="col-md-3 dimehome dimehometool nav-desk" >
         <a href="{{ path("dime.finds.add") }}">
             <span class="dime-icon dimehometool-icon icon-add small"></span>
                 {{ "dime.find.add" | translate }}
         </a>
     </div>
 
+    <div class="col-md-3 dimehome dimehometool nav-mobile" >
+        <a href="{{ path("dime.finds.register") }}">
+            <span class="dime-icon dimehometool-icon icon-add small"></span>
+                {{ "dime.find.register" | translate }}
+        </a>
+    </div>
     <div class="col-md-3 dimehome dimehometool" >
         <a href="{{ path("dime.home.finds") }}">
             <span class="dime-icon dimehometool-icon icon-mine small"></span>
