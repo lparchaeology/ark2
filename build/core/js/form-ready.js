@@ -1,7 +1,7 @@
 $(document).ready(function () {
     // Set global defaults for all Select2 widgets
     $.fn.select2.defaults.set("language", lang);
-    $.fn.select2.defaults.set("minimumResultsForSearch", 11);
+    $.fn.select2.defaults.set("minimumResultsForSearch", 16);
     $.fn.select2.defaults.set("width", 'resolve');
     // Replace all select tags with Select2
     $("select").select2();
