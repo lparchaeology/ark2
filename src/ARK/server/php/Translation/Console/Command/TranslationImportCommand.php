@@ -30,6 +30,7 @@
 namespace ARK\Translation\Console\Command;
 
 use ARK\Console\Command\AbstractCommand;
+use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\Translation\Keyword;
 
