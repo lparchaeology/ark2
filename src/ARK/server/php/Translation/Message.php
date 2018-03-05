@@ -31,10 +31,13 @@ namespace ARK\Translation;
 
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\ORM\OrmTrait;
 use Doctrine\Common\Collections\Collection;
 
 class Message
 {
+    use OrmTrait;
+
     protected $language;
     protected $key;
     protected $role;

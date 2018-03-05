@@ -31,9 +31,6 @@ namespace ARK\Translation;
 
 use ARK\Framework\Application;
 use ARK\Service;
-use ARK\Translation\Dumper\JsonFileDumper;
-use ARK\Translation\Loader\DatabaseLoader;
-use Symfony\Component\Translation\Dumper\XliffFileDumper;
 
 class TranslationService
 {
@@ -46,15 +43,19 @@ class TranslationService
 
     public function dump() : void
     {
-        $loader = new DatabaseLoader();
-        $xliff = new XliffFileDumper();
-        $json = new JsonFileDumper();
-        $options['path'] = Service::siteDir().'/translations';
-        foreach (Service::localeFallbacks() as $locale) {
-            $catalogue = $loader->load(Service::database(), $locale);
-            $xliff->dump($catalogue, $options);
-            $json->dump($catalogue, $options);
-        }
+        Translation::dump(Service::localeFallbacks(), Service::siteDir().'/translations');
+    }
+
+    public function import() : void
+    {
+        $finder = new Finder();
+        $finder->in(Service::siteDir().'/translations')->name('*.xlf');
+        Translation::importFiles($finder);
+    }
+
+    public function translator() : Translator
+    {
+        return $this->app['translator'];
     }
 
     public function translate($id, $role = null, $parameters = [], $domain = null, $locale = null) : string

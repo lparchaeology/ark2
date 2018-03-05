@@ -31,9 +31,12 @@ namespace ARK\Translation;
 
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\ORM\OrmTrait;
 
 class Parameter
 {
+    use OrmTrait;
+
     protected $keyword;
     protected $parameter = '';
 

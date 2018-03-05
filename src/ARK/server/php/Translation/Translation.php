@@ -30,6 +30,12 @@
 namespace ARK\Translation;
 
 use ARK\Service;
+use ARK\Translation\Dumper\JsonFileDumper;
+use ARK\Translation\Loader\DatabaseLoader;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Translation\Dumper\XliffFileDumper;
+use Symfony\Component\Translation\Loader\XliffFileLoader;
+use Symfony\Component\Translation\MessageCatalogue;
 
 class Translation
 {
@@ -41,5 +47,65 @@ class Translation
     public function translateChoice($id, int $count, $role = null, $parameters = [], $domain = null, $locale = null) : string
     {
         return Service::translation()->translateChoice($id, $number, $role, $parameters, $domain, $locale);
+    }
+
+    public function dump(iterable $locales, string $path) : void
+    {
+        $loader = new DatabaseLoader();
+        $xliff = new XliffFileDumper();
+        $options = [
+            'path' => $path,
+            'xliff_version' => '2.0',
+        ];
+        $domains = Domain::findAll();
+        foreach ($domains as $domain) {
+            foreach ($locales as $locale) {
+                $catalogue = $loader->load(Service::database(), $locale, $domain->id());
+                $xliff->dump($catalogue, $options);
+            }
+        }
+        $json = new JsonFileDumper();
+        $catalogue = $loader->load(Service::database(), $locale);
+        $json->dump($catalogue, $options);
+    }
+
+    public function importFiles(Finder $finder, bool $replace = true) : void
+    {
+        $loader = new XliffFileLoader();
+        foreach ($finder as $file) {
+            $meta = explode('.', $file->getFilename());
+            $domain = Domain::find($meta[0]);
+            $catalogue = $loader->load($file->getFilename());
+            self::importCatalogue($catalogue, $domain, $replace);
+        }
+    }
+
+    public function importCatalogue(MessageCatalogue $catalogue, Domain $domain, bool $replace = true) : void
+    {
+        $defaultRole = Role::find('default');
+        $language = $catalogue->getLocale();
+        $messages = $catalogue->all($domain);
+        foreach ($messages as $id => $text) {
+            $parts = explode('.', $id);
+            $role = Role::find(end($parts));
+            if ($role) {
+                array_pop($parts);
+                $id = implode('.', $parts);
+            } else {
+                $role = $defaultRole;
+            }
+            $keyword = Keyword::find($id);
+            if ($keyword === null) {
+                $keyword = new Keyword($id, $domain);
+                $keyword->setMessage($text, $language, $role);
+                ORM::persist($keyword);
+            } else {
+                $message = $keyword->message($language, $role);
+                if ($message === null || $replace) {
+                    $keyword->setMessage($text, $language, $role);
+                    ORM::persist($keyword);
+                }
+            }
+        }
     }
 }

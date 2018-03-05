@@ -102,6 +102,7 @@ class DimeTranslationCommand extends AbstractCommand
 
         if ($daText || $enText) {
             ORM::manager('core')->flush();
+            Service::translation()->dump();
             $this->write("\nTranslations added.");
         }
     }

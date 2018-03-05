@@ -38,18 +38,12 @@ class DatabaseLoader implements LoaderInterface
     public function load($db, $locale, $domain = 'messages') : MessageCatalogue
     {
         $catalogue = new MessageCatalogue($locale);
-        $rows = $db->getTranslationMessages($locale);
-        $this->addMessages($rows, $catalogue);
-        return $catalogue;
-    }
-
-    public function addMessages(iterable $rows, MessageCatalogue $catalogue) : MessageCatalogue
-    {
+        $rows = $db->getTranslationMessages($locale, $domain === 'messages' ? null : $domain);
         foreach ($rows as $row) {
             if ($row['role'] !== 'default') {
-                $catalogue->set($row['keyword'].'.'.$row['role'], $row['text'], 'messages');
+                $catalogue->set($row['keyword'].'.'.$row['role'], $row['text'], $domain);
             } else {
-                $catalogue->set($row['keyword'], $row['text'], 'messages');
+                $catalogue->set($row['keyword'], $row['text'], $domain);
             }
         }
         return $catalogue;

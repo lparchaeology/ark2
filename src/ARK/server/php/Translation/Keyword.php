@@ -32,6 +32,7 @@ namespace ARK\Translation;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
+use ARK\ORM\OrmTrait;
 use ARK\Service;
 use ARK\Vocabulary\Parameter;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -40,6 +41,8 @@ use Doctrine\Common\Collections\Criteria;
 
 class Keyword
 {
+    use OrmTrait;
+
     protected $keyword = '';
     protected $domain;
     protected $isPlural = false;
@@ -127,6 +130,17 @@ class Keyword
         $msg->setText($message);
         $msg->setNotes($notes);
         ORM::persist($msg);
+    }
+
+    public static function findByDomain($domain) : Collection
+    {
+        if (is_string($domain)) {
+            $domain = Domain::find($domain);
+        }
+        if ($domain instanceof Domain) {
+            return self::findBy(['domain' => $domain->id()]);
+        }
+        return new ArrayCollection();
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void

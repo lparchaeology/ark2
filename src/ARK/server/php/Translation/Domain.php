@@ -32,10 +32,12 @@ namespace ARK\Translation;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\ORM\OrmTrait;
 
 class Domain
 {
     use KeywordTrait;
+    use OrmTrait;
 
     protected $domain = '';
 

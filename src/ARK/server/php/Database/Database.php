@@ -141,13 +141,14 @@ class Database
     {
         $sql = '
             SELECT *
-            FROM ark_translation_message
-            WHERE language = :language
+            FROM ark_translation, ark_translation_message
+            WHERE ark_translation_message.language = :language
+            AND ark_translation.keyword = ark_translation_message.keyword
         ';
         $params[':language'] = $language;
         if ($domain) {
             $sql .= '
-                AND domain = :domain
+                AND ark_translation.domain = :domain
             ';
             $params[':domain'] = $domain;
         }

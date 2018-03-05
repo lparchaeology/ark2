@@ -35,13 +35,13 @@ use ARK\Translation\Loader\ActorLoader;
 use ARK\Translation\Loader\DatabaseLoader;
 use ARK\Translation\TranslationService;
 use ARK\Translation\Translator;
-use DirectoryIterator;
 use Exception;
 use LogicException;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\EventListener\TranslatorListener;
 use Symfony\Component\Translation\Loader\ArrayLoader;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
@@ -61,12 +61,19 @@ class TranslationServiceProvider implements ServiceProviderInterface, EventListe
                 throw new LogicException('You must define \'locale\' parameter or register the LocaleServiceProvider to use the TranslationServiceProvider');
             }
 
-            $translator = new Translator($app['locale'], $app['translator.message_selector'], $app['translator.cache_dir'], $app['debug']);
+            $translator = new Translator(
+                $app['locale'],
+                $app['translator.message_selector'],
+                $app['translator.cache_dir'],
+                $app['debug']
+            );
             $translator->setFallbackLocales($app['locale_fallbacks']);
             $translator->addLoader('array', new ArrayLoader());
             $translator->addLoader('xliff', new XliffFileLoader());
-            $translator->addLoader('database', new DatabaseLoader());
             $translator->addLoader('actor', new ActorLoader());
+            if ($app['debug']) {
+                $translator->addLoader('database', new DatabaseLoader());
+            }
 
             if (isset($app['validator'])) {
                 $r = new \ReflectionClass('Symfony\Component\Validator\Validation');
@@ -96,12 +103,20 @@ class TranslationServiceProvider implements ServiceProviderInterface, EventListe
             }
 
             foreach ($app['locale_fallbacks'] as $language) {
-                $translator->addResource('database', $app['database'], $language);
                 $translator->addResource('actor', $app['database'], $language);
+                if ($app['debug']) {
+                    $translator->addResource('database', $app['database'], $language);
+                }
             }
 
-            $this->loadTranslationFiles($translator, $app['locale_fallbacks'], $app['dir.site'].'/translations');
-            $this->loadTranslationFiles($translator, $app['locale_fallbacks'], $app['dir.site'].'/translations/'.$app['ark']['view']['frontend']);
+            if (!$app['debug']) {
+                $this->loadTranslationFiles($translator, $app['locale_fallbacks'], $app['dir.site'].'/translations');
+                $this->loadTranslationFiles(
+                    $translator,
+                    $app['locale_fallbacks'],
+                    $app['dir.site'].'/translations/'.$app['ark']['view']['frontend']
+                );
+            }
 
             return $translator;
         };
@@ -143,10 +158,11 @@ class TranslationServiceProvider implements ServiceProviderInterface, EventListe
     private function loadTranslationFiles($translator, array $languages, $dir) : void
     {
         try {
-            $files = new DirectoryIterator($dir);
-            foreach ($files as $file) {
+            $finder = new Finder();
+            $finder->in($dir)->name('*.xlf');
+            foreach ($finder as $file) {
                 $parts = explode('.', $file->getFilename());
-                if ($file->getExtension() === 'xlf' && in_array($parts[1], $languages, true)) {
+                if (in_array($parts[1], $languages, true)) {
                     $translator->addResource('xliff', $file->getPathname(), $parts[1], $parts[0]);
                 }
             }

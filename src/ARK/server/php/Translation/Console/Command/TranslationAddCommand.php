@@ -112,6 +112,7 @@ class TranslationAddCommand extends Command
         }
         $translation->setMessage($text, $language, $role, $notes);
         ORM::flush($translation);
+        Service::translation()->dump();
 
         $output->writeln("\nTranslation added.");
     }
