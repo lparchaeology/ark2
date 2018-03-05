@@ -8,8 +8,10 @@
     {% set hashtags = 'dime.share.hashtags' | translate | url_encode %}
     {% if global.request.attributes.get('_route') == 'dime.finds.register' %}
         {% set sharelink = data.value('image')[0].sourceUrl() | url_encode %}
+        {% set btns = 'btn btn-social-icon btn-lg' %}
     {% else %}
         {% set sharelink = global.request.getUri() | url_encode %}
+        {% set btns = 'btn btn-social-icon btn-xs' %}
     {% endif %}
     {% set fb = "https://www.facebook.com/sharer.php?u=" ~ sharelink %}
     {% set plus = "https://plus.google.com/share?url=" ~ sharelink %}
@@ -18,7 +20,7 @@
 
     <div>
 
-        <a class="btn btn-social-icon btn-xs btn-facebook"
+        <a class="{{ btns }} btn-facebook"
            href="{{ fb }}"
            target="popup"
            onclick="windowPopup('{{ fb }}', 600, 300); return false;"
@@ -26,7 +28,7 @@
             <span class="fa fa-facebook"></span>
         </a>
 
-        <a class="btn btn-social-icon btn-xs btn-twitter"
+        <a class="{{ btns }} btn-twitter"
            href="{{ tweet }}"
            target="popup"
            onclick="windowPopup('{{ tweet }}', 600, 300); return false;"
@@ -34,7 +36,7 @@
             <span class="fa fa-twitter"></span>
         </a>
 
-        <a class="btn btn-social-icon btn-xs btn-google"
+        <a class="{{ btns }} btn-google"
            href="{{ plus }}"
            target="popup"
            onclick="windowPopup('{{ plus }}', 600, 300); return false;"
@@ -42,7 +44,7 @@
             <span class="fa fa-google"></span>
         </a>
 
-        <a class="btn btn-social-icon btn-xs btn-pinterest"
+        <a class="{{ btns }} btn-pinterest"
            href="{{ pin }}"
            target="popup"
            onclick="windowPopup('{{ pin }}', 600, 300); return false;"
