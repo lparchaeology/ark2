@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.7
+-- version 4.7.8
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 01, 2018 at 04:02 PM
--- Server version: 10.2.12-MariaDB
--- PHP Version: 7.1.14
+-- Generation Time: Mar 05, 2018 at 09:49 PM
+-- Server version: 10.2.13-MariaDB
+-- PHP Version: 7.2.2
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -1593,6 +1593,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('core.role.anon', 'core', 0, 0),
 ('core.role.anonymous', 'core', 0, 0),
 ('core.role.user', 'core', 0, 0),
+('core.security.user', 'core', 0, 0),
 ('core.security.user.status', 'core', 0, 0),
 ('core.security.user.status.approved', 'core', 0, 0),
 ('core.security.user.status.closed', 'core', 0, 0),
@@ -2131,6 +2132,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.find.secondary.tinned', 'dime', 0, 0),
 ('dime.find.status', 'dime', 0, 0),
 ('dime.find.subtype', 'dime', 0, 0),
+('dime.find.subtype.accessory', 'dime', 0, 0),
 ('dime.find.subtype.accessory.bell', 'dime', 0, 0),
 ('dime.find.subtype.accessory.brooch', 'dime', 0, 0),
 ('dime.find.subtype.accessory.buckle', 'dime', 0, 0),
@@ -2602,11 +2604,11 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.share.hashtags', 'dime', 0, 0),
 ('dime.share.text', 'dime', 0, 0),
 ('dime.supportedby', 'dime', 0, 0),
-('dime.treasure', 'dime', 0, 0),
+('dime.treasure', 'dime', 0, 0);
+INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
 ('dime.treasure.appraisal', 'dime', 0, 0),
 ('dime.treasure.not', 'dime', 0, 0),
-('dime.treasure.pending', 'dime', 0, 0);
-INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
+('dime.treasure.pending', 'dime', 0, 0),
 ('dime.treasure.treasure', 'dime', 0, 0),
 ('dime.user.actor.museum', 'dime', 0, 0),
 ('dime.user.dashboard.faq', 'dime', 0, 0),
@@ -3351,6 +3353,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('module.find', 'core', 0, 0),
 ('module.image', 'core', 0, 0),
 ('module.location', 'core', 0, 0),
+('property', 'core', 0, 0),
 ('property.address', 'core', 0, 0),
 ('property.avatar', 'core', 0, 0),
 ('property.city', 'core', 0, 0),
@@ -3458,7 +3461,7 @@ INSERT INTO `ark_translation_language` (`language`, `markup`, `vocabulary`, `tex
 CREATE TABLE `ark_translation_message` (
   `language` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `role` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'default',
+  `role` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'default',
   `text` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `notes` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -4491,6 +4494,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'core.role.admin', 'default', 'Administrator', ''),
 ('en', 'core.role.anon', 'default', 'Anonymous', ''),
 ('en', 'core.role.user', 'default', 'Researcher', ''),
+('en', 'core.security.user', 'status', 'Status', ''),
 ('en', 'core.security.user.status', 'default', 'Status', ''),
 ('en', 'core.security.user.status.approved', 'default', 'Approved', ''),
 ('en', 'core.security.user.status.closed', 'default', 'Closed', ''),
@@ -4852,7 +4856,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.exhibits.forests', 'default', 'Gold and Green Forests', NULL),
 ('en', 'dime.exhibits.weapons', 'default', 'Weapons in the Bronze Age', NULL),
 ('en', 'dime.find', 'default', 'Find', NULL),
+('en', 'dime.find', 'description', 'Description', ''),
 ('en', 'dime.find', 'resource', 'finds', NULL),
+('en', 'dime.find', 'status', 'Status', ''),
 ('en', 'dime.find.add', 'default', 'Add Find', NULL),
 ('en', 'dime.find.add', 'success', 'The find was successfully added.', ''),
 ('en', 'dime.find.artefact', 'default', 'Artefact', ''),
@@ -4877,11 +4883,11 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.condition.whole', 'default', 'Whole', NULL),
 ('en', 'dime.find.coordinates', 'default', 'Coordinates', ''),
 ('en', 'dime.find.custodian', 'default', 'Custodian', NULL),
-('en', 'dime.find.custody', 'default', 'Artefact status', NULL),
+('en', 'dime.find.custody', 'default', 'Artefact status', NULL);
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'dime.find.custody.destroyed', 'default', 'Accidentally destroyed', NULL),
 ('en', 'dime.find.custody.discarded', 'default', 'Discarded', NULL),
-('en', 'dime.find.custody.held', 'default', 'Held by custodian', NULL);
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.find.custody.held', 'default', 'Held by custodian', NULL),
 ('en', 'dime.find.custody.lost', 'default', 'Lost', NULL),
 ('en', 'dime.find.custody.requested', 'default', 'Requested by Museum', NULL),
 ('en', 'dime.find.custody.sent', 'default', 'Sent to Museum', NULL),
@@ -4965,6 +4971,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.secondary.tinned', 'default', 'Tinned', NULL),
 ('en', 'dime.find.status', 'default', 'Status', ''),
 ('en', 'dime.find.subtype', 'default', 'Subtype', 'DIME Find Subtype'),
+('en', 'dime.find.subtype.accessory', 'button', 'Button', ''),
 ('en', 'dime.find.subtype.accessory.bell', 'default', 'Bell', NULL),
 ('en', 'dime.find.subtype.accessory.brooch', 'default', 'Brooch / Emblem', NULL),
 ('en', 'dime.find.subtype.accessory.buckle', 'default', 'Buckle (Buckle, shoe pænde etc.).', NULL),
@@ -5043,6 +5050,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.subtype.fibula.beak', 'default', 'Beak fibula', NULL),
 ('en', 'dime.find.subtype.fibula.bird.above', 'default', 'Bird fibula (top view)', NULL),
 ('en', 'dime.find.subtype.fibula.bird.profile', 'default', 'Bird-shaped fibula (Early medieval - small bird in profile)', NULL),
+('en', 'dime.find.subtype.fibula.bow', 'button', 'Back button fibula', ''),
 ('en', 'dime.find.subtype.fibula.bow', 'default', 'Bow fibula', NULL),
 ('en', 'dime.find.subtype.fibula.bow.ball', 'default', 'Hard cast ball fibula (Pre- Roman Iron Age)', NULL),
 ('en', 'dime.find.subtype.fibula.bow.band', 'default', 'Wide band-shaped bow fibulas (Roman Iron Age - Almgr. V)', NULL),
@@ -5505,14 +5513,14 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.period.ww1', 'default', 'First World War', NULL),
 ('en', 'dime.period.ww2', 'default', 'Second World War', NULL),
 ('en', 'dime.profile', 'default', 'Profile', ''),
-('en', 'dime.profile', 'resource', 'profile', ''),
+('en', 'dime.profile', 'resource', 'profile', '');
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'dime.profiles', 'resource', 'profiles', ''),
 ('en', 'dime.region.hovedstaden', 'default', 'Capital', NULL),
 ('en', 'dime.region.hovedstaden', 'official', 'Capital Region', NULL),
 ('en', 'dime.region.midtjylland', 'default', 'Central', NULL),
 ('en', 'dime.region.midtjylland', 'official', 'Central Region', NULL),
-('en', 'dime.region.nordjylland', 'default', 'North', NULL);
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.region.nordjylland', 'default', 'North', NULL),
 ('en', 'dime.region.nordjylland', 'official', 'North Region', NULL),
 ('en', 'dime.region.sjaelland', 'default', 'Zealand', NULL),
 ('en', 'dime.region.sjaelland', 'official', 'Zealand Region', NULL),
@@ -6248,6 +6256,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'module.find', 'default', 'Find', NULL),
 ('en', 'module.image', 'default', 'Image', NULL),
 ('en', 'module.location', 'default', 'Location', NULL),
+('en', 'property', 'title', 'Title', ''),
 ('en', 'property.address', 'default', 'Address', NULL),
 ('en', 'property.avatar', 'default', 'Avatar', NULL),
 ('en', 'property.city', 'default', 'City', NULL),
