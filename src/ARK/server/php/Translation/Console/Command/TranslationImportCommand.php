@@ -86,8 +86,8 @@ class TranslationImportCommand extends AbstractCommand
             return false;
         }
         $this->write("\nKeyword ".$key->id().' differs:');
-        $this->write('  Import = '.$import);
-        $this->write('  Database = '.$existing);
+        $this->write('  Import   = "'.$import.'"');
+        $this->write('  Database = "'.$existing.'"');
         $choice = $this->askChoice("\nPlease choose the message to use", ['import', 'database'], 'import');
         return $choice === 'import';
     }
