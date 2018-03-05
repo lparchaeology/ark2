@@ -31,6 +31,7 @@ namespace ARK\Translation;
 
 use ARK\Framework\Application;
 use ARK\Service;
+use Symfony\Component\Finder\Finder;
 
 class TranslationService
 {
@@ -46,11 +47,11 @@ class TranslationService
         Translation::dump(Service::localeFallbacks(), Service::siteDir().'/translations');
     }
 
-    public function import() : void
+    public function import(bool $replace = true, callable $chooser) : void
     {
         $finder = new Finder();
         $finder->in(Service::siteDir().'/translations')->name('*.xlf');
-        Translation::importFiles($finder);
+        Translation::importFiles($finder, $replace, $chooser);
     }
 
     public function translator() : Translator

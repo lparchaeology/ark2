@@ -31,6 +31,7 @@ namespace ARK\Framework\Provider;
 
 use ARK\Translation\Console\Command\TranslationAddCommand;
 use ARK\Translation\Console\Command\TranslationDumpCommand;
+use ARK\Translation\Console\Command\TranslationImportCommand;
 use ARK\Translation\Loader\ActorLoader;
 use ARK\Translation\Loader\DatabaseLoader;
 use ARK\Translation\TranslationService;
@@ -141,6 +142,7 @@ class TranslationServiceProvider implements ServiceProviderInterface, EventListe
         $app->addCommands([
             TranslationAddCommand::class,
             TranslationDumpCommand::class,
+            TranslationImportCommand::class,
         ]);
 
         $app['translation'] = function ($app) {

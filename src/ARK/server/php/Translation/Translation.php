@@ -29,6 +29,7 @@
 
 namespace ARK\Translation;
 
+use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\Translation\Dumper\JsonFileDumper;
 use ARK\Translation\Loader\DatabaseLoader;
@@ -69,22 +70,27 @@ class Translation
         $json->dump($catalogue, $options);
     }
 
-    public function importFiles(Finder $finder, bool $replace = true) : void
+    public function importFiles(Finder $finder, bool $replace = true, callable $chooser = null) : void
     {
         $loader = new XliffFileLoader();
         foreach ($finder as $file) {
             $meta = explode('.', $file->getFilename());
             $domain = Domain::find($meta[0]);
-            $catalogue = $loader->load($file->getFilename());
-            self::importCatalogue($catalogue, $domain, $replace);
+            $language = $meta[1];
+            $catalogue = $loader->load($file->getRealPath(), $language, $domain->id());
+            self::importCatalogue($catalogue, $domain, $replace, $chooser);
         }
     }
 
-    public function importCatalogue(MessageCatalogue $catalogue, Domain $domain, bool $replace = true) : void
-    {
+    public function importCatalogue(
+        MessageCatalogue $catalogue,
+        Domain $domain,
+        bool $replace = true,
+        callable $chooser = null
+    ) : void {
         $defaultRole = Role::find('default');
         $language = $catalogue->getLocale();
-        $messages = $catalogue->all($domain);
+        $messages = $catalogue->all($domain->id());
         foreach ($messages as $id => $text) {
             $parts = explode('.', $id);
             $role = Role::find(end($parts));
@@ -95,16 +101,23 @@ class Translation
                 $role = $defaultRole;
             }
             $keyword = Keyword::find($id);
+            $setMessage = false;
             if ($keyword === null) {
                 $keyword = new Keyword($id, $domain);
-                $keyword->setMessage($text, $language, $role);
-                ORM::persist($keyword);
+                $setMessage = true;
             } else {
                 $message = $keyword->message($language, $role);
-                if ($message === null || $replace) {
-                    $keyword->setMessage($text, $language, $role);
-                    ORM::persist($keyword);
+                if ($message === null) {
+                    $setMessage = true;
+                } else if ($chooser !== null) {
+                    $setMessage = $chooser($keyword, $text, $message->text());
+                } else {
+                    $setMessage = $replace;
                 }
+            }
+            if ($setMessage) {
+                $keyword->setMessage($text, $language, $role);
+                ORM::persist($keyword);
             }
         }
     }
