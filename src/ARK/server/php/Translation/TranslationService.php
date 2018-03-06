@@ -44,7 +44,7 @@ class TranslationService
 
     public function dump() : void
     {
-        Translation::dump(Service::localeFallbacks(), Service::siteDir().'/translations');
+        Translation::dump(Service::siteDir().'/translations');
     }
 
     public function import(bool $replace = true, callable $chooser) : void

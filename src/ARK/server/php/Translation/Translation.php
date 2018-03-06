@@ -50,7 +50,7 @@ class Translation
         return Service::translation()->translateChoice($id, $number, $role, $parameters, $domain, $locale);
     }
 
-    public function dump(iterable $locales, string $path) : void
+    public function dump(string $path) : void
     {
         $loader = new DatabaseLoader();
         $xliff = new XliffFileDumper();
@@ -58,16 +58,21 @@ class Translation
             'path' => $path,
             'xliff_version' => '2.0',
         ];
+        $languages = Language::findAll();
+        // Dump php translations as xliff file per domain and language
         $domains = Domain::findAll();
         foreach ($domains as $domain) {
-            foreach ($locales as $locale) {
-                $catalogue = $loader->load(Service::database(), $locale, $domain->id());
+            foreach ($languages as $language) {
+                $catalogue = $loader->load(Service::database(), $language->code(), $domain->id());
                 $xliff->dump($catalogue, $options);
             }
         }
+        // Dump javascript translations as single json file per language called messages.<lang>.json
         $json = new JsonFileDumper();
-        $catalogue = $loader->load(Service::database(), $locale);
-        $json->dump($catalogue, $options);
+        foreach ($languages as $language) {
+            $catalogue = $loader->load(Service::database(), $language->code());
+            $json->dump($catalogue, $options);
+        }
     }
 
     public function importFiles(Finder $finder, bool $replace = true, callable $chooser = null) : void
