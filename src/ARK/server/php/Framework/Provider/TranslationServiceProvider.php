@@ -107,16 +107,14 @@ class TranslationServiceProvider implements ServiceProviderInterface, EventListe
                 $translator->addResource('actor', $app['database'], $language);
                 if ($app['debug']) {
                     $translator->addResource('database', $app['database'], $language);
+                } else {
+                    $this->loadTranslationFiles($translator, $app['locale_fallbacks'], $app['dir.site'].'/translations');
+                    $this->loadTranslationFiles(
+                        $translator,
+                        $app['locale_fallbacks'],
+                        $app['dir.site'].'/translations/'.$app['ark']['view']['frontend']
+                    );
                 }
-            }
-
-            if (!$app['debug']) {
-                $this->loadTranslationFiles($translator, $app['locale_fallbacks'], $app['dir.site'].'/translations');
-                $this->loadTranslationFiles(
-                    $translator,
-                    $app['locale_fallbacks'],
-                    $app['dir.site'].'/translations/'.$app['ark']['view']['frontend']
-                );
             }
 
             return $translator;
@@ -164,8 +162,9 @@ class TranslationServiceProvider implements ServiceProviderInterface, EventListe
             $finder->in($dir)->name('*.xlf');
             foreach ($finder as $file) {
                 $parts = explode('.', $file->getFilename());
-                if (in_array($parts[1], $languages, true)) {
-                    $translator->addResource('xliff', $file->getPathname(), $parts[1], $parts[0]);
+                $language = $parts[1];
+                if (in_array($language, $languages, true)) {
+                    $translator->addResource('xliff', $file->getPathname(), $language, 'messages');
                 }
             }
         } catch (Exception $e) {
