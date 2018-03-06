@@ -37,6 +37,7 @@ use ARK\Workflow\Exception\WorkflowException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Validator\ConstraintViolation;
 
 abstract class PageController extends Controller
 {
@@ -71,11 +72,11 @@ abstract class PageController extends Controller
                 foreach ($posted->getErrors(true) as $error) {
                     $cause = $error->getCause();
                     $msg = $error->getMessage();
-                    if ($cause) {
+                    if ($cause instanceof ConstraintViolation) {
                         $msg = $msg.' '.$cause->getPropertyPath();
                         $cause2 = $cause->getCause();
-                        if ($cause2) {
-                            $msg = $msg.' '.(string) $cause->getCause()->getMessage();
+                        if ($cause2 instanceof ConstraintViolation) {
+                            $msg = $msg.' '.(string) $cause2->getMessage();
                         }
                     }
                     Service::view()->addErrorFlash($msg);
