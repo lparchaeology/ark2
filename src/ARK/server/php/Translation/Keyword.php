@@ -150,8 +150,8 @@ class Keyword
         $builder->addManyToOneField('domain', Domain::class);
         $builder->addMappedField('is_plural', 'isPlural', 'boolean');
         $builder->addMappedField('has_parameters', 'hasParameters', 'boolean');
-        $builder->addOneToManyCascadeField('parameters', Parameter::class, 'key');
-        $builder->addOneToManyCascadeField('messages', Message::class, 'key');
+        $builder->addOneToManyCascadeField('parameters', Parameter::class, 'keyword');
+        $builder->addOneToManyCascadeField('messages', Message::class, 'keyword');
     }
 
     private function getLanguage($language = null) : ?Language

@@ -31,11 +31,12 @@ namespace DIME\Console\Command;
 
 use ARK\Console\Command\AbstractCommand;
 use ARK\ORM\ORM;
+use ARK\Service;
 use ARK\Translation\Domain;
+use ARK\Translation\Keyword;
 use ARK\Translation\Language;
 use ARK\Translation\Message;
 use ARK\Translation\Role;
-use ARK\Translation\Translation;
 use Symfony\Component\Console\Command\Command;
 
 class DimeTranslationCommand extends AbstractCommand
@@ -49,59 +50,63 @@ class DimeTranslationCommand extends AbstractCommand
 
     protected function doExecute() : void
     {
-        $keyword = $this->input->getArgument('keyword');
+        $key = $this->input->getArgument('keyword');
 
-        $key = ORM::find(Translation::class, $keyword);
-        if ($key) {
-            $this->write("\nTranslation keyword exists in domain ".$key->domain()->name());
-            $messages = ORM::findBy(Message::class, ['keyword' => $keyword]);
-            foreach ($messages as $message) {
+        $keyword = Keyword::find($key);
+        if ($keyword) {
+            $this->write("\nTranslation keyword exists in domain ".$keyword->domain()->id());
+            foreach ($keyword->messages() as $message) {
                 $this->write($message->language()->code().' = '.$message->text());
             }
             $this->write('');
         } else {
-            $domain = ORM::find(Domain::class, 'dime');
-            $key = new Translation($keyword, $domain);
+            $domains = Domain::findAll();
+            foreach ($domains as $domain) {
+                $domainNames[] = $domain->id();
+            }
+            $domain = $this->askChoice("Please choose the domain (Default: 'dime'): ", $domainNames, 'dime');
+            $domain = Domain::find($domain);
+            $keyword = new Keyword($key, $domain);
         }
 
-        $da = ORM::find(Language::class, 'da');
-        $en = ORM::find(Language::class, 'en');
+        $da = Language::find('da');
+        $en = Language::find('en');
 
-        $roles = ORM::findAll(Role::class);
+        $roles = Role::findAll();
         foreach ($roles as $role) {
-            $roleNames[] = $role->name();
+            $roleNames[] = $role->id();
         }
         $role = $this->askChoice('Please choose the role', $roleNames, 'default');
-        $role = ORM::findOneBy(Role::class, ['name' => $role]);
+        $role = Role::find($role);
 
-        $daText = $question->askQuestion('Please enter the Danish text: ');
+        $daText = $this->askQuestion('Please enter the Danish text: ');
 
-        $enText = $question->ask('Please enter the English text: ');
+        $enText = $this->askQuestion('Please enter the English text: ');
 
         if ($daText || $enText) {
-            ORM::persist($key);
+            ORM::persist($keyword);
         }
 
         if ($daText) {
-            $daMsg = ORM::findOneBy(Message::class, ['language' => 'da', 'keyword' => $keyword, 'role' => $role->name()]);
-            if (!$daMsg) {
-                $daMsg = new Message($key, $da, $role);
+            $daMsg = Message::find($keyword, $da, $role);
+            if ($daMsg === null) {
+                $daMsg = new Message($keyword, $da, $role);
             }
             $daMsg->setText($daText);
             ORM::persist($daMsg);
         }
 
         if ($enText) {
-            $enMsg = ORM::findOneBy(Message::class, ['language' => 'en', 'keyword' => $keyword, 'role' => $role->name()]);
-            if (!$enMsg) {
-                $enMsg = new Message($key, $en, $role);
+            $enMsg = Message::find($keyword, $en, $role);
+            if ($enMsg === null) {
+                $enMsg = new Message($keyword, $en, $role);
             }
             $enMsg->setText($enText);
             ORM::persist($enMsg);
         }
 
         if ($daText || $enText) {
-            ORM::manager('core')->flush();
+            ORM::flush();
             Service::translation()->dump();
             $this->write("\nTranslations added.");
         }

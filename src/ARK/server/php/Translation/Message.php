@@ -31,6 +31,7 @@ namespace ARK\Translation;
 
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\ORM\Orm;
 use ARK\ORM\OrmTrait;
 use Doctrine\Common\Collections\Collection;
 
@@ -39,14 +40,14 @@ class Message
     use OrmTrait;
 
     protected $language;
-    protected $key;
+    protected $keyword;
     protected $role;
     protected $text = '';
     protected $notes = '';
 
-    public function __construct(Keyword $key, Language $language, Role $role = null)
+    public function __construct(Keyword $keyword, Language $language, Role $role = null)
     {
-        $this->key = $key;
+        $this->keyword = $keyword;
         $this->language = $language;
         if (!$role) {
             $role = new Role();
@@ -54,14 +55,18 @@ class Message
         $this->role = $role;
     }
 
-    public function keyword() : string
+    public function id() : string
     {
-        return $this->key->keyword();
+        return [
+            'keyword' => $this->keyword->id(),
+            'language' => $this->language->code(),
+            'role' => $this->role->id(),
+        ];
     }
 
-    public function domain() : Domain
+    public function keyword() : string
     {
-        return $this->key->domain();
+        return $this->keyword;
     }
 
     public function language() : Language
@@ -106,27 +111,51 @@ class Message
         $this->notes = $notes;
     }
 
+    public function domain() : Domain
+    {
+        return $this->keyword->domain();
+    }
+
     public function isPlural() : bool
     {
-        return $this->key->isPlural();
+        return $this->keyword->isPlural();
     }
 
     public function hasParameters() : bool
     {
-        return $this->key->hasParameters();
+        return $this->keyword->hasParameters();
     }
 
     public function parameters() : Collection
     {
-        return $this->key->parameters();
+        return $this->keyword->parameters();
+    }
+
+    public static function find($keyword, $language, $role = 'default') : ?self
+    {
+        if ($keyword instanceof Keyword) {
+            $keyword = $keyword->id();
+        }
+        if ($language instanceof Language) {
+            $language = $language->code();
+        }
+        if ($role instanceof Role) {
+            $role = $role->id();
+        }
+        return ORM::find(self::class, ['keyword' => $keyword, 'language' => $language, 'role' => $role]);
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
+        // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_translation_message');
+
+        // Key
         $builder->addManyToOneKey('language', Language::class);
-        $builder->addManyToOneKey('key', Keyword::class, 'keyword');
+        $builder->addManyToOneKey('keyword', Keyword::class);
         $builder->addManyToOneKey('role', Role::class);
+
+        // Fields
         $builder->addStringField('text', 4294967295);
         $builder->addStringField('notes', 4294967295);
     }
