@@ -123,6 +123,7 @@ $(document).ready(function () {
             }
             $('.glyphicon-camera-button-required').hide();
             $('.glyphicon-camera-button-complete').show();
+            $('#photo-modal').modal('hide');
         }).on('filesuccessremove', function (event, id) {
             var form_root_array = $(this).closest(".file-input").find("input[type=file]").attr('id').split("_");
             form_root_array.splice(-1, 1);
@@ -272,6 +273,10 @@ $(document).ready(function () {
             return Translator.trans("dime.confirmnavigation");
         }
     };
+
+    $( "#photo-modal" ).on('shown.bs.modal', function(){
+        $('#find_image_file').click();
+    });
 
     $('#modal_photobtn').on('click',function(){
       $('.file-input').find('.glyphicon-folder-open').parent().hide();

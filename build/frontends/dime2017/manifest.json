@@ -119,6 +119,7 @@
                     "js/classification-modal.js",
                     "js/classification-period.js",
                     "js/classification-subtype.js",
+                    "js/register-classification.js",
                     "js/messages.js",
                     "js/table-switchcardmobile.js",
                     "js/table-switchcardview.js",

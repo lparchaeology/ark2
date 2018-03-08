@@ -238,6 +238,7 @@ function initialisePickMap(target) {
                 var decimal = makeDecimalPoint(result.x, result.y);
                 clearLocation();
                 setLocation(decimal, result.municipality.term, result.museum.id);
+                $('#map-modal').modal('hide');
             }
         });
     }
