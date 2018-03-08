@@ -261,7 +261,7 @@ class Service
         return self::$app['json.linter'];
     }
 
-    public function connection(string $name) : Connection
+    public static function connection(string $name) : Connection
     {
         return self::$app['dbs'][$name];
     }
