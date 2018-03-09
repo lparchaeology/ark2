@@ -41,7 +41,8 @@ function initialiseMapModal() {
         confirmLocation($('#mapmodal').data('positionFeature'));
 
         geolocation.setTracking(false);
-      })
+      });
+
       $('#getuserlocation').on('click',function(e){
         e.preventDefault();
         geolocation.setTracking(true);

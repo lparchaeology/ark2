@@ -238,6 +238,8 @@ function initialisePickMap(target) {
                 var decimal = makeDecimalPoint(result.x, result.y);
                 clearLocation();
                 setLocation(decimal, result.municipality.term, result.museum.id);
+                $('.glyphicon-mappick-button-required').hide();
+                $('.glyphicon-mappick-button-complete').show();
                 $('#map-modal').modal('hide');
             }
         });
@@ -250,8 +252,6 @@ function initialisePickMap(target) {
               var map = makeMapPoint(coords[0], coords[1]);
               var decimal = mapToDecimal(map);
               updateLocation(decimal);
-              $('.glyphicon-mappick-button-required').hide();
-              $('.glyphicon-mappick-button-complete').show();
           } else {
               setMap(getDecimal());
           }
