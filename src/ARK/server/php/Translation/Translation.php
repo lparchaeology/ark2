@@ -81,9 +81,11 @@ class Translation
         foreach ($finder as $file) {
             $meta = explode('.', $file->getFilename());
             $domain = Domain::find($meta[0]);
-            $language = $meta[1];
-            $catalogue = $loader->load($file->getRealPath(), $language, $domain->id());
-            self::importCatalogue($catalogue, $domain, $replace, $chooser);
+            if ($domain !== null) {
+                $language = $meta[1];
+                $catalogue = $loader->load($file->getRealPath(), $language, $domain->id());
+                self::importCatalogue($catalogue, $domain, $replace, $chooser);
+            }
         }
     }
 
@@ -114,7 +116,7 @@ class Translation
                 $message = $keyword->message($language, $role);
                 if ($message === null) {
                     $setMessage = true;
-                } else if ($chooser !== null) {
+                } elseif ($chooser !== null) {
                     $setMessage = $chooser($keyword, $text, $message->text());
                 } else {
                     $setMessage = $replace;
