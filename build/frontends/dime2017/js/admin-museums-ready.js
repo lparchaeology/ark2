@@ -10,4 +10,8 @@ $('document').ready(function () {
 
     $('.icon-user-focus').on("click", { "target": this }, museumSelected);
 
+    $('table.bootstrap-table').on('post-body.bs.table', function(){
+      $('.icon-user-focus').on("click", { "target": this }, museumSelected);
+    });
+
 });
