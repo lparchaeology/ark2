@@ -3,7 +3,7 @@
 /**
  * ARK Table View.
  *
- * Copyright (C) 2017  L - P : Heritage LLP.
+ * Copyright (C) 2018  L - P : Heritage LLP.
  *
  * This file is part of ARK, the Archaeological Recording Kit.
  *
@@ -21,7 +21,7 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2017 L - P : Heritage LLP.
+ * @copyright  2018 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0

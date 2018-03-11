@@ -3,7 +3,7 @@
 /**
  * ARK JSON Schema Abstract Property Normalizer
  *
- * Copyright (C) 2017  L - P : Heritage LLP.
+ * Copyright (C) 2018  L - P : Heritage LLP.
  *
  * This file is part of ARK, the Archaeological Recording Kit.
  *
