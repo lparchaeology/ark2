@@ -33,6 +33,13 @@ use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\OrmTrait;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\Validator\Constraints\Valid;
+use Symfony\Component\Validator\Mapping\ClassMetadata as ValidatorMetadata;
 
 class Role
 {
@@ -49,6 +56,27 @@ class Role
     public function id() : string
     {
         return $this->role;
+    }
+
+    public static function loadValidatorMetadata(ValidatorMetadata $metadata) : void
+    {
+        $metadata->addConstraint(
+            new UniqueEntity([
+                'fields' => 'role',
+                'em' => 'core',
+            ])
+        );
+        $metadata->addPropertyConstraints('role', [
+            new Type('string'),
+            new NotBlank(),
+            new Length(['max' => 30]),
+            new Regex('/^[a-z]$/us'),
+        ]);
+        $metadata->addPropertyConstraints('keyword', [
+            new Type('object'),
+            new Valid(),
+            new NotNull(),
+        ]);
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void

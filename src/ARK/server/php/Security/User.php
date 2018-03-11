@@ -559,11 +559,20 @@ class User implements AdvancedUserInterface, Serializable
 
     public static function loadValidatorMetadata(ValidatorMetadata $metadata) : void
     {
-        // username and email must be unique
-        $options['fields'] = ['username', 'email'];
-        $options['em'] = 'user';
-        $constraint = new UniqueEntity($options);
-        $metadata->addConstraint($constraint);
+        // username must be unique
+        $metadata->addConstraint(
+            new UniqueEntity([
+                'fields' => 'username',
+                'em' => 'user',
+            ])
+        );
+        // email must be unique
+        $metadata->addConstraint(
+            new UniqueEntity([
+                'fields' => 'email',
+                'em' => 'user',
+            ])
+        );
 
         $metadata->addPropertyConstraints('username', [
             //new NotBlank(),

@@ -38,6 +38,13 @@ use ARK\Vocabulary\Parameter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\Validator\Constraints\Valid;
+use Symfony\Component\Validator\Mapping\ClassMetadata as ValidatorMetadata;
 
 class Keyword
 {
@@ -143,13 +150,49 @@ class Keyword
         return new ArrayCollection();
     }
 
+    public static function loadValidatorMetadata(ValidatorMetadata $metadata) : void
+    {
+        $metadata->addConstraint(
+            new UniqueEntity([
+                'fields' => 'keyword',
+                'em' => 'core',
+            ])
+        );
+        $metadata->addPropertyConstraints('keyword', [
+            new Type('string'),
+            new NotBlank(),
+            new Length(['max' => 100]),
+            new Regex('/^[a-z.]$/us'),
+        ]);
+        $metadata->addPropertyConstraints('domain', [
+            new Type('object'),
+            new Valid(),
+            new NotNull(),
+        ]);
+        $metadata->addPropertyConstraints('isPlural', [
+            new Type('bool'),
+            new NotNull(),
+        ]);
+        $metadata->addPropertyConstraints('hasParameters', [
+            new Type('bool'),
+            new NotNull(),
+        ]);
+    }
+
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
+        // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_translation');
+
+        // Key
         $builder->addStringKey('keyword', 100);
+
+        // Attributes
         $builder->addManyToOneField('domain', Domain::class);
         $builder->addMappedField('is_plural', 'isPlural', 'boolean');
         $builder->addMappedField('has_parameters', 'hasParameters', 'boolean');
+
+        // Relationships
         $builder->addOneToManyCascadeField('parameters', Parameter::class, 'keyword');
         $builder->addOneToManyCascadeField('messages', Message::class, 'keyword');
     }

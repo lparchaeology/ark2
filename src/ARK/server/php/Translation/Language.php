@@ -32,6 +32,12 @@ namespace ARK\Translation;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\OrmTrait;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\Validator\Mapping\ClassMetadata as ValidatorMetadata;
 
 class Language
 {
@@ -68,6 +74,34 @@ class Language
     public function usedForText() : bool
     {
         return $this->text;
+    }
+
+    public static function loadValidatorMetadata(ValidatorMetadata $metadata) : void
+    {
+        $metadata->addConstraint(
+            new UniqueEntity([
+                'fields' => 'language',
+                'em' => 'core',
+            ])
+        );
+        $metadata->addPropertyConstraints('language', [
+            new Type('string'),
+            new NotBlank(),
+            new Length(['max' => 10]),
+            new Regex('/^[a-z]$/us'),
+        ]);
+        $metadata->addPropertyConstraints('markup', [
+            new Type('bool'),
+            new NotNull(),
+        ]);
+        $metadata->addPropertyConstraints('vocbulary', [
+            new Type('bool'),
+            new NotNull(),
+        ]);
+        $metadata->addPropertyConstraints('text', [
+            new Type('bool'),
+            new NotNull(),
+        ]);
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void

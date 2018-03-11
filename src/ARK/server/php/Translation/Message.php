@@ -34,6 +34,13 @@ use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\Orm;
 use ARK\ORM\OrmTrait;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\Validator\Constraints\Valid;
+use Symfony\Component\Validator\Mapping\ClassMetadata as ValidatorMetadata;
 
 class Message
 {
@@ -143,6 +150,39 @@ class Message
             $role = $role->id();
         }
         return ORM::find(self::class, ['keyword' => $keyword, 'language' => $language, 'role' => $role]);
+    }
+
+    public static function loadValidatorMetadata(ValidatorMetadata $metadata) : void
+    {
+        $metadata->addConstraint(
+            new UniqueEntity([
+                'fields' => ['language', 'keyword', 'role'],
+                'em' => 'core',
+            ])
+        );
+        $metadata->addPropertyConstraints('language', [
+            new Type('object'),
+            new Valid(),
+            new NotNull(),
+        ]);
+        $metadata->addPropertyConstraints('keyword', [
+            new Type('object'),
+            new Valid(),
+            new NotNull(),
+        ]);
+        $metadata->addPropertyConstraints('role', [
+            new Type('object'),
+            new Valid(),
+            new NotNull(),
+        ]);
+        $metadata->addPropertyConstraints('text', [
+            new Type('string'),
+            new NotBlank(),
+        ]);
+        $metadata->addPropertyConstraints('notes', [
+            new Type('string'),
+            new NotBlank(),
+        ]);
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void
