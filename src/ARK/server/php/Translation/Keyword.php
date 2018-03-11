@@ -46,6 +46,9 @@ use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Mapping\ClassMetadata as ValidatorMetadata;
 
+/**
+ * Translation Keyword Entity
+ */
 class Keyword
 {
     use OrmTrait;
@@ -57,7 +60,14 @@ class Keyword
     protected $parameters;
     protected $messages;
 
-    public function __construct(string $keyword, Domain $domain, $isPlural = false)
+    /**
+     * Construct a new Translation Keyword
+     *
+     * @param string  $keyword  The translation keyword ID
+     * @param Domain  $domain   The translation domain
+     * @param boolean $isPlural If the translation is a plural form
+     */
+    public function __construct(string $keyword, Domain $domain, bool $isPlural = false)
     {
         $this->keyword = $keyword;
         $this->domain = $domain;
@@ -66,36 +76,71 @@ class Keyword
         $this->messages = new ArrayCollection();
     }
 
+    /**
+     * Return the keyword as a string
+     *
+     * @return string The string form of the translation keyword
+     */
     public function __toString() : string
     {
         return $this->id();
     }
 
+    /**
+     * Return the ID of the translation
+     *
+     * @return string The keyword ID
+     */
     public function id() : string
     {
         return $this->keyword;
     }
 
+    /**
+     * Return the domain of the translation
+     *
+     * @return Domain The translation domain
+     */
     public function domain() : Domain
     {
         return $this->domain;
     }
 
+    /**
+     * Return if the translation is a plural form
+     *
+     * @return bool If the translation is a plural form
+     */
     public function isPlural() : bool
     {
         return $this->isPlural;
     }
 
+    /**
+     * Return if the translation has parameters
+     *
+     * @return bool If the translation has parameters
+     */
     public function hasParameters() : bool
     {
         return $this->hasParameters;
     }
 
+    /**
+     * Returns the parameters for this translation
+     *
+     * @return Collection The translation parameters
+     */
     public function parameters() : Collection
     {
         return $this->parameters;
     }
 
+    /**
+     * Add a parameter to the translation
+     *
+     * @param string $parameter The parameter to add
+     */
     public function addParameter(string $parameter) : void
     {
         $this->hasParameters = true;
@@ -104,11 +149,24 @@ class Keyword
         ORM::persist($parameter);
     }
 
+    /**
+     * Returns all the translated messages for this keyword
+     *
+     * @return Collection The translated messages
+     */
     public function messages() : Collection
     {
         return $this->messages;
     }
 
+    /**
+     * Returns a translated message for the keyword
+     *
+     * @param  Language|string $language The language of the translated message
+     * @param  Role|string $role         The role of the translated message
+     *
+     * @return Message|null The translated message
+     */
     public function message($language = null, $role = 'default') : ?Message
     {
         $language = $this->getLanguage($language);
@@ -125,6 +183,14 @@ class Keyword
         return $results->first();
     }
 
+    /**
+     * Set a translated message for the keyword
+     *
+     * @param string $message           The translated message
+     * @param Language|string $language The language of the translated message
+     * @param Role|string $role         The role of the translated message
+     * @param string $notes             Translator notes for the message
+     */
     public function setMessage(string $message, $language = null, $role = null, string $notes = '') : void
     {
         $language = $this->getLanguage($language);
@@ -139,6 +205,13 @@ class Keyword
         ORM::persist($msg);
     }
 
+    /**
+     * Query the ORM for all Keywords within a Domain
+     *
+     * @param  Domain|string $domain The Domain to query for
+     *
+     * @return Collection The collection of messages
+     */
     public static function findByDomain($domain) : Collection
     {
         if (is_string($domain)) {
@@ -150,6 +223,11 @@ class Keyword
         return new ArrayCollection();
     }
 
+    /**
+     * Load Entity Validator Metadata
+     *
+     * @param ValidatorMetadata $metadata The Symfony validator metadata object
+     */
     public static function loadValidatorMetadata(ValidatorMetadata $metadata) : void
     {
         $metadata->addConstraint(
@@ -179,6 +257,11 @@ class Keyword
         ]);
     }
 
+    /**
+     * Load Entity ORM Metadata
+     *
+     * @param ClassMetadata $metadata The Doctrine ORM metadata object
+     */
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
@@ -197,11 +280,18 @@ class Keyword
         $builder->addOneToManyCascadeField('messages', Message::class, 'keyword');
     }
 
-    private function getLanguage($language = null) : ?Language
+    /**
+     * Get a Language entity
+     *
+     * @param  Language|string $language The language or code to get
+     *
+     * @return Language The language entity
+     */
+    private function getLanguage($language = null) : Language
     {
         $language = $language ?? Service::locale();
         if (is_string($language)) {
-            $language = ORM::find(Language::class, $language);
+            $language = Language::find($language);
         }
         if (!$language instanceof Language || !$language->usedForMarkup()) {
             // TODO Proper error
@@ -210,11 +300,18 @@ class Keyword
         return $language;
     }
 
-    private function getRole($role = 'default') : ?Role
+    /**
+     * Get a Role entity
+     *
+     * @param  Role|string $role The role or code to get
+     *
+     * @return Role The role entity
+     */
+    private function getRole($role = 'default') : Role
     {
         $role = $role ?? 'default';
         if (is_string($role)) {
-            $role = ORM::find(Role::class, $role);
+            $role = Role::find($role);
         }
         if (!$role instanceof Role) {
             // TODO Proper error

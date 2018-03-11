@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Translation Domain Entity.
+ * ARK Translation Role Entity.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -41,6 +41,9 @@ use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Mapping\ClassMetadata as ValidatorMetadata;
 
+/**
+ * Translation Role Entity
+ */
 class Role
 {
     use KeywordTrait;
@@ -48,16 +51,31 @@ class Role
 
     protected $role = '';
 
+    /**
+     * Construct a new translation role entity
+     *
+     * @param string $id The role ID
+     */
     public function __construct(string $id = 'default')
     {
         $this->role = $id;
     }
 
+    /**
+     * Returns the ID of the translation role
+     *
+     * @return string The role ID
+     */
     public function id() : string
     {
         return $this->role;
     }
 
+    /**
+     * Load Entity Validator Metadata
+     *
+     * @param ValidatorMetadata $metadata The Symfony validator metadata object
+     */
     public static function loadValidatorMetadata(ValidatorMetadata $metadata) : void
     {
         $metadata->addConstraint(
@@ -79,6 +97,11 @@ class Role
         ]);
     }
 
+    /**
+     * Load Entity ORM Metadata
+     *
+     * @param ClassMetadata $metadata The Doctrine ORM metadata object
+     */
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_translation_role');

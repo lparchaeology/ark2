@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Translation Domain Entity.
+ * ARK Translation Message Entity.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -42,6 +42,9 @@ use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Mapping\ClassMetadata as ValidatorMetadata;
 
+/**
+ * Translation Message Entity
+ */
 class Message
 {
     use OrmTrait;
@@ -52,6 +55,13 @@ class Message
     protected $text = '';
     protected $notes = '';
 
+    /**
+     * Construct a new Message entity
+     *
+     * @param Keyword  $keyword  The translation keyword
+     * @param Language $language The translation language
+     * @param Role     $role     The translation role
+     */
     public function __construct(Keyword $keyword, Language $language, Role $role = null)
     {
         $this->keyword = $keyword;
@@ -62,7 +72,12 @@ class Message
         $this->role = $role;
     }
 
-    public function id() : string
+    /**
+     * Returns the ID of the translation message
+     *
+     * @return iterable The message ID
+     */
+    public function id() : iterable
     {
         return [
             'keyword' => $this->keyword->id(),
@@ -71,11 +86,21 @@ class Message
         ];
     }
 
-    public function keyword() : string
+    /**
+     * Returns the message keyword
+     *
+     * @return Keyword The message keyword
+     */
+    public function keyword() : Keyword
     {
         return $this->keyword;
     }
 
+    /**
+     * Returns the message language
+     *
+     * @return Language The message language
+     */
     public function language() : Language
     {
         return $this->language;
@@ -93,51 +118,65 @@ class Message
         return $this->role;
     }
 
+    /**
+     * Returns the message role
+     *
+     * @return Role The message role
+     */
     public function role() : Role
     {
         return $this->role;
     }
 
+    /**
+     * Returns the message text
+     *
+     * @return string The message text
+     */
     public function text() : string
     {
         return $this->text;
     }
 
+    /**
+     * Set the message text
+     *
+     * @param string $text The new message text
+     */
     public function setText(string $text) : void
     {
         $this->text = $text;
     }
 
+    /**
+     * Returns the message notes
+     *
+     * @return string The message notes
+     */
     public function notes() : string
     {
         return $this->notes;
     }
 
+    /**
+     * Set the message notes
+     *
+     * @param string $notes The new message notes
+     */
     public function setNotes(string $notes) : void
     {
         $this->notes = $notes;
     }
 
-    public function domain() : Domain
-    {
-        return $this->keyword->domain();
-    }
-
-    public function isPlural() : bool
-    {
-        return $this->keyword->isPlural();
-    }
-
-    public function hasParameters() : bool
-    {
-        return $this->keyword->hasParameters();
-    }
-
-    public function parameters() : Collection
-    {
-        return $this->keyword->parameters();
-    }
-
+    /**
+     * Query the ORM for a translation message
+     *
+     * @param  Keyword|string  $keyword  The keyword to to query for
+     * @param  Language|string $language The langauge to query for
+     * @param  Role|string     $role     The role to query for
+     *
+     * @return Message|null The message
+     */
     public static function find($keyword, $language, $role = 'default') : ?self
     {
         if ($keyword instanceof Keyword) {
@@ -152,6 +191,11 @@ class Message
         return ORM::find(self::class, ['keyword' => $keyword, 'language' => $language, 'role' => $role]);
     }
 
+    /**
+     * Load Entity Validator Metadata
+     *
+     * @param ValidatorMetadata $metadata The Symfony validator metadata object
+     */
     public static function loadValidatorMetadata(ValidatorMetadata $metadata) : void
     {
         $metadata->addConstraint(
@@ -185,6 +229,11 @@ class Message
         ]);
     }
 
+    /**
+     * Load Entity ORM Metadata
+     *
+     * @param ClassMetadata $metadata The Doctrine ORM metadata object
+     */
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table

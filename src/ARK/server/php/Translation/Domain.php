@@ -41,6 +41,9 @@ use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Mapping\ClassMetadata as ValidatorMetadata;
 
+/**
+ * Translation Domain Entity
+ */
 class Domain
 {
     use KeywordTrait;
@@ -48,11 +51,21 @@ class Domain
 
     protected $domain = '';
 
+    /**
+     * Returns the ID of the Translation Domain
+     *
+     * @return string The ID of the Domain
+     */
     public function id() : string
     {
         return $this->domain;
     }
 
+    /**
+     * Load Entity Validator Metadata
+     *
+     * @param ValidatorMetadata $metadata The Symfony validator metadata object
+     */
     public static function loadValidatorMetadata(ValidatorMetadata $metadata) : void
     {
         $metadata->addConstraint(
@@ -74,6 +87,11 @@ class Domain
         ]);
     }
 
+    /**
+     * Load Entity ORM Metadata
+     *
+     * @param ClassMetadata $metadata The Doctrine ORM metadata object
+     */
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_translation_domain');

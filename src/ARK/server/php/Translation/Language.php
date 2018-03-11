@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Translation Domain Entity.
+ * ARK Translation Language Entity.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -39,6 +39,9 @@ use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Mapping\ClassMetadata as ValidatorMetadata;
 
+/**
+ * Translation Language Entity
+ */
 class Language
 {
     use OrmTrait;
@@ -48,6 +51,14 @@ class Language
     protected $vocabulary = true;
     protected $text = true;
 
+    /**
+     * Construct a new Language Entity
+     *
+     * @param string  $code       The language code
+     * @param boolean $markup     If the language is used for markup
+     * @param boolean $vocabulary If the language is used for vocabularies
+     * @param boolean $text       If the language is used for text
+     */
     public function __construct(string $code, bool $markup = true, bool $vocabulary = true, bool $text = true)
     {
         $this->language = $code;
@@ -56,26 +67,51 @@ class Language
         $this->text = $text;
     }
 
+    /**
+     * Returns the language code
+     *
+     * @return string The language code
+     */
     public function code() : string
     {
         return $this->language;
     }
 
+    /**
+     * Returns if the language is used for markup
+     *
+     * @return bool If the language is used for markup
+     */
     public function usedForMarkup() : bool
     {
         return $this->markup;
     }
 
+    /**
+     * Returns if the language is used for vocabularies
+     *
+     * @return bool If the language is used for vocabularies
+     */
     public function usedForVocabulary() : bool
     {
         return $this->vocabulary;
     }
 
+    /**
+     * Returns if the language is used for text
+     *
+     * @return bool If the language is used for text
+     */
     public function usedForText() : bool
     {
         return $this->text;
     }
 
+    /**
+     * Load Entity Validator Metadata
+     *
+     * @param ValidatorMetadata $metadata The Symfony validator metadata object
+     */
     public static function loadValidatorMetadata(ValidatorMetadata $metadata) : void
     {
         $metadata->addConstraint(
@@ -104,6 +140,11 @@ class Language
         ]);
     }
 
+    /**
+     * Load Entity ORM Metadata
+     *
+     * @param ClassMetadata $metadata The Doctrine ORM metadata object
+     */
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_translation_language');
