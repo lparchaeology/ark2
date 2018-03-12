@@ -32,6 +32,7 @@ namespace ARK\Translation;
 use ARK\Framework\Application;
 use ARK\Service;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class TranslationService
 {
@@ -54,7 +55,7 @@ class TranslationService
         Translation::importFiles($finder, $replace, $chooser);
     }
 
-    public function translator() : Translator
+    public function translator() : TranslatorInterface
     {
         return $this->app['translator'];
     }

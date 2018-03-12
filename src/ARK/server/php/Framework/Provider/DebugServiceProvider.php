@@ -31,6 +31,7 @@ namespace ARK\Framework\Provider;
 
 use ARK\ARK;
 use ARK\Form\Extension\DataCollector\FormDataCollector;
+use ARK\Translation\DataCollectorTranslator;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Provider\VarDumperServiceProvider;
@@ -73,6 +74,10 @@ class DebugServiceProvider implements ServiceProviderInterface
                 return $collectors;
             });
 
+            // Translation Profiler
+            $container->extend('translator', function ($translator, $app) {
+                return new DataCollectorTranslator($app['translator.default']);
+            });
             $container['data_collector.templates'] = $container->extend('data_collector.templates', function ($templates) {
                 // Cloned Database template
                 $templates[] = ['db', 'profiler/db.html.twig'];

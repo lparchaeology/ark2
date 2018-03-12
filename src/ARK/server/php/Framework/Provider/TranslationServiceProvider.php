@@ -44,9 +44,9 @@ use Silex\Api\EventListenerProviderInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\EventListener\TranslatorListener;
+use Symfony\Component\Translation\Formatter\MessageFormatter;
 use Symfony\Component\Translation\Loader\ArrayLoader;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
-use Symfony\Component\Translation\MessageSelector;
 
 /**
  * Adapted from Silex\Provider\TranslationServiceProvider.
@@ -57,7 +57,7 @@ class TranslationServiceProvider implements ServiceProviderInterface, EventListe
 {
     public function register(Container $app) : void
     {
-        $app['translator'] = function ($app) {
+        $app['translator.default'] = function ($app) {
             if (!isset($app['locale'])) {
                 throw new LogicException('You must define \'locale\' parameter or register the LocaleServiceProvider to use the TranslationServiceProvider');
             }
@@ -120,6 +120,10 @@ class TranslationServiceProvider implements ServiceProviderInterface, EventListe
             return $translator;
         };
 
+        $app['translator'] = function ($app) {
+            return $app['translator.default'];
+        };
+
         if (isset($app['request_stack'])) {
             $app['translator.listener'] = function ($app) {
                 return new TranslatorListener($app['translator'], $app['request_stack']);
@@ -127,7 +131,7 @@ class TranslationServiceProvider implements ServiceProviderInterface, EventListe
         }
 
         $app['translator.message_selector'] = function () {
-            return new MessageSelector();
+            return new MessageFormatter();
         };
 
         $app['translator.resources'] = function ($app) {

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Ark Database Translation Loader.
+ * ARK Translation Twig Extractor.
  *
  * Copyright (C) 2018  L - P : Heritage LLP.
  *
@@ -27,21 +27,32 @@
  * @since      2.0
  */
 
-namespace ARK\Translation\Loader;
+namespace ARK\Translation\Extractor;
 
-use ARK\Database\Database;
-use Symfony\Component\Translation\Loader\LoaderInterface;
+use Symfony\Bridge\Twig\Translation\TwigExtractor as SymfonyTwigExtractor;
 use Symfony\Component\Translation\MessageCatalogue;
+use Twig\Source;
 
-class DatabaseLoader implements LoaderInterface
+/**
+ * TwigExtractor extracts translation messages from a twig template.
+ *
+ * @author Michel Salib <michelsalib@hotmail.com>
+ * @author Fabien Potencier <fabien@symfony.com>
+ * @license MIT
+ */
+class TwigExtractor extends SymfonyTwigExtractor
 {
-    public function load($db, $locale, $domain = 'messages') : MessageCatalogue
+    protected function extractTemplate($template, MessageCatalogue $catalogue) : void
     {
-        $catalogue = new MessageCatalogue($locale);
-        $rows = $db->getTranslationMessages($locale, $domain === 'messages' ? null : $domain);
-        foreach ($rows as $row) {
-            $catalogue->set($row['keyword'].'.'.$row['role'], $row['text'], $domain);
+        $visitor = $this->twig->getExtension('ARK\Twig\Extension\TranslationExtension')->getTranslationNodeVisitor();
+        $visitor->enable();
+
+        $this->twig->parse($this->twig->tokenize(new Source($template, '')));
+
+        foreach ($visitor->getMessages() as $message) {
+            $catalogue->set(trim($message[0]), $this->prefix.trim($message[0]), $message[1] ?: $this->defaultDomain);
         }
-        return $catalogue;
+
+        $visitor->disable();
     }
 }

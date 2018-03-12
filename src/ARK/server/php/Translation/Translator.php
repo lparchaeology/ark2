@@ -44,11 +44,60 @@ class Translator extends SymfonyTranslator
         return $this->doTranslate($id, $count, $role, $parameters, $domain, $locale);
     }
 
+    public function trans($id, array $parameters = [], $domain = null, $locale = null)
+    {
+        return $this->doTranslate($id, null, null, $parameters, $domain, $locale);
+    }
+
+    public function transChoice($id, $number, array $parameters = [], $domain = null, $locale = null)
+    {
+        return $this->doTranslate($id, $count, null, $parameters, $domain, $locale);
+    }
+
+    public function makeCatalogueId($id, $role = null) : string
+    {
+        if (is_object($id) && method_exists($id, 'keyword')) {
+            $id = $id->keyword();
+        }
+        if (is_array($id) && isset($id['keyword'])) {
+            $id = $id['keyword'];
+        }
+        if ($id instanceof Keyword) {
+            $id = $id->id();
+        }
+
+        if (!is_string($id)) {
+            return '';
+        }
+
+        if ($role instanceof Role) {
+            $role = $role->id();
+        }
+
+        $parts = explode('.', $id);
+        $idRole = Role::find(end($parts));
+        if (!$role && !$idRole) {
+            // If no role either explicit or implicit, then default
+            $lookup = $id.'.default';
+        } elseif (!$idRole) {
+            // If only explicit role, use that
+            $lookup = $id.'.'.$role;
+        } elseif (!$role) {
+            // If only implicit role, use that
+            $lookup = $id;
+        } elseif ($idRole->id() === $role) {
+            // If both and match, use that
+            $lookup = $id;
+        } else {
+            // If both and don't match, try with role first
+            $lookup = $id.'.'.$role;
+        }
+
+        return $lookup;
+    }
+
     private function doTranslate($id, $count = null, $role = null, $parameters = [], $domain = null, $locale = null) : string
     {
-        if (!$id) {
-            return  '';
-        }
         if ($id instanceof LocalText) {
             return  $id->content($locale);
         }
@@ -70,36 +119,32 @@ class Translator extends SymfonyTranslator
         if ($role instanceof Role) {
             $role = $role->id();
         }
-        if (!$role) {
-            $role = 'default';
-        }
 
         if ($domain instanceof Domain) {
             $domain = $domain->id();
-        }
-        if (!$domain) {
-            $domain = 'messages';
         }
 
         if ($locale instanceof Language) {
             $locale = $locale->code();
         }
 
-        if ($role !== null && $role !== 'default') {
-            $lookup = $id.'.'.$role;
-            if ($count === null) {
-                $msg = $this->trans($lookup, $parameters, $domain, $locale);
-            } else {
-                $msg = $this->transChoice($lookup, $count, $parameters, $domain, $locale);
-            }
-            if ($msg !== $lookup) {
-                return $msg;
-            }
-        }
+        $lookup = $this->makeCatalogueId($id, $role);
 
+        // First try lookup on id with role added to end
         if ($count === null) {
-            return $this->trans($id, $parameters, $domain, $locale);
+            $msg = SymfonyTranslator::trans($lookup, $parameters, $domain, $locale);
+        } else {
+            $msg = SymfonyTranslator::transChoice($lookup, $count, $parameters, $domain, $locale);
         }
-        return $this->transChoice($id, $count, $parameters, $domain, $locale);
+        if ($msg !== $lookup) {
+            return $msg;
+        }
+        // Then try lookup on raw id
+        if ($count === null) {
+            $msg = SymfonyTranslator::trans($id, $parameters, $domain, $locale);
+        } else {
+            $msg = SymfonyTranslator::transChoice($id, $count, $parameters, $domain, $locale);
+        }
+        return $msg;
     }
 }
