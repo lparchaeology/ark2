@@ -34,7 +34,6 @@ use ARK\ORM\ORM;
 use ARK\Security\Actor;
 use ARK\Security\Person;
 use ARK\Service;
-use ARK\Translation\Translation;
 use ARK\View\Page;
 use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
@@ -302,7 +301,7 @@ class FindListController extends DimePageController
                 $select['choice_name'] = 'name';
                 $select['choice_label'] = 'keyword';
                 $select['multiple'] = false;
-                $select['placeholder'] = Translation::translate('core.placeholder');
+                $select['placeholder'] = 'core.placeholder';
                 $state['select']['actions'] = $select;
             }
             // TODO Hide the Action widget???
@@ -327,7 +326,7 @@ class FindListController extends DimePageController
             } elseif ($actor->hasPermission('dime.find.filter.museum')) {
                 $select['choices'] = ORM::findAll(Museum::class);
                 $select['multiple'] = true;
-                $select['placeholder'] = Translation::translate('core.placeholder');
+                $select['placeholder'] = 'core.placeholder';
             } else {
                 $select['placeholder'] = '';
                 $select['modus'] = 'readonly';
@@ -343,7 +342,7 @@ class FindListController extends DimePageController
                 $finders = DIME::getFinders();
                 $select['choices'] = ORM::findBy(Person::class, ['id' => $finders]);
                 $select['multiple'] = false;
-                $select['placeholder'] = Translation::translate('core.placeholder');
+                $select['placeholder'] = 'core.placeholder';
             } elseif ($actor->hasPermission('dime.find.create')) {
                 $select['choices'] = [$actor];
                 $select['multiple'] = false;

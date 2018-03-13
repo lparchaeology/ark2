@@ -31,7 +31,6 @@ namespace ARK\Framework;
 
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\Translation\Translation;
 use ARK\View\Page;
 use ARK\Workflow\Exception\WorkflowException;
 use Symfony\Component\HttpFoundation\Request;
@@ -127,7 +126,7 @@ abstract class PageController extends Controller
             $select['choice_label'] = 'keyword';
             $select['choices'] = $state['actions'];
             $select['multiple'] = false;
-            $select['placeholder'] = Translation::translate('core.placeholder');
+            $select['placeholder'] = 'core.placeholder';
             if ($state['actions']->isEmpty()) {
                 $select['modus'] = 'readonly';
             }
@@ -138,7 +137,7 @@ abstract class PageController extends Controller
             $select['choice_label'] = 'fullname';
             $select['choices'] = $state['actors'];
             $select['multiple'] = false;
-            $select['placeholder'] = Translation::translate('core.placeholder');
+            $select['placeholder'] = 'core.placeholder';
             $state['select']['actors'] = $select;
         }
 

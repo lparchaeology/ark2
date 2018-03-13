@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 09, 2018 at 04:23 PM
--- Server version: 10.2.12-MariaDB
+-- Generation Time: Mar 13, 2018 at 04:48 PM
+-- Server version: 10.2.13-MariaDB
 -- PHP Version: 7.1.14
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1437,7 +1437,6 @@ CREATE TABLE `ark_translation` (
 --
 
 INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
-('Apply', 'dime', 0, 0),
 ('core.action.disable', 'core', 0, 0),
 ('core.action.edit', 'core', 0, 0),
 ('core.action.enable', 'vocabulary', 0, 0),
@@ -3479,7 +3478,6 @@ CREATE TABLE `ark_translation_message` (
 
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('da', 'Actions', 'default', 'Aktion (tryk på \'Udfør aktion\' for at aktivere)', ''),
-('da', 'Apply', 'default', 'Kør', ''),
 ('da', 'core.action.edit', 'default', 'Rediger', NULL),
 ('da', 'core.action.register', 'default', 'Registrer', NULL),
 ('da', 'core.action.select', 'default', 'Vælg handling', NULL),
@@ -3516,8 +3514,8 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'core.csv.enclosure', 'default', '\"', NULL),
 ('da', 'core.csv.filename', 'default', 'export', NULL),
 ('da', 'core.csv.separator', 'default', ';', NULL),
+('da', 'core.error.form.invalid', 'default', 'Der er fejl i formularen', ''),
 ('da', 'core.error.form.invalid', 'error', 'Der er fejl i formularen', ''),
-('da', 'core.error.form.invalid.error', 'default', 'Der er fejl i formularen', ''),
 ('da', 'core.event', 'default', 'begivenhed', ''),
 ('da', 'core.event', 'resource', 'Resource', ''),
 ('da', 'core.event.class.viewed', 'default', 'Vist', NULL),
@@ -3658,11 +3656,8 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.controls', 'default', 'Vis', ''),
 ('da', 'dime.copyright', 'default', 'Copyright © 2013-2017 Arkæologisk IT, Aarhus Universitet', NULL),
 ('da', 'dime.credits', 'default', 'Datastruktur og support: Carsten Risager | Design: Casper Skaaning Andersen | Udvikling: L - P : Archaeology', ''),
-('da', 'dime.dating', 'from', 'Datering fra', ''),
-('da', 'dime.dating', 'to', 'Datering til', ''),
 ('da', 'dime.dating.from', 'default', 'Datering fra', ''),
 ('da', 'dime.dating.period', 'default', 'Periode', ''),
-('da', 'dime.dating.til', 'default', 'Datering til', ''),
 ('da', 'dime.dating.to', 'default', 'Datering til', ''),
 ('da', 'dime.dating.year', 'default', 'Årstal', ''),
 ('da', 'dime.denmark.municipality', 'default', 'Kommune', NULL),
@@ -3732,7 +3727,6 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.find.finder_id.help', 'default', 'For at hjælpe museet med at registrere dine fund, bør du angive et unikt nummer for dit fund (samme nummer som du skriver på fundposen). OBS! Hvis du har fået fundnumre uddelt af museet, angiv dette.', ''),
 ('da', 'dime.find.finder_place', 'default', 'Fundsted', NULL),
 ('da', 'dime.find.finder_place', 'help', 'Angiv her fundpladsens navn (enten dit eget navn for stedet eller museets betegnelse)', ''),
-('da', 'dime.find.finder_place.help', 'default', 'Angiv her fundpladsens navn (enten dit eget navn for stedet eller museets betegnelse)', ''),
 ('da', 'dime.find.id', 'default', 'DIME-ID', NULL),
 ('da', 'dime.find.images', 'default', 'Fotos', NULL),
 ('da', 'dime.find.images', 'help', 'For at få optimale fundbilleder skal: 1) fundet være rengjort (pas på genstanden! - se tips om korrekt håndtering af fund her: //link til tutorial er på vej//). 2) der være en målestok ved fundet (f.eks. lineal) OBS! Guide til det gode fundfoto - Se her: //link til tutorial er på vej//', ''),
@@ -4117,13 +4111,13 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.kommune.haderslev', 'official', 'Haderslev Kommune', NULL),
 ('da', 'dime.kommune.halsnaes', 'default', 'Halsnæs', NULL),
 ('da', 'dime.kommune.halsnaes', 'official', 'Halsnæs Kommune', NULL),
-('da', 'dime.kommune.hedensted', 'default', 'Hedensted', NULL);
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('da', 'dime.kommune.hedensted', 'default', 'Hedensted', NULL),
 ('da', 'dime.kommune.hedensted', 'official', 'Hedensted Kommune', NULL),
 ('da', 'dime.kommune.helsingor', 'default', 'Helsingør', NULL),
 ('da', 'dime.kommune.helsingor', 'official', 'Helsingør Kommune', NULL),
 ('da', 'dime.kommune.herlev', 'default', 'Herlev', NULL),
-('da', 'dime.kommune.herlev', 'official', 'Herlev Kommune', NULL),
+('da', 'dime.kommune.herlev', 'official', 'Herlev Kommune', NULL);
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('da', 'dime.kommune.herning', 'default', 'Herning', NULL),
 ('da', 'dime.kommune.herning', 'official', 'Herning Kommune', NULL),
 ('da', 'dime.kommune.hillerod', 'default', 'Hillerød', NULL),
@@ -4891,12 +4885,12 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.class.accessory', 'default', 'Jewelery / Costume Accessories', NULL),
 ('en', 'dime.find.class.coin', 'default', 'Coin', NULL),
 ('en', 'dime.find.class.fibula', 'default', 'Fibula / Suit Buckle', NULL),
-('en', 'dime.find.class.metal', 'default', 'Production Waste / Scrap Metal', NULL);
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.find.class.metal', 'default', 'Production Waste / Scrap Metal', NULL),
 ('en', 'dime.find.class.military', 'default', 'Weapons / Militaria', NULL),
 ('en', 'dime.find.class.tool', 'default', 'Equipment / Tools', NULL),
 ('en', 'dime.find.class.unassessed', 'default', 'Awaiting Assessment', NULL),
-('en', 'dime.find.class.unknown', 'default', 'Unknown', NULL),
+('en', 'dime.find.class.unknown', 'default', 'Unknown', NULL);
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'dime.find.classification', 'default', 'Classification', NULL),
 ('en', 'dime.find.classify', 'default', 'Classify', ''),
 ('en', 'dime.find.condition', 'default', 'Condition', NULL),
@@ -5521,12 +5515,12 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.period.medieval.late', 'default', 'Late Medieval', NULL),
 ('en', 'dime.period.mesolithic', 'default', 'Mesolithic', NULL),
 ('en', 'dime.period.modern', 'default', 'Modern Age', NULL),
-('en', 'dime.period.neolithic', 'default', 'Neolithic', NULL);
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.period.neolithic', 'default', 'Neolithic', NULL),
 ('en', 'dime.period.palaeolithic', 'default', 'Palaeolithic', NULL),
 ('en', 'dime.period.prehistoric', 'default', 'Prehistoric', ''),
 ('en', 'dime.period.reformation', 'default', 'Reformation', NULL),
-('en', 'dime.period.reformation.modern', 'default', 'Reformation / Modern', NULL),
+('en', 'dime.period.reformation.modern', 'default', 'Reformation / Modern', NULL);
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'dime.period.stone', 'default', 'Stone Age', NULL),
 ('en', 'dime.period.undated', 'default', 'Undated', NULL),
 ('en', 'dime.period.viking', 'default', 'Viking Age', NULL),

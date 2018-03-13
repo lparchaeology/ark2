@@ -104,7 +104,7 @@ class TranslationServiceProvider implements ServiceProviderInterface, EventListe
             }
 
             foreach ($app['locale_fallbacks'] as $language) {
-                $translator->addResource('actor', $app['database'], $language);
+                $translator->addResource('actor', $app['database'], $language, 'messages');
                 if ($app['debug']) {
                     $translator->addResource('database', $app['database'], $language);
                 } else {

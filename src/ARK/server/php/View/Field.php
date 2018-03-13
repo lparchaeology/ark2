@@ -29,7 +29,6 @@
 
 namespace ARK\View;
 
-use ARK\Security\Actor;
 use ARK\Form\Type\StaticType;
 use ARK\Model\Item;
 use ARK\Model\KeywordTrait;
@@ -38,6 +37,7 @@ use ARK\Model\Schema\SchemaAttribute;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
+use ARK\Security\Actor;
 use ARK\Service;
 use ARK\Translation\Translation;
 use IntlDateFormatter;

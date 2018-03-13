@@ -32,7 +32,6 @@ namespace DIME\Controller\View;
 use ARK\Model\Item;
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\Translation\Translation;
 use ARK\Vocabulary\Vocabulary;
 use DIME\Entity\Museum;
 use Symfony\Component\Form\Form;
@@ -49,7 +48,7 @@ class AdminMuseumController extends DimePageController
         $select['choice_name'] = 'term';
         $select['choice_label'] = 'keyword';
         $select['multiple'] = false;
-        $select['placeholder'] = Translation::translate('core.placeholder');
+        $select['placeholder'] = 'core.placeholder';
         $state['select']['municipality'] = $select;
         $state['controls']['actor'] = true;
         return $state;

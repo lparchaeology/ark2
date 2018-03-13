@@ -57,7 +57,7 @@ class UserResetController extends DimePageController
                     Service::security()->resetPassword($user, $password);
                     if ($user->passwordRequestToken() === '') {
                         Service::security()->loginAsUser($user, 'secured', $request);
-                        Service::view()->addSuccessFlash('core.user.reset.success');
+                        Service::view()->addSuccessFlash('core.user.reset');
                         return Service::redirectPath('dime.home');
                     }
                     Service::view()->addErrorFlash('core.user.reset.expired');

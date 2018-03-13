@@ -34,7 +34,6 @@ use ARK\ORM\ORM;
 use ARK\Security\Actor;
 use ARK\Security\User;
 use ARK\Service;
-use ARK\Translation\Translation;
 use ARK\Vocabulary\Vocabulary;
 use DIME\Entity\Museum;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -84,7 +83,7 @@ class AdminUserController extends DimePageController
         $select['choice_name'] = 'id';
         $select['choice_label'] = 'fullname';
         $select['multiple'] = false;
-        $select['placeholder'] = Translation::translate('core.placeholder');
+        $select['placeholder'] = 'core.placeholder';
         $state['select']['museum'] = $select;
 
         $status = $query['status'] ?? null;
@@ -102,7 +101,7 @@ class AdminUserController extends DimePageController
             $select['choice_name'] = 'name';
             $select['choice_label'] = 'keyword';
             $select['multiple'] = false;
-            $select['placeholder'] = Translation::translate('core.placeholder');
+            $select['placeholder'] = 'core.placeholder';
             $state['select']['actions'] = $select;
         }
 

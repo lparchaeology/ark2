@@ -30,32 +30,76 @@
 namespace ARK\Translation;
 
 use ARK\Model\LocalText;
+use ARK\Service;
 use Symfony\Component\Translation\Translator as SymfonyTranslator;
 
 class Translator extends SymfonyTranslator
 {
     public function translate($id, $role = null, $parameters = [], $domain = null, $locale = null) : string
     {
-        return $this->doTranslate($id, null, $role, $parameters, $domain, $locale);
+        $message = $this->generateMessage($id, null, $role, $parameters, $domain, $locale);
+        return $message['translation'] ?? '';
     }
 
     public function translateChoice($id, int $count, $role = null, $parameters = [], $domain = null, $locale = null) : string
     {
-        return $this->doTranslate($id, $count, $role, $parameters, $domain, $locale);
+        $message = $this->generateMessage($id, $count, $role, $parameters, $domain, $locale);
+        return $message['translation'] ?? '';
     }
 
     public function trans($id, array $parameters = [], $domain = null, $locale = null)
     {
-        return $this->doTranslate($id, null, null, $parameters, $domain, $locale);
+        $message = $this->generateMessage($id, null, null, $parameters, $domain, $locale);
+        return $message['translation'] ?? '';
     }
 
     public function transChoice($id, $number, array $parameters = [], $domain = null, $locale = null)
     {
-        return $this->doTranslate($id, $count, null, $parameters, $domain, $locale);
+        $message = $this->generateMessage($id, $count, null, $parameters, $domain, $locale);
+        return $message['translation'] ?? '';
     }
 
-    public function makeCatalogueId($id, $role = null) : string
+    public function generateMessage($id, $count = null, $role = null, $parameters = [], $domain = null, $locale = null) : iterable
     {
+        if ($role instanceof Role) {
+            $role = $role->id();
+        }
+        if (!$role) {
+            $role = 'default';
+        }
+
+        if ($domain instanceof Domain) {
+            $domain = $domain->id();
+        }
+        if (!$domain) {
+            $domain = 'messages';
+        }
+
+        if ($locale instanceof Language) {
+            $locale = $locale->code();
+        }
+        if (!$locale) {
+            $locale = Service::locale();
+        }
+
+        $message = [
+            'locale' => $locale,
+            'domain' => $domain,
+            'id' => $id,
+            'keyword' => $id,
+            'role' => $role,
+            'translation' => $id,
+            'parameters' => $parameters,
+            'transChoiceNumber' => $count,
+        ];
+
+        if ($id instanceof LocalText) {
+            $message['keyword'] = null;
+            $message['role'] = null;
+            $message['translation'] = $id->content($locale);
+            return $message;
+        }
+
         if (is_object($id) && method_exists($id, 'keyword')) {
             $id = $id->keyword();
         }
@@ -67,84 +111,43 @@ class Translator extends SymfonyTranslator
         }
 
         if (!is_string($id)) {
-            return '';
-        }
-
-        if ($role instanceof Role) {
-            $role = $role->id();
+            $message['keyword'] = null;
+            $message['translation'] = null;
+            return $message;
         }
 
         $parts = explode('.', $id);
         $idRole = Role::find(end($parts));
         if (!$role && !$idRole) {
             // If no role either explicit or implicit, then default
-            $lookup = $id.'.default';
-        } elseif (!$idRole) {
-            // If only explicit role, use that
-            $lookup = $id.'.'.$role;
+            $keyword = $id;
+            $role = 'default';
         } elseif (!$role) {
             // If only implicit role, use that
-            $lookup = $id;
-        } elseif ($idRole->id() === $role) {
+            $keyword = implode('.', $parts);
+            $role = $idRole->id();
+        } elseif ($idRole instanceof Role && $idRole->id() === $role) {
             // If both and match, use that
-            $lookup = $id;
+            $keyword = implode('.', $parts);
         } else {
-            // If both and don't match, try with role first
-            $lookup = $id.'.'.$role;
+            $keyword = $id;
         }
-
-        return $lookup;
-    }
-
-    private function doTranslate($id, $count = null, $role = null, $parameters = [], $domain = null, $locale = null) : string
-    {
-        if ($id instanceof LocalText) {
-            return  $id->content($locale);
-        }
-
-        if (is_object($id) && method_exists($id, 'keyword')) {
-            $id = $id->keyword();
-        }
-        if (is_array($id) && isset($id['keyword'])) {
-            $id = $id['keyword'];
-        }
-        if ($id instanceof Keyword) {
-            $id = $id->id();
-        }
-
-        if (!is_string($id)) {
-            return '';
-        }
-
-        if ($role instanceof Role) {
-            $role = $role->id();
-        }
-
-        if ($domain instanceof Domain) {
-            $domain = $domain->id();
-        }
-
-        if ($locale instanceof Language) {
-            $locale = $locale->code();
-        }
-
-        $lookup = $this->makeCatalogueId($id, $role);
 
         // First try lookup on id with role added to end
+        $lookup = $keyword.'.'.$role;
         if ($count === null) {
             $msg = SymfonyTranslator::trans($lookup, $parameters, $domain, $locale);
         } else {
             $msg = SymfonyTranslator::transChoice($lookup, $count, $parameters, $domain, $locale);
         }
+        $message['id'] = $lookup;
+        $message['keyword'] = $keyword;
+        $message['role'] = $role;
         if ($msg !== $lookup) {
-            return $msg;
-        }
-        // Then try lookup on raw id
-        if ($count === null) {
-            $msg = SymfonyTranslator::trans($id, $parameters, $domain, $locale);
+            $message['translation'] = $msg;
         } else {
-            $msg = SymfonyTranslator::transChoice($id, $count, $parameters, $domain, $locale);
+            $message['translation'] = $id;
         }
-        return $msg;
+        return $message;
     }
 }

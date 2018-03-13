@@ -29,13 +29,12 @@
 
 namespace DIME\Controller\API;
 
-use ARK\Security\Actor;
 use ARK\Framework\FormController;
 use ARK\ORM\ORM;
+use ARK\Security\Actor;
+use ARK\Security\Role;
 use ARK\Security\User;
 use ARK\Service;
-use ARK\Translation\Translation;
-use ARK\Security\Role;
 use DIME\DIME;
 use DIME\Entity\Museum;
 use Symfony\Component\Form\Form;
@@ -51,7 +50,7 @@ class ActorRoleAddController extends FormController
         $select['choice_name'] = 'id';
         $select['choice_label'] = 'fullname';
         $select['multiple'] = false;
-        $select['placeholder'] = Translation::translate('core.placeholder');
+        $select['placeholder'] = 'core.placeholder';
         $state['select']['museum'] = $select;
         return $state;
     }

@@ -76,7 +76,7 @@ class TranslationMessageController
                     ORM::persist($translation);
                 }
                 // TODO Cater for roles.
-                $translation->setMessage($content['message'], $language, 'default', $content['notes']);
+                $translation->setMessage($content['message'], $language, $content['role'] ?? 'default', $content['notes']);
                 ORM::flush($translation);
                 Service::translation()->dump();
                 $json['status'] = 'success';

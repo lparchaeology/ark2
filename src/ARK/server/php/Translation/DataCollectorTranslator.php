@@ -37,10 +37,6 @@ use Symfony\Component\Translation\DataCollectorTranslator as SymfonyDataCollecto
  */
 class DataCollectorTranslator extends SymfonyDataCollectorTranslator
 {
-    public const MESSAGE_DEFINED = 0;
-    public const MESSAGE_MISSING = 1;
-    public const MESSAGE_EQUALS_FALLBACK = 2;
-
     private $translator;
     private $messages = [];
 
@@ -56,30 +52,30 @@ class DataCollectorTranslator extends SymfonyDataCollectorTranslator
 
     public function translate($id, $role = null, array $parameters = [], $domain = null, $locale = null)
     {
-        $trans = $this->translator->translate($id, $role, $parameters, $domain, $locale);
-        $this->collectMessage($locale, $domain, $id, $role, $trans, $parameters);
-        return $trans;
+        $message = $this->translator->generateMessage($id, null, $role, $parameters, $domain, $locale);
+        $this->collectMessage($message);
+        return $message['translation'] ?? '';
     }
 
     public function translateChoice($id, $number, $role = null, array $parameters = [], $domain = null, $locale = null)
     {
-        $trans = $this->translator->translateChoice($id, $number, $role, $parameters, $domain, $locale);
-        $this->collectMessage($locale, $domain, $id, $role, $trans, $parameters, $number);
-        return $trans;
+        $message = $this->translator->generateMessage($id, $number, $role, $parameters, $domain, $locale);
+        $this->collectMessage($message);
+        return $message['translation'] ?? '';
     }
 
     public function trans($id, array $parameters = [], $domain = null, $locale = null)
     {
-        $trans = $this->translator->trans($id, $parameters, $domain, $locale);
-        $this->collectMessage($locale, $domain, $id, null, $trans, $parameters);
-        return $trans;
+        $message = $this->translator->generateMessage($id, null, null, $parameters, $domain, $locale);
+        $this->collectMessage($message);
+        return $message['translation'] ?? '';
     }
 
     public function transChoice($id, $number, array $parameters = [], $domain = null, $locale = null)
     {
-        $trans = $this->translator->transChoice($id, $number, $parameters, $domain, $locale);
-        $this->collectMessage($locale, $domain, $id, null, $trans, $parameters, $number);
-        return $trans;
+        $message = $this->translator->generateMessage($id, $number, null, $parameters, $domain, $locale);
+        $this->collectMessage($message);
+        return $message['translation'] ?? '';
     }
 
     public function setLocale($locale) : void
@@ -107,14 +103,14 @@ class DataCollectorTranslator extends SymfonyDataCollectorTranslator
         return $this->messages;
     }
 
-    private function collectMessage($locale, $domain, $id, $role, $translation, $parameters = [], $number = null) : void
+    private function collectMessage($message) : void
     {
-        if (null === $domain) {
-            $domain = 'messages';
+        if ($message['keyword'] === null || $message['role'] === null) {
+            return;
         }
-
-        $id = $this->translator->makeCatalogueId($id);
-        $catalogue = $this->translator->getCatalogue($locale);
+        $domain = $message['domain'] ?? 'messages';
+        $id = $message['id'];
+        $catalogue = $this->translator->getCatalogue($message['locale']);
         $locale = $catalogue->getLocale();
         if ($catalogue->defines($id, $domain)) {
             $state = self::MESSAGE_DEFINED;
@@ -134,15 +130,8 @@ class DataCollectorTranslator extends SymfonyDataCollectorTranslator
             $state = self::MESSAGE_MISSING;
         }
 
-        $this->messages[] = [
-            'locale' => $locale,
-            'domain' => $domain,
-            'id' => $id,
-            'role' => $role,
-            'translation' => $translation,
-            'parameters' => $parameters,
-            'transChoiceNumber' => $number,
-            'state' => $state,
-        ];
+        $message['locale'] = $locale;
+        $message['state'] = $state;
+        $this->messages[] = $message;
     }
 }

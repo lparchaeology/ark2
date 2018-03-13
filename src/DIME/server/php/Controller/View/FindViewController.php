@@ -153,7 +153,7 @@ class FindViewController extends DimePageController
         }
 
         // Show the Action success message
-        Service::view()->addSuccessFlash($action->keyword().'.success');
+        Service::view()->addSuccessFlash($action->keyword());
     }
 
     protected function item($data) : ?Item

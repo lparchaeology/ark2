@@ -168,9 +168,7 @@ class ViewService
 
     public function addFlash(string $flash, string $message, iterable $parms = []) : void
     {
-        if ($parms) {
-            $message = Translation::translate($message, $flash, $parms);
-        }
+        $message = Translation::translate($message, $flash, $parms);
         Service::session()->getFlashBag()->add($flash, $message);
     }
 
