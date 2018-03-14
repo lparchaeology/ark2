@@ -168,4 +168,4 @@ var createRegisterOptions = function createRegisterOptions() {
             }
         }
     }
-}; // createOptions()
+}; // createRegisterOptions()

@@ -22,12 +22,14 @@
                 {% if element.type.id == 'form' and form %}
                     {{ form_end(form) }}
                 {% endif %}
-                <div class="btn-block">
-                    <a href="{{path('dime.finds.view', {'id': forms.previous.vars.data.id})}}">
+                <a href="{{path('dime.finds.view', {'id': forms.previous.vars.data.id})}}">
+                    <div class="btn btn-social-icon btn-lg btn-til-fund">
                         <span class="glyphicon glyphicon-file"></span>
-                    </a>
+                    </div>
+                </a>
+                <div class="col-sm-12">
+                  <button type="button" id="previousitemclose" class="btn previousitem-button previousitemclose" data-dismiss="modal">{{ 'dime.close' | translate }}</button>
                 </div>
-                <button type="button" id="previousitemclose" class="btn previousitem-button previousitemclose" data-dismiss="modal">{{ 'dime.close' | translate }}</button>
             </div>
         </div>
     </div>

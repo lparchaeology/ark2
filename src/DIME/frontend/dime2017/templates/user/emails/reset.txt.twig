@@ -1,47 +1,43 @@
 {#
 Template for an email message sent to authorize a password reset.
 Variables passed to this template:
-    user: The SimpleUser\User instance.
+    user: The User instance.
     url: The link to click to reset the password.
 #}
 
 {# The subject line. #}
 {%- block subject -%}{%- autoescape false -%}
-    {{ 'Reset your password' | trans({}, 'mail') }}
+    {{ 'user.mail.reset.subject' | translate }}
 {%- endautoescape -%}{%- endblock -%}
 
 {# The plain text message. #}
 {%- block body_text -%}{%- autoescape false -%}
 
-{{ 'Reset your password' | trans({}, 'mail') }}
+{{ 'user.mail.reset.title' | translate }}
 
-{{ 'Please click the link below to reset your password:' | trans({}, 'mail') }}
+{{ 'user.mail.reset.text' | translate }}
 {{ url }}
 
 _______________________________________________________________
-{{ 'Didn\'t ask to reset your password?' | trans({}, 'mail') }}
+{{ 'user.mail.reset.not.title' | translate }}
 
-{% trans with {} from "mail" %}
-    If you didn't ask to reset your password, it's likely that another user entered your username or email address by mistake while trying to reset their password. If that's the case, you don't need to take any further action and you can safely disregard this email.
-{% endtrans %}
+{{ 'user.mail.reset.not.text' | translate }}
 {%- endautoescape -%}{%- endblock -%}
 
 {# The HTML message. Optional. #}
 {%- block body_html -%}
 
-    <h1>{{ 'Reset your password' | trans({}, 'mail') }}</h1>
+    <h1>{{ 'user.mail.reset.title' | translate }}</h1>
 
     <p>
-        <a href="{{ url }}">{{ 'Please click this link to reset your password.' | trans({}, 'mail') }}</a>
+        <a href="{{ url }}">{{ 'user.mail.reset.text' | translate }}</a>
     </p>
 
     <hr style="margin-top: 30px;"/>
     <p style="font-size: 13px;">
-        <strong>{{ 'Didn\'t ask to reset your password?' | trans({}, 'mail') }}</strong>
+        <strong>{{ 'user.mail.reset.not.title' | translate }}</strong>
         <br/>
-        {% trans with {} from "mail" %}
-            If you didn't ask to reset your password, it's likely that another user entered your username or email address by mistake while trying to reset their password. If that's the case, you don't need to take any further action and you can safely disregard this email.
-        {% endtrans %}
+        {{ 'user.mail.reset.not.text' | translate }}
     </p>
 
 {%- endblock -%}

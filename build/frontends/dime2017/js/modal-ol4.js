@@ -33,7 +33,7 @@ function initialiseMapModal() {
         mapPickSource.addFeature(positionFeature);
         mapView = $('#mapmodal').data('map').getView();
         mapView.setCenter(coordinates);
-        mapView.setZoom(12);
+        mapView.setZoom(14);
         $('#mapmodal').data('positionFeature', positionFeature);
 
         confirmLocation = $('#mapmodal').data('confirmLocation');

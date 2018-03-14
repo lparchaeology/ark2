@@ -34,7 +34,7 @@ $(document).ready(function () {
         .done(function (response) {
             window.typevocabulary = response.taxonomy;
             initPeriod();
-            if($('.register-classification')) {
+            if( $('.register-classification').length === 1 ) {
               createRegisterOptions();
             }
         });

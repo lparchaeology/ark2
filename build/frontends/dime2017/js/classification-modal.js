@@ -120,7 +120,6 @@ var initTimeline = function () {
             $("#" + timeid + "-input").val(getCustomYear(timeline, timeid));
         }
 
-
         container.customTimeExists(timeid).then(function () {
             var timeid = "start";
             var year = getCustomYear(timeline, timeid);
@@ -260,7 +259,7 @@ var initTimeline = function () {
         horizontalScroll: true,
         zoomKey: 'ctrlKey',
         end: makeMoment(currentYear),
-        start: makeMoment(-2000),
+        start: makeMoment(500),
     };
 
     // Create a Timeline
@@ -268,7 +267,7 @@ var initTimeline = function () {
 
     // this will hide pills which are either too small or too large to be comfortably shown
     $('.vis-range').each(function (i, e) {
-        if ($(e).width() < 100 || $(e).width() > 5000) {
+        if ($(e).width() < 100 || $(e).width() > 500) {
             $(e).hide();
         } else {
             $(e).show();
@@ -484,13 +483,8 @@ var initTimeline = function () {
 
         var parentStart = $('#' + window.date_start_id).val();
         var parentEnd = $('#' + window.date_start_id + '_span').val();
-        console.log($('#' + window.date_start_id).val());
-        console.log(parentStart);
         // reset the timeline dropdowns
         container.createOptions();
-
-        console.log($('#' + window.date_start_id).val());
-        console.log(parentStart);
         // after a short delay, zoomout, giving a nice span and forcing a redraw
         window.setTimeout(function () {
             $('.vis-tl-zoom-out').trigger('click');
@@ -512,7 +506,7 @@ var initTimeline = function () {
     timeline.on('rangechanged', function () {
         console.log('rangechanged');
         $('.vis-range').each(function (i, e) {
-            if ($(e).width() < 100 || $(e).width() > 5000) {
+            if ($(e).width() < 100 || $(e).width() > 500) {
                 $(e).hide();
             } else {
                 $(e).show();
