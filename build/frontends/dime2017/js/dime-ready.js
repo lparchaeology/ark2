@@ -20,16 +20,6 @@ $(document).ready(function () {
         maxView: 0,
     });
 
-    // Overide the default Table Export settings
-    $.extend($.fn.bootstrapTable.defaults, {
-        exportTypes: ['csv'],
-        exportOptions: {
-            csvEnclosure: Translator.trans('core.csv.enclosure'),
-            csvSeparator: Translator.trans('core.csv.separator'),
-            fileName: Translator.trans('core.csv.filename'),
-        },
-    });
-
     // HACK To add columns of checkboxes
     $("#find_secondary_term").css("width", "100%");
     $(".checkbox").addClass("col-xs-4 col-sm-4 ");
