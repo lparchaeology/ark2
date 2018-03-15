@@ -27,9 +27,9 @@
     $.extend($.fn.bootstrapTable.defaults, {
         exportTypes: ['csv'],
         exportOptions: {
-            csvEnclosure: Translator.trans('core.csv.enclosure'),
-            csvSeparator: Translator.trans('core.csv.separator'),
-            fileName: Translator.trans('core.csv.filename'),
+            csvEnclosure: Translator.trans('core.csv.enclosure.default'),
+            csvSeparator: Translator.trans('core.csv.separator.default'),
+            fileName: Translator.trans('core.csv.filename.default'),
         },
     });
 
@@ -67,7 +67,7 @@
                 html += '<div class="field">';
                 if (fields[field].field !== 'checked') {
                     if (fields[field].field === 'image') {
-                        html += item[fields[field].field].replace('/img/thumb.','/img/');
+                        html += item[fields[field].field].replace('/img/thumb.', '/img/');
                         //html += item[fields[field].field];
                     } else {
                         html += item[fields[field].field];
@@ -115,7 +115,7 @@
 
         };
 
-        var mapselect = function (item, ark_id){
+        var mapselect = function (item, ark_id) {
 
             if (typeof mapcollection === 'undefined') {
                 if (item.hasClass('selected')) {
@@ -211,7 +211,7 @@
                 window.selected = [];
             }
 
-            if ( self.hasClass('selected') != true ) {
+            if (self.hasClass('selected') != true) {
                 window.selected.push(ark_id);
                 mapselect(self, ark_id);
             } else {
@@ -224,7 +224,7 @@
         var sortSelection = function (clickfunc) {
             var ark_id = '';
 
-            $('tbody').off("click",'tr');
+            $('tbody').off("click", 'tr');
             $('tbody').on("click", 'tr', { "target": this }, clickfunc);
 
             if (typeof mapcollection !== 'undefined') {
@@ -365,7 +365,7 @@
 
             $('th').on('click', function (e) {
                 window.setTimeout(function () {
-                    $('tbody').off("click",'tr');
+                    $('tbody').off("click", 'tr');
                     $('tbody').on("click", 'tr', { "target": this }, window.tableclick);
 
                     if (typeof mapcollection !== 'undefined') {

@@ -121,7 +121,7 @@ $("input[type=file]").each(function () {
         }
     }).on("filepredelete", function (event) {
         var abort = true;
-        bootbox.confirm(Translator.trans("dime.confirmfiledeletion"), function(result) { abort = !result; });
+        bootbox.confirm(Translator.trans("dime.confirmfiledeletion.default"), function (result) { abort = !result; });
         return abort;
     })
 });

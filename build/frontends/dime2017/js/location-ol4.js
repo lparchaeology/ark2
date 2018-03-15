@@ -8,7 +8,7 @@ function initialisePickMap(target) {
         wrapX: false,
     });
 
-    $('#'+target).data('mapPickSource',mapPickSource);
+    $('#' + target).data('mapPickSource', mapPickSource);
 
     var mapPickLayers = [
         new ol.layer.Tile({
@@ -232,7 +232,7 @@ function initialisePickMap(target) {
         var wkt = 'POINT(' + decimal.easting + ' ' + decimal.northing + ')';
         $.post(path + 'api/geo/find', wkt, function (result) {
             if (result.municipality === null || result.museum === null || isNaN(result.x) || isNaN(result.y)) {
-                bootbox.alert(Translator.trans('dime.mappick.invalidpointlocation'));
+                bootbox.alert(Translator.trans('dime.mappick.invalidpointlocation.default'));
                 setMap(getDecimal());
             } else {
                 var decimal = makeDecimalPoint(result.x, result.y);
@@ -245,20 +245,20 @@ function initialisePickMap(target) {
         });
     }
 
-    function confirmLocation(feature){
-      bootbox.confirm(Translator.trans("dime.mappick.newpointconfirmmessage"), function (result) {
-          if (result) {
-              var coords = feature.getGeometry().getCoordinates();
-              var map = makeMapPoint(coords[0], coords[1]);
-              var decimal = mapToDecimal(map);
-              updateLocation(decimal);
-          } else {
-              setMap(getDecimal());
-          }
-      });
+    function confirmLocation(feature) {
+        bootbox.confirm(Translator.trans("dime.mappick.newpointconfirmmessage.default"), function (result) {
+            if (result) {
+                var coords = feature.getGeometry().getCoordinates();
+                var map = makeMapPoint(coords[0], coords[1]);
+                var decimal = mapToDecimal(map);
+                updateLocation(decimal);
+            } else {
+                setMap(getDecimal());
+            }
+        });
     };
 
-    $('#'+target).data('confirmLocation', confirmLocation );
+    $('#' + target).data('confirmLocation', confirmLocation);
 
     draw.on('drawend', function (e) {
         confirmLocation(e.feature);

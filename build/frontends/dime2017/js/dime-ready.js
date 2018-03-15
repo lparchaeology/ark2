@@ -139,7 +139,7 @@ $(document).ready(function () {
             }
         }).on("filepredelete", function (event) {
             var abort = true;
-            bootbox.confirm(Translator.trans("dime.confirmfiledeletion"), function (result) { abort = !result; });
+            bootbox.confirm(Translator.trans("dime.confirmfiledeletion.default"), function (result) { abort = !result; });
             return abort;
         })
     });
@@ -246,7 +246,7 @@ $(document).ready(function () {
         if (is_dirty) {
             // if the user navigates away from this page via an anchor link,
             //    popup a new bootbox confirmation.
-            bootbox.confirm(Translator.trans("dime.confirmnavigation"), function (response) {
+            bootbox.confirm(Translator.trans("dime.confirmnavigation.default"), function (response) {
                 console.log(response);
                 window.answer = response;
                 if (response) {
@@ -260,19 +260,19 @@ $(document).ready(function () {
     window.onbeforeunload = function () {
         if ((is_dirty) && (!window.answer)) {
             // call this if the box wasn't shown.
-            return Translator.trans("dime.confirmnavigation");
+            return Translator.trans("dime.confirmnavigation.default");
         }
     };
 
-    $( "#photo-modal" ).on('shown.bs.modal', function(){
+    $("#photo-modal").on('shown.bs.modal', function () {
         $('#find_image_file').click();
     });
 
-    $('#modal_photobtn').on('click',function(){
-      $('.file-input').find('.glyphicon-folder-open').parent().hide();
-      $('#photo-btn').on('click',function(){
-        $('#find_image_file').click();
-      });
+    $('#modal_photobtn').on('click', function () {
+        $('.file-input').find('.glyphicon-folder-open').parent().hide();
+        $('#photo-btn').on('click', function () {
+            $('#find_image_file').click();
+        });
     });
 
 });
