@@ -21,18 +21,6 @@
         listIcon: 'glyphicon-menu-hamburger',
     });
 
-    // Overide the default Table Export settings
-    // In an ideal world this would be somewhere else
-    $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales[lang]);
-    $.extend($.fn.bootstrapTable.defaults, {
-        exportTypes: ['csv'],
-        exportOptions: {
-            csvEnclosure: Translator.trans('core.csv.enclosure.default'),
-            csvSeparator: Translator.trans('core.csv.separator.default'),
-            fileName: Translator.trans('core.csv.filename.default'),
-        },
-    });
-
     var BootstrapTable = $.fn.bootstrapTable.Constructor,
         _initToolbar = BootstrapTable.prototype.initToolbar;
 

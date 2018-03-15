@@ -20,6 +20,23 @@ $(document).ready(function () {
         maxView: 0,
     });
 
+
+    // Overide the default Table Export settings
+    // In an ideal world this would be somewhere else
+    bootstrapTableOptions = $(".dime-table").bootstrapTable('getOptions');
+
+    $.extend(bootstrapTableOptions, $.fn.bootstrapTable.locales[lang]);
+    $.extend(bootstrapTableOptions, {
+        exportTypes: ['csv'],
+        exportOptions: {
+            csvEnclosure: Translator.trans('core.csv.enclosure.default'),
+            csvSeparator: Translator.trans('core.csv.separator.default'),
+            fileName: Translator.trans('core.csv.filename.default'),
+        },
+    });
+
+    $(".dime-table").bootstrapTable('refreshOptions', bootstrapTableOptions);
+
     // HACK To add columns of checkboxes
     $("#find_secondary_term").css("width", "100%");
     $(".checkbox").addClass("col-xs-4 col-sm-4 ");
