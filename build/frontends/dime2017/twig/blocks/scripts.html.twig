@@ -1,7 +1,7 @@
 {% block scripts -%}
 
 {% set translations %}
-    {% include 'messages.' ~ app.locale ~ '.json' %}
+    {% include 'messages.' ~ app.locale ~ '.json' ignore missing %}
 {% endset %}
 
 {% set ark = {'actor': workflow.actor.id} %}
