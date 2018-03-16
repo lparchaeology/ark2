@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 13, 2018 at 04:48 PM
+-- Generation Time: Mar 16, 2018 at 04:17 PM
 -- Server version: 10.2.13-MariaDB
 -- PHP Version: 7.1.14
 
@@ -6663,10 +6663,11 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('dime_find_view', '', 0, 0, 0, 'dime_find_item', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_view', '', 0, 0, 2, 'dime_find_status', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, 'dime.find.read.status', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.find.status', NULL, NULL, NULL, NULL),
 ('dime_find_view', '', 0, 0, 4, 'dime_find_workflow', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, 'dime.find.workflow.action', 'dime.find.workflow.action', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.workflow.action', NULL, NULL, NULL, NULL),
-('dime_find_workflow', '', 0, 0, 0, 'core_widget_textarea', NULL, NULL, 'message', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, 'edit', 'redact', 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.message', NULL, NULL, NULL, NULL),
-('dime_find_workflow', '', 0, 0, 2, 'core_widget_submit', NULL, NULL, 'submit', NULL, 1, 0, NULL, NULL, NULL, 'dime.find', 'submit', NULL, NULL, 'edit', 'redact', 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.action.submit', NULL, NULL, NULL, NULL),
-('dime_find_workflow', '', 0, 0, 4, 'core_widget_choice', NULL, NULL, 'actions', 10, 1, 0, NULL, 1, 0, NULL, NULL, NULL, NULL, 'edit', 'redact', 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.workflow.action', NULL, NULL, NULL, NULL),
-('dime_find_workflow', '', 0, 0, 6, 'core_widget_submit', NULL, NULL, 'apply', 2, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'edit', 'redact', 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.apply', NULL, NULL, NULL, NULL),
+('dime_find_workflow', '', 0, 0, 0, 'core_widget_block', NULL, NULL, 'participating', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, 'edit', 'redact', 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.blank', 'blocks/participating.html.twig', NULL, NULL, NULL),
+('dime_find_workflow', '', 0, 0, 2, 'core_widget_textarea', NULL, NULL, 'message', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, 'edit', 'redact', 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.message', NULL, NULL, NULL, NULL),
+('dime_find_workflow', '', 0, 0, 4, 'core_widget_submit', NULL, NULL, 'submit', NULL, 1, 0, NULL, NULL, NULL, 'dime.find', 'submit', NULL, NULL, 'edit', 'redact', 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.action.submit', NULL, NULL, NULL, NULL),
+('dime_find_workflow', '', 0, 0, 6, 'core_widget_choice', NULL, NULL, 'actions', 10, 1, 1, NULL, 1, 0, NULL, NULL, NULL, NULL, 'edit', 'redact', 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.workflow.action', NULL, NULL, NULL, NULL),
+('dime_find_workflow', '', 0, 0, 8, 'core_widget_submit', NULL, NULL, 'apply', 2, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'edit', 'redact', 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.apply', NULL, NULL, NULL, NULL),
 ('dime_front_page', '', 0, 0, 0, 'dime_find_class', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_front_page', '', 0, 0, 2, 'dime_find_classification', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_front_page', '', 0, 0, 4, 'dime_find_material', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
@@ -6998,6 +6999,7 @@ INSERT INTO `ark_view_element` (`element`, `type`) VALUES
 ('dime_museum_table', 'table'),
 ('dime_profile_table', 'table'),
 ('core_widget_actor', 'widget'),
+('core_widget_block', 'widget'),
 ('core_widget_br', 'widget'),
 ('core_widget_button', 'widget'),
 ('core_widget_checkbox', 'widget'),
@@ -7481,6 +7483,7 @@ CREATE TABLE `ark_view_widget` (
 
 INSERT INTO `ark_view_widget` (`element`, `name`, `choices`, `keyword`, `template`, `form_type`, `form_options`) VALUES
 ('core_widget_actor', 'actor', 'actors', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', ''),
+('core_widget_block', 'block', NULL, NULL, NULL, 'ARK\\Form\\Type\\EmptyType', ''),
 ('core_widget_br', 'br', NULL, NULL, 'blocks/br.html.twig', 'ARK\\Form\\Type\\EmptyType', ''),
 ('core_widget_button', 'button', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ButtonType', ''),
 ('core_widget_checkbox', 'checkbox', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\CheckboxType', ''),
