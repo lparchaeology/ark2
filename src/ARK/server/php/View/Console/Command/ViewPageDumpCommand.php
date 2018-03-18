@@ -74,7 +74,7 @@ class ViewPageDumpCommand extends AbstractCommand
         $name = $name ?? $element->name() ?? '';
         $name = str_pad($name ? '"'.$name.'"' : '', 30);
         $template = $template ?? $element->template() ?? '';
-        $template = str_pad($template ? '"'.$template.'"' : '', 100);
+        $template = str_pad($template ? '"'.$template.'"' : '', 10);
         $this->write(str_pad($pre.$type.$element->id(), 40).$name.$template);
         if (method_exists($element, 'grid')) {
             foreach ($element->grid() as $rdx => $row) {
