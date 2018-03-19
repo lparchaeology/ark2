@@ -71,6 +71,11 @@ class Service
         return self::$app['ark'];
     }
 
+    public static function debugMode() : bool
+    {
+        return self::$app['debug'];
+    }
+
     public static function siteDir() : string
     {
         return ARK::siteDir(self::config('site'));

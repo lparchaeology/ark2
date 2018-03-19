@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 13, 2018 at 04:48 PM
+-- Generation Time: Mar 19, 2018 at 10:36 AM
 -- Server version: 10.2.13-MariaDB
 -- PHP Version: 7.1.14
 
@@ -68,6 +68,7 @@ INSERT INTO `ark_dataclass` (`dataclass`, `datatype`, `object`, `array`, `span`,
 ('classification', 'object', 1, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, NULL, NULL, NULL, 0, 1, 1, 0, 'dime.find.classification'),
 ('color', 'string', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.colour'),
 ('date', 'date', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.date'),
+('date_historical', 'date', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.date'),
 ('datetime', 'datetime', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.datetime'),
 ('dating', 'object', 1, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\IntegerType', NULL, NULL, NULL, NULL, 0, 1, 1, 0, 'format.dating'),
 ('decimal', 'decimal', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.decimal'),
@@ -222,17 +223,22 @@ CREATE TABLE `ark_dataclass_date` (
   `pattern` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `unicode` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `php` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `preset` date DEFAULT NULL
+  `preset` date DEFAULT NULL,
+  `minimum` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `exclusive_minimum` tinyint(1) NOT NULL DEFAULT 0,
+  `maximum` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `exclusive_maximum` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_dataclass_date`
 --
 
-INSERT INTO `ark_dataclass_date` (`dataclass`, `pattern`, `unicode`, `php`, `preset`) VALUES
-('date', '^([0-9]{4})(-)(1[0-2]|0[1-9])\\\\2(3[01]|0[1-9]|[12][0-9])$', NULL, 'Y-m-d', NULL),
-('ordinaldate', '^([0-9]{4})-(36[0-6]|3[0-5][0-9]|[12][0-9]{2}|0[1-9][0-9]|00[1-9])$', NULL, 'Y-z', NULL),
-('weekdate', '^([0-9]{4})-W(5[0-3]|[1-4][0-9]|0[1-9])-([1-7])$', NULL, 'o-W-N', NULL);
+INSERT INTO `ark_dataclass_date` (`dataclass`, `pattern`, `unicode`, `php`, `preset`, `minimum`, `exclusive_minimum`, `maximum`, `exclusive_maximum`) VALUES
+('date', '^([0-9]{4})(-)(1[0-2]|0[1-9])\\\\2(3[01]|0[1-9]|[12][0-9])$', NULL, 'Y-m-d', NULL, NULL, 0, NULL, 0),
+('date_historical', '^([0-9]{4})(-)(1[0-2]|0[1-9])\\\\2(3[01]|0[1-9]|[12][0-9])$', NULL, 'Y-m-d', NULL, NULL, 0, 'now', 0),
+('ordinaldate', '^([0-9]{4})-(36[0-6]|3[0-5][0-9]|[12][0-9]{2}|0[1-9][0-9]|00[1-9])$', NULL, 'Y-z', NULL, NULL, 0, NULL, 0),
+('weekdate', '^([0-9]{4})-W(5[0-3]|[1-4][0-9]|0[1-9])-([1-7])$', NULL, 'o-W-N', NULL, NULL, 0, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -245,15 +251,19 @@ CREATE TABLE `ark_dataclass_datetime` (
   `pattern` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `unicode` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `php` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `preset` datetime DEFAULT NULL
+  `preset` datetime DEFAULT NULL,
+  `minimum` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `exclusive_minimum` tinyint(1) NOT NULL DEFAULT 0,
+  `maximum` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `exclusive_maximum` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_dataclass_datetime`
 --
 
-INSERT INTO `ark_dataclass_datetime` (`dataclass`, `pattern`, `unicode`, `php`, `preset`) VALUES
-('datetime', '^([0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])$', NULL, 'c', NULL);
+INSERT INTO `ark_dataclass_datetime` (`dataclass`, `pattern`, `unicode`, `php`, `preset`, `minimum`, `exclusive_minimum`, `maximum`, `exclusive_maximum`) VALUES
+('datetime', '^([0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])$', NULL, 'c', NULL, NULL, 0, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -473,15 +483,19 @@ CREATE TABLE `ark_dataclass_time` (
   `pattern` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `unicode` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `php` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `preset` time DEFAULT NULL
+  `preset` time DEFAULT NULL,
+  `minimum` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `exclusive_minimum` tinyint(1) NOT NULL DEFAULT 0,
+  `maximum` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `exclusive_maximum` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_dataclass_time`
 --
 
-INSERT INTO `ark_dataclass_time` (`dataclass`, `pattern`, `unicode`, `php`, `preset`) VALUES
-('time', '^(2[0-3]|[01][0-9]):([0-5][0-9])$', NULL, 'H:i:s', NULL);
+INSERT INTO `ark_dataclass_time` (`dataclass`, `pattern`, `unicode`, `php`, `preset`, `minimum`, `exclusive_minimum`, `maximum`, `exclusive_maximum`) VALUES
+('time', '^(2[0-3]|[01][0-9]):([0-5][0-9])$', NULL, 'H:i:s', NULL, NULL, 0, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -776,7 +790,7 @@ INSERT INTO `ark_model_attribute` (`schma`, `class`, `attribute`, `dataclass`, `
 ('dime.find', 'find', 'custody', 'term', 'dime.find.custody', NULL, 'restricted', 'dime.find.read.custody', 'dime.find.update.custody', 0, 1, 1, 1, 0, 1, 0, 'dime.find.custody'),
 ('dime.find', 'find', 'dating', 'dating', NULL, NULL, 'public', NULL, NULL, 0, 0, 1, 1, 0, 1, 0, 'dime.find.dating'),
 ('dime.find', 'find', 'description', 'description', NULL, NULL, 'public', NULL, NULL, 0, 0, 1, 1, 0, 1, 0, 'dime.find.description'),
-('dime.find', 'find', 'finddate', 'date', NULL, NULL, 'restricted', 'dime.find.read.finddate', 'dime.find.update.finddate', 0, 0, 1, 1, 0, 1, 0, 'dime.find.finddate'),
+('dime.find', 'find', 'finddate', 'date_historical', NULL, NULL, 'restricted', 'dime.find.read.finddate', 'dime.find.update.finddate', 0, 0, 1, 1, 0, 1, 0, 'dime.find.finddate'),
 ('dime.find', 'find', 'finder', 'person', NULL, NULL, 'restricted', 'dime.find.read.finder', 'dime.find.update.finder', 0, 1, 1, 1, 0, 1, 0, 'dime.find.finder'),
 ('dime.find', 'find', 'finder_id', 'identifier', NULL, NULL, 'restricted', 'dime.find.read.finder', 'dime.find.update.finder', 0, 0, 1, 1, 0, 1, 0, 'dime.find.finder_id'),
 ('dime.find', 'find', 'finder_place', 'identifier', NULL, NULL, 'restricted', 'dime.find.read.finder', 'dime.find.update.finder', 0, 0, 1, 1, 0, 1, 0, 'dime.find.finder_place'),
@@ -986,6 +1000,7 @@ INSERT INTO `ark_route` (`route`, `collection`, `can_get`, `can_post`, `view`, `
 ('dime.api.page.content', 'api', 1, 1, NULL, NULL, 'DIME\\Controller\\API\\PageContentController'),
 ('dime.api.translation.message', 'api', 1, 1, NULL, NULL, 'DIME\\Controller\\API\\TranslationMessageController'),
 ('dime.api.user.password.set', 'api', 0, 1, 'core_user_password_set', NULL, 'DIME\\Controller\\API\\UserPasswordSetController'),
+('dime.api.user.status', 'api', 1, 1, 'dime_user_status', NULL, 'DIME\\Controller\\API\\UserStatusController'),
 ('dime.api.vocabulary', 'api', 0, 1, NULL, NULL, 'DIME\\Controller\\API\\VocabularyController'),
 ('dime.detector', 'view', 1, 1, 'dime_page_static', NULL, 'DIME\\Controller\\View\\PageViewController'),
 ('dime.finds.add', 'view', 1, 1, 'dime_page_find_add', 'dime.finds.view', 'DIME\\Controller\\View\\FindAddController'),
@@ -1073,6 +1088,7 @@ INSERT INTO `ark_route_path` (`route`, `language`, `path`) VALUES
 ('dime.api.page.content', 'da', '/api/internal/page/content'),
 ('dime.api.translation.message', 'da', '/api/internal/translations/{keyword}/languages/{language}'),
 ('dime.api.user.password.set', 'da', '/api/internal/users/{id}/password/set'),
+('dime.api.user.status', 'da', '/api/internal/users/{id}/status'),
 ('dime.api.vocabulary', 'da', '/api/internal/vocabulary'),
 ('dime.detector', 'da', '/detektering'),
 ('dime.detector', 'en', '/detector'),
@@ -6529,11 +6545,9 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('dime_admin_user_page', '', 0, 0, 2, 'dime_profile_list_action', NULL, NULL, 'actors', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_admin_user_page', '', 0, 1, 0, 'dime_user_actor', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_admin_user_page', '', 0, 1, 2, 'core_widget_hr', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_admin_user_page', '', 0, 1, 4, 'core_user_password_set', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_admin_user_page', '', 0, 1, 4, 'dime_user_status', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_admin_user_page', '', 0, 1, 6, 'core_widget_hr', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_admin_user_page', '', 0, 1, 8, 'core_user_role_add', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_admin_user_page', '', 0, 1, 10, 'core_widget_hr', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_admin_user_page', '', 0, 1, 12, 'core_actor_role_form', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_admin_user_page', '', 0, 1, 8, 'core_user_password_set', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_add', '', 0, 0, 0, 'dime_find_add_case', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_add', '', 0, 0, 2, 'dime_find_event', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_add', '', 0, 0, 4, 'dime_find_geo', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
@@ -6627,10 +6641,10 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('dime_find_status', '', 0, 0, 8, 'dime_find_custody', NULL, NULL, NULL, NULL, 1, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'static', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_status', '', 0, 0, 10, 'dime_find_custodian', NULL, NULL, NULL, NULL, 1, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'static', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_status', '', 0, 0, 12, 'dime_find_recipient', NULL, NULL, NULL, NULL, 1, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'static', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_status', '', 0, 0, 14, 'dime_find_visibility', NULL, NULL, NULL, NULL, 1, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'static', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `map`, `vocabulary`, `name`, `width`, `label`, `help`, `placeholder`, `choices`, `required`, `action_schema`, `action`, `view_permission`, `edit_permission`, `mode`, `sanitise`, `visible`, `value_modus`, `parameter_modus`, `format_modus`, `display_property`, `display_pattern`, `display_parameter`, `display_format`, `export_property`, `export_pattern`, `export_parameter`, `export_format`, `enabled`, `deprecated`, `keyword`, `template`, `options`, `form_type`, `form_options`) VALUES
+('dime_find_status', '', 0, 0, 14, 'dime_find_visibility', NULL, NULL, NULL, NULL, 1, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'static', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_status', '', 0, 0, 16, 'dime_find_publish', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'static', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 0, 'dime_find_case', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_table', '', 0, 0, 0, 'dime_find_case', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `map`, `vocabulary`, `name`, `width`, `label`, `help`, `placeholder`, `choices`, `required`, `action_schema`, `action`, `view_permission`, `edit_permission`, `mode`, `sanitise`, `visible`, `value_modus`, `parameter_modus`, `format_modus`, `display_property`, `display_pattern`, `display_parameter`, `display_format`, `export_property`, `export_pattern`, `export_parameter`, `export_format`, `enabled`, `deprecated`, `keyword`, `template`, `options`, `form_type`, `form_options`) VALUES
 ('dime_find_table', '', 0, 0, 2, 'dime_find_claim', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_table', '', 0, 0, 6, 'dime_find_class', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_table', '', 0, 0, 8, 'dime_find_classification', NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
@@ -6663,10 +6677,11 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('dime_find_view', '', 0, 0, 0, 'dime_find_item', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_view', '', 0, 0, 2, 'dime_find_status', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, 'dime.find.read.status', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.find.status', NULL, NULL, NULL, NULL),
 ('dime_find_view', '', 0, 0, 4, 'dime_find_workflow', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, 'dime.find.workflow.action', 'dime.find.workflow.action', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.workflow.action', NULL, NULL, NULL, NULL),
-('dime_find_workflow', '', 0, 0, 0, 'core_widget_textarea', NULL, NULL, 'message', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, 'edit', 'redact', 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.message', NULL, NULL, NULL, NULL),
-('dime_find_workflow', '', 0, 0, 2, 'core_widget_submit', NULL, NULL, 'submit', NULL, 1, 0, NULL, NULL, NULL, 'dime.find', 'submit', NULL, NULL, 'edit', 'redact', 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.action.submit', NULL, NULL, NULL, NULL),
-('dime_find_workflow', '', 0, 0, 4, 'core_widget_choice', NULL, NULL, 'actions', 10, 1, 0, NULL, 1, 0, NULL, NULL, NULL, NULL, 'edit', 'redact', 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.workflow.action', NULL, NULL, NULL, NULL),
-('dime_find_workflow', '', 0, 0, 6, 'core_widget_submit', NULL, NULL, 'apply', 2, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'edit', 'redact', 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.apply', NULL, NULL, NULL, NULL),
+('dime_find_workflow', '', 0, 0, 0, 'core_widget_block', NULL, NULL, 'participating', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, 'edit', 'redact', 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.blank', 'blocks/participating.html.twig', NULL, NULL, NULL),
+('dime_find_workflow', '', 0, 0, 2, 'core_widget_textarea', NULL, NULL, 'message', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, 'edit', 'redact', 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.message', NULL, NULL, NULL, NULL),
+('dime_find_workflow', '', 0, 0, 4, 'core_widget_submit', NULL, NULL, 'submit', NULL, 1, 0, NULL, NULL, NULL, 'dime.find', 'submit', NULL, NULL, 'edit', 'redact', 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.action.submit', NULL, NULL, NULL, NULL),
+('dime_find_workflow', '', 0, 0, 6, 'core_widget_choice', NULL, NULL, 'actions', 10, 1, 1, NULL, 1, 0, NULL, NULL, NULL, NULL, 'edit', 'redact', 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.workflow.action', NULL, NULL, NULL, NULL),
+('dime_find_workflow', '', 0, 0, 8, 'core_widget_submit', NULL, NULL, 'apply', 2, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'edit', 'redact', 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.apply', NULL, NULL, NULL, NULL),
 ('dime_front_page', '', 0, 0, 0, 'dime_find_class', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_front_page', '', 0, 0, 2, 'dime_find_classification', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_front_page', '', 0, 0, 4, 'dime_find_material', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
@@ -6751,12 +6766,11 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('dime_treasure_pdf', '', 2, 0, 0, 'dime_treasure_list', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, 1, 'static', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_user_actor', '', 0, 0, 0, 'core_actor_id', NULL, NULL, NULL, 7, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, 'view', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.user.username', NULL, NULL, NULL, NULL),
 ('dime_user_actor', '', 0, 0, 2, 'dime_actor_detectorist_id', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, 1, 'static', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_user_actor', '', 0, 0, 4, 'core_actor_status', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, 1, 'static', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_user_actor', '', 0, 0, 6, 'core_actor_fullname', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_user_actor', '', 0, 0, 8, 'core_actor_address', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_user_actor', '', 0, 0, 10, 'core_actor_telephone', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_user_actor', '', 0, 0, 12, 'core_actor_email', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_user_actor', '', 0, 0, 24, 'core_widget_submit', NULL, NULL, 'save', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.save', NULL, NULL, NULL, NULL),
+('dime_user_actor', '', 0, 0, 4, 'core_actor_fullname', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_user_actor', '', 0, 0, 6, 'core_actor_address', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_user_actor', '', 0, 0, 8, 'core_actor_telephone', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_user_actor', '', 0, 0, 10, 'core_actor_email', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_user_actor', '', 0, 0, 12, 'core_widget_submit', NULL, NULL, 'save', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.save', NULL, NULL, NULL, NULL),
 ('dime_user_actor', '', 0, 1, 2, 'core_actor_avatar', NULL, NULL, NULL, 4, 0, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_user_actor_role', '', 0, 0, 0, 'core_user_role', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, 'ARK\\Form\\Type\\CollectionPropertyType', NULL),
 ('dime_user_actor_role', '', 0, 0, 2, 'core_widget_submit', NULL, NULL, 'actor_role', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.save', NULL, NULL, NULL, NULL),
@@ -6771,7 +6785,10 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('dime_user_register_actor', '', 0, 0, 0, 'core_actor_fullname', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_user_register_actor', '', 0, 0, 2, 'core_actor_address', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_user_register_actor', '', 0, 0, 4, 'core_actor_telephone', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_user_register_actor', '', 0, 0, 6, 'core_user_terms', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL);
+('dime_user_register_actor', '', 0, 0, 6, 'core_user_terms', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_user_status', '', 0, 0, 0, 'core_actor_status', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, 1, 'static', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_user_status', '', 0, 0, 2, 'core_widget_choice', NULL, NULL, 'actions', NULL, 1, 0, NULL, 1, 1, NULL, NULL, NULL, NULL, 'edit', 'redact', 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_user_status', '', 0, 0, 4, 'core_widget_submit', NULL, NULL, 'apply', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, 'edit', 'redact', 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.apply', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -6885,6 +6902,7 @@ INSERT INTO `ark_view_element` (`element`, `type`) VALUES
 ('dime_user_actor_role', 'form'),
 ('dime_user_filter', 'form'),
 ('dime_user_register', 'form'),
+('dime_user_status', 'form'),
 ('core_actor_role', 'grid'),
 ('core_admin_page', 'grid'),
 ('core_admin_user_page', 'grid'),
@@ -6998,6 +7016,7 @@ INSERT INTO `ark_view_element` (`element`, `type`) VALUES
 ('dime_museum_table', 'table'),
 ('dime_profile_table', 'table'),
 ('core_widget_actor', 'widget'),
+('core_widget_block', 'widget'),
 ('core_widget_br', 'widget'),
 ('core_widget_button', 'widget'),
 ('core_widget_checkbox', 'widget'),
@@ -7175,7 +7194,8 @@ INSERT INTO `ark_view_form` (`element`, `name`, `mode`, `method`, `action`, `key
 ('dime_user_actor', 'actor', 'edit', NULL, NULL, 'dime.user.profile', NULL, NULL),
 ('dime_user_actor_role', 'actor_role', NULL, NULL, NULL, 'core.user.role', NULL, NULL),
 ('dime_user_filter', 'filter', NULL, NULL, NULL, NULL, NULL, NULL),
-('dime_user_register', NULL, NULL, NULL, NULL, NULL, 'user/layouts/register.html.twig', NULL);
+('dime_user_register', NULL, NULL, NULL, NULL, NULL, 'user/layouts/register.html.twig', NULL),
+('dime_user_status', 'user_status', 'edit', NULL, NULL, 'core.security.user.status', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -7481,6 +7501,7 @@ CREATE TABLE `ark_view_widget` (
 
 INSERT INTO `ark_view_widget` (`element`, `name`, `choices`, `keyword`, `template`, `form_type`, `form_options`) VALUES
 ('core_widget_actor', 'actor', 'actors', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', ''),
+('core_widget_block', 'block', NULL, NULL, NULL, 'ARK\\Form\\Type\\EmptyType', ''),
 ('core_widget_br', 'br', NULL, NULL, 'blocks/br.html.twig', 'ARK\\Form\\Type\\EmptyType', ''),
 ('core_widget_button', 'button', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ButtonType', ''),
 ('core_widget_checkbox', 'checkbox', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\CheckboxType', ''),

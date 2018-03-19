@@ -8,6 +8,14 @@ $('document').ready(function () {
         dataType: 'json',
     });
 
+    $('#user_status').ajaxForm({
+        beforeSubmit: adminUserFormSubmit,
+        success: adminUserFormSuccess,
+        type: 'post',
+        clearForm: true,
+        dataType: 'json',
+    });
+
     $('#password_set').ajaxForm({
         beforeSubmit: adminUserFormSubmit,
         success: adminUserFormSuccess,

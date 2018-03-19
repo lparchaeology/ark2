@@ -41,6 +41,7 @@ class DateTimeDataclass extends Dataclass
     {
         $constraints = parent::constraints();
         $constraints[] = new DateTime(['format' => $this->php]);
+        $constraints = array_merge($constraints, $this->dateTimeConstraints());
         return $constraints;
     }
 

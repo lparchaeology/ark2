@@ -8,6 +8,7 @@ function adminUserId() {
 // Set the current user ID
 var setAdminUserId = function setAdminUserId(id) {
     $('#actor').attr('action', Router.generatePath('dime.api.actor.item', { id: id }));
+    $('#user_status').attr('action', Router.generatePath('dime.api.user.status', { id: id }));
     $('#password_set').attr('action', Router.generatePath('dime.api.user.password.set', { id: id }));
     $('#role_add').attr('action', Router.generatePath('dime.api.actor.role.add', { id: id }));
 };
@@ -16,15 +17,21 @@ var setAdminUserId = function setAdminUserId(id) {
 var fetchAdminUserActor = function (id) {
     clearPageAlert();
     $('#actor').clearForm();
+    $('#user_status').clearForm();
     var path = Router.generatePath('dime.api.actor.item', { id: id });
     if (path === undefined) {
         return;
     }
     $.ajax(path).fail(function (response) {
-        $('#actor').clearForm();
         setPageAlert(response.status, response.message, 5000);
     }).done(function (response) {
         FormMapper.mapDataToForm(response, $('#actor')[0]);
+        path = Router.generatePath('dime.api.user.status', { id: id });
+        console.log(path);
+        $.ajax(path).done(function (response) {
+            console.log(response);
+            FormMapper.mapDataToForm(response, $('#user_status')[0]);
+        });
         setAdminUserId(id);
     });
 };

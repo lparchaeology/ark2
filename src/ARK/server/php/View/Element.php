@@ -134,7 +134,7 @@ abstract class Element implements ElementInterface
         } else {
             $view['label'] = $view['state']['label'];
         }
-        if ($view['state']['help'] && $view['state']['modus'] === 'active') {
+        if ($view['state']['help']) {
             $view['help'] = $view['state']['keyword'] ?? $this->keyword();
         } else {
             $view['help'] = null;
