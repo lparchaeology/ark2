@@ -4,12 +4,25 @@
 
 <div class='table-wrapper-div'>
 
+    {% set sortname = 'id' %}
+    {% set sortorder = 'asc' %}
+    {% if table.sortable %}
+        {% for child in children %}
+            {% if child.state.default %}
+                {% set sortname = child.element.name %}
+                {% set sortorder = child.state.order %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
     <table
         id="{{ table.id }}"
         class="{{ 'table ' ~ table.classes }}"
         data-toggle="table"
         data-classes="{{ 'table ' ~ table.classes }}"
-        data-sort-name="id"
+        data-sortable="{{ table.sortable }}"
+        data-sort-name="{{ sortname }}"
+        data-sort-order="{{ sortorder }}"
         data-show-refresh="{{ table.canRefresh }}"
         data-show-toggle="{{ table.canToggleView }}"
         data-show-columns="{{ table.canChooseColumns }}"
@@ -55,12 +68,18 @@
                             data-tableexport-display="none"></th>
                     {% endif %}
                     {% for child in children %}
-                    {% set childId = child.state.name ? child.element.id ~ '_' ~ child.state.name : child.element.id %}
-                    {% set childTrans = child.state | translate %}
+                        {% set childId = child.state.name ? child.element.id ~ '_' ~ child.state.name : child.element.id %}
+                        {% set childTrans = child.state | translate %}
+                        {% if child.state.sorter == 'numeric' %}
+                            {% set sorter = 'numericOnly' %}
+                        {% else %}
+                            {% set sorter = 'alphanum' %}
+                        {% endif %}
                         <th data-field="{{ childId }}"
                             data-title="{{ childTrans }}"
-                            data-sortable="true"
-                            data-sorter="alphanum"
+                            data-sortable="{{ child.state.sortable }}"
+                            data-sorter="{{ sorter }}"
+                            data-order="{{ child.state.order }}"
                             data-visible="{{ child.state.visible }}"
                             data-card-visible="false"
                             data-tableexport-value="{{ childTrans }}">

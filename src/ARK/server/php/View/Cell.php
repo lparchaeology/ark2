@@ -35,10 +35,10 @@ use ARK\Model\Item;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\Security\Permission;
 use ARK\Service;
 use ARK\Vocabulary\Concept;
 use ARK\Workflow\Action;
-use ARK\Security\Permission;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
 
@@ -54,20 +54,24 @@ class Cell implements ElementInterface
     protected $class = '';
     protected $element;
     protected $name;
-    protected $width;
-    protected $map;
-    protected $vocabulary;
+    protected $required = false;
+    protected $default;
     protected $label = false;
     protected $help = false;
+    protected $visible = true;
+    protected $width;
     protected $placeholder = false;
     protected $choices = false;
-    protected $required = false;
+    protected $sortable;
+    protected $sorter;
+    protected $order;
+    protected $vocabulary;
+    protected $map;
     protected $action;
     protected $viewPermission;
     protected $editPermission;
     protected $mode;
     protected $sanitise;
-    protected $visible = true;
     protected $valueModus;
     protected $parameterModus;
     protected $formatModus;
@@ -115,24 +119,19 @@ class Cell implements ElementInterface
         return $this->element;
     }
 
-    public function map() : ?Map
-    {
-        return $this->map;
-    }
-
-    public function vocabulary() : ?Concept
-    {
-        return $this->vocabulary;
-    }
-
     public function name() : ?string
     {
         return $this->name;
     }
 
-    public function width() : ?int
+    public function isRequired() : bool
     {
-        return $this->width;
+        return $this->required;
+    }
+
+    public function isDefault() : bool
+    {
+        return $this->default;
     }
 
     public function showLabel() : ?bool
@@ -145,6 +144,16 @@ class Cell implements ElementInterface
         return $this->help;
     }
 
+    public function isVisible() : bool
+    {
+        return $this->visible;
+    }
+
+    public function width() : ?int
+    {
+        return $this->width;
+    }
+
     public function showPlaceholder() : ?bool
     {
         return $this->placeholder;
@@ -155,14 +164,29 @@ class Cell implements ElementInterface
         return $this->choices;
     }
 
-    public function isRequired() : bool
+    public function sortable() : ?bool
     {
-        return $this->required;
+        return $this->sortable;
     }
 
-    public function isVisible()
+    public function sorter() : ?string
     {
-        return $this->visible ?? true;
+        return $this->sorter;
+    }
+
+    public function sortOrder() : ?string
+    {
+        return $this->order;
+    }
+
+    public function vocabulary() : ?Concept
+    {
+        return $this->vocabulary;
+    }
+
+    public function map() : ?Map
+    {
+        return $this->map;
     }
 
     public function action() : ?Action
@@ -306,15 +330,19 @@ class Cell implements ElementInterface
 
         // Fields
         $builder->addStringField('name', 30);
-        $builder->addField('width', 'integer');
+        $builder->addField('required', 'boolean');
+        $builder->addMappedField('is_default', 'default', 'boolean');
         $builder->addField('label', 'boolean');
         $builder->addField('help', 'boolean');
+        $builder->addField('visible', 'boolean');
+        $builder->addField('width', 'integer');
         $builder->addField('placeholder', 'boolean');
         $builder->addField('choices', 'boolean');
-        $builder->addField('required', 'boolean');
+        $builder->addField('sortable', 'boolean');
+        $builder->addStringField('sorter', 20);
+        $builder->addMappedStringField('sort_order', 'order', 10);
         $builder->addStringField('mode', 10);
         $builder->addStringField('sanitise', 10);
-        $builder->addField('visible', 'boolean');
         $builder->addMappedStringField('value_modus', 'valueModus', 10);
         $builder->addMappedStringField('parameter_modus', 'parameterModus', 10);
         $builder->addMappedStringField('format_modus', 'formatModus', 10);
@@ -356,13 +384,17 @@ class Cell implements ElementInterface
     {
         // Cell state that is always propogated
         $state['name'] = $this->name;
+        $state['default'] = $this->default;
         $state['help'] = $this->help;
         $state['placeholder'] = $this->placeholder;
-        $state['choices'] = $this->choices;
-        $state['map'] = $this->map;
-        $state['vocabulary'] = $this->vocabulary;
         $state['visible'] = $this->visible ?? true;
         $state['width'] = $this->width;
+        $state['sortable'] = $this->sortable ?? false;
+        $state['sorter'] = $this->sortable ?? 'alphanumeric';
+        $state['order'] = $this->order ?? 'asc';
+        $state['choices'] = $this->choices;
+        $state['vocabulary'] = $this->vocabulary;
+        $state['map'] = $this->map;
         $state['keyword'] = $this->keyword;
         $state['action'] = $this->action;
         $state['template'] = $this->template();
