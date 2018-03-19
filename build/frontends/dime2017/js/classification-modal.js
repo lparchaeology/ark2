@@ -85,9 +85,6 @@ var initTimeline = function () {
                 timeid = $(this).attr('id').split('-')[0];
                 if (timeid === 'start' ){
                   var year = getCustomYear(timeline, 'end');
-                  console.log($(this).val());
-                  console.log(year);
-                  console.log('timeid==start');
                   if ($(this).val() > year){
                     container.makeCustomTime($(this).val(), 'end', timeline);
                     container.makeCustomTime(year, 'start', timeline);
@@ -149,7 +146,7 @@ var initTimeline = function () {
 
     container.makeCustomTime = function makeCustomTime(time, name, timeline) {
 
-        if(time>new Date()){
+        if(new Date(time)>new Date()){
           time=new Date();
         }
         try {
