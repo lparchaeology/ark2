@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.9
+-- version 4.7.8
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 18, 2018 at 09:34 PM
+-- Generation Time: Mar 19, 2018 at 10:36 AM
 -- Server version: 10.2.13-MariaDB
--- PHP Version: 7.2.3
+-- PHP Version: 7.1.14
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -68,6 +68,7 @@ INSERT INTO `ark_dataclass` (`dataclass`, `datatype`, `object`, `array`, `span`,
 ('classification', 'object', 1, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, NULL, NULL, NULL, 0, 1, 1, 0, 'dime.find.classification'),
 ('color', 'string', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.colour'),
 ('date', 'date', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.date'),
+('date_historical', 'date', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.date'),
 ('datetime', 'datetime', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.datetime'),
 ('dating', 'object', 1, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\IntegerType', NULL, NULL, NULL, NULL, 0, 1, 1, 0, 'format.dating'),
 ('decimal', 'decimal', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.decimal'),
@@ -222,17 +223,22 @@ CREATE TABLE `ark_dataclass_date` (
   `pattern` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `unicode` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `php` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `preset` date DEFAULT NULL
+  `preset` date DEFAULT NULL,
+  `minimum` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `exclusive_minimum` tinyint(1) NOT NULL DEFAULT 0,
+  `maximum` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `exclusive_maximum` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_dataclass_date`
 --
 
-INSERT INTO `ark_dataclass_date` (`dataclass`, `pattern`, `unicode`, `php`, `preset`) VALUES
-('date', '^([0-9]{4})(-)(1[0-2]|0[1-9])\\\\2(3[01]|0[1-9]|[12][0-9])$', NULL, 'Y-m-d', NULL),
-('ordinaldate', '^([0-9]{4})-(36[0-6]|3[0-5][0-9]|[12][0-9]{2}|0[1-9][0-9]|00[1-9])$', NULL, 'Y-z', NULL),
-('weekdate', '^([0-9]{4})-W(5[0-3]|[1-4][0-9]|0[1-9])-([1-7])$', NULL, 'o-W-N', NULL);
+INSERT INTO `ark_dataclass_date` (`dataclass`, `pattern`, `unicode`, `php`, `preset`, `minimum`, `exclusive_minimum`, `maximum`, `exclusive_maximum`) VALUES
+('date', '^([0-9]{4})(-)(1[0-2]|0[1-9])\\\\2(3[01]|0[1-9]|[12][0-9])$', NULL, 'Y-m-d', NULL, NULL, 0, NULL, 0),
+('date_historical', '^([0-9]{4})(-)(1[0-2]|0[1-9])\\\\2(3[01]|0[1-9]|[12][0-9])$', NULL, 'Y-m-d', NULL, NULL, 0, 'now', 0),
+('ordinaldate', '^([0-9]{4})-(36[0-6]|3[0-5][0-9]|[12][0-9]{2}|0[1-9][0-9]|00[1-9])$', NULL, 'Y-z', NULL, NULL, 0, NULL, 0),
+('weekdate', '^([0-9]{4})-W(5[0-3]|[1-4][0-9]|0[1-9])-([1-7])$', NULL, 'o-W-N', NULL, NULL, 0, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -245,15 +251,19 @@ CREATE TABLE `ark_dataclass_datetime` (
   `pattern` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `unicode` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `php` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `preset` datetime DEFAULT NULL
+  `preset` datetime DEFAULT NULL,
+  `minimum` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `exclusive_minimum` tinyint(1) NOT NULL DEFAULT 0,
+  `maximum` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `exclusive_maximum` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_dataclass_datetime`
 --
 
-INSERT INTO `ark_dataclass_datetime` (`dataclass`, `pattern`, `unicode`, `php`, `preset`) VALUES
-('datetime', '^([0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])$', NULL, 'c', NULL);
+INSERT INTO `ark_dataclass_datetime` (`dataclass`, `pattern`, `unicode`, `php`, `preset`, `minimum`, `exclusive_minimum`, `maximum`, `exclusive_maximum`) VALUES
+('datetime', '^([0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])$', NULL, 'c', NULL, NULL, 0, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -473,15 +483,19 @@ CREATE TABLE `ark_dataclass_time` (
   `pattern` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `unicode` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `php` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `preset` time DEFAULT NULL
+  `preset` time DEFAULT NULL,
+  `minimum` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `exclusive_minimum` tinyint(1) NOT NULL DEFAULT 0,
+  `maximum` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `exclusive_maximum` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_dataclass_time`
 --
 
-INSERT INTO `ark_dataclass_time` (`dataclass`, `pattern`, `unicode`, `php`, `preset`) VALUES
-('time', '^(2[0-3]|[01][0-9]):([0-5][0-9])$', NULL, 'H:i:s', NULL);
+INSERT INTO `ark_dataclass_time` (`dataclass`, `pattern`, `unicode`, `php`, `preset`, `minimum`, `exclusive_minimum`, `maximum`, `exclusive_maximum`) VALUES
+('time', '^(2[0-3]|[01][0-9]):([0-5][0-9])$', NULL, 'H:i:s', NULL, NULL, 0, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -776,7 +790,7 @@ INSERT INTO `ark_model_attribute` (`schma`, `class`, `attribute`, `dataclass`, `
 ('dime.find', 'find', 'custody', 'term', 'dime.find.custody', NULL, 'restricted', 'dime.find.read.custody', 'dime.find.update.custody', 0, 1, 1, 1, 0, 1, 0, 'dime.find.custody'),
 ('dime.find', 'find', 'dating', 'dating', NULL, NULL, 'public', NULL, NULL, 0, 0, 1, 1, 0, 1, 0, 'dime.find.dating'),
 ('dime.find', 'find', 'description', 'description', NULL, NULL, 'public', NULL, NULL, 0, 0, 1, 1, 0, 1, 0, 'dime.find.description'),
-('dime.find', 'find', 'finddate', 'date', NULL, NULL, 'restricted', 'dime.find.read.finddate', 'dime.find.update.finddate', 0, 0, 1, 1, 0, 1, 0, 'dime.find.finddate'),
+('dime.find', 'find', 'finddate', 'date_historical', NULL, NULL, 'restricted', 'dime.find.read.finddate', 'dime.find.update.finddate', 0, 0, 1, 1, 0, 1, 0, 'dime.find.finddate'),
 ('dime.find', 'find', 'finder', 'person', NULL, NULL, 'restricted', 'dime.find.read.finder', 'dime.find.update.finder', 0, 1, 1, 1, 0, 1, 0, 'dime.find.finder'),
 ('dime.find', 'find', 'finder_id', 'identifier', NULL, NULL, 'restricted', 'dime.find.read.finder', 'dime.find.update.finder', 0, 0, 1, 1, 0, 1, 0, 'dime.find.finder_id'),
 ('dime.find', 'find', 'finder_place', 'identifier', NULL, NULL, 'restricted', 'dime.find.read.finder', 'dime.find.update.finder', 0, 0, 1, 1, 0, 1, 0, 'dime.find.finder_place'),

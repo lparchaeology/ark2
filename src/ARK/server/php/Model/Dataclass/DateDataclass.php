@@ -41,6 +41,7 @@ class DateDataclass extends Dataclass
     {
         $constraints = parent::constraints();
         $constraints[] = new Date();
+        $constraints = array_merge($constraints, $this->dateTimeConstraints());
         return $constraints;
     }
 

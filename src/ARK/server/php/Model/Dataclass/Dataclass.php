@@ -29,13 +29,13 @@
 
 namespace ARK\Model\Dataclass;
 
-use ARK\Security\Actor;
 use ARK\Model\Attribute;
 use ARK\Model\EnabledTrait;
 use ARK\Model\Fragment\Fragment;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\Security\Actor;
 use ARK\Service;
 use ARK\Vocabulary\Concept;
 use ARK\Vocabulary\Term;

@@ -42,9 +42,19 @@ trait NumberTrait
     protected $exclusiveMaximum = false;
     protected $multipleOf;
 
+    public function hasMinimumValue() : bool
+    {
+        return $this->minimum !== null;
+    }
+
     public function exclusiveMinimum() : bool
     {
         return $this->exclusiveMinimum;
+    }
+
+    public function hasMaximumValue() : bool
+    {
+        return $this->maximum !== null;
     }
 
     public function exclusiveMaximum() : bool

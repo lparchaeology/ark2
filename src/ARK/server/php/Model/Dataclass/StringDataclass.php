@@ -65,7 +65,7 @@ class StringDataclass extends Dataclass
     public function constraints() : iterable
     {
         $constraints = parent::constraints();
-        $constraints[] = new Type('string');
+        //$constraints[] = new Type('string');
         if ($this->pattern) {
             // TODO Multiple items doesn't like???
             //$constraints[] = new Regex(['pattern' => $this->pattern]);

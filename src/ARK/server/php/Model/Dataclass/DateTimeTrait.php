@@ -32,13 +32,23 @@ namespace ARK\Model\Dataclass;
 use ARK\Model\Fragment\Fragment;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Vocabulary\Concept;
+use DateTime;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints\GreaterThan;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
+use Symfony\Component\Validator\Constraints\LessThan;
+use Symfony\Component\Validator\Constraints\LessThanOrEqual;
 
 trait DateTimeTrait
 {
     protected $pattern = '';
     protected $unicode = '';
     protected $php = '';
+    protected $minimum;
+    protected $exclusiveMinimum = false;
+    protected $maximum;
+    protected $exclusiveMaximum = false;
+    protected $multipleOf;
 
     public function pattern() : string
     {
@@ -55,11 +65,65 @@ trait DateTimeTrait
         return $this->php;
     }
 
+    public function hasMinimumValue() : bool
+    {
+        return $this->minimum !== null;
+    }
+
+    public function minimumValue() : DateTime
+    {
+        return new DateTime($this->minimum);
+    }
+
+    public function exclusiveMinimum() : bool
+    {
+        return $this->exclusiveMinimum;
+    }
+
+    public function hasMaximumValue() : bool
+    {
+        return $this->maximum !== null;
+    }
+
+    public function maximumValue() : DateTime
+    {
+        return new DateTime($this->maximum);
+    }
+
+    public function exclusiveMaximum() : bool
+    {
+        return $this->exclusiveMaximum;
+    }
+
     public static function buildDateTimeMetadata(ClassMetadataBuilder $builder) : void
     {
         $builder->addStringField('pattern', 255);
         $builder->addStringField('unicode', 50);
         $builder->addStringField('php', 50);
+        $builder->addStringField('minimum', 50);
+        $builder->addMappedField('exclusive_minimum', 'exclusiveMinimum', 'boolean');
+        $builder->addStringField('maximum', 50);
+        $builder->addMappedField('exclusive_maximum', 'exclusiveMaximum', 'boolean');
+    }
+
+    protected function dateTimeConstraints() : iterable
+    {
+        $constraints = [];
+        if ($this->hasMinimumValue()) {
+            if ($this->exclusiveMinimum()) {
+                $constraints[] = new GreaterThan($this->minimumValue());
+            } else {
+                $constraints[] = new GreaterThanOrEqual($this->minimumValue());
+            }
+        }
+        if ($this->hasMaximumValue()) {
+            if ($this->exclusiveMaximum()) {
+                $constraints[] = new LessThan($this->maximumValue());
+            } else {
+                $constraints[] = new LessThanOrEqual($this->maximumValue());
+            }
+        }
+        return $constraints;
     }
 
     protected function fragmentValue($fragment, Collection $properties = null)
