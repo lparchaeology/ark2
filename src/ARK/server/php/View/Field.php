@@ -522,7 +522,6 @@ class Field extends Element
             }
         }
         $options['constraints'] = $this->attribute()->constraints();
-        dump($options['constraints']);
         return $options;
     }
 
