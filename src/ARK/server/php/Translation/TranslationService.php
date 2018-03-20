@@ -48,7 +48,7 @@ class TranslationService
         Translation::dump(Service::siteDir().'/translations');
     }
 
-    public function import(bool $replace = true, callable $chooser) : void
+    public function import(bool $replace = true, callable $chooser = null) : void
     {
         $finder = new Finder();
         $finder->in(Service::siteDir().'/translations')->name('*.xlf');
