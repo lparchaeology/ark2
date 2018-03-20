@@ -33,9 +33,22 @@ use ARK\Console\Command\AbstractCommand;
 use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\Translation\Keyword;
+use Symfony\Component\Finder\Finder;
 
 class TranslationImportCommand extends AbstractCommand
 {
+    public function askReplace(Keyword $key, string $import, string $existing) : bool
+    {
+        if ($import === $existing) {
+            return false;
+        }
+        $this->write("\nKeyword ".$key->id().' differs:');
+        $this->write('  Import   = "'.$import.'"');
+        $this->write('  Database = "'.$existing.'"');
+        $choice = $this->askChoice("\nPlease choose the message to use", ['import', 'database'], 'import');
+        return $choice === 'import';
+    }
+
     protected function configure() : void
     {
         $this->setName('translation:import')
@@ -79,17 +92,5 @@ class TranslationImportCommand extends AbstractCommand
         }
         ORM::flush();
         $this->write('SUCCESS: Imported translation file(s)');
-    }
-
-    public function askReplace(Keyword $key, string $import, string $existing) : bool
-    {
-        if ($import === $existing) {
-            return false;
-        }
-        $this->write("\nKeyword ".$key->id().' differs:');
-        $this->write('  Import   = "'.$import.'"');
-        $this->write('  Database = "'.$existing.'"');
-        $choice = $this->askChoice("\nPlease choose the message to use", ['import', 'database'], 'import');
-        return $choice === 'import';
     }
 }
