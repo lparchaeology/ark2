@@ -133,21 +133,50 @@ class Translator extends SymfonyTranslator
             $keyword = $id;
         }
 
-        // First try lookup on id with role added to end
+        // The correct ARK translation id is the requested keyword with the requested role
         $lookup = $keyword.'.'.$role;
-        if ($count === null) {
-            $msg = SymfonyTranslator::trans($lookup, $parameters, $domain, $locale);
-        } else {
-            $msg = SymfonyTranslator::transChoice($lookup, $count, $parameters, $domain, $locale);
-        }
         $message['id'] = $lookup;
         $message['keyword'] = $keyword;
         $message['role'] = $role;
-        if ($msg !== $lookup) {
-            $message['translation'] = $msg;
-        } else {
-            $message['translation'] = $id;
+        $catalogue = $this->getCatalogue($locale);
+        if ($catalogue->has($lookup, $domain)) {
+            //dump('MATCH on requested role '.$role);
+            $message['translation'] = $this->translation($lookup, $count, $parameters, $domain, $locale);
+            return $message;
         }
+
+        // Fallback to the default role when the requested role is not found
+        if ($role !== 'default') {
+            $lookup = $keyword.'.default';
+            if ($catalogue->has($lookup, $domain)) {
+                //dump('MATCH on default role');
+                $message['translation'] = $this->translation($lookup, $count, $parameters, $domain, $locale);
+                return $message;
+            }
+        }
+
+        // Next try lookup on id without role, i.e. if not an ARK translation
+        $lookup = $id;
+        if ($catalogue->has($lookup, $domain)) {
+            //dump('MATCH on no role');
+            $message['id'] = $id;
+            $message['keyword'] = null;
+            $message['role'] = null;
+            $message['translation'] = $this->translation($lookup, $count, $parameters, $domain, $locale);
+            return $message;
+        }
+
+        // Otherwise fail and return the requested id to display instead
+        //dump('NO MATCH');
+        $message['translation'] = $id;
         return $message;
+    }
+
+    private function translation($id, $count, $parameters, $domain, $locale) : string
+    {
+        if ($count === null) {
+            return SymfonyTranslator::trans($id, $parameters, $domain, $locale);
+        }
+        return SymfonyTranslator::transChoice($id, $count, $parameters, $domain, $locale);
     }
 }

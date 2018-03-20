@@ -76,20 +76,18 @@ class TranslationServiceProvider implements ServiceProviderInterface, EventListe
                 $translator->addLoader('database', new DatabaseLoader());
             }
 
+            // Load Validation translations
             if (isset($app['validator'])) {
                 $r = new \ReflectionClass('Symfony\Component\Validator\Validation');
-                $file = dirname($r->getFilename()).'/Resources/translations/validators.'.$app['locale'].'.xlf';
-                if (file_exists($file)) {
-                    $translator->addResource('xliff', $file, $app['locale'], 'validators');
-                }
+                $dir = dirname($r->getFilename()).'/Resources/translations';
+                $this->loadTranslationFiles($translator, $app['locale_fallbacks'], $dir, 'validators');
             }
 
+            // Load Form translations
             if (isset($app['form.factory'])) {
                 $r = new \ReflectionClass('Symfony\Component\Form\Form');
-                $file = dirname($r->getFilename()).'/Resources/translations/validators.'.$app['locale'].'.xlf';
-                if (file_exists($file)) {
-                    $translator->addResource('xliff', $file, $app['locale'], 'validators');
-                }
+                $dir = dirname($r->getFilename()).'/Resources/translations';
+                $this->loadTranslationFiles($translator, $app['locale_fallbacks'], $dir, 'validators');
             }
 
             // Register default resources
@@ -104,11 +102,15 @@ class TranslationServiceProvider implements ServiceProviderInterface, EventListe
             }
 
             foreach ($app['locale_fallbacks'] as $language) {
-                $translator->addResource('actor', $app['database'], $language, 'messages');
+                $translator->addResource('actor', $app['database'], $language);
                 if ($app['debug']) {
                     $translator->addResource('database', $app['database'], $language);
                 } else {
-                    $this->loadTranslationFiles($translator, $app['locale_fallbacks'], $app['dir.site'].'/translations');
+                    $this->loadTranslationFiles(
+                        $translator,
+                        $app['locale_fallbacks'],
+                        $app['dir.site'].'/translations'
+                    );
                     $this->loadTranslationFiles(
                         $translator,
                         $app['locale_fallbacks'],
@@ -159,8 +161,12 @@ class TranslationServiceProvider implements ServiceProviderInterface, EventListe
         }
     }
 
-    private function loadTranslationFiles($translator, array $languages, $dir) : void
-    {
+    private function loadTranslationFiles(
+        Translator $translator,
+        iterable $languages,
+        string $dir,
+        string $domain = 'messages'
+    ) : void {
         try {
             $finder = new Finder();
             $finder->in($dir)->name('*.xlf');
@@ -168,7 +174,7 @@ class TranslationServiceProvider implements ServiceProviderInterface, EventListe
                 $parts = explode('.', $file->getFilename());
                 $language = $parts[1];
                 if (in_array($language, $languages, true)) {
-                    $translator->addResource('xliff', $file->getPathname(), $language, 'messages');
+                    $translator->addResource('xliff', $file->getPathname(), $language, $domain);
                 }
             }
         } catch (Exception $e) {
