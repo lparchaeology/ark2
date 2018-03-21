@@ -147,10 +147,20 @@
 }
 
 .previousitemclose,
-.photopickclose {
+#photopickclose {
   float:right;
 }
 
 .trigger-modal-container {
   text-align: center;
+}
+
+.btn-camera {
+    min-width: 32px;
+    margin: 5px;
+    min-height: 32px;
+}
+
+.btn-camera span {
+  vertical-align: middle;
 }
