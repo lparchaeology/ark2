@@ -48,17 +48,21 @@ function initialisePickMap(target) {
 
     mapPickLayers.push(vector);
 
-    // TODO Get from ark_map tables.
-    var mapPickView = new ol.View({
-        center: [1155972, 7580813],
-        zoom: 6,
-        extent: [831000, 7230000, 1750000, 7950000],
-        minZoom: 6,
-    });
-    console.log(mapConfig);
+    var layers = [];
+    for (var i = 0; i < mapConfig.layers.length; ++i) {
+        var config = mapConfig.layers[i];
+        layer = new ol.layer.Tile({
+            name: config.name,
+            visible: config.visible,
+            preload: config.preload,
+            source: mapSource(config.class, config.source)
+        });
+        layer.set('name', config.name);
+        layers.push(layer);
+    }
 
     var mapPickMap = new ol.Map({
-        layers: mapPickLayers,
+        layers: layers,
         controls: [],
         loadTilesWhileInteracting: true,
         target: target,
