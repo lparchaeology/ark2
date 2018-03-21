@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Controller.
+ * API Form Controller.
  *
  * Copyright (C) 2018  L - P : Heritage LLP.
  *

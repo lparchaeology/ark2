@@ -164,6 +164,14 @@ class Table extends Element
         return $this->pagination ?? 10;
     }
 
+    public function pageList() : iterable
+    {
+        if ($this->pagination === null) {
+            return [];
+        }
+        return [$this->pagination, $this->pagination * 2, $this->pagination * 5, $this->pagination * 10];
+    }
+
     public function buildForms(iterable $view) : iterable
     {
         //dump('TABLE FORMS : '.$this->id());
