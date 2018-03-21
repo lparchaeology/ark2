@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 20, 2018 at 02:52 PM
+-- Generation Time: Mar 21, 2018 at 03:56 PM
 -- Server version: 10.2.13-MariaDB
 -- PHP Version: 7.1.14
 
@@ -236,7 +236,7 @@ CREATE TABLE `ark_dataclass_date` (
 
 INSERT INTO `ark_dataclass_date` (`dataclass`, `pattern`, `unicode`, `php`, `preset`, `minimum`, `exclusive_minimum`, `maximum`, `exclusive_maximum`) VALUES
 ('date', '^([0-9]{4})(-)(1[0-2]|0[1-9])\\\\2(3[01]|0[1-9]|[12][0-9])$', NULL, 'Y-m-d', NULL, NULL, 0, NULL, 0),
-('date_historical', '^([0-9]{4})(-)(1[0-2]|0[1-9])\\\\2(3[01]|0[1-9]|[12][0-9])$', NULL, 'Y-m-d', NULL, NULL, 0, 'now', 0),
+('date_historical', '^([0-9]{4})(-)(1[0-2]|0[1-9])\\\\2(3[01]|0[1-9]|[12][0-9])$', NULL, 'Y-m-d', NULL, NULL, 0, 'today', 0),
 ('ordinaldate', '^([0-9]{4})-(36[0-6]|3[0-5][0-9]|[12][0-9]{2}|0[1-9][0-9]|00[1-9])$', NULL, 'Y-z', NULL, NULL, 0, NULL, 0),
 ('weekdate', '^([0-9]{4})-W(5[0-3]|[1-4][0-9]|0[1-9])-([1-7])$', NULL, 'o-W-N', NULL, NULL, 0, NULL, 0);
 
@@ -3401,9 +3401,11 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('spatial.format.gpx', 'vocabulary', 0, 0),
 ('spatial.format.wkt', 'vocabulary', 0, 0),
 ('test.test', 'core', 0, 0),
+('This value should be less than or equal to {{ compared_value }}.', 'validators', 0, 1),
 ('translation.domain.core', 'core', 0, 0),
 ('translation.domain.dime', 'dime', 0, 0),
 ('translation.domain.security', 'core', 0, 0),
+('translation.domain.validators', 'core', 0, 0),
 ('translation.domain.vocabulary', 'core', 0, 0),
 ('translation.role.default', 'core', 0, 0),
 ('translation.role.description', 'core', 0, 0),
@@ -3453,6 +3455,7 @@ INSERT INTO `ark_translation_domain` (`domain`, `keyword`) VALUES
 ('core', 'translation.domain.core'),
 ('dime', 'translation.domain.dime'),
 ('security', 'translation.domain.security'),
+('validators', 'translation.domain.validators'),
 ('vocabulary', 'translation.domain.vocabulary');
 
 -- --------------------------------------------------------
@@ -4452,6 +4455,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'module.file', 'default', 'Filer', ''),
 ('da', 'search.placeholder', 'default', 'Fritekstsøgning', ''),
 ('da', 'site.brand', 'default', 'DIME', ''),
+('da', 'This value should be less than or equal to {{ compared_value }}.', 'default', 'Værdien skal være mindre end eller lig med {{ compared_value }}.', NULL),
 ('da', 'user.greeting', 'default', 'Logget på: %name%', ''),
 ('da', 'user.mail.reset.subject', 'default', 'Nulstil dit password', ''),
 ('da', 'user.menu.edit', 'default', 'Rediger profil', ''),
@@ -4925,11 +4929,11 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.denmark.admin', 'default', 'Danish Administration Units', ''),
 ('en', 'dime.denmark.municipality', 'default', 'Municipalities', ''),
 ('en', 'dime.denmark.region', 'default', 'Danish Regions', ''),
-('en', 'dime.detector', 'default', 'Detecting', ''),
+('en', 'dime.detector', 'default', 'Detecting', '');
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'dime.detector', 'resource', 'detecting', ''),
 ('en', 'dime.exhibits', 'default', 'Exhibits', ''),
-('en', 'dime.exhibits', 'resource', 'exhibits', '');
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.exhibits', 'resource', 'exhibits', ''),
 ('en', 'dime.exhibits.forests', 'default', 'Gold and Green Forests', ''),
 ('en', 'dime.exhibits.weapons', 'default', 'Weapons in the Bronze Age', ''),
 ('en', 'dime.find', 'default', 'Find', ''),
@@ -5571,11 +5575,11 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.period.iron.roman.late.c3', 'default', 'Late Roman Iron Age C3', ''),
 ('en', 'dime.period.lategermanic.earlyviking', 'default', 'Late Germanic / Early Viking', ''),
 ('en', 'dime.period.medieval', 'default', 'Medieval', ''),
-('en', 'dime.period.medieval.early', 'default', 'Early Medieval', ''),
+('en', 'dime.period.medieval.early', 'default', 'Early Medieval', '');
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'dime.period.medieval.high', 'default', 'High Medieval', ''),
 ('en', 'dime.period.medieval.late', 'default', 'Late Medieval', ''),
-('en', 'dime.period.mesolithic', 'default', 'Mesolithic', '');
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.period.mesolithic', 'default', 'Mesolithic', ''),
 ('en', 'dime.period.modern', 'default', 'Modern Age', ''),
 ('en', 'dime.period.neolithic', 'default', 'Neolithic', ''),
 ('en', 'dime.period.palaeolithic', 'default', 'Palaeolithic', ''),
