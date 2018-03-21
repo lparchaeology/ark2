@@ -1,15 +1,20 @@
 {# Block to write out correctly formatted field value #}
 {% block mappick %}
 
+{% use "blocks/mapconfig.twig.html" %}
+
 <div class="form-group">
     <label class="col-xs-12 col-sm-4 control-label">{{ 'dime.find.location' | translate }}</label>
     <div class="col-sm-8 col-lg-7">
         <div id="mappick" class="mappick"></div>
+        {{ block("mapconfig") }}
         <script>
             var mapPin = "{{ asset('images/icons/pin.png', 'frontend') }}";
         </script>
     </div>
 </div>
+
+
 
 <div class="form-group">
 

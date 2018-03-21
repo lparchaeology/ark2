@@ -1,0 +1,31 @@
+{# Block to write out correctly formatted field value #}
+{% block mapconfig %}
+        {# Convert the ARK map config into OpenLayers json #}
+        {% set view = {
+            'projection': 'EPSG:' ~ state.map.srid,
+            'center': state.map.center.toArray,
+            'extent': state.map.extent.toArray[0] | merge(state.map.extent.toArray[1]),
+            'zoom': state.map.zoom,
+            'minZoom': state.map.minimumZoom,
+            'maxZoom': state.map.maximumZoom
+        } %}
+        {% set layers = [] %}
+        {% for layer in state.map.layers %}
+            {% if layer.source.viewClass == 'BingMaps' %}
+                {% set source = {'key': layer.source.ticket, 'imagerySet': layer.sourceName} %}
+            {% endif %}
+            {% if layer.source.viewClass == 'TileWMS' %}
+                {% set source = {'url': layer.url ~ '&TRANSPARENT=TRUE&ticket=' ~ data['kortforsyningenticket'] | raw, 'params': layer.parameters} %}
+            {% endif %}
+            {% set conf = {'name': layer.name, 'visible': layer.isVisible, 'class': layer.source.viewClass, 'source': source} %}
+            {% set layers = layers | merge([conf]) %}
+        {% endfor %}
+        {% set config = [] %}
+        {% set config = config | merge({'view': view}) %}
+        {% set config = config | merge({'layers': layers}) %}
+
+    <script>
+      var mapConfig = JSON.parse("{{ config | json_encode() | escape('js') }}");
+    </script>
+
+{% endblock mapconfig %}

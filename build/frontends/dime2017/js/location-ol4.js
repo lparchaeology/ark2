@@ -8,19 +8,29 @@ function initialisePickMap(target) {
         wrapX: false,
     });
 
+    function mapSource(source, config) {
+        if (source == 'BingMaps') {
+            return new ol.source.BingMaps(config)
+        }
+        if (source == 'TileWMS') {
+            return new ol.source.TileWMS(config)
+        }
+    }
+
     $('#' + target).data('mapPickSource', mapPickSource);
 
-    var mapPickLayers = [
-        new ol.layer.Tile({
-            visible: true,
-            preload: Infinity,
-            source: new ol.source.BingMaps({
-                key: 'Ak5AqjsEQ44KtAl7jHhrjGuzNshN1fZv3MOx2MUi0p4zFmq6XeWLKmyqeP2UgJK3',
-                imagerySet: 'AerialWithLabels',
-                maxZoom: 19,
-            }),
-        }),
-    ];
+    var mapPickLayers = [];
+    for (var i = 0; i < mapConfig.layers.length; ++i) {
+        var config = mapConfig.layers[i];
+        layer = new ol.layer.Tile({
+            name: config.name,
+            visible: config.visible,
+            preload: config.preload,
+            source: mapSource(config.class, config.source)
+        });
+        layer.set('name', config.name);
+        mapPickLayers.push(layer);
+    }
 
     var iconStyle = new ol.style.Style({
         image: new ol.style.Icon( /** @type {olx.style.IconOptions} */ {
@@ -45,12 +55,14 @@ function initialisePickMap(target) {
         extent: [831000, 7230000, 1750000, 7950000],
         minZoom: 6,
     });
+    console.log(mapConfig);
 
     var mapPickMap = new ol.Map({
         layers: mapPickLayers,
+        controls: [],
         loadTilesWhileInteracting: true,
         target: target,
-        view: mapPickView,
+        view: new ol.View(mapConfig.view),
         controls: [new ol.control.FullScreen(), new ol.control.Zoom()],
     });
 
