@@ -54,6 +54,7 @@ function initialiseMapModal() {
       $("#map-modal").on("hidden.bs.modal", function() {
         // potentially remove the event listeners when the dialog is dismissed
           console.log("hide");
+          $("#find-registered-alert").alert("close");
       });
 
       return $('#mapmodal').data('map');

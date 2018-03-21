@@ -3,8 +3,9 @@
 {% if forms.previous.vars.data.id is defined %}
 
     <div class="previous">
-        <div class="register-alert alert alert-success alert-dismissable fade in" role="alert">
-            {{ 'dime.find.registered'| trans({ '%id%': forms.previous.vars.data.id }) }}
+        <div id="find-registered-alert" class="register-alert alert alert-success alert-dismissable fade in" role="alert">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            {{ 'dime.find.registered'| trans({ '%id%': forms.previous.vars.data.id }) }}</br>
             <div class="btn btn-info" data-toggle="modal" data-target="#previousitem-modal">
                 <span class="glyphicon glyphicon-eye-open"></span>
             </div>
@@ -33,6 +34,5 @@
             </div>
         </div>
     </div>
-</div>
 
 {% endif %}

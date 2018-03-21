@@ -285,6 +285,10 @@ $(document).ready(function () {
         $('#find_image_file').click();
     });
 
+    $("#photo-modal").on('hidden.bs.modal', function () {
+      $("#find-registered-alert").alert("close");
+    });
+
     $('#modal_photobtn').on('click', function () {
         $('.file-input').find('.glyphicon-folder-open').parent().hide();
         $('#photo-btn').on('click', function () {
