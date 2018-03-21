@@ -84,7 +84,7 @@ class LocalTextPropertyType extends AbstractPropertyType
         if (is_array($previous)) {
             $text->setContents($previous);
         }
-        $text->setMediaType($forms['mediatype']->getData());
+        $text->setMediaType($forms['mediatype']->getData() ?? $property->attribute()->dataclass()->mediatype());
         $text->setContent($forms['content']->getData(), $forms['language']->getData());
         $property->setValue($text);
     }

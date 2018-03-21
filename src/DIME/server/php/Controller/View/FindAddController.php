@@ -43,6 +43,15 @@ class FindAddController extends DimePageController
     {
         $actor = Service::workflow()->actor();
         $find = new Find('dime.find');
+        // HACK Fix sub-schema properties not populating. Should really fix in depths of Forms somewhere...
+        if ($request->request->has('find')) {
+            $post = $request->request->get('find');
+            $class = $post['class']['term'] ?? null;
+            if ($class) {
+                //$class = $find->schema()->attribute('class')->vocabulary()->term($class);
+                $find->setValue('class', $class);
+            }
+        }
         $find->setValue('finder', $actor);
         $find->setValue('process', 'recorded');
 

@@ -109,8 +109,11 @@ class LocalText
         return $this->mediatype;
     }
 
-    public function setMediaType($mediatype) : void
+    public function setMediaType(string $mediatype) : void
     {
-        $this->mediatype = $mediatype;
+        // TODO Validate is valid mediatype?
+        if ($mediatype) {
+            $this->mediatype = $mediatype;
+        }
     }
 }
