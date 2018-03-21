@@ -77,7 +77,7 @@ class FindRegisterController extends DimePageController
         ORM::flush($find);
         $parameters['prev'] = $find->id();
         $request->attributes->set('parameters', $parameters);
-        Service::view()->addSuccessFlash('dime.find.registered', ['id' => $find->id()]);
+        //Service::view()->addSuccessFlash('dime.find.registered', ['id' => $find->id()]);
     }
 
     protected function item($data) : ?Item
