@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 21, 2018 at 03:56 PM
+-- Generation Time: Mar 21, 2018 at 04:55 PM
 -- Server version: 10.2.13-MariaDB
 -- PHP Version: 7.1.14
 
@@ -577,6 +577,7 @@ CREATE TABLE `ark_map` (
 --
 
 INSERT INTO `ark_map` (`map`, `draggable`, `clickable`, `zoomable`, `zoom`, `min_zoom`, `max_zoom`, `srid`, `center`, `extent`, `keyword`, `options`) VALUES
+('dime_map_pick', 1, 1, 1, 5, 5, 16, 3857, 'POINT (1155972 7580813)', 'MULTIPOINT (831000 7230000, 1750000 7950000)', 'dime.map.user', ''),
 ('dime_map_public', 1, 1, 1, 7, 6, 16, 3857, 'POINT (1155972 7580813)', 'MULTIPOINT (831000 7230000, 1750000 7950000)', 'dime.map.public', ''),
 ('dime_map_user', 1, 1, 1, 7, 6, 16, 3857, 'POINT (1155972 7580813)', 'MULTIPOINT (831000 7230000, 1750000 7950000)', 'dime.map.user', '');
 
@@ -631,6 +632,7 @@ CREATE TABLE `ark_map_legend` (
 --
 
 INSERT INTO `ark_map_legend` (`map`, `source`, `layer`, `seq`, `is_default`, `visible`, `enabled`, `keyword`, `options`) VALUES
+('dime_map_pick', 'bing', 'aerial', 1, 1, 1, 1, NULL, ''),
 ('dime_map_public', 'bing', 'aerial', 2, 0, 0, 1, NULL, ''),
 ('dime_map_public', 'bing', 'aerialwithlabels', 1, 1, 1, 1, NULL, ''),
 ('dime_map_public', 'bing', 'road', 3, 0, 0, 1, NULL, ''),
@@ -6644,7 +6646,7 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `na
 ('dime_find_front_table', '', 0, 0, 2, 'dime_find_class', NULL, NULL, 0, NULL, 0, 1, NULL, NULL, NULL, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_front_table', '', 0, 0, 4, 'dime_find_classification', NULL, NULL, 0, NULL, 0, 1, NULL, NULL, NULL, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_front_table', '', 0, 0, 6, 'dime_find_material', NULL, NULL, 0, NULL, 0, 1, NULL, NULL, NULL, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_geo', '', 0, 0, 0, 'dime_find_location', NULL, NULL, 0, 1, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.find.coordinates', 'blocks/mappick.html.twig', NULL, NULL, NULL),
+('dime_find_geo', '', 0, 0, 0, 'dime_find_location', NULL, NULL, 0, 1, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'dime_map_pick', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.find.coordinates', 'blocks/mappick.html.twig', NULL, NULL, NULL),
 ('dime_find_geo', '', 0, 0, 2, 'dime_find_municipality', NULL, NULL, 0, 1, 0, 1, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_geo', '', 0, 0, 4, 'dime_find_museum', NULL, NULL, 0, 1, 0, 1, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_item', '', 0, 0, 0, 'dime_find_metadata', NULL, NULL, 0, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
