@@ -4,10 +4,6 @@ function initialisePickMap(target) {
     proj4.defs("EPSG:32633", "+proj=utm +zone=33 +datum=WGS84 +units=m +no_defs");
     proj4.defs("EPSG:32632", "+proj=utm +zone=32 +datum=WGS84 +units=m +no_defs");
 
-    var mapPickSource = new ol.source.Vector({
-        wrapX: false,
-    });
-
     function mapSource(source, config) {
         if (source == 'BingMaps') {
             return new ol.source.BingMaps(config)
@@ -16,9 +12,6 @@ function initialisePickMap(target) {
             return new ol.source.TileWMS(config)
         }
     }
-
-    $('#' + target).data('mapPickSource', mapPickSource);
-
     var mapPickLayers = [];
     for (var i = 0; i < mapConfig.layers.length; ++i) {
         var config = mapConfig.layers[i];
@@ -31,6 +24,12 @@ function initialisePickMap(target) {
         layer.set('name', config.name);
         mapPickLayers.push(layer);
     }
+    
+    var mapPickSource = new ol.source.Vector({
+        wrapX: false,
+    });
+
+    $('#' + target).data('mapPickSource', mapPickSource);
 
     var iconStyle = new ol.style.Style({
         image: new ol.style.Icon( /** @type {olx.style.IconOptions} */ {
@@ -48,21 +47,8 @@ function initialisePickMap(target) {
 
     mapPickLayers.push(vector);
 
-    var layers = [];
-    for (var i = 0; i < mapConfig.layers.length; ++i) {
-        var config = mapConfig.layers[i];
-        layer = new ol.layer.Tile({
-            name: config.name,
-            visible: config.visible,
-            preload: config.preload,
-            source: mapSource(config.class, config.source)
-        });
-        layer.set('name', config.name);
-        layers.push(layer);
-    }
-
     var mapPickMap = new ol.Map({
-        layers: layers,
+        layers: mapPickLayers,
         controls: [],
         loadTilesWhileInteracting: true,
         target: target,
