@@ -140,7 +140,6 @@ class Translator extends SymfonyTranslator
         $message['role'] = $role;
         $catalogue = $this->getCatalogue($locale);
         if ($catalogue->has($lookup, $domain)) {
-            //dump('MATCH on requested role '.$role);
             $message['translation'] = $this->translation($lookup, $count, $parameters, $domain, $locale);
             return $message;
         }
@@ -149,7 +148,6 @@ class Translator extends SymfonyTranslator
         if ($role !== 'default') {
             $lookup = $keyword.'.default';
             if ($catalogue->has($lookup, $domain)) {
-                //dump('MATCH on default role');
                 $message['translation'] = $this->translation($lookup, $count, $parameters, $domain, $locale);
                 return $message;
             }
@@ -158,8 +156,7 @@ class Translator extends SymfonyTranslator
         // Next try lookup on id without role, i.e. if not an ARK translation
         $lookup = $id;
         if ($catalogue->has($lookup, $domain)) {
-            //dump('MATCH on no role');
-            $message['id'] = $id;
+            $message['id'] = $lookup;
             $message['keyword'] = null;
             $message['role'] = null;
             $message['translation'] = $this->translation($lookup, $count, $parameters, $domain, $locale);
@@ -167,7 +164,6 @@ class Translator extends SymfonyTranslator
         }
 
         // Otherwise fail and return the requested id to display instead
-        //dump('NO MATCH');
         $message['translation'] = $id;
         return $message;
     }

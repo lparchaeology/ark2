@@ -29,6 +29,7 @@
 
 namespace ARK\Framework\Provider;
 
+use ARK\ARK;
 use ARK\Translation\Console\Command\TranslationAddCommand;
 use ARK\Translation\Console\Command\TranslationDumpCommand;
 use ARK\Translation\Console\Command\TranslationImportCommand;
@@ -37,7 +38,6 @@ use ARK\Translation\Loader\DatabaseLoader;
 use ARK\Translation\TranslationService;
 use ARK\Translation\Translator;
 use Exception;
-use LogicException;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
@@ -57,15 +57,12 @@ class TranslationServiceProvider implements ServiceProviderInterface, EventListe
 {
     public function register(Container $app) : void
     {
+        // Define the real Translator, i.e. not the logging Translator
         $app['translator.default'] = function ($app) {
-            if (!isset($app['locale'])) {
-                throw new LogicException('You must define \'locale\' parameter or register the LocaleServiceProvider to use the TranslationServiceProvider');
-            }
-
             $translator = new Translator(
                 $app['locale'],
-                $app['translator.message_selector'],
-                $app['translator.cache_dir'],
+                new MessageFormatter(),
+                $app['debug'] ? null : ARK::translationsCacheDir($app['ark']['site']),
                 $app['debug']
             );
             $translator->setFallbackLocales($app['locale_fallbacks']);
@@ -80,48 +77,36 @@ class TranslationServiceProvider implements ServiceProviderInterface, EventListe
             if (isset($app['validator'])) {
                 $r = new \ReflectionClass('Symfony\Component\Validator\Validation');
                 $dir = dirname($r->getFilename()).'/Resources/translations';
-                $this->loadTranslationFiles($translator, $app['locale_fallbacks'], $dir, 'validators');
+                $this->loadTranslationFiles($translator, $dir);
             }
 
             // Load Form translations
             if (isset($app['form.factory'])) {
                 $r = new \ReflectionClass('Symfony\Component\Form\Form');
                 $dir = dirname($r->getFilename()).'/Resources/translations';
-                $this->loadTranslationFiles($translator, $app['locale_fallbacks'], $dir, 'validators');
+                $this->loadTranslationFiles($translator, $dir);
             }
+
+            // Load Actor names
+            $translator->addResource('actor', $app['database'], $app['locale']);
 
             // Register default resources
-            foreach ($app['translator.resources'] as $resource) {
-                $translator->addResource($resource[0], $resource[1], $resource[2], $resource[3]);
-            }
-
-            foreach ($app['translator.domains'] as $domain => $data) {
-                foreach ($data as $locale => $messages) {
-                    $translator->addResource('array', $messages, $locale, $domain);
-                }
-            }
-
-            foreach ($app['locale_fallbacks'] as $language) {
-                $translator->addResource('actor', $app['database'], $language);
-                if ($app['debug']) {
+            if ($app['debug']) {
+                // In debug mode load direct from the database
+                $languages = $this->allLanguages($translator);
+                foreach ($languages as $language) {
                     $translator->addResource('database', $app['database'], $language);
-                } else {
-                    $this->loadTranslationFiles(
-                        $translator,
-                        $app['locale_fallbacks'],
-                        $app['dir.site'].'/translations'
-                    );
-                    $this->loadTranslationFiles(
-                        $translator,
-                        $app['locale_fallbacks'],
-                        $app['dir.site'].'/translations/'.$app['ark']['view']['frontend']
-                    );
                 }
+            } else {
+                // In prod mode load from the site translation files and enable caching
+                $this->loadTranslationFiles($translator, $app['dir.site'].'/translations');
+                $this->loadTranslationFiles($translator, $app['dir.site'].'/translations/'.$app['ark']['view']['frontend']);
             }
 
             return $translator;
         };
 
+        // Define the translator to use, by default the real translator, but can be overridden by a logging translator
         $app['translator'] = function ($app) {
             return $app['translator.default'];
         };
@@ -131,17 +116,6 @@ class TranslationServiceProvider implements ServiceProviderInterface, EventListe
                 return new TranslatorListener($app['translator'], $app['request_stack']);
             };
         }
-
-        $app['translator.message_selector'] = function () {
-            return new MessageFormatter();
-        };
-
-        $app['translator.resources'] = function ($app) {
-            return [];
-        };
-
-        $app['translator.domains'] = [];
-        $app['translator.cache_dir'] = null;
 
         $app->addCommands([
             TranslationAddCommand::class,
@@ -161,17 +135,18 @@ class TranslationServiceProvider implements ServiceProviderInterface, EventListe
         }
     }
 
-    private function loadTranslationFiles(
-        Translator $translator,
-        iterable $languages,
-        string $dir,
-        string $domain = 'messages'
-    ) : void {
+    private function loadTranslationFiles(Translator $translator, string $dir) : void
+    {
         try {
             $finder = new Finder();
             $finder->in($dir)->name('*.xlf');
+            $languages = $this->allLanguages($translator);
             foreach ($finder as $file) {
                 $parts = explode('.', $file->getFilename());
+                $domain = $parts[0];
+                if ($domain !== 'validators') {
+                    $domain = 'messages';
+                }
                 $language = $parts[1];
                 if (in_array($language, $languages, true)) {
                     $translator->addResource('xliff', $file->getPathname(), $language, $domain);
@@ -179,5 +154,10 @@ class TranslationServiceProvider implements ServiceProviderInterface, EventListe
             }
         } catch (Exception $e) {
         }
+    }
+
+    private function allLanguages(Translator $translator) : iterable
+    {
+        return array_unique(array_merge([$translator->getLocale()], $translator->getFallbackLocales()));
     }
 }

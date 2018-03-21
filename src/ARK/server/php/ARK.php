@@ -132,6 +132,11 @@ class ARK
         return self::siteDir($site).'/translations/'.$frontend;
     }
 
+    public static function translationsCacheDir(string $site) : string
+    {
+        return self::siteCacheDir($site).'/translations';
+    }
+
     public static function assetsDir(string $site, string $frontend) : string
     {
         return self::siteDir($site).'/public/assets/'.$frontend;

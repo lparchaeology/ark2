@@ -105,7 +105,6 @@ class DataCollectorTranslator extends SymfonyDataCollectorTranslator
 
     private function collectMessage($message) : void
     {
-        //dump($message);
         if ($message['keyword'] === null || $message['role'] === null) {
             return;
         }
