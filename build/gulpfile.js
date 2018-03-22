@@ -289,7 +289,7 @@ gulp.task('styles', function () {
             stream = manifest.assets.styles[style][i];
             src = src.concat(mergePaths(manifest.frontend, stream));
         }
-        // FIXME Sourcemaps are broken, see https://github.com/sass/libsass/issues/2312
+        // TODO Sourcemaps are broken, see https://github.com/sass/libsass/issues/2312
         streams.add(
             gulp.src(src)
             //.pipe(sourcemaps.init(manifest.options.sourcemaps))
