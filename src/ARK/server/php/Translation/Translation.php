@@ -63,7 +63,7 @@ class Translation
         $domains = Domain::findAll();
         foreach ($domains as $domain) {
             foreach ($languages as $language) {
-                $catalogue = $loader->load(Service::database(), $language->code(), $domain->id());
+                $catalogue = $loader->load(Service::database(), $language->code(), $domain->id(), $domain->id());
                 $xliff->dump($catalogue, $options);
             }
         }

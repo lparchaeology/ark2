@@ -35,7 +35,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 class DatabaseLoader implements LoaderInterface
 {
-    public function load($db, $locale, $domain = 'messages') : MessageCatalogue
+    public function load($db, $locale, $domain = 'messages', $toDomain = 'messages') : MessageCatalogue
     {
         $catalogue = new MessageCatalogue($locale);
         $rows = $db->getTranslationMessages($locale, $domain === 'messages' ? null : $domain);
@@ -44,7 +44,7 @@ class DatabaseLoader implements LoaderInterface
             if ($row['domain'] === 'validators') {
                 $catalogue->set($id, $row['text'], 'validators');
             } else {
-                $catalogue->set($id, $row['text'], 'messages');
+                $catalogue->set($id, $row['text'], $toDomain);
             }
         }
         return $catalogue;
