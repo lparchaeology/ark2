@@ -61,7 +61,7 @@ class AdminMuseumController extends DimePageController
 
         $data['museum'] = null;
         $data['municipalities'] = null;
-        $actor = Service::workflow()->actor();
+        //$actor = Service::workflow()->actor();
         //$data['action'] = Service::workflow()->actions($actor, $actor);
         return $data;
     }

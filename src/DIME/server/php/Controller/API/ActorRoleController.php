@@ -65,11 +65,9 @@ class ActorRoleController extends FormController
 
     public function processForm(Request $request, Form $form) : void
     {
-        $id = $request->attributes->get('id');
         $submitted = $form->getConfig()->getName();
         if ($submitted === 'actor_role') {
             $actor = $request->attributes->get('id');
-            $old = ORM::findBy(ActorUser::class, ['actor' => $actor]);
             ORM::delete($actor);
             $roles = $form->getData();
             ORM::flush($roles);

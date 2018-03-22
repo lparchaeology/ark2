@@ -56,8 +56,6 @@ class SystemAboutCommand extends AbstractCommand
     {
         $io = new SymfonyStyle($this->input, $this->output);
 
-        $app = $this->app();
-
         $this->write('');
         $io->table([], [
             ['<info>ARK</>'],

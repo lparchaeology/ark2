@@ -273,19 +273,6 @@ class Schema
             $class = $this->superclass;
         }
         return $class;
-        if ($this->hasSubclasses()) {
-            if ($class === $this->superclass) {
-                throw new SubclassRequiredException();
-            }
-            if (!in_array($class, $this->subclassNames, true)) {
-                throw new SubclassInvalidException();
-            }
-        } else {
-            if ($class !== $this->superclass) {
-                throw new SuperclassInvalidException();
-            }
-        }
-        return $class;
     }
 
     private function init() : void

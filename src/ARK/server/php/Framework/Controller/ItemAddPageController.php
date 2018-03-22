@@ -48,7 +48,6 @@ class ItemAddPageController extends PageController
 
     public function processForm(Request $request, Form $form) : void
     {
-        $clicked = $form->getClickedButton()->getName();
         $data = $form->getData();
         $item = $this->item($data);
         ORM::persist($item);

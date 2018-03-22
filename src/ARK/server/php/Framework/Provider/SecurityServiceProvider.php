@@ -82,7 +82,6 @@ class SecurityServiceProvider implements ServiceProviderInterface
         $settings = $container['ark']['security'];
 
         // Get the current routes
-        $locale = $container['locale'];
         $admin = $container['routes']->get('core.admin')->getPath();
         $user = $container['routes']->get('core.user')->getPath();
         $check = $container['routes']->get('core.user.check')->getPath();

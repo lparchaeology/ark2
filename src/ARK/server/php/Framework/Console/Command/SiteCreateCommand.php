@@ -40,8 +40,6 @@ class SiteCreateCommand extends DatabaseCommand
 {
     use ProcessTrait;
 
-    private $drivers = ['pdo_mysql', 'pdo_pgsql', 'pdo_sqlite'];
-
     protected function configure() : void
     {
         $this->setName('site:create')
@@ -87,7 +85,7 @@ class SiteCreateCommand extends DatabaseCommand
 
         if ($this->createInstance($site, $config)) {
             $this->write("Database created for $site.");
-            $returnCode = $this->runCommand('site:frontend', ['site' => $site, 'frontend' => $frontend]);
+            $this->runCommand('site:frontend', ['site' => $site, 'frontend' => $frontend]);
             $database['servers'][$config['server']['server']] = $config['server'];
             $database['connections'] = $config['connections'];
             ARK::jsonEncodeWrite($database, ARK::siteDir($site).'/config/database.json');

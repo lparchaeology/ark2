@@ -58,7 +58,7 @@ class UserRoleAddCommand extends AbstractCommand
             $role = $this->askChoice('Please choose a new user role', array_keys($roles));
             $role = $roles[$role];
             $actor = ORM::find(Actor::class, $user->id());
-            $actorRole = Service::security()->createActorRole($actor, $role);
+            Service::security()->createActorRole($actor, $role);
             ORM::flush();
             $this->write('SUCCESS: User role added');
         } else {

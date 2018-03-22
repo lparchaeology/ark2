@@ -56,7 +56,6 @@ class ActorController extends FormController
 
     public function processForm(Request $request, Form $form) : void
     {
-        $id = $request->attributes->get('id');
         $submitted = $form->getConfig()->getName();
         if ($submitted === 'actor') {
             $actor = $form->getData();

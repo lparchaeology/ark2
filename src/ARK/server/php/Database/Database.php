@@ -39,7 +39,6 @@ class Database
     private $entities;
     private $subclasses;
     private $classnames;
-    private $modules;
     private $datatypes;
     private $fragmentTables;
 
@@ -337,11 +336,5 @@ class Database
                 $this->fragmentTables[] = $datatype['data_table'];
             }
         }
-    }
-
-    private function getFragmentTable(string $datatype) : ?iterable
-    {
-        $this->loadDatatypes();
-        return $this->datatypes[$datatype]['data_table'];
     }
 }

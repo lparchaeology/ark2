@@ -106,7 +106,8 @@ class SecurityService
 
     public function isLoggedIn()
     {
-        if ($token = $this->tokenStorage()->getToken()) {
+        $token = $this->tokenStorage()->getToken();
+        if ($token) {
             return $this->isGranted('IS_AUTHENTICATED_REMEMBERED');
         }
         return false;

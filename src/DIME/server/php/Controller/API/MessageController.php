@@ -49,7 +49,6 @@ class MessageController extends FormController
 
     public function processForm(Request $request, Form $form) : void
     {
-        $id = $request->attributes->get('id');
         $submitted = $form->getConfig()->getName();
         if ($submitted === 'message') {
             $message = $form->getData();

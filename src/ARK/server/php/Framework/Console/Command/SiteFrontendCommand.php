@@ -47,7 +47,6 @@ class SiteFrontendCommand extends AbstractCommand
     {
         $site = $this->getArgument('site');
         $frontend = $this->getArgument('frontend');
-        $namespace = null;
 
         $frontends = ARK::frontends();
         if ($frontend) {

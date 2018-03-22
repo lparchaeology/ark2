@@ -43,8 +43,6 @@ abstract class FormController extends Controller
     public function handleRequest(Request $request) : Response
     {
         try {
-            $content = json_decode($request->getContent());
-
             $route = $this->route($request);
             $group = $route->view();
 

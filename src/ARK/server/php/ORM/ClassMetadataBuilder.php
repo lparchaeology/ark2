@@ -328,7 +328,6 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
             'trackedField' => $trackedField,
             'value' => $trackedValue,
         ];
-        $config[$action][] = $field;
         return $builder->build();
     }
 
