@@ -139,7 +139,7 @@ class AdminConnection extends Connection
     public function dropTable(string $table) : void
     {
         if ($this->tableExists($table)) {
-            $sql = $this->getSchemaManager()->dropTable($table);
+            $this->getSchemaManager()->dropTable($table);
         }
     }
 
