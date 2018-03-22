@@ -49,7 +49,7 @@
                     <td>
                         <div class="row">
                             {{ find.value('class') | translate }}
-                            {% if find.value('classification').subtype %}
+                            {% if find.value('classification') %}
                                 / {{ find.value('classification').subtype | translate }}
                             {% endif %}
                         </div>
