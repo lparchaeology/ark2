@@ -30,20 +30,19 @@
 
 namespace ARK\Serializer\JsonSchema;
 
-use ARK\Model\Property\ObjectProperty;
-use ARK\Model\Property\Property;
+use ARK\Model\Attribute;
 
 class ObjectPropertyNormalizer extends AbstractPropertyNormalizer
 {
-    public function supportsNormalization($property, $format = null)
+    public function supportsNormalization($attribute, $format = null)
     {
-        return (get_class($property) === ObjectProperty::class);
+        return $attribute->isObject();
     }
 
-    protected function definition(Property $property)
+    protected function definition(Attribute $attribute)
     {
         $definition['type'] = 'object';
-        foreach ($property->properties() as $prop) {
+        foreach ($attribute->properties() as $prop) {
             $definition['properties'][$prop->id()] = $this->reference($prop->id());
             if ($prop->required()) {
                 $definition['required'][] = $prop->id();
@@ -53,19 +52,19 @@ class ObjectPropertyNormalizer extends AbstractPropertyNormalizer
         return $definition;
     }
 
-    protected function definitions(Property $property)
+    protected function definitions(Attribute $attribute)
     {
         $definitions = [];
-        foreach ($property->properties() as $sub) {
+        foreach ($attribute->properties() as $sub) {
             $definitions = array_merge($definitions, $this->serializer->normalize($sub, null, ['definitions' => true]));
             $definitions[$sub->id()] = $this->serializer->normalize($sub);
         }
-        $definitions[$property->format()] = $this->definition($property);
+        $definitions[$attribute->format()] = $this->definition($attribute);
         return $definitions;
     }
 
-    protected function attributes(Property $property)
+    protected function attributes(Attribute $attribute)
     {
-        return $this->reference($property->format());
+        return $this->reference($attribute->format());
     }
 }

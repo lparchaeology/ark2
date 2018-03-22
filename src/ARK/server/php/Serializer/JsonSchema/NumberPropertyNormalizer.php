@@ -30,30 +30,29 @@
 
 namespace ARK\Serializer\JsonSchema;
 
-use ARK\Model\Property\AbstractNumberProperty;
-use ARK\Model\Property\Property;
+use ARK\Model\Attribute;
 
 class NumberPropertyNormalizer extends AbstractPropertyNormalizer
 {
-    public function supportsNormalization($property, $format = null)
+    public function supportsNormalization($attribute, $format = null)
     {
-        // IntegerProperty, DecimalProperty, FloatProperty
-        return ($property instanceof AbstractNumberProperty);
+        return $attribute->dataclass()->datatype()->isNumeric();
     }
 
-    protected function definition(Property $property)
+    protected function definition(Attribute $attribute)
     {
         $definition['type'] = 'number';
-        if ($property->minimum()) {
-            $definition['minimum'] = $property->minimumValue();
-            $definition['exclusive_minimum'] = $property->exclusiveMinimum();
+        $dataclass = $attribute->dataclass();
+        if ($dataclass->hasMinimumValue()) {
+            $definition['minimum'] = $dataclass->minimumValue();
+            $definition['exclusive_minimum'] = $dataclass->exclusiveMinimum();
         }
-        if ($property->maximum()) {
-            $definition['maximum'] = $property->maximumValue();
-            $definition['exclusive_maximum'] = $property->exclusiveMaximum();
+        if ($dataclass->hasMaximumValue()) {
+            $definition['maximum'] = $dataclass->maximumValue();
+            $definition['exclusive_maximum'] = $dataclass->exclusiveMaximum();
         }
-        if ($property->multipleOf()) {
-            $definition['multiple_of'] = $property->multipleOf();
+        if ($dataclass->multipleOf()) {
+            $definition['multiple_of'] = $dataclass->multipleOf();
         }
         return $definition;
     }

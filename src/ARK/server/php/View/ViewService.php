@@ -146,14 +146,6 @@ class ViewService
         Service::session()->getFlashBag()->clear();
     }
 
-    public function loadFlashes() : void
-    {
-        $flashes = ORM::findAll(Flash::class);
-        foreach ($flashes as $flash) {
-            $this->addFlash($flash->type(), $flash->keyword());
-        }
-    }
-
     public function addFlash(string $flash, string $message, iterable $parms = []) : void
     {
         $message = Translation::translate($message, $flash, $parms);

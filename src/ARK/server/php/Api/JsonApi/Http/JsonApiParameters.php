@@ -29,6 +29,9 @@
 
 namespace ARK\Api\JsonApi\Http;
 
+use ARK\Api\JsonApi\Error\InvalidIncludedRelationshipError;
+use ARK\Api\JsonApi\Error\InvalidSparseFieldsetError;
+use ARK\Api\JsonApi\Error\InvalidSortFieldsetError;
 use ARK\Error\ErrorBag;
 
 class JsonApiParameters

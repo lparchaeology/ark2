@@ -30,18 +30,18 @@
 
 namespace ARK\Serializer\JsonSchema;
 
-use ARK\Model\Property\Property;
+use ARK\Model\Attribute;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 
 abstract class AbstractPropertyNormalizer extends SerializerAwareNormalizer implements NormalizerInterface
 {
-    public function normalize($property, $format = null, array $context = [])
+    public function normalize($attribute, $format = null, array $context = [])
     {
         if (isset($context['definitions'])) {
-            return $this->definitions($property);
+            return $this->definitions($attribute);
         }
-        return $this->property($property);
+        return $this->property($attribute);
     }
 
     protected function pointer(/*string*/ $definition)
@@ -54,43 +54,43 @@ abstract class AbstractPropertyNormalizer extends SerializerAwareNormalizer impl
         return ['$ref' => $this->pointer($definition)];
     }
 
-    abstract protected function definition(Property $property);
+    abstract protected function definition(Attribute $attribute);
 
-    protected function definitions(Property $property)
+    protected function definitions(Attribute $attribute)
     {
-        return [$property->type() => $this->definition($property)];
+        return [$attribute->type() => $this->definition($attribute)];
     }
 
-    protected function attributes(Property $property)
+    protected function attributes(Attribute $attribute)
     {
-        $attributes = $this->reference($property->type());
-        if ($property->defaultValue() !== null) {
-            $attributes['default'] = $property->default();
+        $attributes = $this->reference($attribute->type());
+        if ($attribute->defaultValue() !== null) {
+            $attributes['default'] = $attribute->default();
         }
-        if ($property->hasAllowedValues()) {
-            $attributes['allowedValues'] = array_keys($property->allowedValues());
+        if ($attribute->hasAllowedValues()) {
+            $attributes['allowedValues'] = array_keys($attribute->allowedValues());
         }
         return $attributes;
     }
 
-    protected function property(Property $property)
+    protected function property(Dataclass $attribute)
     {
         $schema = [];
-        if ($property->keyword()) {
-            $schema['title'] = $property->keyword().'.title';
-            $schema['description'] = $property->keyword().'.description';
+        if ($attribute->keyword()) {
+            $schema['title'] = $attribute->keyword().'.title';
+            $schema['description'] = $attribute->keyword().'.description';
         }
-        if ($property->hasMultipleOccurrences()) {
+        if ($attribute->hasMultipleOccurrences()) {
             $schema['type'] = 'array';
-            $schema['items'] = $this->attributes($property);
-            $schema['additionalItems'] = $property->additionalValues();
-            if ($property->minimumOccurrences() > 0) {
-                $schema['minItems'] = $property->minimumOccurrences();
+            $schema['items'] = $this->attributes($attribute);
+            $schema['additionalItems'] = $attribute->additionalValues();
+            if ($attribute->minimumOccurrences() > 0) {
+                $schema['minItems'] = $attribute->minimumOccurrences();
             }
-            if ($property->maximumOccurrences() > 1) {
-                $schema['maxItems'] = $property->maximumOccurrences();
+            if ($attribute->maximumOccurrences() > 1) {
+                $schema['maxItems'] = $attribute->maximumOccurrences();
             }
-            $schema['uniqueItems'] = $property->uniqueValues();
+            $schema['uniqueItems'] = $attribute->uniqueValues();
         } else {
             $schema = array_merge($schema, $this->attributes($property));
         }

@@ -30,6 +30,7 @@
 namespace ARK\Api\JsonApi;
 
 use ARK\Api\JsonApi\Error\InternalServerError;
+use ARK\Api\JsonApi\Error\JsonLintError;
 use ARK\Error\ErrorBag;
 use ARK\Serializer\JsonSchema\ValidationError;
 use League\JsonGuard\Dereferencer;

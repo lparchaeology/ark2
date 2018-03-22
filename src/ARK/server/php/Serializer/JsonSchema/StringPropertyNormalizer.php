@@ -30,30 +30,31 @@
 
 namespace ARK\Serializer\JsonSchema;
 
-use ARK\Model\Property\Property;
-use ARK\Model\Property\StringProperty;
+use ARK\Model\Attribute;
+use ARK\Model\Dataclass\StringDataclass;
 
 class StringPropertyNormalizer extends AbstractPropertyNormalizer
 {
-    public function supportsNormalization($property, $format = null)
+    public function supportsNormalization($attribute, $format = null)
     {
-        return ($property instanceof StringProperty);
+        return ($attribute->dataclass() instanceof StringDataclass);
     }
 
-    protected function definition(Property $property)
+    protected function definition(Attribute $attribute)
     {
         $definition['type'] = 'string';
-        if ($property->minimumLength() > 0) {
-            $definition['min_length'] = $property->minimumLength();
+        $dataclass = $attribute->dataclass();
+        if ($dataclass->minimumLength() > 0) {
+            $definition['min_length'] = $dataclass->minimumLength();
         }
-        if ($property->maximumLength() > 0) {
-            $definition['max_length'] = $property->maximumLength();
+        if ($dataclass->maximumLength() > 0) {
+            $definition['max_length'] = $dataclass->maximumLength();
         }
-        if ($property->pattern()) {
-            $definition['pattern'] = $property->pattern();
+        if ($dataclass->pattern()) {
+            $definition['pattern'] = $dataclass->pattern();
         }
-        if ($property->format() && $property->format() != 'text') {
-            $definition['format'] = $property->type();
+        if ($dataclass->format() && $dataclass->format() != 'text') {
+            $definition['format'] = $dataclass->type();
         }
         return $definition;
     }

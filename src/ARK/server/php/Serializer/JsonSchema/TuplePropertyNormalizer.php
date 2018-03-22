@@ -30,31 +30,33 @@
 
 namespace ARK\Serializer\JsonSchema;
 
-use ARK\Model\Property\Property;
-use ARK\Model\Property\TupleProperty;
+use ARK\Model\Attribute;
+use ARK\Model\Dataclass\TextDataclass;
+use ARK\Model\Dataclass\ItemDataclass;
+use ARK\Model\Dataclass\SpatialDataclass;
 
 class TuplePropertyNormalizer extends ObjectPropertyNormalizer
 {
-    public function supportsNormalization($property, $format = null)
+    public function supportsNormalization($attribute, $format = null)
     {
-        $class = get_class($property);
-        return ($class === TextProperty::class || $class === GeometryProperty::class || $class === ItemProperty::class);
+        $class = get_class($attribute->dataclass());
+        return ($class === TextDataclass::class || $class === SpatialDataclass::class || $class === ItemDataclass::class);
     }
 
-    protected function definition(Property $property)
+    protected function definition(Attribute $attribute)
     {
         $definition['type'] = 'array';
-        foreach ($property->properties() as $prop) {
+        foreach ($attribute->properties() as $prop) {
             $definition['items'][] = $this->attributes($prop);
         }
-        $definition['additionalItems'] = $property->additionalValues();
-        if ($property->minimumOccurrences() > 0) {
-            $definition['minItems'] = $property->minimumOccurrences();
+        $definition['additionalItems'] = $attribute->additionalValues();
+        if ($attribute->minimumOccurrences() > 0) {
+            $definition['minItems'] = $attribute->minimumOccurrences();
         }
-        if ($property->maximumOccurrences() > 1) {
-            $definition['maxItems'] = $property->maximumOccurrences();
+        if ($attribute->maximumOccurrences() > 1) {
+            $definition['maxItems'] = $attribute->maximumOccurrences();
         }
-        $definition['uniqueItems'] = $property->uniqueValues();
+        $definition['uniqueItems'] = $attribute->uniqueValues();
         return $definition;
     }
 }

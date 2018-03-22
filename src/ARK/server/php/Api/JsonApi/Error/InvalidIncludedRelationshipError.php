@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK JSON Schema Boolean Property Normalizer
+ * ARK API Error.
  *
  * Copyright (C) 2018  L - P : Heritage LLP.
  *
@@ -21,26 +21,16 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2018 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Serializer\JsonSchema;
+namespace ARK\Api\JsonApi\Error;
 
-use ARK\Model\Attribute;
+use ARK\Error\Error;
 
-class BooleanPropertyNormalizer extends AbstractPropertyNormalizer
+class InvalidIncludedRelationshipError extends Error
 {
-    public function supportsNormalization($attribute, $format = null)
-    {
-        return ($attribute->dataclass()->datatype()->storageType() === 'boolean');
-    }
-
-    protected function definition(Attribute $attribute)
-    {
-        return ['type' => 'boolean'];
-    }
 }
