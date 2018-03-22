@@ -112,9 +112,13 @@ class ARK
         return self::siteDir($site).'/var';
     }
 
-    public static function siteCacheDir(string $site) : string
+    public static function siteCacheDir(string $site, string $cache = null) : string
     {
-        return self::siteVarDir($site).'/cache';
+        $path = self::siteVarDir($site).'/cache';
+        if ($cache) {
+            return $path.'/'.$cache;
+        }
+        return $path;
     }
 
     public static function siteLogDir(string $site) : string

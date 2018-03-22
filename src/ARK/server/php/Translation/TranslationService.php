@@ -29,8 +29,10 @@
 
 namespace ARK\Translation;
 
+use ARK\ARK;
 use ARK\Framework\Application;
 use ARK\Service;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -46,6 +48,7 @@ class TranslationService
     public function dump() : void
     {
         Translation::dump(Service::siteDir().'/translations');
+        $this->clearCache();
     }
 
     public function import(bool $replace = true, callable $chooser = null) : void
@@ -53,6 +56,13 @@ class TranslationService
         $finder = new Finder();
         $finder->in(Service::siteDir().'/translations')->name('*.xlf');
         Translation::importFiles($finder, $replace, $chooser);
+        $this->clearCache();
+    }
+
+    public function clearCache() : void
+    {
+        $fs = new Filesystem();
+        $fs->remove(Service::siteCacheDir('translations'));
     }
 
     public function translator() : TranslatorInterface

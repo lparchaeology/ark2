@@ -76,9 +76,19 @@ class Service
         return self::$app['debug'];
     }
 
+    public static function site() : string
+    {
+        return self::config('site');
+    }
+
     public static function siteDir() : string
     {
-        return ARK::siteDir(self::config('site'));
+        return ARK::siteDir(self::site());
+    }
+
+    public static function siteCacheDir($cache = null) : string
+    {
+        return ARK::siteCacheDir(self::site(), $cache);
     }
 
     public static function configDir() : string
