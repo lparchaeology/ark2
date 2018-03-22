@@ -2,6 +2,7 @@
 
 namespace ARK\Spatial\Geometry;
 
+use ARK\Spatial\Spatial;
 use ARK\Spatial\Exception\CoordinateSystemException;
 use ARK\Spatial\Exception\GeometryIOException;
 use ARK\Spatial\Exception\InvalidGeometryException;

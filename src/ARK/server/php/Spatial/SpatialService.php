@@ -30,11 +30,6 @@
 namespace ARK\Spatial;
 
 use ARK\Framework\Application;
-use ARK\Service;
-use ARK\Spatial\Engine\GeometryEngineInterface;
-use ARK\Spatial\Engine\GEOSEngine;
-use ARK\Spatial\Engine\PDOEngine;
-use ARK\Spatial\Engine\SpatialiteEngine;
 use Brick\Geo\Point;
 use proj4php\Point as ProjPoint;
 use proj4php\Proj;
@@ -76,24 +71,5 @@ class SpatialService
         $source = new ProjPoint($point->x(), $point->y(), $this->projection($point->SRID()));
         $dest = $this->proj()->transform($this->projection($toSrid), $source);
         return Point::xy((int) $dest->__get('x'), (int) $dest->__get('y'), $toSrid);
-    }
-
-    // Note this is done as a static call to allow for later splitting out into standalone library
-    public static function geometry() : GeometryEngineInterface
-    {
-        if (self::geometry === null) {
-            $engine = Service::config()['spatial']['driver'];
-            if ($engine === 'geos') {
-                self::$geometry = new GEOSEngine();
-            } elseif ($engine === 'spatialite') {
-                // TODO copy config
-                self::$geometry = new SpatiaLiteEngine();
-            } elseif ($engine === 'postgis' || $engine === 'mysql') {
-                $conn = Service::database()->spatial()->getWrappedConnection();
-                self::$geometry = new PDOEngine($conn);
-            }
-            // TODO Else throw exception
-        }
-        return self::geometry;
     }
 }

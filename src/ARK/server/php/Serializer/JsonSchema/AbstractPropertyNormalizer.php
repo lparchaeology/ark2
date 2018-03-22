@@ -31,6 +31,7 @@
 namespace ARK\Serializer\JsonSchema;
 
 use ARK\Model\Attribute;
+use ARK\Model\Dataclass\Dataclass;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 
