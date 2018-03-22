@@ -12,7 +12,7 @@ class GeometryIOException extends GeometryException
      *
      * @return GeometryIOException
      */
-    public static function invalidWKB(sting $message) : GeometryIOException
+    public static function invalidWKB(string $message) : GeometryIOException
     {
         return new self('Invalid WKB: '.$message);
     }

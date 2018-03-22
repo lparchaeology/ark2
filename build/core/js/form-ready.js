@@ -18,13 +18,6 @@ $(document).ready(function () {
         allowInputToggle: true,
     });
 
-    // FIXME Hide Bootstrap Table loading animation as is a bit broken
-    //$('.table-bootstrap-table').bootstrapTable('hideLoading');
-
-    // Bootstrap table seems to be ignoring the icons attribute so hack it here for now
-    //$('.btn-group[title="Columns"]').find('i.glyphicon-th').removeClass('glyphicon-th').addClass('glyphicon-th-list');
-
-
     // Fake readonly mode on select widgets
     $('.readonly-required').prop('required', false);
     $('.readonly-select').prop('disabled', true);

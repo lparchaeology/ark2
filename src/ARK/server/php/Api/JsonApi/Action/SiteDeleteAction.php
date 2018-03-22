@@ -29,6 +29,8 @@
 
 namespace ARK\Api\JsonApi\Action;
 
+use ARK\Api\JsonApi\Error\BadRequestError;
+use ARK\Api\JsonApi\Error\InternalServerError;
 use ARK\Api\JsonApi\Error\NotFoundError;
 use ARK\Api\JsonApi\Http\JsonApiException;
 use ARK\Api\JsonApi\Http\JsonApiRequest;

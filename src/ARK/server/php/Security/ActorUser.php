@@ -31,6 +31,7 @@ namespace ARK\Security;
 
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\ORM\ORM;
 use ARK\Service;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;

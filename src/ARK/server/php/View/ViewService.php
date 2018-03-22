@@ -61,18 +61,6 @@ class ViewService
         return $this->app['assets.packages'];
     }
 
-    public function layout(string $name) : Layout
-    {
-        $layout = ORM::find(Layout::class, $name);
-        if ($layout) {
-            return $layout;
-        }
-        throw new InternalServerHttpException(
-            'INVALID_LAYOUT_NAME',
-            "Layout $name does not exist"
-        );
-    }
-
     public function renderResponse(string $template, iterable $context = [], Response $response = null) : Response
     {
         return $this->app->render($template, $context, $response);

@@ -1,6 +1,6 @@
 <?php
 
-namespace ARK\Spatial;
+namespace ARK\Spatial\Geometry;
 
 use ARK\Spatial\Exception\UnexpectedGeometryException;
 

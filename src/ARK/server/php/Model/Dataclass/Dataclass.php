@@ -32,6 +32,7 @@ namespace ARK\Model\Dataclass;
 use ARK\Model\Attribute;
 use ARK\Model\EnabledTrait;
 use ARK\Model\Fragment\Fragment;
+use ARK\Model\Item;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;

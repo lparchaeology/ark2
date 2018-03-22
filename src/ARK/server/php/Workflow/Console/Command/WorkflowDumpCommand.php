@@ -30,8 +30,11 @@
 namespace ARK\Workflow\Console\Command;
 
 use ARK\Console\Command\AbstractCommand;
+use ARK\ORM\ORM;
 use Symfony\Component\Workflow\Dumper\GraphvizDumper;
 use Symfony\Component\Workflow\Dumper\StateMachineGraphvizDumper;
+use Symfony\Component\Workflow\StateMachine;
+use Symfony\Component\Workflow\Workflow;
 
 class WorkflowDumpCommand extends AbstractCommand
 {

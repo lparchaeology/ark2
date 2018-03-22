@@ -33,6 +33,7 @@ use ARK\Console\Command\AbstractCommand;
 use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\Translation\Keyword;
+use ARK\Translation\Translation;
 use Symfony\Component\Finder\Finder;
 
 class TranslationImportCommand extends AbstractCommand

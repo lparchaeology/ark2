@@ -35,6 +35,8 @@
 
 namespace ARK\Twig\TokenParser;
 
+use ARK\Twig\Node\TranslateNode;
+
 class TranslateChoiceTokenParser extends TranslateTokenParser
 {
     /**

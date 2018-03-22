@@ -29,6 +29,7 @@
 
 namespace ARK\Form\Type;
 
+use ARK\Model\Property;
 use Brick\Geo\Point;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

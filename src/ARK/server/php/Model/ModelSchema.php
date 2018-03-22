@@ -29,6 +29,7 @@
 
 namespace ARK\Model;
 
+use ARK\Model\Schema\Schema;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 

@@ -29,6 +29,7 @@
 
 namespace ARK\Model\Dataclass;
 
+use ARK\Model\Fragment\Fragment;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use Brick\Geo\CoordinateSystem;

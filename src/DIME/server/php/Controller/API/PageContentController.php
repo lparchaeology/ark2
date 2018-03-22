@@ -35,6 +35,7 @@ use ARK\Message\Message;
 use ARK\ORM\ORM;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 class PageContentController
 {
@@ -58,7 +59,7 @@ class PageContentController
                 ORM::flush($page);
                 $json['status'] = 'success';
             }
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $json['error']['code'] = $e->getCode();
             $json['error']['message'] = $e->getMessage();
             $json['error']['content'] = $input;

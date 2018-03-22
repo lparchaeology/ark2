@@ -32,6 +32,7 @@ namespace ARK\Model\Schema;
 use ARK\Model\Attribute;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\ORM\ORM;
 use ARK\Vocabulary\Term;
 use ARK\Security\Permission;
 

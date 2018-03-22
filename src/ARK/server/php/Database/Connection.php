@@ -32,6 +32,7 @@ namespace ARK\Database;
 use ARK\Http\Exception\InternalServerHttpException;
 use Doctrine\DBAL\Connection as DBALConnection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Throwable;
 
 class Connection extends DBALConnection
 {
@@ -126,7 +127,7 @@ class Connection extends DBALConnection
                 $this->commit();
 
                 return $recycle['idx'];
-            } catch (Exception $e) {
+            } catch (Throwable $e) {
                 // If recycle fails, just try issue the next one
                 $this->rollback();
                 $this->startTransaction();
@@ -163,7 +164,7 @@ class Connection extends DBALConnection
                 $this->commit();
 
                 return 1;
-            } catch (Exception $e) {
+            } catch (Throwable $e) {
                 $this->rollback();
                 throw new InternalServerHttpException(
                     'DB_SEQUENCE_CREATE',
@@ -204,7 +205,7 @@ class Connection extends DBALConnection
             $this->commit();
 
             return $seq['idx'] + 1;
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $this->data()->rollback();
             throw new InternalServerHttpException(
                 'DB_SEQUENCE_INCREMENT',

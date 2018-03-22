@@ -157,7 +157,7 @@ class Application extends AbstractApplication
         }
         parent::boot();
 
-        // FIXME HACK Workaround the listener not firing for some reason
+        // HACK Workaround the listener not firing for some reason
         if ($this['debug']) {
             $this['var_dumper.dump_listener']->configure();
         }
@@ -165,7 +165,7 @@ class Application extends AbstractApplication
 
     public function run(Request $request = null) : void
     {
-        // FIXME This whole thing is very hacky, find a better way
+        // HACK This whole thing is very hacky, find a better way
         // Use kernel event instead? Define Request class to use in route table?
         if ($request === null) {
             $path = ($_SERVER['PATH_INFO'] ?? $_SERVER['REQUEST_URI'] ?? '');

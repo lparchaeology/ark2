@@ -30,6 +30,7 @@
 namespace DIME\Controller\View;
 
 use ARK\Framework\Application;
+use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

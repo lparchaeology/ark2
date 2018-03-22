@@ -38,12 +38,12 @@ class ErrorSource
     {
     }
 
-    public function pointer() : sting
+    public function pointer() : string
     {
         return $this->pointer;
     }
 
-    public function parameter() : sting
+    public function parameter() : string
     {
         return $this->parameter;
     }

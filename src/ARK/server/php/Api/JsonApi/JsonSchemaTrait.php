@@ -35,6 +35,7 @@ use ARK\Serializer\JsonSchema\ValidationError;
 use League\JsonGuard\Dereferencer;
 use League\JsonGuard\Validator;
 use Seld\JsonLint\JsonParser;
+use Seld\JsonLint\ParsingException;
 
 trait JsonSchemaTrait
 {

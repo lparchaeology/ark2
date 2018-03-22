@@ -36,6 +36,7 @@ use ARK\Translation\Domain;
 use ARK\Translation\Keyword;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 class TranslationMessageController
 {
@@ -81,7 +82,7 @@ class TranslationMessageController
                 Service::translation()->dump();
                 $json['status'] = 'success';
             }
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $json['status'] = 'error';
             $json['code'] = $e->getCode();
             $json['message'] = $e->getMessage();

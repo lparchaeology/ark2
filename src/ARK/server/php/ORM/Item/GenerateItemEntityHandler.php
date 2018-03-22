@@ -80,8 +80,8 @@ class <entity> extends <extends>
 
     public function __invoke(string $project, string $namespace, string $entity, string $classname, string $schema) : void
     {
-        $module = Service::database()->getModuleForClassName($classname;
-        $class = $this->generateEntityClass($namespace, $entity, $schema;
+        $module = Service::database()->getModuleForClassName($classname);
+        $class = $this->generateEntityClass($namespace, $entity, $schema);
         $this->writeEntityFile($project, $classname, $class);
         $subclasses = Service::database()->getSubclassEntities($module['module']);
         // TODO File base type
@@ -90,7 +90,7 @@ class <entity> extends <extends>
             $pos = mb_strrpos($classname, '\\');
             $namespace = mb_substr($classname, 0, $pos);
             $entity = mb_substr($classname, $pos + 1);
-            $subclass = $this->generateEntitySubclass($namespace, $entity, $classname, $entity;
+            $subclass = $this->generateEntitySubclass($namespace, $entity, $classname, $entity);
             $this->writeEntityFile($project, $class['entity'], $subclass, $class);
         }
         /*

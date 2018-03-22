@@ -44,7 +44,7 @@ abstract class DimePageController extends PageController
         $state['notifications'] = DIME::getNotifications(Service::workflow()->actor(), 'unread');
         $state['image'] = 'image';
 
-        // FIXME Routes to pass into JS, temp hardcode for now, do properly later!
+        // TODO Routes to pass into JS, temp hardcode for now, do properly later!
         $state['modules']['find']['route'] = 'dime.finds.view';
         $state['modules']['actor']['route'] = 'dime.profiles.view';
 
@@ -54,7 +54,7 @@ abstract class DimePageController extends PageController
     protected function buildContext(Request $request, iterable $view) : iterable
     {
         $view = parent::buildContext($request, $view);
-        // FIXME temp hardcode for now, later replace with Nav table
+        // TODO temp hardcode for now, later replace with Nav table
         $view['menus'] = $this->menuConfig($request->attributes->get('_route'));
 
         return $view;

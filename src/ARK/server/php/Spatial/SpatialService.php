@@ -30,6 +30,8 @@
 namespace ARK\Spatial;
 
 use ARK\Framework\Application;
+use ARK\Service;
+use ARK\Spatial\Engine\GeometryEngineInterface;
 use ARK\Spatial\Engine\GEOSEngine;
 use ARK\Spatial\Engine\PDOEngine;
 use ARK\Spatial\Engine\SpatialiteEngine;

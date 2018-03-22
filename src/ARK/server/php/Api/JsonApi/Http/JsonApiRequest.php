@@ -30,6 +30,7 @@
 namespace ARK\Api\JsonApi\Http;
 
 use ARK\Api\JsonApi\Error\BadRequestError;
+use ARK\Api\JsonApi\Error\MethodNotAllowedError;
 use ARK\Api\JsonApi\Error\NotAcceptableError;
 use ARK\Api\JsonApi\Error\UnrecognizedParamaterError;
 use ARK\Api\JsonApi\Error\UnsupportedMediaTypeError;

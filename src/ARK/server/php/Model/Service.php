@@ -30,6 +30,7 @@
 namespace ARK\Model;
 
 use ARK\Framework\Application;
+use ARK\Model\Schema\Schema;
 use ARK\ORM\ORM;
 
 class Service

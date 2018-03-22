@@ -35,6 +35,7 @@ use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 class VocabularyController
 {
@@ -79,7 +80,7 @@ class VocabularyController
                 $data['error']['content'] = $content;
             }
             //$data['transitions'] = $vocabulary->transitions();
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $data['error']['code'] = $e->getCode();
             $data['error']['message'] = $e->getMessage();
             $data['error']['content'] = $content;

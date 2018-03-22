@@ -31,6 +31,7 @@ namespace ARK\Workflow;
 
 use ARK\Model\ItemPropertAccessor;
 use Symfony\Component\Workflow\Marking;
+use Symfony\Component\Workflow\MarkingStore\MarkingStoreInterface;
 
 class ItemPropertyMarkingStore implements MarkingStoreInterface
 {

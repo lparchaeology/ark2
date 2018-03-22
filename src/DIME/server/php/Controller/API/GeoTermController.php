@@ -33,6 +33,7 @@ use ARK\Http\JsonResponse;
 use ARK\Service;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 class GeoTermController
 {
@@ -48,7 +49,7 @@ class GeoTermController
             foreach ($rows as $row) {
                 $data['terms'][$row['term']] = $row;
             }
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $data['error']['code'][$e->getCode()];
             $data['error']['message'][$e->getMessage()];
         }

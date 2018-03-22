@@ -33,8 +33,10 @@ use ARK\Framework\FormController;
 use ARK\Model\Item;
 use ARK\ORM\ORM;
 use ARK\Security\Actor;
+use ARK\Security\ActorUser;
 use ARK\Security\User;
 use DIME\DIME;
+use DIME\Entity\Museum;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 

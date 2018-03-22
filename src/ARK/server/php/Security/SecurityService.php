@@ -39,6 +39,7 @@ use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Throwable;
 
 class SecurityService
 {
@@ -60,7 +61,7 @@ class SecurityService
             if (isset($credentials[$key])) {
                 return $credentials[$key];
             }
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             // Nothing to see here, move along now...
         }
         return null;

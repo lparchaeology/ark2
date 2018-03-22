@@ -1,6 +1,6 @@
 <?php
 
-namespace ARK\Spatial\Spatial;
+namespace ARK\Spatial\Geometry;
 
 /**
  * A MultiPolygon is a MultiSurface whose elements are Polygons.

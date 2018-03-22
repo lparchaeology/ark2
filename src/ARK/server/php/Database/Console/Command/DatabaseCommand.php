@@ -36,6 +36,7 @@ use ARK\Database\Connection;
 use ARK\Database\Database;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Migrations\Configuration\Configuration;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 
 abstract class DatabaseCommand extends AbstractCommand

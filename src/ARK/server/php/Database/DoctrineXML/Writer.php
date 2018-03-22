@@ -187,7 +187,7 @@ class Writer
         switch ($type) {
             case 'datetime':
                 // TODO needed???
-                if (isset($options['version']) and $options['version']) {
+                if (isset($options['version']) && $options['version']) {
                     $type = 'timestamp';
                     unset($options['version']);
                 }
