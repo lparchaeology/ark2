@@ -69,7 +69,11 @@
                             data-tableexport-display="none"></th>
                     {% endif %}
                     {% for child in children %}
-                        {% set childId = child.state.name ? child.element.id ~ '_' ~ child.state.name : child.element.id %}
+                        {% if child.state.display.property %}
+                            {% set childId = child.state.name ~ '_' ~ child.state.display.property %}
+                        {% else %}
+                            {% set childId = child.state.name %}
+                        {% endif %}
                         {% set childTrans = child.state | translate %}
                         {% if child.state.sorter == 'numeric' %}
                             {% set sorter = 'numericOnly' %}
@@ -83,7 +87,8 @@
                             data-order="{{ child.state.order }}"
                             data-visible="{{ child.state.visible }}"
                             data-card-visible="false"
-                            data-tableexport-value="{{ childTrans }}">
+                            data-tableexport-value="{{ childTrans }}"
+                            data-tableexport-display="{{ child.state.exportable ? 'always' : 'none' }}">
                             {{ childTrans }}
                         </th>
                     {% endfor %}
@@ -129,12 +134,24 @@
                             {% set val = attribute(item, child.state.name) %}
                         {% endif %}
                         {% set child = child | merge({'data' : val }) %}
-                        {% set childId = child.state.name ? child.element.id ~ '_' ~ child.state.name : child.element.id %}
-                        {% set childValue = child.element.renderValue(child, forms, form) | raw %}
-                        <td data-field="{{ childId }}" data-tableexport-value="{{ childValue }}">
-                            <span class="cell-label">{{ child.state | translate }}</span>
-                            {{ childValue }}
-                        </td>
+                        {% if child.state.display.property %}
+                            {% set childId = child.state.name ~ '_' ~ child.state.display.property %}
+                        {% else %}
+                            {% set childId = child.state.name %}
+                        {% endif %}
+                        {% set displayValue = child.element.renderValue(child, forms, form) | raw %}
+                        {% if child.state.exportable %}
+                            {% set exportValue = displayValue %}
+                            <td data-field="{{ childId }}" data-tableexport-display="always" data-tableexport-value="{{ exportValue }}">
+                                <span class="cell-label">{{ child.state | translate }}</span>
+                                {{ displayValue }}
+                            </td>
+                        {% else %}
+                            <td data-field="{{ childId }}" data-tableexport-display="none">
+                                <span class="cell-label">{{ child.state | translate }}</span>
+                                {{ displayValue }}
+                            </td>
+                        {% endif %}
                     {% endfor %}
                     <td class="controls"
                         data-field="controls"

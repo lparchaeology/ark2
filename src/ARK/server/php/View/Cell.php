@@ -62,6 +62,7 @@ class Cell implements ElementInterface
     protected $width;
     protected $placeholder = false;
     protected $choices = false;
+    protected $exportable;
     protected $sortable;
     protected $sorter;
     protected $order;
@@ -162,6 +163,11 @@ class Cell implements ElementInterface
     public function showChoices() : ?bool
     {
         return $this->choices;
+    }
+
+    public function exportable() : ?bool
+    {
+        return $this->exportable;
     }
 
     public function sortable() : ?bool
@@ -338,6 +344,7 @@ class Cell implements ElementInterface
         $builder->addField('width', 'integer');
         $builder->addField('placeholder', 'boolean');
         $builder->addField('choices', 'boolean');
+        $builder->addField('exportable', 'boolean');
         $builder->addField('sortable', 'boolean');
         $builder->addStringField('sorter', 20);
         $builder->addMappedStringField('sort_order', 'order', 10);
@@ -389,6 +396,7 @@ class Cell implements ElementInterface
         $state['placeholder'] = $this->placeholder;
         $state['visible'] = $this->visible ?? true;
         $state['width'] = $this->width;
+        $state['exportable'] = $this->exportable ?? false;
         $state['sortable'] = $this->sortable ?? false;
         $state['sorter'] = $this->sortable ?? 'alphanumeric';
         $state['order'] = $this->order ?? 'asc';

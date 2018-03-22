@@ -178,7 +178,8 @@ class Field extends Element
             return '';
         }
         $view = $this->buildContext($view, $forms, $form);
-        $form = $view['form']['display'] ?? $view['form']['static'] ?? null;
+        // HACK If the display property is a subform, show that, workaround until full display property support in forms
+        $form = $view['form'][$view['state']['display']['property']] ?? $view['form']['display'] ?? $view['form']['static'] ?? null;
         $value = $form->vars['value'] ?? '';
         if (is_string($value)) {
             return Translation::translate($value);
