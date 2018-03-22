@@ -86,7 +86,6 @@ class Layer implements LayerInterface
             $this->parametersArray = json_decode($this->parameters, true);
         }
         return $this->parametersArray;
-        return $this->parameters;
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void

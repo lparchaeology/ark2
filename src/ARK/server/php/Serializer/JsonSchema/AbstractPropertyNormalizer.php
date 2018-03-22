@@ -64,7 +64,7 @@ abstract class AbstractPropertyNormalizer extends SerializerAwareNormalizer impl
     protected function attributes(Property $property)
     {
         $attributes = $this->reference($property->type());
-        if ($property->defaultValue() != null) {
+        if ($property->defaultValue() !== null) {
             $attributes['default'] = $property->default();
         }
         if ($property->hasAllowedValues()) {

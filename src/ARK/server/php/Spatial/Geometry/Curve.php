@@ -3,6 +3,7 @@
 namespace ARK\Spatial\Geometry;
 
 use ARK\Spatial\Spatial;
+use ARK\Spatial\Exception\EmptyGeometryException;
 
 /**
  * {@inheritdoc}

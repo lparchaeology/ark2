@@ -41,7 +41,7 @@ class ApiServiceProvider implements ServiceProviderInterface
         $path = '/api/v2';
         $container['path.api'] = $path;
         $container->register(new JsonApiServiceProvider());
-        // FIXME Unsecured API access, secure with OAUTH2
+        // TODO Unsecured API access, secure with OAUTH2
         $container->extendArray('security.firewalls', 'api_area', ['pattern' => "(^$path)", 'anonymous' => true]);
 
         /*

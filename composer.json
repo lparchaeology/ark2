@@ -2,7 +2,7 @@
     "name": "lparchaeology/ark",
     "description": "ARK - The Archaeological Recording Kit.",
     "version": "1.2.90",
-    "license": "GPL-3.0+",
+    "license": "GPL-3.0+-or-later",
     "type": "project",
     "keywords": ["archaeology", "heritage", "database"],
     "homepage": "http://www.lparchaeology.com",

@@ -107,13 +107,13 @@ class Message
         return $this->language;
     }
 
-    // FIXME Need getXxx to be used as Criteria
+    // TODO Need getXxx to be used as Criteria, find way around
     public function getLanguage() : Language
     {
         return $this->language;
     }
 
-    // FIXME Need getXxx to be used as Criteria
+    // TODO Need getXxx to be used as Criteria, find way around
     public function getRole() : Role
     {
         return $this->role;
