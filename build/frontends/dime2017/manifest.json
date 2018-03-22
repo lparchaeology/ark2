@@ -124,6 +124,7 @@
                     "js/table-switchcardmobile.js",
                     "js/table-switchcardview.js",
                     "js/dime-ready.js",
+                    "js/form-file.js",
                     "js/admin-museums-ready.js",
                     "js/admin-users-ready.js",
                     "js/classification-ready.js",
