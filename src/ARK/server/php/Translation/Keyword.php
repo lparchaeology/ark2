@@ -34,7 +34,6 @@ use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
 use ARK\ORM\OrmTrait;
 use ARK\Service;
-use ARK\Vocabulary\Parameter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -48,7 +47,7 @@ use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Mapping\ClassMetadata as ValidatorMetadata;
 
 /**
- * Translation Keyword Entity
+ * Translation Keyword Entity.
  */
 class Keyword
 {
@@ -62,11 +61,11 @@ class Keyword
     protected $messages;
 
     /**
-     * Construct a new Translation Keyword
+     * Construct a new Translation Keyword.
      *
-     * @param string  $keyword  The translation keyword ID
-     * @param Domain  $domain   The translation domain
-     * @param boolean $isPlural If the translation is a plural form
+     * @param string $keyword  The translation keyword ID
+     * @param Domain $domain   The translation domain
+     * @param bool   $isPlural If the translation is a plural form
      */
     public function __construct(string $keyword, Domain $domain, bool $isPlural = false)
     {
@@ -78,7 +77,7 @@ class Keyword
     }
 
     /**
-     * Return the keyword as a string
+     * Return the keyword as a string.
      *
      * @return string The string form of the translation keyword
      */
@@ -88,7 +87,7 @@ class Keyword
     }
 
     /**
-     * Return the ID of the translation
+     * Return the ID of the translation.
      *
      * @return string The keyword ID
      */
@@ -98,7 +97,7 @@ class Keyword
     }
 
     /**
-     * Return the domain of the translation
+     * Return the domain of the translation.
      *
      * @return Domain The translation domain
      */
@@ -108,7 +107,7 @@ class Keyword
     }
 
     /**
-     * Return if the translation is a plural form
+     * Return if the translation is a plural form.
      *
      * @return bool If the translation is a plural form
      */
@@ -118,7 +117,7 @@ class Keyword
     }
 
     /**
-     * Return if the translation has parameters
+     * Return if the translation has parameters.
      *
      * @return bool If the translation has parameters
      */
@@ -128,7 +127,7 @@ class Keyword
     }
 
     /**
-     * Returns the parameters for this translation
+     * Returns the parameters for this translation.
      *
      * @return Collection The translation parameters
      */
@@ -138,7 +137,7 @@ class Keyword
     }
 
     /**
-     * Add a parameter to the translation
+     * Add a parameter to the translation.
      *
      * @param string $parameter The parameter to add
      */
@@ -151,7 +150,7 @@ class Keyword
     }
 
     /**
-     * Returns all the translated messages for this keyword
+     * Returns all the translated messages for this keyword.
      *
      * @return Collection The translated messages
      */
@@ -161,10 +160,10 @@ class Keyword
     }
 
     /**
-     * Returns a translated message for the keyword
+     * Returns a translated message for the keyword.
      *
-     * @param  Language|string $language The language of the translated message
-     * @param  Role|string $role         The role of the translated message
+     * @param Language|string $language The language of the translated message
+     * @param Role|string     $role     The role of the translated message
      *
      * @return Message|null The translated message
      */
@@ -185,12 +184,12 @@ class Keyword
     }
 
     /**
-     * Set a translated message for the keyword
+     * Set a translated message for the keyword.
      *
-     * @param string $message           The translated message
+     * @param string          $message  The translated message
      * @param Language|string $language The language of the translated message
-     * @param Role|string $role         The role of the translated message
-     * @param string $notes             Translator notes for the message
+     * @param Role|string     $role     The role of the translated message
+     * @param string          $notes    Translator notes for the message
      */
     public function setMessage(string $message, $language = null, $role = null, string $notes = '') : void
     {
@@ -207,9 +206,9 @@ class Keyword
     }
 
     /**
-     * Query the ORM for all Keywords within a Domain
+     * Query the ORM for all Keywords within a Domain.
      *
-     * @param  Domain|string $domain The Domain to query for
+     * @param Domain|string $domain The Domain to query for
      *
      * @return Collection The collection of messages
      */
@@ -225,7 +224,7 @@ class Keyword
     }
 
     /**
-     * Load Entity Validator Metadata
+     * Load Entity Validator Metadata.
      *
      * @param ValidatorMetadata $metadata The Symfony validator metadata object
      */
@@ -259,7 +258,7 @@ class Keyword
     }
 
     /**
-     * Load Entity ORM Metadata
+     * Load Entity ORM Metadata.
      *
      * @param ClassMetadata $metadata The Doctrine ORM metadata object
      */
@@ -282,9 +281,9 @@ class Keyword
     }
 
     /**
-     * Get a Language entity
+     * Get a Language entity.
      *
-     * @param  Language|string $language The language or code to get
+     * @param Language|string $language The language or code to get
      *
      * @return Language The language entity
      */
@@ -302,9 +301,9 @@ class Keyword
     }
 
     /**
-     * Get a Role entity
+     * Get a Role entity.
      *
-     * @param  Role|string $role The role or code to get
+     * @param Role|string $role The role or code to get
      *
      * @return Role The role entity
      */

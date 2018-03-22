@@ -122,7 +122,7 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
         string $targetEntity,
         string $mappedBy,
         bool $persist = true,
-        bool $delete = false
+        bool $delete = true
     ) : self {
         $builder = $this->createOneToMany($name, $targetEntity);
         $builder->mappedBy($mappedBy);
@@ -130,7 +130,7 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
             $builder->cascadePersist();
         }
         if ($delete) {
-            $builder->cascadeDelete();
+            $builder->cascadeRemove();
         }
         return $builder->build();
     }

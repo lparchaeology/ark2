@@ -42,7 +42,7 @@ use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Mapping\ClassMetadata as ValidatorMetadata;
 
 /**
- * Translation Parameter Entity
+ * Translation Parameter Entity.
  */
 class Parameter
 {
@@ -52,7 +52,7 @@ class Parameter
     protected $parameter = '';
 
     /**
-     * Construct a new Parameter entity
+     * Construct a new Parameter entity.
      *
      * @param Keyword $keyword The translation keyword
      * @param string  $name    The parameter name
@@ -64,7 +64,7 @@ class Parameter
     }
 
     /**
-     * Returns the translation keyword
+     * Returns the translation keyword.
      *
      * @return Keyword The translation keyword
      */
@@ -74,7 +74,7 @@ class Parameter
     }
 
     /**
-     * Returns the translation parameter name
+     * Returns the translation parameter name.
      *
      * @return string The parameter name
      */
@@ -84,7 +84,7 @@ class Parameter
     }
 
     /**
-     * Load Entity Validator Metadata
+     * Load Entity Validator Metadata.
      *
      * @param ValidatorMetadata $metadata The Symfony validator metadata object
      */
@@ -110,14 +110,14 @@ class Parameter
     }
 
     /**
-     * Load Entity ORM Metadata
+     * Load Entity ORM Metadata.
      *
      * @param ClassMetadata $metadata The Doctrine ORM metadata object
      */
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_translation_parameter');
-        $builder->addManyToOneKey('keyword', Translation::class);
+        $builder->addManyToOneKey('keyword', Keyword::class, 'keyword', 'keyword', 'parameters');
         $builder->addStringKey('parameter', 30);
     }
 }

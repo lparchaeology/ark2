@@ -41,7 +41,7 @@ use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Mapping\ClassMetadata as ValidatorMetadata;
 
 /**
- * Translation Language Entity
+ * Translation Language Entity.
  */
 class Language
 {
@@ -53,12 +53,12 @@ class Language
     protected $text = true;
 
     /**
-     * Construct a new Language Entity
+     * Construct a new Language Entity.
      *
-     * @param string  $code       The language code
-     * @param boolean $markup     If the language is used for markup
-     * @param boolean $vocabulary If the language is used for vocabularies
-     * @param boolean $text       If the language is used for text
+     * @param string $code       The language code
+     * @param bool   $markup     If the language is used for markup
+     * @param bool   $vocabulary If the language is used for vocabularies
+     * @param bool   $text       If the language is used for text
      */
     public function __construct(string $code, bool $markup = true, bool $vocabulary = true, bool $text = true)
     {
@@ -69,7 +69,7 @@ class Language
     }
 
     /**
-     * Returns the language code
+     * Returns the language code.
      *
      * @return string The language code
      */
@@ -79,7 +79,7 @@ class Language
     }
 
     /**
-     * Returns if the language is used for markup
+     * Returns if the language is used for markup.
      *
      * @return bool If the language is used for markup
      */
@@ -89,7 +89,7 @@ class Language
     }
 
     /**
-     * Returns if the language is used for vocabularies
+     * Returns if the language is used for vocabularies.
      *
      * @return bool If the language is used for vocabularies
      */
@@ -99,7 +99,7 @@ class Language
     }
 
     /**
-     * Returns if the language is used for text
+     * Returns if the language is used for text.
      *
      * @return bool If the language is used for text
      */
@@ -109,7 +109,7 @@ class Language
     }
 
     /**
-     * Load Entity Validator Metadata
+     * Load Entity Validator Metadata.
      *
      * @param ValidatorMetadata $metadata The Symfony validator metadata object
      */
@@ -142,7 +142,7 @@ class Language
     }
 
     /**
-     * Load Entity ORM Metadata
+     * Load Entity ORM Metadata.
      *
      * @param ClassMetadata $metadata The Doctrine ORM metadata object
      */

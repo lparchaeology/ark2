@@ -43,7 +43,7 @@ use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Mapping\ClassMetadata as ValidatorMetadata;
 
 /**
- * Translation Role Entity
+ * Translation Role Entity.
  */
 class Role
 {
@@ -53,7 +53,7 @@ class Role
     protected $role = '';
 
     /**
-     * Construct a new translation role entity
+     * Construct a new translation role entity.
      *
      * @param string $id The role ID
      */
@@ -63,7 +63,7 @@ class Role
     }
 
     /**
-     * Returns the ID of the translation role
+     * Returns the ID of the translation role.
      *
      * @return string The role ID
      */
@@ -73,7 +73,7 @@ class Role
     }
 
     /**
-     * Load Entity Validator Metadata
+     * Load Entity Validator Metadata.
      *
      * @param ValidatorMetadata $metadata The Symfony validator metadata object
      */
@@ -99,7 +99,7 @@ class Role
     }
 
     /**
-     * Load Entity ORM Metadata
+     * Load Entity ORM Metadata.
      *
      * @param ClassMetadata $metadata The Doctrine ORM metadata object
      */

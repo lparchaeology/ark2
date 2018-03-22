@@ -33,18 +33,15 @@ use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\Orm;
 use ARK\ORM\OrmTrait;
-use Doctrine\Common\Collections\Collection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
-use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Mapping\ClassMetadata as ValidatorMetadata;
 
 /**
- * Translation Message Entity
+ * Translation Message Entity.
  */
 class Message
 {
@@ -57,7 +54,7 @@ class Message
     protected $notes = '';
 
     /**
-     * Construct a new Message entity
+     * Construct a new Message entity.
      *
      * @param Keyword  $keyword  The translation keyword
      * @param Language $language The translation language
@@ -74,7 +71,7 @@ class Message
     }
 
     /**
-     * Returns the ID of the translation message
+     * Returns the ID of the translation message.
      *
      * @return iterable The message ID
      */
@@ -88,7 +85,7 @@ class Message
     }
 
     /**
-     * Returns the message keyword
+     * Returns the message keyword.
      *
      * @return Keyword The message keyword
      */
@@ -98,7 +95,7 @@ class Message
     }
 
     /**
-     * Returns the message language
+     * Returns the message language.
      *
      * @return Language The message language
      */
@@ -120,7 +117,7 @@ class Message
     }
 
     /**
-     * Returns the message role
+     * Returns the message role.
      *
      * @return Role The message role
      */
@@ -130,7 +127,7 @@ class Message
     }
 
     /**
-     * Returns the message text
+     * Returns the message text.
      *
      * @return string The message text
      */
@@ -140,7 +137,7 @@ class Message
     }
 
     /**
-     * Set the message text
+     * Set the message text.
      *
      * @param string $text The new message text
      */
@@ -150,7 +147,7 @@ class Message
     }
 
     /**
-     * Returns the message notes
+     * Returns the message notes.
      *
      * @return string The message notes
      */
@@ -160,7 +157,7 @@ class Message
     }
 
     /**
-     * Set the message notes
+     * Set the message notes.
      *
      * @param string $notes The new message notes
      */
@@ -170,11 +167,11 @@ class Message
     }
 
     /**
-     * Query the ORM for a translation message
+     * Query the ORM for a translation message.
      *
-     * @param  Keyword|string  $keyword  The keyword to to query for
-     * @param  Language|string $language The langauge to query for
-     * @param  Role|string     $role     The role to query for
+     * @param Keyword|string  $keyword  The keyword to to query for
+     * @param Language|string $language The langauge to query for
+     * @param Role|string     $role     The role to query for
      *
      * @return Message|null The message
      */
@@ -193,7 +190,7 @@ class Message
     }
 
     /**
-     * Load Entity Validator Metadata
+     * Load Entity Validator Metadata.
      *
      * @param ValidatorMetadata $metadata The Symfony validator metadata object
      */
@@ -231,7 +228,7 @@ class Message
     }
 
     /**
-     * Load Entity ORM Metadata
+     * Load Entity ORM Metadata.
      *
      * @param ClassMetadata $metadata The Doctrine ORM metadata object
      */

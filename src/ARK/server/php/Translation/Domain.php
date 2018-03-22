@@ -43,7 +43,7 @@ use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Mapping\ClassMetadata as ValidatorMetadata;
 
 /**
- * Translation Domain Entity
+ * Translation Domain Entity.
  */
 class Domain
 {
@@ -53,7 +53,7 @@ class Domain
     protected $domain = '';
 
     /**
-     * Returns the ID of the Translation Domain
+     * Returns the ID of the Translation Domain.
      *
      * @return string The ID of the Domain
      */
@@ -63,7 +63,7 @@ class Domain
     }
 
     /**
-     * Load Entity Validator Metadata
+     * Load Entity Validator Metadata.
      *
      * @param ValidatorMetadata $metadata The Symfony validator metadata object
      */
@@ -89,7 +89,7 @@ class Domain
     }
 
     /**
-     * Load Entity ORM Metadata
+     * Load Entity ORM Metadata.
      *
      * @param ClassMetadata $metadata The Doctrine ORM metadata object
      */
