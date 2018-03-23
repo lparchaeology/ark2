@@ -41,35 +41,18 @@ col-xs-12 col-sm-4
     {% endspaceless %}
 {%- endblock form_help %}
 
-{% block form_widget -%}
-    {{ parent() }}
-    {{ block('form_help') }}
-{%- endblock form_widget %}
+{# Rows #}
 
-{% block datetime_widget -%}
-    {{ parent() }}
-    {{ block('form_help') }}
-{%- endblock datetime_widget %}
-
-{% block date_widget -%}
-    {{ parent() }}
-    {{ block('form_help') }}
-{%- endblock date_widget %}
-
-{% block time_widget -%}
-    {{ parent() }}
-    {{ block('form_help') }}
-{%- endblock time_widget %}
-
-{% block choice_widget -%}
-    {{ parent() }}
-    {{ block('form_help') }}
-{%- endblock choice_widget %}
-
-{% block textarea_widget -%}
-    {{ parent() }}
-    {{ block('form_help') }}
-{%- endblock textarea_widget %}
+{% block form_row -%}
+    <div class="form-group{% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">
+        {{- form_label(form) -}}
+        <div class="{{ block('form_group_class') }}">
+            {{- form_widget(form) -}}
+            {{- form_help(form) -}}
+            {{- form_errors(form) -}}
+        </div>
+{##}</div>
+{%- endblock form_row %}
 
 {# Custom blocks #}
 
@@ -116,7 +99,6 @@ col-xs-12 col-sm-4
                 {{- form_widget(form['value']) -}}
                 <div class="input-group-addon"> {{- form['unit'].vars['data'] -}} </div>
             </div>
-            {{ block('form_help') }}
             {{- form_errors(form['value']) -}}
             {{- form_errors(form['unit']) -}}
         {% endif %}
@@ -148,7 +130,6 @@ col-xs-12 col-sm-4
         {% else %}
             <input type="{{ type }}" {{ block('widget_attributes') }} />
         {% endif %}
-        {{ block('form_help') }}
     {% endspaceless %}
 {% endblock file_widget %}
 
