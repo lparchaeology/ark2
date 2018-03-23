@@ -11,13 +11,15 @@
         </button>
         <ul class="dropdown-menu layer-select" aria-labelledby="mapLayerMenu">
             {% set config = [] %}
-            {% for layer in state.map.layers %}
-                {% if layer.isDefault %}
-                    <li><a class="layer-select selected" value="{{ layer.name }}">{{ layer | translate }}</a></li>
-                {% else %}
-                    <li><a class="layer-select" value="{{ layer.name }}">{{ layer | translate }}</a></li>
-                {% endif %}
-            {% endfor %}
+            {% if state.map.layers is defined %}
+              {% for layer in state.map.layers %}
+                  {% if layer.isDefault %}
+                      <li><a class="layer-select selected" value="{{ layer.name }}">{{ layer | translate }}</a></li>
+                  {% else %}
+                      <li><a class="layer-select" value="{{ layer.name }}">{{ layer | translate }}</a></li>
+                  {% endif %}
+              {% endfor %}
+            {% endif %}
         </ul>
     </div>
 
