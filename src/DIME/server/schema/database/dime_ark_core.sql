@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 22, 2018 at 04:56 PM
+-- Generation Time: Mar 23, 2018 at 11:52 AM
 -- Server version: 10.2.13-MariaDB
 -- PHP Version: 7.1.14
 
@@ -3422,7 +3422,14 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('translation.role.title', 'core', 0, 0),
 ('translation.role.to', 'core', 0, 0),
 ('user.greeting', 'security', 0, 1),
-('user.mail.reset.subject', 'dime', 0, 0),
+('user.mail.reset.not.text', 'security', 0, 0),
+('user.mail.reset.not.title', 'security', 0, 0),
+('user.mail.reset.subject', 'security', 0, 0),
+('user.mail.reset.text', 'security', 0, 0),
+('user.mail.reset.title', 'security', 0, 0),
+('user.mail.verify.subject', 'security', 0, 0),
+('user.mail.verify.text', 'security', 0, 0),
+('user.mail.verify.title', 'security', 0, 0),
 ('user.menu.edit', 'security', 0, 0),
 ('user.menu.home', 'core', 0, 0),
 ('user.menu.list', 'security', 0, 0),
@@ -4463,7 +4470,14 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'site.brand', 'default', 'DIME', ''),
 ('da', 'This value should be less than or equal to {{ compared_value }}.', 'default', 'Værdien skal være mindre end eller lig med {{ compared_value }}.', NULL),
 ('da', 'user.greeting', 'default', 'Logget på: %name%', ''),
+('da', 'user.mail.reset.not.text', 'default', 'Hvis det ikke er dig, der har prøvet at nulstille din adgangskode, skal du ikke være bekymret. Din konto er stadig sikker, og der er ingen, der har fået adgang til den. Det er højst sandsynligt en bruger, der skrev en forkert e-mail under et forsøg på at nulstille sin egen adgangskode.', ''),
+('da', 'user.mail.reset.not.title', 'default', 'Ikke dig der har prøvet at nulstille din adgangskode?', ''),
 ('da', 'user.mail.reset.subject', 'default', 'Nulstil dit password', ''),
+('da', 'user.mail.reset.text', 'default', 'Tryk på nedenstående link for at nulstille dit password.', ''),
+('da', 'user.mail.reset.title', 'default', 'Nulstil dit password', ''),
+('da', 'user.mail.verify.subject', 'default', 'Velkommen til DIME. Bekræft venligst din email.', ''),
+('da', 'user.mail.verify.text', 'default', 'Tryk på nedenstående link for at bekræfte din email.', ''),
+('da', 'user.mail.verify.title', 'default', 'Tak fordi du bruger DIME!', ''),
 ('da', 'user.menu.edit', 'default', 'Rediger profil', ''),
 ('da', 'user.menu.home', 'default', 'Min side', ''),
 ('da', 'user.menu.login', 'default', 'Login', ''),
@@ -4921,7 +4935,8 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.actor.participating', 'default', 'DIME Participant', ''),
 ('en', 'dime.admin.museums', 'default', 'Administer Museums', ''),
 ('en', 'dime.admin.users', 'default', 'Administer Users', ''),
-('en', 'dime.admin.users.register', 'default', 'Register Users', ''),
+('en', 'dime.admin.users.register', 'default', 'Register Users', '');
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'dime.background', 'default', 'Background', ''),
 ('en', 'dime.background', 'resource', 'background', ''),
 ('en', 'dime.claim', 'resource', 'claim', ''),
@@ -4932,8 +4947,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.controls', 'default', 'Go', ''),
 ('en', 'dime.copyright', 'default', 'Copyright © 2013-2017 Arkæologisk IT, Aarhus University', ''),
 ('en', 'dime.credits', 'default', 'Data modelling and support: Carsten Risager | Design: Casper Skaaning Anderson | Implementation: L ~ P Archaeology', ''),
-('en', 'dime.denmark.admin', 'default', 'Danish Administration Units', '');
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.denmark.admin', 'default', 'Danish Administration Units', ''),
 ('en', 'dime.denmark.municipality', 'default', 'Municipalities', ''),
 ('en', 'dime.denmark.region', 'default', 'Danish Regions', ''),
 ('en', 'dime.detector', 'default', 'Detecting', ''),
@@ -5569,7 +5583,8 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.period.iron.germainic.early', 'default', 'Early Germanic Iron Age', ''),
 ('en', 'dime.period.iron.germainic.late', 'default', 'Late Germanic Iron Age', ''),
 ('en', 'dime.period.iron.late', 'default', 'Late Iron Age', ''),
-('en', 'dime.period.iron.preroman', 'default', 'Pre-Roman Iron Age', ''),
+('en', 'dime.period.iron.preroman', 'default', 'Pre-Roman Iron Age', '');
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'dime.period.iron.preroman.early', 'default', 'Early Pre-Roman Iron Age', ''),
 ('en', 'dime.period.iron.preroman.late', 'default', 'Late Pre-Roman Iron Age', ''),
 ('en', 'dime.period.iron.preroman.middle', 'default', 'Middle Pre-Roman Iron Age', ''),
@@ -5579,8 +5594,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.period.iron.roman.early.b2', 'default', 'Early Roman Iron Age B2', ''),
 ('en', 'dime.period.iron.roman.late', 'default', 'Late Roman Iron Age', ''),
 ('en', 'dime.period.iron.roman.late.c1', 'default', 'Late Roman Iron Age C1', ''),
-('en', 'dime.period.iron.roman.late.c2', 'default', 'Late Roman Iron Age C2', '');
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.period.iron.roman.late.c2', 'default', 'Late Roman Iron Age C2', ''),
 ('en', 'dime.period.iron.roman.late.c3', 'default', 'Late Roman Iron Age C3', ''),
 ('en', 'dime.period.lategermanic.earlyviking', 'default', 'Late Germanic / Early Viking', ''),
 ('en', 'dime.period.medieval', 'default', 'Medieval', ''),
@@ -6370,7 +6384,14 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'spatial.crs.wgs84', 'default', 'crs.wgs84', ''),
 ('en', 'test.test', 'default', 'text text', ''),
 ('en', 'user.greeting', 'default', 'Logged In As %name%', ''),
+('en', 'user.mail.reset.not.text', 'default', 'If you are not trying to reset your password, do not worry. Your account is still secure and no one has accessed it. It is most likely another user entered an incorrect e-mail while trying to reset their own password.', ''),
+('en', 'user.mail.reset.not.title', 'default', 'Didn\'t request to reset your password?', ''),
 ('en', 'user.mail.reset.subject', 'default', 'Reset your password', ''),
+('en', 'user.mail.reset.text', 'default', 'Please click the link to reset your password.', ''),
+('en', 'user.mail.reset.title', 'default', 'Reset your password.', ''),
+('en', 'user.mail.verify.subject', 'default', 'Welcome to DIME. Please verify your email.', ''),
+('en', 'user.mail.verify.text', 'default', 'Please click the link to verify your email address.', ''),
+('en', 'user.mail.verify.title', 'default', 'Thank you for using DIME!', ''),
 ('en', 'user.menu.edit', 'default', 'Edit your profile', ''),
 ('en', 'user.menu.home', 'default', 'My Home', ''),
 ('en', 'user.menu.list', 'default', 'List users', ''),

@@ -40,17 +40,17 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 class Translation
 {
-    public function translate($id, $role = null, $parameters = [], $domain = null, $locale = null) : string
+    public static function translate($id, $role = null, $parameters = [], $domain = null, $locale = null) : string
     {
         return Service::translation()->translate($id, $role, $parameters, $domain, $locale);
     }
 
-    public function translateChoice($id, int $count, $role = null, $parameters = [], $domain = null, $locale = null) : string
+    public static function translateChoice($id, int $count, $role = null, $parameters = [], $domain = null, $locale = null) : string
     {
         return Service::translation()->translateChoice($id, $number, $role, $parameters, $domain, $locale);
     }
 
-    public function dump(string $path) : void
+    public static function dump(string $path) : void
     {
         $loader = new DatabaseLoader();
         $xliff = new XliffFileDumper();
@@ -75,7 +75,7 @@ class Translation
         }
     }
 
-    public function importFiles(Finder $finder, bool $replace = true, callable $chooser = null) : void
+    public static function importFiles(Finder $finder, bool $replace = true, callable $chooser = null) : void
     {
         $loader = new XliffFileLoader();
         foreach ($finder as $file) {
@@ -89,7 +89,7 @@ class Translation
         }
     }
 
-    public function importCatalogue(
+    public static function importCatalogue(
         MessageCatalogue $catalogue,
         Domain $domain,
         bool $replace = true,

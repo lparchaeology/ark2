@@ -7,15 +7,15 @@ Variables passed to this template:
 
 {# The subject line. #}
 {%- block subject -%}{%- autoescape false -%}
-    {{ 'Welcome! Please confirm your email.' | trans({}, 'mail') }}
+    {{ 'user.mail.verify.subject' | translate }}
 {%- endautoescape -%}{%- endblock -%}
 
 {# The plain text message. #}
 {%- block body_text -%}{%- autoescape false -%}
 
-{{ 'Thanks for joining our site!' | trans({}, 'mail') }}
+{{ 'user.mail.verify.title' | translate }}
 
-{{ 'Please click the link below to confirm your email:' | trans({}, 'mail') }}
+{{ 'user.mail.verify.text' | translate }}
 {{ url }}
 
 {%- endautoescape -%}{%- endblock -%}
@@ -23,10 +23,10 @@ Variables passed to this template:
 {# The HTML message. Optional. #}
 {%- block body_html -%}
 
-    <h1>{{ 'Thanks for joining our site!' | trans({}, 'mail') }}</h1>
+    <h1>{{ 'user.mail.verify.title' | translate }}</h1>
 
     <p>
-        <a href="{{ url }}">{{ 'Please click this link to confirm your email.' | trans({}, 'mail') }}</a>.
+        <a href="{{ url }}">{{ 'user.mail.verify.text' | translate }}</a>.
     </p>
 
 {%- endblock -%}
