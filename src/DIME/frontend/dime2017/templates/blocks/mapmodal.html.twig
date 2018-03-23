@@ -1,6 +1,7 @@
 {# Block to write out correctly formatted field value #}
 {% block mapmodal %}
 
+{% use "blocks/mapconfig.twig.html" %}
 
 <div class="row register-buttons">
 <div class="col-xs-6">
@@ -28,6 +29,7 @@
     </div>
   </div>
 
+  {{ block("mapconfig") }}
 
   <script>
       var mapPin = "{{ asset('images/icons/pin.png', 'frontend') }}";
