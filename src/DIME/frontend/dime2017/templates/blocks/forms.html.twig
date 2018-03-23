@@ -35,8 +35,7 @@ col-xs-12 col-sm-4
 {% block form_help -%}
     {% spaceless %}
         {% if help is defined and help is not null and not hidden %}
-            {% set title = help | translate('help') %}
-            <span class="help glyphicon glyphicon-question-sign" title="{{ title }}" data-toggle="tooltip" data-placement="bottom" >
+            <span class="help glyphicon glyphicon-question-sign" title="{{ help | translate('help') }}" data-toggle="tooltip" data-placement="bottom" >
             </span>
         {% endif %}
     {% endspaceless %}

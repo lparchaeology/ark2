@@ -79,6 +79,16 @@ class ViewServiceProvider implements ServiceProviderInterface
             $twig->addExtension(new TranslateExtension($app['translator']));
             $twig->addFunction(new Twig_Function('imagePath', Service::class.'::imagePath'));
             $twig->addFunction(new Twig_Function('imageUrl', Service::class.'::imageUrl'));
+            $twig->addFunction(
+                new Twig_Function(
+                    'form_help',
+                    null,
+                    [
+                        'node_class' => 'Symfony\Bridge\Twig\Node\SearchAndRenderBlockNode',
+                        'is_safe' => ['html'],
+                    ]
+                )
+            );
             $twig->addGlobal('security', $app['security']);
             $twig->addGlobal('workflow', $app['workflow']);
             return $twig;
