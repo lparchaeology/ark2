@@ -52,9 +52,9 @@ class Database
         return Service::connection('data');
     }
 
-    public function core() : Connection
+    public function config() : Connection
     {
-        return Service::connection('core');
+        return Service::connection('config');
     }
 
     public function spatial() : Connection
@@ -133,7 +133,7 @@ class Database
 
     public function getViewTypes() : ?iterable
     {
-        return $this->core()->fetchAllTable('ark_view_type');
+        return $this->config()->fetchAllTable('ark_view_type');
     }
 
     public function getTranslationMessages(string $language, string $domain = null) : ?iterable
@@ -152,7 +152,7 @@ class Database
             $params[':domain'] = $domain;
         }
 
-        return $this->core()->fetchAll($sql, $params);
+        return $this->config()->fetchAll($sql, $params);
     }
 
     public function getActorNames() : ?iterable
@@ -292,7 +292,7 @@ class Database
             AND module.module = schma.module
             AND module.enabled = TRUE
         ';
-        $entities = $this->core()->fetchAll($sql, []);
+        $entities = $this->config()->fetchAll($sql, []);
         //dump($entities);
         foreach ($entities as $entity) {
             if (!isset($entity['namespace']) || $entity['namespace'] === null) {
@@ -329,7 +329,7 @@ class Database
             FROM ark_dataclass_type
             WHERE enabled = true
         ';
-        $datatypes = $this->core()->fetchAll($sql, []);
+        $datatypes = $this->config()->fetchAll($sql, []);
         foreach ($datatypes as $datatype) {
             $this->datatypes[$datatype['datatype']] = $datatype;
             if ($datatype['data_table']) {

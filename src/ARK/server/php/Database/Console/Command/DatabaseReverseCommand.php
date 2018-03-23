@@ -43,7 +43,7 @@ class DatabaseReverseCommand extends DatabaseCommand
     protected function doExecute() : void
     {
         $site = $this->askChoice('Please choose the site to reverse engineer', ARK::sites());
-        $this->reverse($site, 'core');
+        $this->reverse($site, 'config');
         $this->reverse($site, 'data');
         $this->reverse($site, 'spatial');
         $this->reverse($site, 'user');

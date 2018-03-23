@@ -20,7 +20,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `avalon_ark_core`
+-- Database: `avalon_ark_config`
 --
 
 --

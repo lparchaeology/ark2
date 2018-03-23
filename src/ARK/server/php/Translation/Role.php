@@ -82,7 +82,7 @@ class Role
         $metadata->addConstraint(
             new UniqueEntity([
                 'fields' => 'role',
-                'em' => 'core',
+                'em' => 'config',
             ])
         );
         $metadata->addPropertyConstraints('role', [

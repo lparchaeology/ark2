@@ -93,7 +93,7 @@ class Parameter
         $metadata->addConstraint(
             new UniqueEntity([
                 'fields' => ['keyword', 'parameter'],
-                'em' => 'core',
+                'em' => 'config',
             ])
         );
         $metadata->addPropertyConstraints('keyword', [

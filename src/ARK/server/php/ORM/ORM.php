@@ -44,8 +44,8 @@ class ORM
         if ($class === 'data' || Service::entityManager('data')->manages($class)) {
             return Service::entityManager('data');
         }
-        if ($class === 'core' || Service::entityManager('core')->manages($class)) {
-            return Service::entityManager('core');
+        if ($class === 'config' || Service::entityManager('config')->manages($class)) {
+            return Service::entityManager('config');
         }
         if ($class === 'spatial' || Service::entityManager('spatial')->manages($class)) {
             return Service::entityManager('spatial');
@@ -107,7 +107,7 @@ class ORM
             Service::entityManager('data')->flush();
             Service::entityManager('spatial')->flush();
             Service::entityManager('user')->flush();
-            Service::entityManager('core')->flush();
+            Service::entityManager('config')->flush();
             return;
         }
         // If an array or Collection, process each item
@@ -145,7 +145,7 @@ class ORM
     public static function rollback() : void
     {
         Service::entityManager('data')->getConnection()->rollBack();
-        Service::entityManager('core')->getConnection()->rollBack();
+        Service::entityManager('config')->getConnection()->rollBack();
         Service::entityManager('spatial')->getConnection()->rollBack();
         Service::entityManager('user')->getConnection()->rollBack();
     }

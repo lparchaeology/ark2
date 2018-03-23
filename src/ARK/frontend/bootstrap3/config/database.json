@@ -8,9 +8,9 @@
         }
     },
     "connections": {
-        "core": {
+        "config": {
             "server": "server",
-            "dbname": "core"
+            "dbname": "config"
         },
         "data": {
             "server": "server",

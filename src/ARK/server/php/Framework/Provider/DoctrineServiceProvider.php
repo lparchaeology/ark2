@@ -85,7 +85,7 @@ class DoctrineServiceProvider implements ServiceProviderInterface
             // TODO Better error checking for missing files and invalid JSON.
             $container['dbs.settings'] = json_decode(file_get_contents($container['dir.config'].'/database.json'), true);
 
-            $options['core'] = $this->mergeConfig($container['dbs.settings'], 'core');
+            $options['config'] = $this->mergeConfig($container['dbs.settings'], 'config');
             $options['data'] = $this->mergeConfig($container['dbs.settings'], 'data');
             $options['user'] = $this->mergeConfig($container['dbs.settings'], 'user');
 
@@ -244,7 +244,7 @@ class DoctrineServiceProvider implements ServiceProviderInterface
         $srcDir = $container['dir.install'].'/src/ARK/server/php';
         $container['orm.em.default_options.mappings'] = new Container();
 
-        $this->setMappings($container, 'core', [
+        $this->setMappings($container, 'config', [
             [
                 'type' => 'php',
                 'namespace' => 'ARK\Map',
@@ -371,12 +371,12 @@ class DoctrineServiceProvider implements ServiceProviderInterface
 
             $initialized = true;
 
-            $options['core'] = array_replace(
+            $options['config'] = array_replace(
                 $container['orm.em.default_options'],
                 [
-                    'connection' => 'core',
+                    'connection' => 'config',
                     'extensions' => ['tree'],
-                    'mappings' => $container['orm.em.default_options.mappings']['core'],
+                    'mappings' => $container['orm.em.default_options.mappings']['config'],
                 ]
             );
             $options['data'] = array_replace(

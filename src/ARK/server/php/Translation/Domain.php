@@ -72,7 +72,7 @@ class Domain
         $metadata->addConstraint(
             new UniqueEntity([
                 'fields' => 'domain',
-                'em' => 'core',
+                'em' => 'config',
             ])
         );
         $metadata->addPropertyConstraints('domain', [

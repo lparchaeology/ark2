@@ -233,7 +233,7 @@ class Keyword
         $metadata->addConstraint(
             new UniqueEntity([
                 'fields' => 'keyword',
-                'em' => 'core',
+                'em' => 'config',
             ])
         );
         $metadata->addPropertyConstraints('keyword', [

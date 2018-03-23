@@ -118,7 +118,7 @@ class Language
         $metadata->addConstraint(
             new UniqueEntity([
                 'fields' => 'language',
-                'em' => 'core',
+                'em' => 'config',
             ])
         );
         $metadata->addPropertyConstraints('language', [

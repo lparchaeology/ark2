@@ -78,7 +78,7 @@ class SiteCreateCommand extends DatabaseCommand
         ];
         $spatial = $this->askChoice('Please choose a geospatial indexing/processing option', $spatial, 0);
 
-        foreach (['core', 'data', 'spatial', 'user'] as $db) {
+        foreach (['config', 'data', 'spatial', 'user'] as $db) {
             $config['connections'][$db]['dbname'] = $site.'_ark_'.$db;
             $config['connections'][$db]['server'] = $config['server']['server'];
         }

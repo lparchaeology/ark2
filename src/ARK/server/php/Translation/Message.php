@@ -199,7 +199,7 @@ class Message
         $metadata->addConstraint(
             new UniqueEntity([
                 'fields' => ['language', 'keyword', 'role'],
-                'em' => 'core',
+                'em' => 'config',
             ])
         );
         $metadata->addPropertyConstraints('language', [

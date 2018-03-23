@@ -49,7 +49,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
     protected $site = '';
     protected $siteKey = '';
     protected $source;
-    protected $core;
+    protected $config;
     protected $data;
     protected $user;
     protected $admin;
@@ -88,17 +88,17 @@ class SiteMigrateLoadCommand extends DatabaseCommand
         $this->createUsers();
         //$this->schemaMap = ARK::jsonDecodeFile($this->mapPath.'/schema.map.json');
 
-        $this->core = Service::database()->core();
+        $this->config = Service::database()->config();
         $this->data = Service::database()->data();
         $this->user = Service::database()->user();
         $admin = $this->getServerConfig($this->data->getServer());
         $admin['dbname'] = $this->data->getDatabase();
         $this->admin = $this->getConnection($admin);
-        $this->core->beginTransaction();
+        $this->config->beginTransaction();
         $this->data->beginTransaction();
         $this->user->beginTransaction();
 
-        $modRows = $this->core->fetchAllTable('ark_module');
+        $modRows = $this->config->fetchAllTable('ark_module');
         $hasSiteMod = false;
         foreach ($modRows as $mod) {
             if (!$mod['core']) {
@@ -110,7 +110,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
             $destMod[$mod['module']] = $mod;
         }
 
-        $schemaRows = $this->core->fetchAllTable('ark_schema');
+        $schemaRows = $this->config->fetchAllTable('ark_schema');
         foreach ($schemaRows as $schema) {
             $destSchema[$schema['module']][] = $schema['schma'];
         }
@@ -145,7 +145,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
             $module['core'] = true;
             $module['keyword'] = 'core.module.site';
             $this->addTranslation($module['keyword'], $module['entity']);
-            $this->core->insert('ark_module', $module);
+            $this->config->insert('ark_module', $module);
             unset($module);
         }
         if (!$this->data->tableExists('ark_item_site')) {
@@ -184,12 +184,12 @@ class SiteMigrateLoadCommand extends DatabaseCommand
         foreach ($mapping as $mod => &$module) {
             if ($module['mode'] === 'new') {
                 $this->addTranslation($module['config']['keyword'], $module['config']['entity']);
-                $this->core->insert('ark_module', $module['config']);
+                $this->config->insert('ark_module', $module['config']);
                 if (!$this->data->tableExists($module['config']['tbl'])) {
                     $this->data->createItemTable($module['module']);
                 }
             }
-            $schema = $this->core->fetchArray('SELECT * FROM ark_schema WHERE schma = ?', [$module['schema']]);
+            $schema = $this->config->fetchArray('SELECT * FROM ark_schema WHERE schma = ?', [$module['schema']]);
             $type = null;
             $typeVocabulary = null;
             if (!$schema) {
@@ -212,13 +212,13 @@ class SiteMigrateLoadCommand extends DatabaseCommand
                     $vocab['description'] = $typeVocabulary;
                     $vocab['keyword'] = $typeVocabulary;
                     $this->addTranslation($vocab['keyword'], $vocab['concept']);
-                    $this->core->insert('ark_vocabulary', $vocab);
+                    $this->config->insert('ark_vocabulary', $vocab);
                     $term['concept'] = $typeVocabulary;
                     foreach ($modtypes as $modtype) {
                         $term['term'] = mb_strtolower($modtype[$mod.'type']);
                         $term['keyword'] = $term['concept'].'.'.$term['term'];
                         $this->addTranslation($term['keyword'], $term['term']);
-                        $this->core->insert('ark_vocabulary_term', $term);
+                        $this->config->insert('ark_vocabulary_term', $term);
                     }
                 } else {
                     $module['type'] = null;
@@ -233,7 +233,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
                 $schema['vocabulary'] = $typeVocabulary;
                 $schema['keyword'] = $module['schema'].'.schema';
                 $this->addTranslation($schema['keyword'], $schema['schma']);
-                $this->core->insert('ark_schema', $schema);
+                $this->config->insert('ark_schema', $schema);
             } else {
                 $module['type'] = null;
                 $module['modtype'] = false;
@@ -250,7 +250,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
             $vocab['source'] = 'ARK 1.2';
             $vocab['keyword'] = $vocab['concept'];
             $this->addTranslation($vocab['keyword'], $vocab['concept']);
-            $this->core->insert('ark_vocabulary', $vocab);
+            $this->config->insert('ark_vocabulary', $vocab);
         }
         $sql = '
             SELECT cor_lut_attribute.*, cor_lut_attributetype.attributetype
@@ -265,7 +265,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
             $this->addTranslation($term['keyword'], $term['term']);
             // There can be duplicate values!
             try {
-                $this->core->insert('ark_vocabulary_term', $term);
+                $this->config->insert('ark_vocabulary_term', $term);
             } catch (Exception $e) {
                 $this->write('Duplicate Vocabulary term skipped : '.$term['concept'].' '.$term['term']);
             }
@@ -596,7 +596,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
 
         // Commit now so available for chaining
         $this->data->commit();
-        $this->core->commit();
+        $this->config->commit();
         $this->user->commit();
 
         // * CHAIN, CHAIN, CHAIN, CHAIN 'O FOOLS * //
@@ -827,7 +827,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
         try {
             $trans['keyword'] = $keyword;
             $trans['domain'] = 'core';
-            $this->core->insert('ark_translation', $trans);
+            $this->config->insert('ark_translation', $trans);
         } catch (Exception $e) {
         }
         // May already exist
@@ -837,7 +837,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
                 $msg['keyword'] = $keyword;
                 $msg['role'] = 'default';
                 $msg['text'] = $title ? ucwords($text) : $text;
-                $this->core->insert('ark_translation_message', $msg);
+                $this->config->insert('ark_translation_message', $msg);
             }
         } catch (Exception $e) {
         }
