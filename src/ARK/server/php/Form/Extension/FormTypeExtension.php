@@ -46,6 +46,7 @@ class FormTypeExtension extends AbstractTypeExtension
     {
         $resolver->setDefaults([
             'help' => null,
+            'info' => null,
             'hidden' => null,
             'state' => null,
             'display' => null,
@@ -55,6 +56,7 @@ class FormTypeExtension extends AbstractTypeExtension
     public function buildView(FormView $view, FormInterface $form, array $options) : void
     {
         $view->vars['help'] = $options['help'];
+        $view->vars['info'] = $options['info'];
         $view->vars['hidden'] = $options['hidden'];
     }
 }

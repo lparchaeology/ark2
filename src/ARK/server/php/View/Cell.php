@@ -58,6 +58,7 @@ class Cell implements ElementInterface
     protected $default;
     protected $label = false;
     protected $help = false;
+    protected $info = false;
     protected $visible = true;
     protected $width;
     protected $placeholder = false;
@@ -143,6 +144,11 @@ class Cell implements ElementInterface
     public function showHelp() : bool
     {
         return $this->help;
+    }
+
+    public function showInfo() : bool
+    {
+        return $this->info;
     }
 
     public function isVisible() : bool
@@ -340,6 +346,7 @@ class Cell implements ElementInterface
         $builder->addMappedField('is_default', 'default', 'boolean');
         $builder->addField('label', 'boolean');
         $builder->addField('help', 'boolean');
+        $builder->addField('info', 'boolean');
         $builder->addField('visible', 'boolean');
         $builder->addField('width', 'integer');
         $builder->addField('placeholder', 'boolean');
@@ -393,6 +400,7 @@ class Cell implements ElementInterface
         $state['name'] = $this->name;
         $state['default'] = $this->default;
         $state['help'] = $this->help;
+        $state['info'] = $this->info;
         $state['placeholder'] = $this->placeholder;
         $state['visible'] = $this->visible ?? true;
         $state['width'] = $this->width;

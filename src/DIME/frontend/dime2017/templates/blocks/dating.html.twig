@@ -12,7 +12,7 @@
                     {{ form_widget(form.year, { 'attr': { 'placeholder': 'dime.find.class.unknown' } }) }}
                 </div>
             </div>
-            {{ form_help(form, {'state': state, 'help': help}) }}
+            {{ form_help(form, {'state': state, 'help': help, 'info': info}) }}
         </div>
         <div class="form-group">
             {{ form_label(form.period_span) }}
@@ -33,7 +33,7 @@
                 {{ form_widget(form.period) }}
                 {{ form_widget(form.period_span) }}
              </div>
-             {{ form_help(form, {'state': state, 'help': help}) }}
+             {{ form_help(form, {'state': state, 'help': help, 'info': info}) }}
         </div>
         <div class="form-group">
             {{ form_label(form.display_year) }}

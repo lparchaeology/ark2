@@ -38,6 +38,10 @@ col-xs-12 col-sm-4
             <span class="help glyphicon glyphicon-question-sign" title="{{ help | translate('help') }}" data-toggle="tooltip" data-placement="bottom" >
             </span>
         {% endif %}
+        {% if info is defined and info is not null and not hidden %}
+            <span class="help glyphicon glyphicon-info-sign" title="{{ info | translate('info') }}" data-toggle="tooltip" data-placement="bottom" >
+            </span>
+        {% endif %}
     {% endspaceless %}
 {%- endblock form_help %}
 

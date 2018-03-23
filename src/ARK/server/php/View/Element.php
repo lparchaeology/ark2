@@ -111,6 +111,7 @@ abstract class Element implements ElementInterface
         $state['sanitise'] = null;
         $state['label'] = null;
         $state['help'] = null;
+        $state['info'] = null;
         $state['keyword'] = null;
         $state['action'] = null;
         $state['required'] = true;
@@ -135,10 +136,15 @@ abstract class Element implements ElementInterface
         } else {
             $view['label'] = $view['state']['label'];
         }
-        if ($view['state']['help']) {
+        if ($view['state']['mode'] === 'edit' && $view['state']['help']) {
             $view['help'] = $view['state']['keyword'] ?? $this->keyword();
         } else {
             $view['help'] = null;
+        }
+        if ($view['state']['mode'] === 'view' && $view['state']['info']) {
+            $view['info'] = $view['state']['keyword'] ?? $this->keyword();
+        } else {
+            $view['info'] = null;
         }
         //dump($view);
         return $view;
