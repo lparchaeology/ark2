@@ -102,6 +102,12 @@
             </thead>
         {% endif %}
 
+        {% if sortorder == "desc" %}
+            {%  set data = data|sort|reverse %}
+        {%else%}
+            {% set data = data|sort %}
+        {%endif%}
+
         <tbody>
             {% for item in data %}
                 <tr data-unique-id="{{ item.id }}">
