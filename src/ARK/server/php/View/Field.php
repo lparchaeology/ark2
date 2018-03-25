@@ -248,10 +248,10 @@ class Field extends Element
         $this->inheritGroupValue($state, 'display', 'parameter', $this->displayParameter());
         $this->inheritGroupValue($state, 'display', 'format', $this->displayFormat());
 
-        $this->inheritGroupValue($state, 'export', 'property', $this->exportProperty());
-        $this->inheritGroupValue($state, 'export', 'pattern', $this->exportPattern());
-        $this->inheritGroupValue($state, 'export', 'parameter', $this->exportParameter());
-        $this->inheritGroupValue($state, 'export', 'format', $this->exportFormat());
+        $this->setGroupValue($state, 'export', 'property', $this->exportProperty());
+        $this->setGroupValue($state, 'export', 'pattern', $this->exportPattern());
+        $this->setGroupValue($state, 'export', 'parameter', $this->exportParameter());
+        $this->setGroupValue($state, 'export', 'format', $this->exportFormat());
 
         $this->inheritGroupValue($state, 'value', 'modus', $this->valueModus());
         $this->inheritGroupValue($state, 'parameter', 'modus', $this->parameterModus());

@@ -81,10 +81,6 @@ class Cell implements ElementInterface
     protected $displayPattern;
     protected $displayParameter;
     protected $displayFormat;
-    protected $exportProperty;
-    protected $exportPattern;
-    protected $exportParameter;
-    protected $exportFormat;
     protected $template;
     protected $options;
     protected $formType;
@@ -261,26 +257,6 @@ class Cell implements ElementInterface
         return $this->displayFormat;
     }
 
-    public function exportProperty() : ?string
-    {
-        return $this->exportProperty;
-    }
-
-    public function exportPattern() : ?string
-    {
-        return $this->exportPattern;
-    }
-
-    public function exportParameter() : ?string
-    {
-        return $this->exportParameter;
-    }
-
-    public function exportFormat() : ?string
-    {
-        return $this->exportFormat;
-    }
-
     public function template() : ?string
     {
         return $this->template;
@@ -364,10 +340,6 @@ class Cell implements ElementInterface
         $builder->addMappedStringField('display_pattern', 'displayPattern', 30);
         $builder->addMappedStringField('display_parameter', 'displayParameter', 30);
         $builder->addMappedStringField('display_format', 'displayFormat', 30);
-        $builder->addMappedStringField('export_property', 'exportProperty', 30);
-        $builder->addMappedStringField('export_pattern', 'exportPattern', 30);
-        $builder->addMappedStringField('export_parameter', 'exportParameter', 30);
-        $builder->addMappedStringField('export_format', 'exportFormat', 30);
         $builder->addStringField('template', 100);
         $builder->addStringField('options', 4000);
         $builder->addMappedStringField('form_type', 'formType', 100);
@@ -430,11 +402,6 @@ class Cell implements ElementInterface
         $this->addSubState($state, 'display', 'pattern', $this->displayPattern());
         $this->addSubState($state, 'display', 'parameter', $this->displayParameter());
         $this->addSubState($state, 'display', 'format', $this->displayFormat());
-
-        $this->addSubState($state, 'export', 'property', $this->exportProperty());
-        $this->addSubState($state, 'export', 'pattern', $this->exportPattern());
-        $this->addSubState($state, 'export', 'parameter', $this->exportParameter());
-        $this->addSubState($state, 'export', 'format', $this->exportFormat());
 
         $this->addSubState($state, 'value', 'modus', $this->valueModus());
         $this->addSubState($state, 'parameter', 'modus', $this->parameterModus());

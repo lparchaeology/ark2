@@ -41,8 +41,8 @@ class Page extends Element
 {
     protected $visibility = 'restricted';
     protected $visibilityTerm;
-    protected $read;
-    protected $update;
+    protected $viewPermission;
+    protected $editPermission;
     protected $header;
     protected $sidebar;
     protected $content;
@@ -56,14 +56,14 @@ class Page extends Element
         return $this->visibilityTerm;
     }
 
-    public function readPermission() : ?Permission
+    public function viewPermission() : ?Permission
     {
-        return $this->read;
+        return $this->viewPermission;
     }
 
-    public function updatePermission() : ?Permission
+    public function editPermission() : ?Permission
     {
-        return $this->update;
+        return $this->editPermission;
     }
 
     public function header() : ?Element
@@ -91,11 +91,11 @@ class Page extends Element
         if ($this->mode === 'deny') {
             return 'deny';
         }
-        if ($this->visibility === 'public' || $actor->hasPermission($this->updatePermission())) {
+        if ($this->visibility === 'public' || $actor->hasPermission($this->editPermission())) {
             return $this->mode;
         }
-        if ($actor->hasPermission($this->readPermission())) {
-            return 'read';
+        if ($actor->hasPermission($this->viewPermission())) {
+            return 'viewPermission';
         }
         return 'deny';
     }
@@ -149,8 +149,8 @@ class Page extends Element
         $builder->addManyToOneField('sidebar', Element::class, 'sidebar', 'element');
         $builder->addManyToOneField('content', Element::class, 'content', 'element');
         $builder->addManyToOneField('footer', Element::class, 'footer', 'element');
-        $builder->addPermissionField('view', 'read');
-        $builder->addPermissionField('edit', 'update');
+        $builder->addPermissionField('view_permission', 'viewPermission');
+        $builder->addPermissionField('edit_permission', 'editPermission');
     }
 
     protected function buildState($data, iterable $state) : iterable
@@ -160,7 +160,7 @@ class Page extends Element
 
         $mode = $state['workflow']['mode'];
         $actor = $state['actor'];
-        if ($mode === 'edit' && !$actor->hasPermission($this->updatePermission())) {
+        if ($mode === 'edit' && !$actor->hasPermission($this->editPermission())) {
             $mode = 'view';
         }
         $state['mode'] = $mode;

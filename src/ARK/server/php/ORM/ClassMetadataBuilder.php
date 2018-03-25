@@ -252,7 +252,7 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
         string $name = null,
         string $inverse = null
     ) : self {
-        return $this->addManyToOneField($name ?? $column, Permission::class, $column, 'permission', $inverse);
+        return $this->addRequiredManyToOneField($name ?? $column, Permission::class, $column, 'permission', $inverse);
     }
 
     public function addCompositeManyToOneField(

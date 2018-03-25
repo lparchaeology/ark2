@@ -38,7 +38,6 @@ use Symfony\Component\Form\SubmitButtonTypeInterface;
 
 class Widget extends Element
 {
-    protected $choices;
     protected $formOptions = '';
     protected $formOptionsArray;
 
@@ -49,7 +48,6 @@ class Widget extends Element
 
         // Fields
         $builder->addStringField('name', 30);
-        $builder->addStringField('choices', 30);
         KeywordTrait::buildKeywordMetadata($builder);
         $builder->addStringField('template', 100);
         $builder->addMappedStringField('form_type', 'formType', 100);
