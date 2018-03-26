@@ -89,6 +89,22 @@ trait ItemTrait
     protected $texts;
     protected $times;
 
+    public function __call(string $name, array $arguments)
+    {
+        $name = mb_strtolower($name);
+        if ($this->hasAttribute($name)) {
+            return call_user_func_array('value', $arguments);
+        }
+        $method = mb_substr($name, 0, 3);
+        $attribute = mb_substr($name, 0, 3);
+        if ($method === 'get' && $this->hasAttribute($attribute)) {
+            return call_user_func_array('value', $arguments);
+        }
+        if ($method === 'set' && $this->hasAttribute($attribute)) {
+            call_user_func_array('setValue', $arguments);
+        }
+    }
+
     public function id() : string
     {
         return $this->id;
