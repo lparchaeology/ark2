@@ -48,7 +48,7 @@ class ErrorSource
         return $this->parameter;
     }
 
-    public static function fromPointer(string $pointer, string $parameter = null) : ErrorSource
+    public static function fromPointer(string $pointer, string $parameter = null) : self
     {
         $source = new self();
         $source->pointer = $pointer;
@@ -56,7 +56,7 @@ class ErrorSource
         return $source;
     }
 
-    public static function fromParameter(string $parameter) : ErrorSource
+    public static function fromParameter(string $parameter) : self
     {
         $source = new self();
         $source->paramater = $parameter;

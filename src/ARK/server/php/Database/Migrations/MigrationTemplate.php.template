@@ -1,27 +1,28 @@
-<?php
+<< ? php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-namespace <namespace>;
+namespace < namespace > ;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
-use Doctrine\DBAL\Schema\Schema;
+use Doctrine\ DBAL\ Migrations\ AbstractMigration;
+use Doctrine\ DBAL\ Schema\ Schema;
 
 /**
-* Auto-generated Migration: Please modify to your needs!
-*/
+ * Auto-generated Migration: Please modify to your needs!
+ */
 
-final class Version<version> extends AbstractMigration
-{
-    public function up(Schema $schema) : void
-    {
+final class Version < version > extends AbstractMigration {
+    public
+    function up(Schema $schema): void {
         // this up() migration is auto-generated, please modify it to your needs
-        <up>
+        <
+        up >
     }
 
-    public function down(Schema $schema) : void
-    {
+    public
+    function down(Schema $schema): void {
         // this down() migration is auto-generated, please modify it to your needs
-        <down>
+        <
+        down >
     }
 }
