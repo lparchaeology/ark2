@@ -26,11 +26,11 @@
             <div class="col-md-1">
         {% elseif rowlength >= 5 %}
             <div class="col-md-2">
-        {% elseif rowlength == 4 %}
+        {% elseif rowlength is same as(4) %}
             <div class="col-md-3">
-        {% elseif rowlength == 3 %}
+        {% elseif rowlength is same as(3) %}
             <div class="col-md-4">
-        {% elseif rowlength == 2 %}
+        {% elseif rowlength is same as(2) %}
             <div class="col-md-6">
         {% endif %}
 

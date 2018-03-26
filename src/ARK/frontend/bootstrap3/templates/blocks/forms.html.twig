@@ -97,7 +97,7 @@ col-xs-12 col-sm-4
 
 {% block unit_widget -%}
     {% spaceless %}
-        {% if state['modus'] == 'static' %}
+        {% if state['modus'] is same as('static') %}
             <div id="{{ id }}" class="static-widget" >
                 {% if form['value'].vars['data'] is empty %}
                     &nbsp;

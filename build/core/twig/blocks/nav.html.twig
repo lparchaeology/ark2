@@ -1,7 +1,7 @@
 {# Define the standard navbar block #}
 {% block nav %}
 
-    {% set active = (nav.route and nav.route == path.route) ? "active" : "" %}
+    {% set active = (nav.route and nav.route is same as(path.route)) ? "active" : "" %}
     {% if nav.icon %}
         {% set size = (active ? "normal" : "small" )%}
         <span class="icon-{{ nav.icon }} {{ size }}"></span>

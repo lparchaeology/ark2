@@ -33,11 +33,11 @@
     {# sort translation messages in groups #}
     {% set messages_defined, messages_missing, messages_fallback = [], [], [] %}
     {% for key, message in collector.messages %}
-        {% if message.state == constant('Symfony\\Component\\Translation\\DataCollectorTranslator::MESSAGE_DEFINED') %}
+        {% if message.state is same as(constant('Symfony\\Component\\Translation\\DataCollectorTranslator::MESSAGE_DEFINED')) %}
             {% set messages_defined = messages_defined|merge({(key): message}) %}
-        {% elseif message.state == constant('Symfony\\Component\\Translation\\DataCollectorTranslator::MESSAGE_MISSING') %}
+        {% elseif message.state is same as(constant('Symfony\\Component\\Translation\\DataCollectorTranslator::MESSAGE_MISSING')) %}
             {% set messages_missing = messages_missing|merge({(key): message}) %}
-        {% elseif message.state == constant('Symfony\\Component\\Translation\\DataCollectorTranslator::MESSAGE_EQUALS_FALLBACK') %}
+        {% elseif message.state is same as(constant('Symfony\\Component\\Translation\\DataCollectorTranslator::MESSAGE_EQUALS_FALLBACK')) %}
             {% set messages_fallback = messages_fallback|merge({(key): message}) %}
         {% endif %}
     {% endfor %}

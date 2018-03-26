@@ -12,10 +12,10 @@
           } %}
           {% set layers = [] %}
           {% for layer in state.map.layers %}
-              {% if layer.source.viewClass == 'BingMaps' %}
+              {% if layer.source.viewClass is same as('BingMaps') %}
                   {% set source = {'key': layer.source.ticket, 'imagerySet': layer.sourceName} %}
               {% endif %}
-              {% if layer.source.viewClass == 'TileWMS' %}
+              {% if layer.source.viewClass is same as('TileWMS') %}
                   {% set source = {'url': layer.url ~ '&TRANSPARENT=TRUE&ticket=' ~ data['kortforsyningenticket'] | raw, 'params': layer.parameters} %}
               {% endif %}
               {% set conf = {'name': layer.name, 'visible': layer.isVisible, 'class': layer.source.viewClass, 'source': source} %}

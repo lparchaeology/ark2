@@ -2,11 +2,11 @@
 
 {% block share %}
 
-{% if data is defined and data is not null and data.visibility.name == 'public' and data.value('image') | length > 0 %}
+{% if data is defined and data is not null and data.visibility.name is same as('public') and data.value('image') | length > 0 %}
 
     {% set sharetext = 'dime.share.text' | translate | url_encode %}
     {% set hashtags = 'dime.share.hashtags' | translate | url_encode %}
-    {% if global.request.attributes.get('_route') == 'dime.finds.register' %}
+    {% if global.request.attributes.get('_route') is same as('dime.finds.register') %}
         {% set sharelink = data.value('image')[0].sourceUrl() | url_encode %}
         {% set btns = 'btn btn-social-icon btn-lg' %}
     {% else %}

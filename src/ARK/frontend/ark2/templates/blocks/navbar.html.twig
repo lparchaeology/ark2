@@ -28,7 +28,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     {% for navlink in navlinks %}
                         <li
-                        {% if global.request.getBaseUrl ~ global.request.pathInfo == path(navlink.target)%}
+                        {% if global.request.getBaseUrl ~ global.request.pathInfo is same as(path(navlink.target)) %}
                             class ="active">
                         {% else %}
                             >

@@ -1,11 +1,11 @@
 {# ARK GridLayout template for standard Bootstrap grid #}
 
-{% if element.type.id == 'form' and form %}
+{% if element.type.id is same as('form') and form %}
     {{ form_start(form) }}
 {% endif %}
 
 {% include 'layouts/grid.html.twig' %}
 
-{% if element.type.id == 'form' and form %}
+{% if element.type.id is same as('form') and form %}
     {{ form_end(form) }}
 {% endif %}

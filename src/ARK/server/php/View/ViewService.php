@@ -32,7 +32,6 @@ namespace ARK\View;
 use ARK\Error\Error;
 use ARK\File\File;
 use ARK\Framework\Application;
-use ARK\Http\Exception\InternalServerHttpException;
 use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\Translation\Translation;

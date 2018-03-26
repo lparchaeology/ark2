@@ -4,7 +4,7 @@
 
 <ul class="nav nav-tabs nav-justified dime-nav">
     {% for link in navlinks %}
-        {% if link.dropdown == true %}
+        {% if link.dropdown is same as(true) %}
             <li class="dropdown">
                 <a data-toggle="dropdown" class="dropdown-toggle" href="{{ path(link.target) }}">
                     {{ link.name | translate }}

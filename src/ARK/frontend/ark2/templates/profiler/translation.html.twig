@@ -33,11 +33,11 @@
     {# sort translation messages in groups #}
     {% set messages_defined, messages_missing, messages_fallback = [], [], [] %}
     {% for key, message in collector.messages %}
-        {% if message.state == constant('Symfony\\Component\\Translation\\DataCollectorTranslator::MESSAGE_DEFINED') %}
+        {% if message.state is same as(constant('Symfony\\Component\\Translation\\DataCollectorTranslator::MESSAGE_DEFINED')) %}
             {% set messages_defined = messages_defined|merge({(key): message}) %}
-        {% elseif message.state == constant('Symfony\\Component\\Translation\\DataCollectorTranslator::MESSAGE_MISSING') %}
+        {% elseif message.state is same as(constant('Symfony\\Component\\Translation\\DataCollectorTranslator::MESSAGE_MISSING')) %}
             {% set messages_missing = messages_missing|merge({(key): message}) %}
-        {% elseif message.state == constant('Symfony\\Component\\Translation\\DataCollectorTranslator::MESSAGE_EQUALS_FALLBACK') %}
+        {% elseif message.state is same as(constant('Symfony\\Component\\Translation\\DataCollectorTranslator::MESSAGE_EQUALS_FALLBACK')) %}
             {% set messages_fallback = messages_fallback|merge({(key): message}) %}
         {% endif %}
     {% endfor %}
@@ -124,9 +124,10 @@
         }
     );
 
-    function saveEditForm(keyword, language, id) {
+    function saveEditForm(keyword, role, language, id) {
         var message = document.getElementById(id).value;
         var response = {
+            role: role,
             message: message,
             notes: ''
         };
@@ -144,7 +145,8 @@
         <tr>
             <th>Domain</th>
             <th>Times used</th>
-            <th>Message ID</th>
+            <th>Message Keyword</th>
+            <th>Message Role</th>
             <th>Message</th>
         </tr>
         </thead>
@@ -154,7 +156,7 @@
                 <td class="font-normal text-small text-bold nowrap">{{ message.domain }}</td>
                 <td class="font-normal text-small">{{ message.count }}</td>
                 <td>
-                    {{ message.id }}
+                    {{ message.keyword }}
 
                     {% if message.transChoiceNumber is not null %}
                         <small class="newline">(pluralization is used)</small>
@@ -171,13 +173,19 @@
                         </div>
                     {% endif %}
                 </td>
+                <td>
+                    {{ message.role }}
+                </td>
                 <td class="translation">
                     <div>
                         {% set id = 'edit_' ~ key %}
                         <label for="{{ id }}" >{{ message.locale }}:</label>
                         <textarea id="{{ id }}">{{ message.translation }}</textarea>
-                        <input type="button" value="Save"
-                            onclick='saveEditForm("{{ message.id }}", "{{ message.locale }}", "{{ id }}")'>
+                        <input
+                            type="button"
+                            value="Save"
+                            onclick='saveEditForm("{{ message.keyword }}", "{{ message.role }}", "{{ message.locale }}", "{{ id }}")'
+                        >
                     </div>
 
                     {% if message.locale != locale %}
@@ -185,8 +193,11 @@
                         <div>
                             <label for="{{ id }}" >{{ locale }}:</label>
                             <textarea id="{{ id }}"></textarea>
-                            <input type="button" value="Save"
-                                onclick='saveEditForm("{{ message.id }}", "{{ locale }}", "{{ id }}")'>
+                            <input
+                                type="button"
+                                value="Save"
+                                onclick='saveEditForm("{{ message.keyword }}", "{{ message.role }}", "{{ locale }}", "{{ id }}")'
+                            >
                         </div>
                     {% endif %}
                 </td>

@@ -31,7 +31,7 @@
                         data-editable-showbuttons="false"
                         data-editable-send="never"
                         data-editable-toggle="manual"
-                        {%- if field.id == keyfield %}
+                        {%- if field.id is same as(keyfield) %}
                             data-field="id"
                         {%- else -%}
                             data-field="{{field.id}}"
@@ -58,7 +58,7 @@
                     {%- for field in layout.fields -%}
                         <td>
                             {%- if item[field.id] is defined -%}
-                                {%- if field.type == 'date' -%}
+                                {%- if field.type is same as('date') -%}
                                     {{- item[field.id].format('Y-m-d H:i:s') -}}
                                 {%- elseif field.type in ['action', 'attribute', 'modtype'] -%}
                                     {{- item[field.id]|trans -}}

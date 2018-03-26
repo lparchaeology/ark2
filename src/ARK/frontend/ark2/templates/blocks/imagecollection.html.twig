@@ -1,6 +1,6 @@
 {% block imagecollection -%}
 
-{% if state.modus == 'active' %}
+{% if state.modus is same as('active') %}
 
     {{ form_row(form, {'state': state, 'help': help}) }}
 
@@ -15,7 +15,7 @@
 
                 {% if data %}
                     {% for key, image in data.value %}
-                        <div class='item {% if key == 0 %} active {% endif %}'>
+                        <div class='item {% if key is same as(0) %} active {% endif %}'>
                             <img src="{{ image.sourcePath('preview') }}" alt='' />
                         </div>
                     {% endfor %}

@@ -12,7 +12,7 @@
                 }
             %}
             {% for type in types %}
-                {%if type == 'error'%}
+                {% if type is same as('error')%}
                     {% set alert = 'danger' %}
                 {% else %}
                     {% set alert = type %}

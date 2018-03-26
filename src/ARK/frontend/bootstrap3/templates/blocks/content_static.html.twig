@@ -3,7 +3,7 @@
 
     {{ block('flash') }}
 
-    {% if state.workflow.mode == 'edit' %}
+    {% if state.workflow.mode is same as('edit') %}
         <button id="pageedit" type="button" class="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">
             {{ 'core.button.edit' | translate }}
         </button>

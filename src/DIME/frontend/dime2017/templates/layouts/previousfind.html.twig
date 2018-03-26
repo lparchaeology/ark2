@@ -14,13 +14,13 @@
     <div class="modal fade" id="previousitem-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
         <div class="modal-dialog">
             <div class="loginmodal-container dime">
-                {% if element.type.id == 'form' and form %}
+                {% if element.type.id is same as('form') and form %}
                     {{ form_start(form) }}
                 {% endif %}
 
                 {% include 'layouts/grid.html.twig' %}
 
-                {% if element.type.id == 'form' and form %}
+                {% if element.type.id is same as('form') and form %}
                     {{ form_end(form) }}
                 {% endif %}
                 <a href="{{path('dime.finds.view', {'id': forms.previous.vars.data.id})}}">

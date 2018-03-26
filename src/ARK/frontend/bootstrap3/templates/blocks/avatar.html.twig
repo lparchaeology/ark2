@@ -1,6 +1,6 @@
 {% block image -%}
 
-{% if state.modus == 'active' %}
+{% if state.modus is same as('active') %}
 
     {{ form_row(form, {'state': state, 'help': help}) }}
 

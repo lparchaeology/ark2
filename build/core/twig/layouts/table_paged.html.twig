@@ -53,10 +53,10 @@
                         {% if field.tooltip -%}
                             data-titleTooltip="{{field.tooltip|trans}}"
                         {%- endif %}
-                        {% if field.widget == 'radio' -%}
+                        {% if field.widget is same as('radio') -%}
                             data-radio
                         {%- endif %}
-                        {% if field.widget == 'checkbox' -%}
+                        {% if field.widget is same as('checkbox') -%}
                             data-checkbox
                         {%- endif %}
                         {% if field.align -%}
@@ -92,13 +92,13 @@
                     {% for field in layout.fields %}
                         <td>
                             {% if field is defined and item[field.id]is defined %}
-                                {% if field.property.id == 'item' %}
+                                {% if field.property.id is same as('item') %}
                                     {{ item[field.id]|raw }}
-                                {% elseif field.property.type == 'datetime' %}
+                                {% elseif field.property.type is same as('datetime') %}
                                     {{ item[field.id].format('Y-m-d H:i:s') }}
-                                {% elseif field.property.type == 'date' %}
+                                {% elseif field.property.type is same as('date') %}
                                     {{ item[field.id].format('Y-m-d') }}
-                                {% elseif field.property.type == 'time' %}
+                                {% elseif field.property.type is same as('time') %}
                                     {{ item[field.id].format('H:i:s') }}
                                 {% else %}
                                     {{ item[field.id]|trans }}
