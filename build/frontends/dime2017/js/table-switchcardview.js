@@ -68,12 +68,12 @@
 
             $("#thumbModal").html(html);
             $("#modalWindow").modal();
-            /*
+
             $('#modalWindow').on('hidden.bs.modal', function () {
                 $('tbody tr').removeClass('selected');
                 mapcollection.clear();
             });
-            */
+            
         };
 
         var formclick = function (evt) {
