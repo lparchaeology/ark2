@@ -422,10 +422,10 @@ INSERT INTO `ark_schema_item` (`attribute`, `dataclass`, `vocabulary`, `minimum`
 ('status', 'identifier', 'core.item.status', 1, 1, 1, 0, 1, 0, 'core.item.status');
 
 --
--- Dumping data for table `ark_translation`
+-- Dumping data for table `ark_translation_keyword`
 --
 
-INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
+INSERT INTO `ark_translation_keyword` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
 ('core.action.activate', 'vocabulary', 0, 0),
 ('core.action.approve', 'core', 0, 0),
 ('core.action.cancel', 'core', 0, 0),
@@ -1656,7 +1656,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('user.menu.logout', 'user', 0, 0),
 ('user.menu.password', 'user', 0, 0),
 ('user.menu.register', 'user', 0, 0);
-INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
+INSERT INTO `ark_translation_keyword` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
 ('user.menu.view', 'user', 0, 0),
 ('vocabulary.country', 'core', 0, 0),
 ('vocabulary.distance', 'core', 0, 0),
@@ -3268,10 +3268,10 @@ INSERT INTO `ark_view_widget` (`element`, `name`, `choices`, `template`, `keywor
 ('core_widget_vocabulary', 'vocabulary', NULL, NULL, NULL, 'ARK\\Form\\Type\\VocabularyWidgetType', NULL);
 
 --
--- Dumping data for table `ark_vocabulary`
+-- Dumping data for table `ark_vocabulary_concept`
 --
 
-INSERT INTO `ark_vocabulary` (`concept`, `type`, `source`, `closed`, `transitions`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+INSERT INTO `ark_vocabulary_concept` (`concept`, `type`, `source`, `closed`, `transitions`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
 ('core.actor.class', 'list', 'ARK Core', 1, 0, 1, 0, 'core.actor.class', 'Actor Class'),
 ('core.event.class', 'list', 'ARK Core', 1, 0, 1, 0, 'core.event.class', 'Core Class'),
 ('core.file.class', 'list', 'ARK Core', 1, 0, 1, 0, 'core.file.class', 'File Class'),

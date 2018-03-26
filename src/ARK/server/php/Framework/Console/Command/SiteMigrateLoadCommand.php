@@ -29,15 +29,15 @@
 
 namespace ARK\Framework\Console\Command;
 
-use ARK\Security\Actor;
-use ARK\Security\Person;
 use ARK\ARK;
 use ARK\Database\Console\Command\DatabaseCommand;
 use ARK\Framework\Application;
 use ARK\ORM\ORM;
+use ARK\Security\Actor;
+use ARK\Security\Person;
+use ARK\Security\Role;
 use ARK\Security\User;
 use ARK\Service;
-use ARK\Security\Role;
 use Exception;
 
 class SiteMigrateLoadCommand extends DatabaseCommand
@@ -212,7 +212,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
                     $vocab['description'] = $typeVocabulary;
                     $vocab['keyword'] = $typeVocabulary;
                     $this->addTranslation($vocab['keyword'], $vocab['concept']);
-                    $this->config->insert('ark_vocabulary', $vocab);
+                    $this->config->insert('ark_vocabulary_concept', $vocab);
                     $term['concept'] = $typeVocabulary;
                     foreach ($modtypes as $modtype) {
                         $term['term'] = mb_strtolower($modtype[$mod.'type']);
@@ -250,7 +250,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
             $vocab['source'] = 'ARK 1.2';
             $vocab['keyword'] = $vocab['concept'];
             $this->addTranslation($vocab['keyword'], $vocab['concept']);
-            $this->config->insert('ark_vocabulary', $vocab);
+            $this->config->insert('ark_vocabulary_concept', $vocab);
         }
         $sql = '
             SELECT cor_lut_attribute.*, cor_lut_attributetype.attributetype
@@ -827,7 +827,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
         try {
             $trans['keyword'] = $keyword;
             $trans['domain'] = 'core';
-            $this->config->insert('ark_translation', $trans);
+            $this->config->insert('ark_translation_keyword', $trans);
         } catch (Exception $e) {
         }
         // May already exist

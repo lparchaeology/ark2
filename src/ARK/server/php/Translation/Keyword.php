@@ -265,7 +265,7 @@ class Keyword
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_translation');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_translation_keyword');
 
         // Key
         $builder->addStringKey('keyword', 100);

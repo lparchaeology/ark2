@@ -162,7 +162,7 @@ abstract class Concept
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_vocabulary');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_vocabulary_concept');
         $builder->setReadOnly();
         $builder->setSingleTableInheritance()->setDiscriminatorColumn('type', 'string', 10);
         $builder->addDiscriminatorMapClass('list', TermList::class);

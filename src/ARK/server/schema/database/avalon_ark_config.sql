@@ -220,10 +220,10 @@ INSERT INTO `ark_route_path` (`route`, `language`, `path`) VALUES
 ('arch.context.list', 'en', '/contexts');
 
 --
--- Dumping data for table `ark_translation`
+-- Dumping data for table `ark_translation_keyword`
 --
 
-INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
+INSERT INTO `ark_translation_keyword` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
 ('arch.area.class', 'arch', 0, 0),
 ('arch.area.class.site', 'arch', 0, 0),
 ('arch.area.class.trench', 'arch', 0, 0),
@@ -356,10 +356,10 @@ INSERT INTO `ark_view_table` (`element`, `name`, `mode`, `caption`, `header`, `f
 ('arch_find_table', 'finds', NULL, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 'list', NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL);
 
 --
--- Dumping data for table `ark_vocabulary`
+-- Dumping data for table `ark_vocabulary_concept`
 --
 
-INSERT INTO `ark_vocabulary` (`concept`, `type`, `source`, `closed`, `transitions`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+INSERT INTO `ark_vocabulary_concept` (`concept`, `type`, `source`, `closed`, `transitions`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
 ('arch.area.class', 'list', 'Archaeology Area', 1, 0, 1, 0, 'arch.area.class', 'Archaeology Area Class'),
 ('arch.context.class', 'list', 'Archaeology Schema', 1, 0, 1, 0, 'arch.context.class', 'Archaeology Context Class'),
 ('arch.drawing.class', 'list', 'Archaeology Drawing', 1, 0, 1, 0, NULL, 'Archaeology Drawing Class'),

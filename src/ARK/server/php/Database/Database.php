@@ -140,14 +140,14 @@ class Database
     {
         $sql = '
             SELECT *
-            FROM ark_translation, ark_translation_message
+            FROM ark_translation_keyword, ark_translation_message
             WHERE ark_translation_message.language = :language
-            AND ark_translation.keyword = ark_translation_message.keyword
+            AND ark_translation_keyword.keyword = ark_translation_message.keyword
         ';
         $params[':language'] = $language;
         if ($domain) {
             $sql .= '
-                AND ark_translation.domain = :domain
+                AND ark_translation_keyword.domain = :domain
             ';
             $params[':domain'] = $domain;
         }
@@ -278,16 +278,16 @@ class Database
         $this->entities['resource'] = [];
         $sql = '
             SELECT term.entity, term.namespace, term.term as class,
-                vocabulary.entity as base_entity, vocabulary.namespace as base_namespace,
+                concept.entity as base_entity, concept.namespace as base_namespace,
                 schma.schma, schma.subclasses, schma.class_vocabulary, schma.generator, schma.sequence,
                 module.module, module.tbl, module.core
             FROM ark_vocabulary_term AS term,
-                ark_vocabulary as vocabulary,
+                ark_vocabulary_concept as concept,
                 ark_model_schema AS schma,
                 ark_model_module AS module
-            WHERE vocabulary.concept = term.concept
-            AND vocabulary.enabled = TRUE
-            AND schma.class_vocabulary = vocabulary.concept
+            WHERE concept.concept = term.concept
+            AND concept.enabled = TRUE
+            AND schma.class_vocabulary = concept.concept
             AND schma.enabled = TRUE
             AND module.module = schma.module
             AND module.enabled = TRUE

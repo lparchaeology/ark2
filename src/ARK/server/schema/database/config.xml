@@ -69,13 +69,13 @@
         <references name="dataclass_datatype_constraint" table="ark_dataclass_type" onupdate="cascade">
             <column local="datatype" foreign="datatype"/>
         </references>
-        <references name="dataclass_format_constraint" table="ark_vocabulary" onupdate="cascade">
+        <references name="dataclass_format_constraint" table="ark_vocabulary_concept" onupdate="cascade">
             <column local="format_vocabulary" foreign="concept"/>
         </references>
-        <references name="dataclass_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+        <references name="dataclass_keyword_constraint" table="ark_translation_keyword" onupdate="cascade" ondelete="set null">
             <column local="keyword" foreign="keyword"/>
         </references>
-        <references name="dataclass_parameter_constraint" table="ark_vocabulary" onupdate="cascade">
+        <references name="dataclass_parameter_constraint" table="ark_vocabulary_concept" onupdate="cascade">
             <column local="parameter_vocabulary" foreign="concept"/>
         </references>
     </table>
@@ -144,13 +144,13 @@
         <references name="dataclass_attribute_dataclass_constraint" table="ark_dataclass" onupdate="cascade">
             <column local="dataclass" foreign="dataclass"/>
         </references>
-        <references name="dataclass_attribute_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+        <references name="dataclass_attribute_keyword_constraint" table="ark_translation_keyword" onupdate="cascade" ondelete="set null">
             <column local="keyword" foreign="keyword"/>
         </references>
         <references name="dataclass_attribute_parent_constraint" table="ark_dataclass" onupdate="cascade" ondelete="cascade">
             <column local="parent" foreign="dataclass"/>
         </references>
-        <references name="dataclass_attribute_vocabulary_constraint" table="ark_vocabulary" onupdate="cascade">
+        <references name="dataclass_attribute_vocabulary_constraint" table="ark_vocabulary_concept" onupdate="cascade">
             <column local="vocabulary" foreign="concept"/>
         </references>
     </table>
@@ -466,13 +466,13 @@
             <col>keyword</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="dataclass_type_format_constraint" table="ark_vocabulary" onupdate="cascade">
+        <references name="dataclass_type_format_constraint" table="ark_vocabulary_concept" onupdate="cascade">
             <column local="format_vocabulary" foreign="concept"/>
         </references>
-        <references name="dataclass_type_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+        <references name="dataclass_type_keyword_constraint" table="ark_translation_keyword" onupdate="cascade" ondelete="set null">
             <column local="keyword" foreign="keyword"/>
         </references>
-        <references name="dataclass_type_parameter_constraint" table="ark_vocabulary" onupdate="cascade">
+        <references name="dataclass_type_parameter_constraint" table="ark_vocabulary_concept" onupdate="cascade">
             <column local="parameter_vocabulary" foreign="concept"/>
         </references>
     </table>
@@ -509,7 +509,7 @@
             <col>keyword</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="map_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+        <references name="map_keyword_constraint" table="ark_translation_keyword" onupdate="cascade" ondelete="set null">
             <column local="keyword" foreign="keyword"/>
         </references>
     </table>
@@ -536,7 +536,7 @@
             <col>source</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="map_layer_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+        <references name="map_layer_keyword_constraint" table="ark_translation_keyword" onupdate="cascade" ondelete="set null">
             <column local="keyword" foreign="keyword"/>
         </references>
         <references name="map_layer_source_constraint" table="ark_map_source" onupdate="cascade" ondelete="cascade">
@@ -591,7 +591,7 @@
             <col>map</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="map_legend_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+        <references name="map_legend_keyword_constraint" table="ark_translation_keyword" onupdate="cascade" ondelete="set null">
             <column local="keyword" foreign="keyword"/>
         </references>
         <references name="map_legend_layer_constraint" table="ark_map_layer" onupdate="cascade" ondelete="cascade">
@@ -627,7 +627,7 @@
             <col>keyword</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="map_source_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+        <references name="map_source_keyword_constraint" table="ark_translation_keyword" onupdate="cascade" ondelete="set null">
             <column local="keyword" foreign="keyword"/>
         </references>
     </table>
@@ -649,7 +649,7 @@
             <col>keyword</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="model_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+        <references name="model_keyword_constraint" table="ark_translation_keyword" onupdate="cascade" ondelete="set null">
             <column local="keyword" foreign="keyword"/>
         </references>
     </table>
@@ -699,7 +699,7 @@
             <col>model</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="model_association_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+        <references name="model_association_keyword_constraint" table="ark_translation_keyword" onupdate="cascade" ondelete="set null">
             <column local="keyword" foreign="keyword"/>
         </references>
         <references name="model_association_model_constraint" table="ark_model" onupdate="cascade" ondelete="cascade">
@@ -801,7 +801,7 @@
         <references name="model_attribute_edit_constraint" table="ark_security_permission" onupdate="cascade">
             <column local="edit_permission" foreign="permission"/>
         </references>
-        <references name="model_attribute_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+        <references name="model_attribute_keyword_constraint" table="ark_translation_keyword" onupdate="cascade" ondelete="set null">
             <column local="keyword" foreign="keyword"/>
         </references>
         <references name="model_attribute_schema_constraint" table="ark_model_schema" onupdate="cascade" ondelete="cascade">
@@ -810,7 +810,7 @@
         <references name="model_attribute_view_constraint" table="ark_security_permission" onupdate="cascade">
             <column local="view_permission" foreign="permission"/>
         </references>
-        <references name="model_attribute_vocabulary_constraint" table="ark_vocabulary" onupdate="cascade">
+        <references name="model_attribute_vocabulary_constraint" table="ark_vocabulary_concept" onupdate="cascade">
             <column local="vocabulary" foreign="concept"/>
         </references>
     </table>
@@ -858,7 +858,7 @@
         <references name="schema_item_dataclass_constraint" table="ark_dataclass" onupdate="cascade">
             <column local="dataclass" foreign="dataclass"/>
         </references>
-        <references name="schema_item_vocabulary_constraint" table="ark_vocabulary" onupdate="cascade">
+        <references name="schema_item_vocabulary_constraint" table="ark_vocabulary_concept" onupdate="cascade">
             <column local="vocabulary" foreign="concept"/>
         </references>
     </table>
@@ -894,7 +894,7 @@
             <col>keyword</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="model_module_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+        <references name="model_module_keyword_constraint" table="ark_translation_keyword" onupdate="cascade" ondelete="set null">
             <column local="keyword" foreign="keyword"/>
         </references>
     </table>
@@ -1011,7 +1011,7 @@
         <references name="model_schema_edit_constraint" table="ark_security_permission" onupdate="cascade">
             <column local="update_permission" foreign="permission"/>
         </references>
-        <references name="model_schema_keyword_constraint" table="ark_translation" onupdate="cascade">
+        <references name="model_schema_keyword_constraint" table="ark_translation_keyword" onupdate="cascade">
             <column local="keyword" foreign="keyword"/>
         </references>
         <references name="model_schema_module_constraint" table="ark_model_module" onupdate="cascade" ondelete="cascade">
@@ -1029,7 +1029,7 @@
         <references name="model_schema_view_constraint" table="ark_security_permission" onupdate="cascade">
             <column local="read_permission" foreign="permission"/>
         </references>
-        <references name="model_schema_vocabulary_constraint" table="ark_vocabulary" onupdate="cascade">
+        <references name="model_schema_vocabulary_constraint" table="ark_vocabulary_concept" onupdate="cascade">
             <column local="class_vocabulary" foreign="concept"/>
         </references>
     </table>
@@ -1201,7 +1201,7 @@
             <col>keyword</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="workflow_permission_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+        <references name="workflow_permission_keyword_constraint" table="ark_translation_keyword" onupdate="cascade" ondelete="set null">
             <column local="keyword" foreign="keyword"/>
         </references>
     </table>
@@ -1223,11 +1223,11 @@
             <col>keyword</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="workflow_role_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+        <references name="workflow_role_keyword_constraint" table="ark_translation_keyword" onupdate="cascade" ondelete="set null">
             <column local="keyword" foreign="keyword"/>
         </references>
     </table>
-    <table name="ark_translation">
+    <table name="ark_translation_keyword">
         <field name="keyword" type="string" size="100">
             <key/>
             <notnull/>
@@ -1261,7 +1261,7 @@
             <col>keyword</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="translation_domain_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+        <references name="translation_domain_keyword_constraint" table="ark_translation_keyword" onupdate="cascade" ondelete="set null">
             <column local="keyword" foreign="keyword"/>
         </references>
     </table>
@@ -1312,7 +1312,7 @@
             <col>role</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="translation_message_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="cascade">
+        <references name="translation_message_keyword_constraint" table="ark_translation_keyword" onupdate="cascade" ondelete="cascade">
             <column local="keyword" foreign="keyword"/>
         </references>
         <references name="translation_message_language_constraint" table="ark_translation_language" onupdate="cascade" ondelete="cascade">
@@ -1335,7 +1335,7 @@
             <col>keyword</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="translation_parameter_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="cascade">
+        <references name="translation_parameter_keyword_constraint" table="ark_translation_keyword" onupdate="cascade" ondelete="cascade">
             <column local="keyword" foreign="keyword"/>
         </references>
     </table>
@@ -1350,7 +1350,7 @@
             <col>keyword</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="translation_role_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+        <references name="translation_role_keyword_constraint" table="ark_translation_keyword" onupdate="cascade" ondelete="set null">
             <column local="keyword" foreign="keyword"/>
         </references>
     </table>
@@ -1463,7 +1463,7 @@
         <references name="view_cell_group_constraint" table="ark_view_element" onupdate="cascade" ondelete="cascade">
             <column local="grp" foreign="element"/>
         </references>
-        <references name="view_cell_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+        <references name="view_cell_keyword_constraint" table="ark_translation_keyword" onupdate="cascade" ondelete="set null">
             <column local="keyword" foreign="keyword"/>
         </references>
         <references name="view_cell_map_constraint" table="ark_map" onupdate="cascade">
@@ -1472,7 +1472,7 @@
         <references name="view_cell_view_constraint" table="ark_security_permission" onupdate="cascade">
             <column local="view_permission" foreign="permission"/>
         </references>
-        <references name="view_cell_vocabulary_constraint" table="ark_vocabulary" onupdate="cascade">
+        <references name="view_cell_vocabulary_constraint" table="ark_vocabulary_concept" onupdate="cascade">
             <column local="vocabulary" foreign="concept"/>
         </references>
     </table>
@@ -1536,7 +1536,7 @@
         <references name="view_field_element_constraint" table="ark_view_element" onupdate="cascade" ondelete="cascade">
             <column local="element" foreign="element"/>
         </references>
-        <references name="view_field_keyword" table="ark_translation" onupdate="cascade" ondelete="set null">
+        <references name="view_field_keyword" table="ark_translation_keyword" onupdate="cascade" ondelete="set null">
             <column local="keyword" foreign="keyword"/>
         </references>
     </table>
@@ -1562,7 +1562,7 @@
         <references name="view_form_element_constraint" table="ark_view_element" onupdate="cascade" ondelete="cascade">
             <column local="element" foreign="element"/>
         </references>
-        <references name="view_form_keyword_contraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+        <references name="view_form_keyword_contraint" table="ark_translation_keyword" onupdate="cascade" ondelete="set null">
             <column local="keyword" foreign="keyword"/>
         </references>
         <references name="view_form_route_constraint" table="ark_route" onupdate="cascade">
@@ -1586,7 +1586,7 @@
         <references name="view_group_element_constraint" table="ark_view_element" onupdate="cascade" ondelete="cascade">
             <column local="element" foreign="element"/>
         </references>
-        <references name="view_group_keyword_contraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+        <references name="view_group_keyword_contraint" table="ark_translation_keyword" onupdate="cascade" ondelete="set null">
             <column local="keyword" foreign="keyword"/>
         </references>
     </table>
@@ -1625,7 +1625,7 @@
         <references name="view_nav_element_constraint" table="ark_view_element" onupdate="cascade" ondelete="cascade">
             <column local="element" foreign="element"/>
         </references>
-        <references name="view_nav_keyword_contraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+        <references name="view_nav_keyword_contraint" table="ark_translation_keyword" onupdate="cascade" ondelete="set null">
             <column local="keyword" foreign="keyword"/>
         </references>
         <references name="view_nav_parent_constraint" table="ark_view_nav" onupdate="cascade" ondelete="cascade">
@@ -1690,7 +1690,7 @@
         <references name="view_page_header_constraint" table="ark_view_element" onupdate="cascade">
             <column local="header" foreign="element"/>
         </references>
-        <references name="view_page_keyword_contraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+        <references name="view_page_keyword_contraint" table="ark_translation_keyword" onupdate="cascade" ondelete="set null">
             <column local="keyword" foreign="keyword"/>
         </references>
         <references name="view_page_sidebar_constraint" table="ark_view_element" onupdate="cascade">
@@ -1772,7 +1772,7 @@
         <references name="view_table_element_constraint" table="ark_view_element" onupdate="cascade" ondelete="cascade">
             <column local="element" foreign="element"/>
         </references>
-        <references name="viewtable_keyword_contraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+        <references name="viewtable_keyword_contraint" table="ark_translation_keyword" onupdate="cascade" ondelete="set null">
             <column local="keyword" foreign="keyword"/>
         </references>
     </table>
@@ -1829,7 +1829,7 @@
             <col>keyword</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="view_type_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+        <references name="view_type_keyword_constraint" table="ark_translation_keyword" onupdate="cascade" ondelete="set null">
             <column local="keyword" foreign="keyword"/>
         </references>
     </table>
@@ -1853,11 +1853,11 @@
         <references name="view_widget_element_constraint" table="ark_view_element" onupdate="cascade" ondelete="cascade">
             <column local="element" foreign="element"/>
         </references>
-        <references name="view_widget_keyword_contraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+        <references name="view_widget_keyword_contraint" table="ark_translation_keyword" onupdate="cascade" ondelete="set null">
             <column local="keyword" foreign="keyword"/>
         </references>
     </table>
-    <table name="ark_vocabulary">
+    <table name="ark_vocabulary_concept">
         <field name="concept" type="string" size="30">
             <key/>
             <notnull/>
@@ -1895,7 +1895,7 @@
             <col>keyword</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="vocabulary_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+        <references name="vocabulary_keyword_constraint" table="ark_translation_keyword" onupdate="cascade" ondelete="set null">
             <column local="keyword" foreign="keyword"/>
         </references>
         <references name="vocabulary_type_constraint" table="ark_vocabulary_type" onupdate="cascade">
@@ -2049,10 +2049,10 @@
             <col>concept</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="vocabulary_term_concept_constraint" table="ark_vocabulary" onupdate="cascade" ondelete="cascade">
+        <references name="vocabulary_term_concept_constraint" table="ark_vocabulary_concept" onupdate="cascade" ondelete="cascade">
             <column local="concept" foreign="concept"/>
         </references>
-        <references name="vocabulary_term_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+        <references name="vocabulary_term_keyword_constraint" table="ark_translation_keyword" onupdate="cascade" ondelete="set null">
             <column local="keyword" foreign="keyword"/>
         </references>
     </table>
@@ -2078,7 +2078,7 @@
             <col>keyword</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="vocabulary_type_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+        <references name="vocabulary_type_keyword_constraint" table="ark_translation_keyword" onupdate="cascade" ondelete="set null">
             <column local="keyword" foreign="keyword"/>
         </references>
     </table>
@@ -2127,7 +2127,7 @@
             <col>event_term</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="workflow_action_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+        <references name="workflow_action_keyword_constraint" table="ark_translation_keyword" onupdate="cascade" ondelete="set null">
             <column local="keyword" foreign="keyword"/>
         </references>
         <references name="workflow_action_schema_constraint" table="ark_model_schema" onupdate="cascade" ondelete="cascade">
@@ -2324,7 +2324,7 @@
             <column local="class" foreign="class"/>
             <column local="attribute" foreign="attribute"/>
         </references>
-        <references name="workflow_notify_keyword_constraint" table="ark_translation" onupdate="cascade" ondelete="set null">
+        <references name="workflow_notify_keyword_constraint" table="ark_translation_keyword" onupdate="cascade" ondelete="set null">
             <column local="keyword" foreign="keyword"/>
         </references>
         <references name="workflow_notify_role_constraint" table="ark_security_role" onupdate="cascade">

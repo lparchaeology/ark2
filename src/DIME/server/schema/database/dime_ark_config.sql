@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.9
+-- version 4.7.8
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 25, 2018 at 07:22 PM
+-- Generation Time: Mar 26, 2018 at 03:19 PM
 -- Server version: 10.2.13-MariaDB
--- PHP Version: 7.2.3
+-- PHP Version: 7.1.14
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -1440,10 +1440,32 @@ INSERT INTO `ark_security_role` (`role`, `agent_for`, `level`, `enabled`, `keywo
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ark_translation`
+-- Table structure for table `ark_translation_domain`
 --
 
-CREATE TABLE `ark_translation` (
+CREATE TABLE `ark_translation_domain` (
+  `domain` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ark_translation_domain`
+--
+
+INSERT INTO `ark_translation_domain` (`domain`, `keyword`) VALUES
+('core', 'translation.domain.core'),
+('dime', 'translation.domain.dime'),
+('security', 'translation.domain.security'),
+('validators', 'translation.domain.validators'),
+('vocabulary', 'translation.domain.vocabulary');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_translation_keyword`
+--
+
+CREATE TABLE `ark_translation_keyword` (
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `domain` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `is_plural` tinyint(1) NOT NULL DEFAULT 0,
@@ -1451,10 +1473,10 @@ CREATE TABLE `ark_translation` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `ark_translation`
+-- Dumping data for table `ark_translation_keyword`
 --
 
-INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
+INSERT INTO `ark_translation_keyword` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
 ('core.action.disable', 'core', 0, 0),
 ('core.action.edit', 'core', 0, 0),
 ('core.action.enable', 'vocabulary', 0, 0),
@@ -2622,7 +2644,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.save', 'dime', 0, 0),
 ('dime.schema.find', 'dime', 0, 0),
 ('dime.schema.image', 'dime', 0, 0);
-INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
+INSERT INTO `ark_translation_keyword` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
 ('dime.schema.location', 'dime', 0, 0),
 ('dime.search', 'dime', 0, 0),
 ('dime.search.finds.mine', 'dime', 0, 0),
@@ -3446,28 +3468,6 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('vocabulary.mass', 'core', 0, 0),
 ('vocabulary.spatial.crs', 'core', 0, 0),
 ('vocabulary.spatial.format', 'core', 0, 0);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ark_translation_domain`
---
-
-CREATE TABLE `ark_translation_domain` (
-  `domain` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `ark_translation_domain`
---
-
-INSERT INTO `ark_translation_domain` (`domain`, `keyword`) VALUES
-('core', 'translation.domain.core'),
-('dime', 'translation.domain.dime'),
-('security', 'translation.domain.security'),
-('validators', 'translation.domain.validators'),
-('vocabulary', 'translation.domain.vocabulary');
 
 -- --------------------------------------------------------
 
@@ -6667,10 +6667,10 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `na
 ('dime_find_filter', '', 4, 2, 0, 'core_widget_choice', 'custody', 0, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'dime.find.custody', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"style\": \"width:95%\"}}', NULL, NULL),
 ('dime_find_filter', '', 4, 4, 0, 'core_widget_date', 'find_date', 0, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.find.finddate', NULL, NULL, NULL, NULL),
 ('dime_find_filter', '', 4, 6, 0, 'core_widget_date', 'find_date_span', 0, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.find.finddate', NULL, NULL, NULL, NULL),
-('dime_find_front_table', '', 0, 0, 0, 'dime_find_id', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, NULL, 1, 'alphanumeric', 'desc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_front_table', '', 0, 0, 2, 'dime_find_class', NULL, NULL, 0, NULL, 0, 0, 1, NULL, NULL, NULL, NULL, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_front_table', '', 0, 0, 4, 'dime_find_classification', NULL, NULL, 0, NULL, 0, 0, 1, NULL, NULL, NULL, NULL, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_front_table', '', 0, 0, 6, 'dime_find_material', NULL, NULL, 0, NULL, 0, 0, 1, NULL, NULL, NULL, NULL, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_front_table', '', 0, 0, 0, 'dime_find_id', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 0, 1, 'alphanumeric', 'desc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_front_table', '', 0, 0, 2, 'dime_find_class', NULL, NULL, 0, NULL, 0, 0, 1, NULL, NULL, NULL, 0, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_front_table', '', 0, 0, 4, 'dime_find_classification', NULL, NULL, 0, NULL, 0, 0, 1, NULL, NULL, NULL, 0, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_front_table', '', 0, 0, 6, 'dime_find_material', NULL, NULL, 0, NULL, 0, 0, 1, NULL, NULL, NULL, 0, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_geo', '', 0, 0, 0, 'dime_find_location', NULL, NULL, 0, 1, 1, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'dime_map_pick', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.find.coordinates', 'blocks/mappick.html.twig', NULL, NULL, NULL),
 ('dime_find_geo', '', 0, 0, 2, 'dime_find_municipality', NULL, NULL, 0, 1, 1, 0, 1, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_geo', '', 0, 0, 4, 'dime_find_museum', NULL, NULL, 0, 1, 1, 0, 1, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
@@ -6685,7 +6685,7 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `na
 ('dime_find_list', '', 0, 0, 0, 'dime_find_table', 'items', NULL, 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_list_action', '', 0, 0, 0, 'dime_find_table', 'items', NULL, 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_list_action', '', 0, 0, 2, 'core_workflow_action_form', NULL, NULL, 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_list_public', '', 0, 0, 0, 'dime_find_front_table', 'items', NULL, 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_list_public', '', 0, 0, 0, 'dime_find_search_table', 'items', NULL, 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_map', '', 0, 0, 0, 'dime_find_id', NULL, NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_map', '', 0, 0, 1, 'dime_find_location', NULL, NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_metadata', '', 0, 0, 0, 'dime_find_id', NULL, NULL, 0, 1, 1, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'static', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
@@ -6715,11 +6715,12 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `na
 ('dime_find_search', '', 0, 0, 0, 'dime_find_filter', NULL, NULL, 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_search', '', 1, 0, 0, 'dime_find_list_public', NULL, NULL, 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_search', '', 1, 1, 0, 'dime_find_map', NULL, NULL, 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'dime_map_public', NULL, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_search_table', '', 0, 0, 0, 'dime_find_id', NULL, NULL, 1, NULL, 0, 0, 1, NULL, NULL, NULL, NULL, 1, 'alphanumeric', 'desc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_search_table', '', 0, 0, 2, 'dime_find_class', NULL, NULL, 0, NULL, 0, 0, 1, NULL, NULL, NULL, NULL, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_search_table', '', 0, 0, 4, 'dime_find_material', NULL, NULL, 0, NULL, 0, 0, 1, NULL, NULL, NULL, NULL, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_search_table', '', 0, 0, 6, 'dime_find_municipality', NULL, NULL, 0, NULL, 0, 0, 1, NULL, NULL, NULL, NULL, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL);
+('dime_find_search_table', '', 0, 0, 0, 'dime_find_id', NULL, NULL, 1, NULL, 0, 0, 0, NULL, NULL, NULL, NULL, 1, 'alphanumeric', 'desc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_search_table', '', 0, 0, 2, 'dime_find_class', NULL, NULL, 0, NULL, 0, 0, 1, NULL, NULL, NULL, NULL, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_search_table', '', 0, 0, 4, 'dime_find_classification', NULL, NULL, 0, NULL, 0, 0, 1, NULL, NULL, NULL, NULL, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_search_table', '', 0, 0, 6, 'dime_find_material', NULL, NULL, 0, NULL, 0, 0, 1, NULL, NULL, NULL, NULL, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `name`, `required`, `is_default`, `label`, `help`, `info`, `visible`, `width`, `placeholder`, `choices`, `exportable`, `sortable`, `sorter`, `sort_order`, `vocabulary`, `map`, `action_schema`, `action`, `view_permission`, `edit_permission`, `mode`, `sanitise`, `value_modus`, `parameter_modus`, `format_modus`, `display_property`, `display_pattern`, `display_parameter`, `display_format`, `enabled`, `deprecated`, `keyword`, `template`, `options`, `form_type`, `form_options`) VALUES
+('dime_find_search_table', '', 0, 0, 8, 'dime_find_municipality', NULL, NULL, 0, NULL, 0, 0, 1, NULL, NULL, NULL, NULL, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_status', '', 0, 0, 0, 'dime_find_process', NULL, NULL, 0, 1, 1, 0, 1, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'static', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_status', '', 0, 0, 2, 'dime_find_treasure', NULL, NULL, 0, 1, 1, 0, 1, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'static', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_status', '', 0, 0, 4, 'dime_find_claim', NULL, NULL, 0, 1, 1, 0, 1, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'static', NULL, NULL, 'sourcePath', 'a', NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
@@ -6729,36 +6730,36 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `na
 ('dime_find_status', '', 0, 0, 12, 'dime_find_recipient', NULL, NULL, 0, 1, 1, 0, 1, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'static', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_status', '', 0, 0, 14, 'dime_find_visibility', NULL, NULL, 0, 1, 1, 0, 1, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'static', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_status', '', 0, 0, 16, 'dime_find_publish', NULL, NULL, 0, 1, 1, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'static', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 0, 'dime_find_id', NULL, NULL, 1, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'desc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 4, 'dime_find_case', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 6, 'dime_find_claim', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 8, 'dime_find_class', NULL, NULL, 0, NULL, 0, 0, 1, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 10, 'dime_find_classification', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 12, 'dime_find_condition', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 14, 'dime_find_custodian', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 16, 'dime_find_custody', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 18, 'dime_find_dating', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 20, 'dime_find_description', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 22, 'dime_find_finddate', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 24, 'dime_find_finder', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 26, 'dime_find_finder_id', NULL, NULL, 0, NULL, 0, 0, 1, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 28, 'dime_find_finder_place', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 30, 'dime_find_issuer', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 32, 'dime_find_length', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'numeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 34, 'dime_find_location', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, 'utmEasting', NULL, NULL, NULL, 1, 0, 'dime.find.location.easting', NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 35, 'dime_find_location', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, 'utmNorthing', NULL, NULL, NULL, 1, 0, 'dime.find.location.northing', NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 36, 'dime_find_material', NULL, NULL, 0, NULL, 0, 0, 1, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 38, 'dime_find_mint', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 40, 'dime_find_municipality', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 42, 'dime_find_museum', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 44, 'dime_find_museum_id', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 46, 'dime_find_owner', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 48, 'dime_find_process', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 50, 'dime_find_recipient', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 52, 'dime_find_secondary', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 54, 'dime_find_treasure', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 56, 'dime_find_visibility', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_find_table', '', 0, 0, 58, 'dime_find_weight', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'numeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_table', '', 0, 0, 0, 'dime_find_id', NULL, NULL, 1, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'desc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_table', '', 0, 0, 4, 'dime_find_case', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_table', '', 0, 0, 6, 'dime_find_claim', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_table', '', 0, 0, 8, 'dime_find_class', NULL, NULL, 0, NULL, 0, 0, 1, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_table', '', 0, 0, 10, 'dime_find_classification', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_table', '', 0, 0, 12, 'dime_find_condition', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_table', '', 0, 0, 14, 'dime_find_custodian', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_table', '', 0, 0, 16, 'dime_find_custody', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_table', '', 0, 0, 18, 'dime_find_dating', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_table', '', 0, 0, 20, 'dime_find_description', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_table', '', 0, 0, 22, 'dime_find_finddate', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_table', '', 0, 0, 24, 'dime_find_finder', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_table', '', 0, 0, 26, 'dime_find_finder_id', NULL, NULL, 0, NULL, 0, 0, 1, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_table', '', 0, 0, 28, 'dime_find_finder_place', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_table', '', 0, 0, 30, 'dime_find_issuer', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_table', '', 0, 0, 32, 'dime_find_length', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'numeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_table', '', 0, 0, 34, 'dime_find_location', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'utmEasting', NULL, NULL, NULL, 1, 0, 'dime.find.location.easting', NULL, NULL, NULL, NULL),
+('dime_find_table', '', 0, 0, 35, 'dime_find_location', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'utmNorthing', NULL, NULL, NULL, 1, 0, 'dime.find.location.northing', NULL, NULL, NULL, NULL),
+('dime_find_table', '', 0, 0, 36, 'dime_find_material', NULL, NULL, 0, NULL, 0, 0, 1, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_table', '', 0, 0, 38, 'dime_find_mint', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_table', '', 0, 0, 40, 'dime_find_municipality', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_table', '', 0, 0, 42, 'dime_find_museum', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_table', '', 0, 0, 44, 'dime_find_museum_id', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_table', '', 0, 0, 46, 'dime_find_owner', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_table', '', 0, 0, 48, 'dime_find_process', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_table', '', 0, 0, 50, 'dime_find_recipient', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_table', '', 0, 0, 52, 'dime_find_secondary', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_table', '', 0, 0, 54, 'dime_find_treasure', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_table', '', 0, 0, 56, 'dime_find_visibility', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_table', '', 0, 0, 58, 'dime_find_weight', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 1, 1, 'numeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_update', '', 0, 0, 0, 'core_widget_submit', 'save', NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'dime.find', 'edit', NULL, NULL, 'edit', 'redact', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.save', NULL, NULL, NULL, NULL),
 ('dime_find_view', '', 0, 0, 0, 'dime_find_item', NULL, NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_view', '', 0, 0, 2, 'dime_find_status', NULL, NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'dime.find.read.status', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.find.status', NULL, NULL, NULL, NULL),
@@ -6802,15 +6803,15 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `na
 ('dime_museum_form', '', 0, 0, 14, 'core_actor_avatar', NULL, 0, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_museum_form', '', 0, 0, 16, 'core_widget_submit', 'save', NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.save', NULL, NULL, NULL, NULL),
 ('dime_museum_list', '', 0, 0, 2, 'dime_museum_table', 'items', NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_museum_table', '', 0, 0, 0, 'core_actor_id', NULL, NULL, 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_museum_table', '', 0, 0, 2, 'core_actor_fullname', NULL, NULL, 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_museum_table', '', 0, 0, 0, 'core_actor_id', NULL, NULL, 0, 0, 0, 0, 1, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_museum_table', '', 0, 0, 2, 'core_actor_fullname', NULL, NULL, 0, 0, 0, 0, 1, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_profile_list', '', 0, 0, 2, 'dime_profile_table', 'items', NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_profile_list_action', '', 0, 0, 0, 'dime_profile_table', 'items', NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_profile_list_action', '', 0, 0, 2, 'core_workflow_action_form', NULL, NULL, 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_profile_list_page', '', 0, 0, 0, 'dime_profile_table', 'actors', NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_profile_list_page', '', 0, 1, 0, 'dime_find_list', 'finds', NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_profile_page', '', 0, 0, 0, 'dime_profile_view', 'actor', NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_profile_page', '', 0, 1, 0, 'dime_find_list', 'finds', NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_profile_page', '', 0, 1, 0, 'dime_find_list_public', 'finds', NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_profile_table', '', 0, 0, 0, 'core_actor_id', NULL, NULL, 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_profile_table', '', 0, 0, 2, 'core_actor_fullname', NULL, NULL, 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_profile_table', '', 0, 0, 4, 'core_actor_status', NULL, NULL, 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
@@ -7496,7 +7497,8 @@ INSERT INTO `ark_view_table` (`element`, `name`, `mode`, `caption`, `header`, `f
 ('core_file_table', NULL, NULL, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 'list', NULL, 1, 1, 10, '1', NULL, 'table-hover dime-table', NULL, NULL),
 ('core_message_table', NULL, 'view', 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 'list', NULL, 0, 0, 10, '0', NULL, 'table-hover dime-table', 'layouts/messagelist.html.twig', NULL),
 ('core_profile_table', NULL, 'view', 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 'card', 'avatar', 1, 1, 9, '1', 'core.profiles', 'table-hover dime-table', NULL, NULL),
-('dime_find_front_table', NULL, NULL, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 'card', 'image', 1, 1, 9, '1', NULL, 'table-hover dime-table', NULL, NULL),
+('dime_find_front_table', NULL, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'list', 'image', 0, 0, 5, '0', NULL, 'table-hover dime-table', NULL, NULL),
+('dime_find_search_table', NULL, NULL, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 'card', 'image', 0, 0, 9, '1', NULL, 'table-hover dime-table', NULL, NULL),
 ('dime_find_table', NULL, NULL, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 'card', 'image', 1, 1, 9, '1', NULL, 'table-hover dime-table', NULL, NULL),
 ('dime_museum_table', NULL, NULL, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 'list', 'avatar', 1, 1, 10, '1', 'dime.profiles', 'table-hover dime-table', NULL, NULL),
 ('dime_profile_table', NULL, NULL, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 'list', 'avatar', 1, 1, 10, '1', 'dime.profiles', 'table-hover dime-table', NULL, NULL);
@@ -7615,10 +7617,10 @@ INSERT INTO `ark_view_widget` (`element`, `name`, `keyword`, `template`, `form_t
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ark_vocabulary`
+-- Table structure for table `ark_vocabulary_concept`
 --
 
-CREATE TABLE `ark_vocabulary` (
+CREATE TABLE `ark_vocabulary_concept` (
   `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `source` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -7633,10 +7635,10 @@ CREATE TABLE `ark_vocabulary` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `ark_vocabulary`
+-- Dumping data for table `ark_vocabulary_concept`
 --
 
-INSERT INTO `ark_vocabulary` (`concept`, `type`, `source`, `namespace`, `entity`, `closed`, `transitions`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+INSERT INTO `ark_vocabulary_concept` (`concept`, `type`, `source`, `namespace`, `entity`, `closed`, `transitions`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
 ('core.actor.class', 'list', 'ARK Core', 'ARK\\Security', 'Actor', 1, 0, 1, 0, 'core.actor.class', 'Actor Type'),
 ('core.event.class', 'list', 'ARK Core', 'ARK\\Entity', 'Event', 1, 0, 1, 0, 'core.event.class', 'Core Event'),
 ('core.file.class', 'list', 'ARK Core', 'ARK\\File', 'File', 1, 0, 1, 0, 'core.file.class', 'File Type'),
@@ -10587,18 +10589,18 @@ ALTER TABLE `ark_security_role`
   ADD KEY `keyword_foreign` (`keyword`) USING BTREE;
 
 --
--- Indexes for table `ark_translation`
---
-ALTER TABLE `ark_translation`
-  ADD PRIMARY KEY (`keyword`),
-  ADD KEY `domain_foreign` (`domain`) USING BTREE;
-
---
 -- Indexes for table `ark_translation_domain`
 --
 ALTER TABLE `ark_translation_domain`
   ADD PRIMARY KEY (`domain`),
   ADD KEY `keyword_foreign` (`keyword`) USING BTREE;
+
+--
+-- Indexes for table `ark_translation_keyword`
+--
+ALTER TABLE `ark_translation_keyword`
+  ADD PRIMARY KEY (`keyword`),
+  ADD KEY `domain_foreign` (`domain`) USING BTREE;
 
 --
 -- Indexes for table `ark_translation_language`
@@ -10726,9 +10728,9 @@ ALTER TABLE `ark_view_widget`
   ADD KEY `keyword_foreign` (`keyword`) USING BTREE;
 
 --
--- Indexes for table `ark_vocabulary`
+-- Indexes for table `ark_vocabulary_concept`
 --
-ALTER TABLE `ark_vocabulary`
+ALTER TABLE `ark_vocabulary_concept`
   ADD PRIMARY KEY (`concept`),
   ADD KEY `type_foreign` (`type`) USING BTREE,
   ADD KEY `keyword_foreign` (`keyword`) USING BTREE;
@@ -10858,18 +10860,18 @@ ALTER TABLE `ark_workflow_notify`
 --
 ALTER TABLE `ark_dataclass`
   ADD CONSTRAINT `dataclass_datatype_constraint` FOREIGN KEY (`datatype`) REFERENCES `ark_dataclass_type` (`datatype`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `dataclass_format_constraint` FOREIGN KEY (`format_vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `dataclass_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `dataclass_parameter_constraint` FOREIGN KEY (`parameter_vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `dataclass_format_constraint` FOREIGN KEY (`format_vocabulary`) REFERENCES `ark_vocabulary_concept` (`concept`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `dataclass_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation_keyword` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `dataclass_parameter_constraint` FOREIGN KEY (`parameter_vocabulary`) REFERENCES `ark_vocabulary_concept` (`concept`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_dataclass_attribute`
 --
 ALTER TABLE `ark_dataclass_attribute`
   ADD CONSTRAINT `dataclass_attribute_dataclass_constraint` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `dataclass_attribute_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `dataclass_attribute_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation_keyword` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `dataclass_attribute_parent_constraint` FOREIGN KEY (`parent`) REFERENCES `ark_dataclass` (`dataclass`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `dataclass_attribute_vocabulary_constraint` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `dataclass_attribute_vocabulary_constraint` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary_concept` (`concept`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_dataclass_blob`
@@ -10954,28 +10956,28 @@ ALTER TABLE `ark_dataclass_time`
 -- Constraints for table `ark_dataclass_type`
 --
 ALTER TABLE `ark_dataclass_type`
-  ADD CONSTRAINT `dataclass_type_format_constraint` FOREIGN KEY (`format_vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `dataclass_type_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `dataclass_type_parameter_constraint` FOREIGN KEY (`parameter_vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `dataclass_type_format_constraint` FOREIGN KEY (`format_vocabulary`) REFERENCES `ark_vocabulary_concept` (`concept`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `dataclass_type_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation_keyword` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `dataclass_type_parameter_constraint` FOREIGN KEY (`parameter_vocabulary`) REFERENCES `ark_vocabulary_concept` (`concept`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_map`
 --
 ALTER TABLE `ark_map`
-  ADD CONSTRAINT `map_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `map_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation_keyword` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_map_layer`
 --
 ALTER TABLE `ark_map_layer`
-  ADD CONSTRAINT `map_layer_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `map_layer_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation_keyword` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `map_layer_source_constraint` FOREIGN KEY (`source`) REFERENCES `ark_map_source` (`source`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_map_legend`
 --
 ALTER TABLE `ark_map_legend`
-  ADD CONSTRAINT `map_legend_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `map_legend_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation_keyword` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `map_legend_layer_constraint` FOREIGN KEY (`source`,`layer`) REFERENCES `ark_map_layer` (`source`, `layer`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `map_legend_map_constraint` FOREIGN KEY (`map`) REFERENCES `ark_map` (`map`) ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -10983,19 +10985,19 @@ ALTER TABLE `ark_map_legend`
 -- Constraints for table `ark_map_source`
 --
 ALTER TABLE `ark_map_source`
-  ADD CONSTRAINT `map_source_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `map_source_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation_keyword` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_model`
 --
 ALTER TABLE `ark_model`
-  ADD CONSTRAINT `model_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `model_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation_keyword` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_model_association`
 --
 ALTER TABLE `ark_model_association`
-  ADD CONSTRAINT `model_association_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `model_association_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation_keyword` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `model_association_model_constraint` FOREIGN KEY (`model`) REFERENCES `ark_model` (`model`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `model_association_schema1_constraint` FOREIGN KEY (`schema1`) REFERENCES `ark_model_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `model_association_schema2_constraint` FOREIGN KEY (`schema2`) REFERENCES `ark_model_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -11008,23 +11010,23 @@ ALTER TABLE `ark_model_attribute`
   ADD CONSTRAINT `model_attribte_event_constraint` FOREIGN KEY (`vocabulary`,`event`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `model_attribute_dataclass_constraint` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON UPDATE CASCADE,
   ADD CONSTRAINT `model_attribute_edit_constraint` FOREIGN KEY (`edit_permission`) REFERENCES `ark_security_permission` (`permission`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `model_attribute_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `model_attribute_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation_keyword` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `model_attribute_schema_constraint` FOREIGN KEY (`schma`) REFERENCES `ark_model_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `model_attribute_view_constraint` FOREIGN KEY (`view_permission`) REFERENCES `ark_security_permission` (`permission`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `model_attribute_vocabulary_constraint` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `model_attribute_vocabulary_constraint` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary_concept` (`concept`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_model_item`
 --
 ALTER TABLE `ark_model_item`
   ADD CONSTRAINT `schema_item_dataclass_constraint` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `schema_item_vocabulary_constraint` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `schema_item_vocabulary_constraint` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary_concept` (`concept`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_model_module`
 --
 ALTER TABLE `ark_model_module`
-  ADD CONSTRAINT `model_module_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `model_module_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation_keyword` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_model_root`
@@ -11038,13 +11040,13 @@ ALTER TABLE `ark_model_root`
 --
 ALTER TABLE `ark_model_schema`
   ADD CONSTRAINT `model_schema_edit_constraint` FOREIGN KEY (`update_permission`) REFERENCES `ark_security_permission` (`permission`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `model_schema_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `model_schema_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation_keyword` (`keyword`) ON UPDATE CASCADE,
   ADD CONSTRAINT `model_schema_module_constraint` FOREIGN KEY (`module`) REFERENCES `ark_model_module` (`module`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `model_schema_new_constraint` FOREIGN KEY (`create_permission`) REFERENCES `ark_security_permission` (`permission`) ON UPDATE CASCADE,
   ADD CONSTRAINT `model_schema_remove_constraint` FOREIGN KEY (`delete_permission`) REFERENCES `ark_security_permission` (`permission`) ON UPDATE CASCADE,
   ADD CONSTRAINT `model_schema_route_constraint` FOREIGN KEY (`route`) REFERENCES `ark_route` (`route`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `model_schema_view_constraint` FOREIGN KEY (`read_permission`) REFERENCES `ark_security_permission` (`permission`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `model_schema_vocabulary_constraint` FOREIGN KEY (`class_vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `model_schema_vocabulary_constraint` FOREIGN KEY (`class_vocabulary`) REFERENCES `ark_vocabulary_concept` (`concept`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_model_subschema`
@@ -11085,31 +11087,31 @@ ALTER TABLE `ark_security_grant`
 -- Constraints for table `ark_security_permission`
 --
 ALTER TABLE `ark_security_permission`
-  ADD CONSTRAINT `workflow_permission_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `workflow_permission_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation_keyword` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_security_role`
 --
 ALTER TABLE `ark_security_role`
-  ADD CONSTRAINT `workflow_role_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
-
---
--- Constraints for table `ark_translation`
---
-ALTER TABLE `ark_translation`
-  ADD CONSTRAINT `translation_domain_constraint` FOREIGN KEY (`domain`) REFERENCES `ark_translation_domain` (`domain`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `workflow_role_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation_keyword` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_translation_domain`
 --
 ALTER TABLE `ark_translation_domain`
-  ADD CONSTRAINT `translation_domain_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `translation_domain_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation_keyword` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints for table `ark_translation_keyword`
+--
+ALTER TABLE `ark_translation_keyword`
+  ADD CONSTRAINT `translation_domain_constraint` FOREIGN KEY (`domain`) REFERENCES `ark_translation_domain` (`domain`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_translation_message`
 --
 ALTER TABLE `ark_translation_message`
-  ADD CONSTRAINT `translation_message_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `translation_message_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation_keyword` (`keyword`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `translation_message_language_constraint` FOREIGN KEY (`language`) REFERENCES `ark_translation_language` (`language`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `translation_message_role_constraint` FOREIGN KEY (`role`) REFERENCES `ark_translation_role` (`role`) ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -11117,13 +11119,13 @@ ALTER TABLE `ark_translation_message`
 -- Constraints for table `ark_translation_parameter`
 --
 ALTER TABLE `ark_translation_parameter`
-  ADD CONSTRAINT `translation_parameter_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `translation_parameter_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation_keyword` (`keyword`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_translation_role`
 --
 ALTER TABLE `ark_translation_role`
-  ADD CONSTRAINT `translation_role_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `translation_role_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation_keyword` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_cell`
@@ -11133,10 +11135,10 @@ ALTER TABLE `ark_view_cell`
   ADD CONSTRAINT `view_cell_edit_constraint` FOREIGN KEY (`edit_permission`) REFERENCES `ark_security_permission` (`permission`) ON UPDATE CASCADE,
   ADD CONSTRAINT `view_cell_element_constraint` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `view_cell_group_constraint` FOREIGN KEY (`grp`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `view_cell_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `view_cell_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation_keyword` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `view_cell_map_constraint` FOREIGN KEY (`map`) REFERENCES `ark_map` (`map`) ON UPDATE CASCADE,
   ADD CONSTRAINT `view_cell_view_constraint` FOREIGN KEY (`view_permission`) REFERENCES `ark_security_permission` (`permission`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `view_cell_vocabulary_constraint` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `view_cell_vocabulary_constraint` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary_concept` (`concept`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_element`
@@ -11149,14 +11151,14 @@ ALTER TABLE `ark_view_element`
 --
 ALTER TABLE `ark_view_field`
   ADD CONSTRAINT `view_field_element_constraint` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `view_field_keyword` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `view_field_keyword` FOREIGN KEY (`keyword`) REFERENCES `ark_translation_keyword` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_form`
 --
 ALTER TABLE `ark_view_form`
   ADD CONSTRAINT `view_form_element_constraint` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `view_form_keyword_contraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `view_form_keyword_contraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation_keyword` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `view_form_route_constraint` FOREIGN KEY (`action`) REFERENCES `ark_route` (`route`) ON UPDATE CASCADE;
 
 --
@@ -11164,14 +11166,14 @@ ALTER TABLE `ark_view_form`
 --
 ALTER TABLE `ark_view_group`
   ADD CONSTRAINT `view_group_element_constraint` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `view_group_keyword_contraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `view_group_keyword_contraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation_keyword` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_nav`
 --
 ALTER TABLE `ark_view_nav`
   ADD CONSTRAINT `view_nav_element_constraint` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `view_nav_keyword_contraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `view_nav_keyword_contraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation_keyword` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `view_nav_parent_constraint` FOREIGN KEY (`parent`) REFERENCES `ark_view_nav` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
@@ -11183,7 +11185,7 @@ ALTER TABLE `ark_view_page`
   ADD CONSTRAINT `view_page_element_constraint` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `view_page_footer_constraint` FOREIGN KEY (`footer`) REFERENCES `ark_view_element` (`element`) ON UPDATE CASCADE,
   ADD CONSTRAINT `view_page_header_constraint` FOREIGN KEY (`header`) REFERENCES `ark_view_element` (`element`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `view_page_keyword_contraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `view_page_keyword_contraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation_keyword` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `view_page_sidebar_constraint` FOREIGN KEY (`sidebar`) REFERENCES `ark_view_element` (`element`) ON UPDATE CASCADE,
   ADD CONSTRAINT `view_page_view_constraint` FOREIGN KEY (`view_permission`) REFERENCES `ark_security_permission` (`permission`) ON UPDATE CASCADE;
 
@@ -11192,7 +11194,7 @@ ALTER TABLE `ark_view_page`
 --
 ALTER TABLE `ark_view_table`
   ADD CONSTRAINT `view_table_element_constraint` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `viewtable_keyword_contraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `viewtable_keyword_contraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation_keyword` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_tree`
@@ -11205,20 +11207,20 @@ ALTER TABLE `ark_view_tree`
 -- Constraints for table `ark_view_type`
 --
 ALTER TABLE `ark_view_type`
-  ADD CONSTRAINT `view_type_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `view_type_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation_keyword` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_widget`
 --
 ALTER TABLE `ark_view_widget`
   ADD CONSTRAINT `view_widget_element_constraint` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `view_widget_keyword_contraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `view_widget_keyword_contraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation_keyword` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Constraints for table `ark_vocabulary`
+-- Constraints for table `ark_vocabulary_concept`
 --
-ALTER TABLE `ark_vocabulary`
-  ADD CONSTRAINT `vocabulary_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
+ALTER TABLE `ark_vocabulary_concept`
+  ADD CONSTRAINT `vocabulary_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation_keyword` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `vocabulary_type_constraint` FOREIGN KEY (`type`) REFERENCES `ark_vocabulary_type` (`type`) ON UPDATE CASCADE;
 
 --
@@ -11239,20 +11241,20 @@ ALTER TABLE `ark_vocabulary_related`
 -- Constraints for table `ark_vocabulary_term`
 --
 ALTER TABLE `ark_vocabulary_term`
-  ADD CONSTRAINT `vocabulary_term_concept_constraint` FOREIGN KEY (`concept`) REFERENCES `ark_vocabulary` (`concept`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `vocabulary_term_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `vocabulary_term_concept_constraint` FOREIGN KEY (`concept`) REFERENCES `ark_vocabulary_concept` (`concept`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `vocabulary_term_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation_keyword` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_vocabulary_type`
 --
 ALTER TABLE `ark_vocabulary_type`
-  ADD CONSTRAINT `vocabulary_type_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `vocabulary_type_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation_keyword` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_workflow_action`
 --
 ALTER TABLE `ark_workflow_action`
-  ADD CONSTRAINT `workflow_action_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `workflow_action_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation_keyword` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `workflow_action_schema_constraint` FOREIGN KEY (`schma`) REFERENCES `ark_model_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `workflow_action_term_constraint` FOREIGN KEY (`event_vocabulary`,`event_term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON UPDATE CASCADE;
 
@@ -11284,7 +11286,7 @@ ALTER TABLE `ark_workflow_condition`
 ALTER TABLE `ark_workflow_notify`
   ADD CONSTRAINT `workflow_notify_action_constraint` FOREIGN KEY (`schma`,`action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `workflow_notify_attribute_constraint` FOREIGN KEY (`schma`,`class`,`attribute`) REFERENCES `ark_model_attribute` (`schma`, `class`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `workflow_notify_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `workflow_notify_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation_keyword` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `workflow_notify_role_constraint` FOREIGN KEY (`role`) REFERENCES `ark_security_role` (`role`) ON UPDATE CASCADE;
 
 --
