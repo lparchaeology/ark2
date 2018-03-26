@@ -77,10 +77,6 @@ class Cell implements ElementInterface
     protected $valueModus;
     protected $parameterModus;
     protected $formatModus;
-    protected $displayProperty;
-    protected $displayPattern;
-    protected $displayParameter;
-    protected $displayFormat;
     protected $template;
     protected $options;
     protected $formType;
@@ -237,26 +233,6 @@ class Cell implements ElementInterface
         return $this->formatModus;
     }
 
-    public function displayProperty() : ?string
-    {
-        return $this->displayProperty;
-    }
-
-    public function displayPattern() : ?string
-    {
-        return $this->displayPattern;
-    }
-
-    public function displayParameter() : ?string
-    {
-        return $this->displayParameter;
-    }
-
-    public function displayFormat() : ?string
-    {
-        return $this->displayFormat;
-    }
-
     public function template() : ?string
     {
         return $this->template;
@@ -336,10 +312,6 @@ class Cell implements ElementInterface
         $builder->addMappedStringField('value_modus', 'valueModus', 10);
         $builder->addMappedStringField('parameter_modus', 'parameterModus', 10);
         $builder->addMappedStringField('format_modus', 'formatModus', 10);
-        $builder->addMappedStringField('display_property', 'displayProperty', 30);
-        $builder->addMappedStringField('display_pattern', 'displayPattern', 30);
-        $builder->addMappedStringField('display_parameter', 'displayParameter', 30);
-        $builder->addMappedStringField('display_format', 'displayFormat', 30);
         $builder->addStringField('template', 100);
         $builder->addStringField('options', 4000);
         $builder->addMappedStringField('form_type', 'formType', 100);
@@ -396,12 +368,6 @@ class Cell implements ElementInterface
         // Cell state that is only propogated if set, otherwise child must set
         $this->addState($state, 'label', $this->showLabel());
         $this->addState($state, 'sanitise', $this->sanitise());
-
-        $this->addSubState($state, 'display', 'name', $this->displayProperty());
-        $this->addSubState($state, 'display', 'property', $this->displayProperty());
-        $this->addSubState($state, 'display', 'pattern', $this->displayPattern());
-        $this->addSubState($state, 'display', 'parameter', $this->displayParameter());
-        $this->addSubState($state, 'display', 'format', $this->displayFormat());
 
         $this->addSubState($state, 'value', 'modus', $this->valueModus());
         $this->addSubState($state, 'parameter', 'modus', $this->parameterModus());

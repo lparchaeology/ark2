@@ -242,17 +242,17 @@ class Field extends Element
         $this->setValue($state, 'required', $this->attribute()->isRequired());
         $this->setValue($state, 'multiple', $this->attribute()->hasMultipleOccurrences());
 
-        // The parent state (i.e. cell) overrides the field state for the following
-        $this->inheritGroupValue($state, 'display', 'property', $this->displayProperty());
-        $this->inheritGroupValue($state, 'display', 'pattern', $this->displayPattern());
-        $this->inheritGroupValue($state, 'display', 'parameter', $this->displayParameter());
-        $this->inheritGroupValue($state, 'display', 'format', $this->displayFormat());
+        $this->setGroupValue($state, 'display', 'property', $this->displayProperty());
+        $this->setGroupValue($state, 'display', 'pattern', $this->displayPattern());
+        $this->setGroupValue($state, 'display', 'parameter', $this->displayParameter());
+        $this->setGroupValue($state, 'display', 'format', $this->displayFormat());
 
         $this->setGroupValue($state, 'export', 'property', $this->exportProperty());
         $this->setGroupValue($state, 'export', 'pattern', $this->exportPattern());
         $this->setGroupValue($state, 'export', 'parameter', $this->exportParameter());
         $this->setGroupValue($state, 'export', 'format', $this->exportFormat());
 
+        // The parent state (i.e. cell) overrides the field state for the following
         $this->inheritGroupValue($state, 'value', 'modus', $this->valueModus());
         $this->inheritGroupValue($state, 'parameter', 'modus', $this->parameterModus());
         $this->inheritGroupValue($state, 'format', 'modus', $this->formatModus());
