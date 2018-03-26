@@ -75,7 +75,7 @@
                             {% set childId = child.state.name %}
                         {% endif %}
                         {% set childTrans = child.state | translate %}
-                        {% if child.state.sorter == 'numeric' %}
+                        {% if child.state.sorter is same as('numeric') %}
                             {% set sorter = 'numericOnly' %}
                         {% else %}
                             {% set sorter = 'alphanum' %}
@@ -101,12 +101,6 @@
                 </tr>
             </thead>
         {% endif %}
-
-        {% if sortorder == "desc" %}
-            {%  set data = data|sort|reverse %}
-        {%else%}
-            {% set data = data|sort %}
-        {%endif%}
 
         <tbody>
             {% for item in data %}
@@ -148,15 +142,9 @@
                         {% set displayValue = child.element.renderValue(child, forms, form) | raw %}
                         {% if child.state.exportable %}
                             {% set exportValue = displayValue %}
-                            <td data-field="{{ childId }}" data-tableexport-display="always" data-tableexport-value="{{ exportValue }}">
-                                <span class="cell-label">{{ child.state | translate }}</span>
-                                {{ displayValue }}
-                            </td>
+                            <td data-field="{{ childId }}" data-tableexport-display="always" data-tableexport-value="{{ exportValue }}">{{ displayValue }}</td>
                         {% else %}
-                            <td data-field="{{ childId }}" data-tableexport-display="none">
-                                <span class="cell-label">{{ child.state | translate }}</span>
-                                {{ displayValue }}
-                            </td>
+                            <td data-field="{{ childId }}" data-tableexport-display="none">{{ displayValue }}</td>
                         {% endif %}
                     {% endfor %}
                     <td class="controls"

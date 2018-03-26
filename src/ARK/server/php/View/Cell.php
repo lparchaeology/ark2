@@ -378,7 +378,7 @@ class Cell implements ElementInterface
         $state['width'] = $this->width;
         $state['exportable'] = $this->exportable ?? false;
         $state['sortable'] = $this->sortable ?? false;
-        $state['sorter'] = $this->sortable ?? 'alphanumeric';
+        $state['sorter'] = $this->sorter ?? 'alphanumeric';
         $state['order'] = $this->order ?? 'asc';
         $state['choices'] = $this->choices;
         $state['vocabulary'] = $this->vocabulary;
