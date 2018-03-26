@@ -17,7 +17,7 @@
 
     <table
         id="{{ table.id }}"
-        class="{{ 'table ' ~ table.classes }}"
+        class="{{ 'table bootstrap-table ' ~ table.classes }}"
         data-toggle="table"
         data-classes="{{ 'table ' ~ table.classes }}"
         data-sortable="{{ table.sortable }}"
@@ -74,19 +74,22 @@
                         {% else %}
                             {% set childId = child.state.name %}
                         {% endif %}
+
+                        {% dump(child.state) %}
                         {% set childTrans = child.state | translate %}
                         {% if child.state.sorter is same as('numeric') %}
                             {% set sorter = 'numericOnly' %}
                         {% else %}
                             {% set sorter = 'alphanum' %}
                         {% endif %}
-                        <th data-field="{{ childId }}"
+                        <th
+                            data-field="{{ childId }}"
                             data-title="{{ childTrans }}"
                             data-sortable="{{ child.state.sortable }}"
                             data-sorter="{{ sorter }}"
                             data-order="{{ child.state.order }}"
-                            data-visible="{{ child.state.visible }}"
                             data-card-visible="false"
+                            data-visible="{{ child.state.visible }}"
                             data-tableexport-value="{{ childTrans }}"
                             data-tableexport-display="{{ child.state.exportable ? 'always' : 'none' }}">
                             {{ childTrans }}
@@ -101,7 +104,13 @@
                 </tr>
             </thead>
         {% endif %}
-
+{#
+        {% if sortorder == "desc" %}
+            {%  set data = data|sort|reverse %}
+        {%else%}
+            {% set data = data|sort %}
+        {%endif%}
+#}
         <tbody>
             {% for item in data %}
                 <tr data-unique-id="{{ item.id }}">

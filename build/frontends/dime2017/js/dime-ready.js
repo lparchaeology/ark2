@@ -20,7 +20,6 @@ $(document).ready(function () {
         maxView: 0,
     });
 
-
     // Overide the default Table Export settings
     // In an ideal world this would be somewhere else
     bootstrapTableOptions = $(".dime-table").bootstrapTable('getOptions');

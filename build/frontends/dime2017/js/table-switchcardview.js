@@ -292,6 +292,7 @@
                 if ($($btnGroup.find('[name="tableView"]')).hasClass("active") === false) {
                     $('.dime-table').removeClass("cardViewTable");
                     $('.dime-table').removeClass("thumbViewTable");
+                    that.options.cardView = false;
 
                     if ($($btnGroup.find('[name="thumbView"]')).hasClass("active")) {
                         that.toggleView();
@@ -312,6 +313,7 @@
                     that.toggleView();
 
                     $('.dime-table').addClass("thumbViewTable");
+                    that.options.cardView = false;
                     $('.dime-table').removeClass("cardViewTable");
 
                     $($btnGroup.find('[name="thumbView"]')).addClass("active");
@@ -335,6 +337,7 @@
 
                     $('.dime-table').addClass("cardViewTable");
                     $('.dime-table').removeClass("thumbViewTable");
+                    that.options.cardView = true;
 
                     $($btnGroup.find('[name="cardView"]')).addClass("active");
                     $($btnGroup.find('[name="thumbView"]')).removeClass("active");

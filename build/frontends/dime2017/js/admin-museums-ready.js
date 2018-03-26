@@ -8,10 +8,10 @@ $('document').ready(function () {
         dataType: 'json',
     });
 
-    $('.icon-user-focus').on("click", { "target": this }, museumSelected);
+    $('#dime_museum_table .icon-user-focus').on("click", { "target": this }, museumSelected);
 
-    $('table.bootstrap-table').on('post-body.bs.table', function(){
-      $('.icon-user-focus').on("click", { "target": this }, museumSelected);
+    $('table.dime-table').on('post-body.bs.table', function(){
+      $('#dime_museum_table .icon-user-focus').on("click", { "target": this }, museumSelected);
     });
 
 });

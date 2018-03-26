@@ -32,10 +32,10 @@ $('document').ready(function () {
         dataType: 'json',
     });
 
-    $('.icon-user-focus').on("click", { "target": this }, adminUserSelected);
+    $('#dime_profile_table .icon-user-focus').on("click", { "target": this }, adminUserSelected);
 
-    $('table.bootstrap-table').on('post-body.bs.table', function(){
-      $('.icon-user-focus').on("click", { "target": this }, adminUserSelected);
+    $('table.dime-table').on('post-body.bs.table', function(){
+      $('#dime_profile_table .icon-user-focus').on("click", { "target": this }, adminUserSelected);
     });
 
 });
