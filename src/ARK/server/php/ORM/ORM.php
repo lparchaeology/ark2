@@ -160,9 +160,9 @@ class ORM
         return self::repository($class)->find($id, $lockMode, $lockVersion);
     }
 
-    public static function findAll($class) : Collection
+    public static function findAll($class, iterable $orderBy = null, int $limit = null, int $offset = null) : Collection
     {
-        return new ArrayCollection(self::repository($class)->findAll());
+        return new ArrayCollection(self::repository($class)->findBy([], $orderBy, $limit, $offset));
     }
 
     public static function findBy(

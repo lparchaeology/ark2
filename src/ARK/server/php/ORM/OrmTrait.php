@@ -39,9 +39,9 @@ trait OrmTrait
         return ORM::find(get_called_class(), $id);
     }
 
-    public static function findAll() : Collection
+    public static function findAll(iterable $orderBy = null, int $limit = null, int $offset = null) : Collection
     {
-        return ORM::findAll(get_called_class());
+        return ORM::findAll(get_called_class(), $orderBy, $limit, $offset);
     }
 
     public static function findBy(
