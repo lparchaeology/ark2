@@ -93,15 +93,16 @@ trait ItemTrait
     {
         $name = mb_strtolower($name);
         if ($this->hasAttribute($name)) {
-            return call_user_func_array('value', $arguments);
+            return call_user_func_array([$this, 'value'], array_merge([$name], $arguments));
         }
         $method = mb_substr($name, 0, 3);
         $attribute = mb_substr($name, 0, 3);
+        array_unshift($arguments, $attribute);
         if ($method === 'get' && $this->hasAttribute($attribute)) {
-            return call_user_func_array('value', $arguments);
+            return call_user_func_array([$this, 'value'], $arguments);
         }
         if ($method === 'set' && $this->hasAttribute($attribute)) {
-            call_user_func_array('setValue', $arguments);
+            return call_user_func_array([$this, 'setValue'], $arguments);
         }
     }
 

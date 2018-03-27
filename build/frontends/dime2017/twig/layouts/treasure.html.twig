@@ -6,18 +6,18 @@
 
 <div class="row">
     <div class="col-md-4">
-        <div class="row">{{ data.museum.value('id') }}</div>
-        <div class="row">{{ data.museum.value('fullname') }}</div>
-        <div class="row">{{ data.museum.value('email') }}</div>
-        <div class="row">{{ data.museum.value('telephone') }}</div>
-        <div class="row">{{ data.agent.value('fullname') }}</div>
+        <div class="row">{{ data.museum.id }}</div>
+        <div class="row">{{ data.museum.fullname }}</div>
+        <div class="row">{{ data.museum.email }}</div>
+        <div class="row">{{ data.museum.telephone }}</div>
+        <div class="row">{{ data.agent.fullname }}</div>
         <div class="row">{{ "now" | date('Y-m-d') }}</div>
     </div>
     <div class="col-md-4">
-        <div class="row">{{ data.claimant.value('fullname') }}</div>
-        <div class="row">{{ data.claimant.value('email') }}</div>
-        <div class="row">{{ data.claimant.value('telephone') }}</div>
-        <div class="row">{{ data.claimant.value('detectorist_id') }}</div>
+        <div class="row">{{ data.claimant.fullname }}</div>
+        <div class="row">{{ data.claimant.email }}</div>
+        <div class="row">{{ data.claimant.telephone }}</div>
+        <div class="row">{{ data.claimant.detectorist_id }}</div>
     </div>
     <div class="col-md-4">
         <div class="row">Nationalmuseet</div>
@@ -43,34 +43,34 @@
                 <tr>
 
                     <td>
-                        {{ find.value('museum_id') }}
+                        {{ find.museum_id }}
                     </td>
 
                     <td>
                         <div class="row">
-                            {{ find.value('class') | translate }}
-                            {% if find.value('classification') %}
-                                / {{ find.value('classification').subtype | translate }}
+                            {{ find.class | translate }}
+                            {% if find.classification %}
+                                / {{ find.classification.subtype | translate }}
                             {% endif %}
                         </div>
                         <div class="row">
-                            {{ find.value('material') | translate }}
+                            {{ find.material | translate }}
                         </div>
                         <div class="row">
-                            {{ find.value('finddate') | date('Y-m-d') }}
+                            {{ find.finddate | date('Y-m-d') }}
                         </div>
                         <div class="row">
-                            {{ find.value('municipality') | translate }}
+                            {{ find.municipality | translate }}
                         </div>
-                        {% if find.value('description').text %}
+                        {% if find.description.text %}
                             <div class="row">
-                                {{ find.value('description').text }}
+                                {{ find.description.text }}
                             </div>
                         {% endif %}
                     </td>
 
                     <td>
-                        {% set images = find.value('image') %}
+                        {% set images = find.image %}
                         {% for image in images %}
                             <img src="{{ image.sourceUrl('thumb') }}" alt="" / />
                         {% endfor %}
@@ -86,4 +86,5 @@
         </tbody>
     </table>
 </div>
+
 </div>
