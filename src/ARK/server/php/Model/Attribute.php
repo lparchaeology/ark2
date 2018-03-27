@@ -75,9 +75,9 @@ abstract class Attribute
         return $this->dataclass->datatype()->id() === 'item';
     }
 
-    public function isObject() : bool
+    public function isStructure() : bool
     {
-        return $this->dataclass->datatype()->id() === 'object';
+        return $this->dataclass->datatype()->isStructure();
     }
 
     public function entity() : string
@@ -194,7 +194,7 @@ abstract class Attribute
             }
             return $this->fragmentToTerm($fragments[0]);
         }
-        if ($this->dataclass()->datatype()->isObject()) {
+        if ($this->dataclass()->datatype()->isStructure()) {
             if ($this->hasMultipleOccurrences()) {
                 $data = [];
                 foreach ($fragments as $fragment) {
@@ -231,7 +231,7 @@ abstract class Attribute
             $fragment = $fragments[0];
             return $fragment->isSpan() ? [$fragment->value(), $fragment->extent()] : $fragment->value();
         }
-        if ($this->dataclass()->datatype()->isObject()) {
+        if ($this->dataclass()->datatype()->isStructure()) {
             if ($this->hasMultipleOccurrences()) {
                 $data = [];
                 foreach ($fragments as $fragment) {

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Event Form Type.
+ * ARK Structure Form Type.
  *
  * Copyright (C) 2018  L - P : Heritage LLP.
  *
@@ -37,7 +37,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ObjectType extends AbstractType implements DataMapperInterface
+class StructureType extends AbstractType implements DataMapperInterface
 {
     public function buildForm(FormBuilderInterface $builder, iterable $options) : void
     {
@@ -70,7 +70,7 @@ class ObjectType extends AbstractType implements DataMapperInterface
         $forms = iterator_to_array($forms);
         $attribute = $property->attribute();
         $value = $property->value();
-        if ($attribute->dataclass()->datatype()->isObject()) {
+        if ($attribute->dataclass()->datatype()->isStructure()) {
             foreach ($attribute->dataclass()->attributes() as $sub) {
                 $key = $sub->name();
                 if ($key && isset($value[$key])) {
@@ -113,7 +113,7 @@ class ObjectType extends AbstractType implements DataMapperInterface
     protected function buildAttribute(FormBuilderInterface $builder, Attribute $attribute, array $options) : void
     {
         $name = $attribute->name();
-        if ($attribute->dataclass()->datatype()->isObject()) {
+        if ($attribute->dataclass()->datatype()->isStructure()) {
             foreach ($attribute->dataclass()->attributes() as $child) {
                 $this->buildAttribute($builder, $child, $options);
             }

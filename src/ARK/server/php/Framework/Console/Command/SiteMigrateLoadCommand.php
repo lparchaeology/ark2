@@ -616,13 +616,13 @@ class SiteMigrateLoadCommand extends DatabaseCommand
             'cor_tbl_txt' => 'ark_fragment_text',
         ];
         $chainMap = [
-            'interp' => ['object' => 'interpretation', 'parent' => 'interpretedas'],
-            'sgrnarrative' => ['object' => 'narrative', 'parent' => 'narratedas'],
+            'interp' => ['structure' => 'interpretation', 'parent' => 'interpretedas'],
+            'sgrnarrative' => ['structure' => 'narrative', 'parent' => 'narratedas'],
         ];
         // Add temp chain fields
-        $this->addChainFields('ark_fragment_object');
+        $this->addChainFields('ark_fragment_structure');
         $this->data->beginTransaction();
-        $objects = [];
+        $structures = [];
         foreach ($fragmentTables as $fragmentTable) {
             $sql = "
                 SELECT *
@@ -632,10 +632,10 @@ class SiteMigrateLoadCommand extends DatabaseCommand
             $frags = $this->data->fetchAll($sql);
             $this->write("$fragmentTable chained fragments : ".count($frags));
             foreach ($frags as $frag) {
-                $objects[$frag['old_parent_table']][$frag['old_parent_id']] = true;
+                $structures[$frag['old_parent_table']][$frag['old_parent_id']] = true;
             }
         }
-        foreach ($objects as $old_parent_table => $parents) {
+        foreach ($structures as $old_parent_table => $parents) {
             $this->write("\n$old_parent_table chains : ".count($parents));
             $fragTable = $chainTables[$old_parent_table];
             $sql = "
@@ -653,35 +653,35 @@ class SiteMigrateLoadCommand extends DatabaseCommand
             $old_parent_ids = array_keys($parents);
             foreach ($old_parent_ids as $old_parent_id) {
                 $params[':old_id'] = $old_parent_id;
-                $object = $this->data->fetchAssoc($sql, $params);
-                $this->data->executeUpdate($upd, ['fid' => $object['fid']]);
-                $object['fid'] = $this->data->generateSequence('object', '', 'fid');
+                $structure = $this->data->fetchAssoc($sql, $params);
+                $this->data->executeUpdate($upd, ['fid' => $structure['fid']]);
+                $structure['fid'] = $this->data->generateSequence('structure', '', 'fid');
 
-                $object['type'] = 'object';
-                unset($object['format'], $object['parameter']);
+                $structure['type'] = 'structure';
+                unset($structure['format'], $structure['parameter']);
 
-                $object['value'] = '';
-                unset($object['old_parent_table'], $object['old_parent_id']);
+                $structure['value'] = '';
+                unset($structure['old_parent_table'], $structure['old_parent_id']);
 
-                $this->data->insert('ark_fragment_object', $object);
+                $this->data->insert('ark_fragment_structure', $structure);
             }
         }
         $this->data->commit();
 
         $this->data->beginTransaction();
-        $objects = $this->data->fetchAllTable('ark_fragment_object');
-        foreach ($objects as $object) {
+        $structures = $this->data->fetchAllTable('ark_fragment_structure');
+        foreach ($structures as $structure) {
             foreach ($fragmentTables as $fragmentTable) {
                 $upd = "
                     UPDATE $fragmentTable
-                    SET object = :fid
+                    SET structure = :fid
                     WHERE old_parent_table = :old_table
                     AND old_parent_id = :old_id
                 ";
                 $params = [
-                    ':fid' => $object['fid'],
-                    ':old_table' => $object['old_table'],
-                    ':old_id' => $object['old_id'],
+                    ':fid' => $structure['fid'],
+                    ':old_table' => $structure['old_table'],
+                    ':old_id' => $structure['old_id'],
                 ];
                 $this->data->executeUpdate($upd, $params);
             }
@@ -690,13 +690,13 @@ class SiteMigrateLoadCommand extends DatabaseCommand
 
         // Update the old parent attribute if mapped
         $this->data->beginTransaction();
-        foreach ($objects as $object) {
-            $fragTable = $chainTables[$object['old_table']];
-            if (isset($chainMap[$object['attribute']])) {
-                $attribute = $chainMap[$object['attribute']]['object'];
-                $parent = $chainMap[$object['attribute']]['parent'];
+        foreach ($structures as $structure) {
+            $fragTable = $chainTables[$structure['old_table']];
+            if (isset($chainMap[$structure['attribute']])) {
+                $attribute = $chainMap[$structure['attribute']]['structure'];
+                $parent = $chainMap[$structure['attribute']]['parent'];
             } else {
-                $attribute = $object['attribute'].'_obj';
+                $attribute = $structure['attribute'].'_obj';
                 $parent = null;
             }
             if ($parent) {
@@ -707,8 +707,8 @@ class SiteMigrateLoadCommand extends DatabaseCommand
                     AND old_id = :old_id
                 ";
                 $params = [
-                    ':old_table' => $object['old_table'],
-                    ':old_id' => $object['old_id'],
+                    ':old_table' => $structure['old_table'],
+                    ':old_id' => $structure['old_id'],
                 ];
                 $frag = $this->data->fetchAssoc($sql, $params);
                 $upd = "
@@ -723,12 +723,12 @@ class SiteMigrateLoadCommand extends DatabaseCommand
                 $this->data->executeUpdate($upd, $params);
             }
             $upd = '
-                UPDATE ark_fragment_object
+                UPDATE ark_fragment_structure
                 SET attribute = :attribute
                 WHERE fid = :fid
             ';
             $params = [
-                ':fid' => $object['fid'],
+                ':fid' => $structure['fid'],
                 ':attribute' => $attribute,
             ];
             $this->data->executeUpdate($upd, $params);
@@ -737,8 +737,8 @@ class SiteMigrateLoadCommand extends DatabaseCommand
         foreach ($fragmentTables as $fragmentTable) {
             $this->removeChainFields($fragmentTable);
         }
-        $this->removeChainFields('ark_fragment_object');
-        $this->write("\nTotal chains migrated : ".count($objects));
+        $this->removeChainFields('ark_fragment_structure');
+        $this->write("\nTotal chains migrated : ".count($structures));
 
         // * DONE! * //
         $this->write("\nMigration Complete!");

@@ -54,10 +54,10 @@ class Property
         $this->children = new ArrayCollection();
         $key = $this->key();
         if ($parent) {
-            $key['object'] = $parent->id();
+            $key['structure'] = $parent->id();
         }
         $this->fragments = ORM::findBy($attribute->dataclass()->datatype()->dataEntity(), $key);
-        if (!$attribute->dataclass()->datatype()->isObject()) {
+        if (!$attribute->dataclass()->datatype()->isStructure()) {
             return;
         }
         foreach ($this->fragments as $fragment) {

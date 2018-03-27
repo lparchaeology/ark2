@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Object Fragment.
+ * ARK Model Structure Fragment.
  *
  * Copyright (C) 2018  L - P : Heritage LLP.
  *
@@ -38,14 +38,14 @@ use ARK\Service;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-class ObjectFragment extends Fragment
+class StructureFragment extends Fragment
 {
     protected $children;
 
     public function __construct()
     {
         // TODO Use ORM Generator properly in metadata??? Or persist does auto?
-        $this->fid = Service::database()->data()->generateSequence('object', '', 'fid');
+        $this->fid = Service::database()->data()->generateSequence('structure', '', 'fid');
         $this->children = new ArrayCollection();
     }
 
@@ -56,7 +56,7 @@ class ObjectFragment extends Fragment
                'module' => $this->module,
                'item' => $this->item,
                'attribute' => $attribute->name(),
-               'object' => $this->object->id(),
+               'structure' => $this->structure->id(),
             ];
             $this->children = ORM::findBy($attribute->dataclass()->datatype()->dataClass(), $key);
         }

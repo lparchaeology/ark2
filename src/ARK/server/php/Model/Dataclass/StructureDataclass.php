@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Object Dataclass.
+ * ARK Model Structure Dataclass.
  *
  * Copyright (C) 2018  L - P : Heritage LLP.
  *
@@ -40,7 +40,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints\Type;
 
-class ObjectDataclass extends Dataclass
+class StructureDataclass extends Dataclass
 {
     protected $attributes;
 
@@ -109,7 +109,7 @@ class ObjectDataclass extends Dataclass
             foreach ($datum as $key => $value) {
                 $children = $this->attribute($key)->hydrate($value, $creator, $created);
                 foreach ($children as $child) {
-                    $child->setObject($fragment);
+                    $child->setStructure($fragment);
                     $fragments->add($child);
                 }
             }
@@ -120,7 +120,7 @@ class ObjectDataclass extends Dataclass
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_dataclass_object');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_dataclass_structure');
 
         // Associations
         $builder->addOneToManyField('attributes', DataclassAttribute::class, 'parent', null, true, ['sequence' => 'ASC']);

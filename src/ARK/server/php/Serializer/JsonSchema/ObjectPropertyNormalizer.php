@@ -36,7 +36,7 @@ class ObjectPropertyNormalizer extends AbstractPropertyNormalizer
 {
     public function supportsNormalization($attribute, $format = null)
     {
-        return $attribute->isObject();
+        return $attribute->isStructure();
     }
 
     protected function definition(Attribute $attribute)

@@ -145,7 +145,7 @@ class FindViewController extends DimePageController
         // Save the changes
         ORM::flush($find);
 
-        // HACK Workaround bug in ObjectFragment not rehydrating...
+        // HACK Workaround bug in StructureFragment not rehydrating...
         if (isset($file)) {
             $frag = ORM::findOneBy(StringFragment::class, ['module' => 'file', 'item' => $file->id(), 'attribute' => 'name']);
             $frag->setValue('Danefae'.$file->id().'.pdf');

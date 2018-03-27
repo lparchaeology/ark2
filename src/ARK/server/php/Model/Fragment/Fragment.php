@@ -56,7 +56,7 @@ abstract class Fragment
     protected $value;
     protected $span = false;
     protected $extent;
-    protected $object;
+    protected $structure;
 
     public function __toString() : string
     {
@@ -150,14 +150,14 @@ abstract class Fragment
         $this->format = $format;
     }
 
-    public function object() : ?ObjectFragment
+    public function structure() : ?StructureFragment
     {
-        return $this->object;
+        return $this->structure;
     }
 
-    public function setObject(ObjectFragment $object) : void
+    public function setStructure(StructureFragment $structure) : void
     {
-        $this->object = $object;
+        $this->structure = $structure;
     }
 
     public function update(Item $item = null) : void
@@ -171,7 +171,7 @@ abstract class Fragment
     {
     }
 
-    public static function create(string $module, string $item, Attribute $attribute, Actor $creator, DateTime $created, ObjectFragment $object = null) : self
+    public static function create(string $module, string $item, Attribute $attribute, Actor $creator, DateTime $created, StructureFragment $structure = null) : self
     {
         $class = $attribute->dataclass()->datatype()->dataEntity();
         $fragment = new $class();
@@ -179,19 +179,19 @@ abstract class Fragment
         $fragment->item = $item;
         $fragment->attribute = $attribute->name();
         $fragment->datatype = $attribute->dataclass()->datatype()->id();
-        $fragment->object = $object;
+        $fragment->structure = $structure;
         $fragment->refreshVersion($creator, $created);
         return $fragment;
     }
 
-    public static function createFromAttribute(Attribute $attribute, Actor $creator, DateTime $created, ObjectFragment $object = null) : self
+    public static function createFromAttribute(Attribute $attribute, Actor $creator, DateTime $created, StructureFragment $structure = null) : self
     {
         $class = $attribute->dataclass()->datatype()->dataEntity();
         $fragment = new $class();
         $fragment->attribute = $attribute->name();
         $fragment->datatype = $attribute->dataclass()->datatype()->id();
         $fragment->span = $attribute->isSpan();
-        $fragment->object = $object;
+        $fragment->structure = $structure;
         $fragment->refreshVersion($creator, $created);
         return $fragment;
     }
@@ -213,7 +213,7 @@ abstract class Fragment
         VersionTrait::buildVersionMetadata($builder);
 
         // Attributes
-        $builder->addManyToOneField('object', ObjectFragment::class, 'object', 'fid');
+        $builder->addManyToOneField('structure', StructureFragment::class, 'structure', 'fid');
     }
 
     public static function buildSubclassMetadata(ClassMetadata $metadata, string $class) : void

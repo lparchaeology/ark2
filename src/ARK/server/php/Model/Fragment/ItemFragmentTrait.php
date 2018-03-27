@@ -45,8 +45,8 @@ trait ItemFragmentTrait
         $frags = $this->getItemFragments($schema->module()->id(), $id);
         $members = [];
         foreach ($frags as $key => $frag) {
-            if ($frag['object'] !== null) {
-                $members[$frag['object']][] = $frag;
+            if ($frag['structure'] !== null) {
+                $members[$frag['structure']][] = $frag;
                 unset($frags[$key]);
             }
         }
@@ -96,9 +96,9 @@ trait ItemFragmentTrait
                 $properties[$attr->name()] = null;
                 $attributes[$attr->name()] = $attr;
             }
-            if ($attribute->format()->dataclass()->isObject()) {
+            if ($attribute->format()->dataclass()->isStructure()) {
                 foreach ($members[$frag['fid']] as $member) {
-                    if (isset($member['object']) && $member['object'] === $frag['fid']) {
+                    if (isset($member['structure']) && $member['structure'] === $frag['fid']) {
                         $attributeId = $member['attribute'];
                         $attr = $attributes[$attributeId];
                         $value = $this->buildAttributeValue($attr, $member, $members);

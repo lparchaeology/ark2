@@ -63,8 +63,6 @@ abstract class Dataclass
     protected $staticFormType = '';
     protected $formatFormType = '';
     protected $parameterFormType = '';
-    protected $object = false;
-    protected $array = false;
     protected $span = false;
     protected $multiple = false;
     protected $sortable = false;
@@ -296,8 +294,6 @@ abstract class Dataclass
         $builder->addMappedStringField('static_form_type', 'staticFormType', 100);
         $builder->addMappedStringField('format_form_type', 'formatFormType', 100);
         $builder->addMappedStringField('parameter_form_type', 'parameterFormType', 100);
-        $builder->addField('object', 'boolean');
-        $builder->addField('array', 'boolean');
         $builder->addField('span', 'boolean');
         $builder->addField('multiple', 'boolean');
         $builder->addField('sortable', 'boolean');

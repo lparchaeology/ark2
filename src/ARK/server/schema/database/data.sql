@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 -- Dumping data for table `ark_fragment_string`
 --
 
-INSERT INTO `ark_fragment_string` (`fid`, `module`, `item`, `attribute`, `datatype`, `format`, `parameter`, `value`, `span`, `extent`, `object`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
+INSERT INTO `ark_fragment_string` (`fid`, `module`, `item`, `attribute`, `datatype`, `format`, `parameter`, `value`, `span`, `extent`, `structure`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
 (1, 'actor', 'anonymous', 'id', 'string', NULL, NULL, 'anonymous', 0, NULL, NULL, 'core', '2017-09-06 00:00:00', 'core', '2017-09-06 00:00:00', NULL),
 (2, 'actor', 'anonymous', 'class', 'string', NULL, 'core.actor.class', 'system', 0, NULL, NULL, 'core', '2017-09-06 00:00:00', 'core', '2017-09-06 00:00:00', NULL),
 (3, 'actor', 'anonymous', 'visibility', 'string', NULL, 'core.visibility', 'restricted', 0, NULL, NULL, 'core', '2017-09-06 00:00:00', 'core', '2017-09-06 00:00:00', NULL),
@@ -41,7 +41,7 @@ INSERT INTO `ark_fragment_string` (`fid`, `module`, `item`, `attribute`, `dataty
 -- Dumping data for table `ark_fragment_text`
 --
 
-INSERT INTO `ark_fragment_text` (`fid`, `module`, `item`, `attribute`, `datatype`, `format`, `parameter`, `value`, `span`, `extent`, `object`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
+INSERT INTO `ark_fragment_text` (`fid`, `module`, `item`, `attribute`, `datatype`, `format`, `parameter`, `value`, `span`, `extent`, `structure`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
 (1, 'actor', 'anonymous', 'fullname', 'text', 'text/plain', 'en', 'Anonymous', 0, NULL, NULL, 'core', '2017-09-06 00:00:00', 'core', '2017-09-06 00:00:00', NULL),
 (2, 'actor', 'anonymous', 'shortname', 'text', 'text/plain', 'en', 'Anon', 0, NULL, NULL, 'core', '2017-09-06 00:00:00', 'core', '2017-09-06 00:00:00', NULL),
 (3, 'actor', 'sysadmin', 'fullname', 'text', 'text/plain', 'en', 'System Administrator', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),

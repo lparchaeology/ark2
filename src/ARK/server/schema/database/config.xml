@@ -8,7 +8,7 @@
         <field name="datatype" type="string" size="10">
             <notnull/>
         </field>
-        <field name="object" type="boolean">
+        <field name="structure" type="boolean">
             <default value="0"/>
             <notnull/>
         </field>
@@ -298,13 +298,13 @@
             <column local="module" foreign="module"/>
         </references>
     </table>
-    <table name="ark_dataclass_object">
+    <table name="ark_dataclass_structure">
         <field name="dataclass" type="string" size="30">
             <key/>
             <notnull/>
         </field>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="dataclass_object_dataclass_constraint" table="ark_dataclass" onupdate="cascade" ondelete="cascade">
+        <references name="dataclass_structure_dataclass_constraint" table="ark_dataclass" onupdate="cascade" ondelete="cascade">
             <column local="dataclass" foreign="dataclass"/>
         </references>
     </table>
@@ -408,7 +408,7 @@
         <field name="temporal" type="boolean">
             <notnull/>
         </field>
-        <field name="object" type="boolean">
+        <field name="structure" type="boolean">
             <default value="0"/>
             <notnull/>
         </field>

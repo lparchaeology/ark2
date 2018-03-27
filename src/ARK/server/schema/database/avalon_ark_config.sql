@@ -122,7 +122,7 @@ INSERT INTO `ark_model_class` (`schma`, `class`, `vocabulary`, `namespace`, `ent
 ('arch.drawing', 'drawing', 'arch.drawing.class', 'Entity', 'Drawing', 'Entity\\Drawing', 0, 1, 1, 0),
 ('arch.find', 'coin', 'arch.find.class', 'Entity', 'Find', NULL, 0, 1, 1, 0),
 ('arch.find', 'find', 'arch.find.class', 'Entity', 'Find', 'Entity\\Find', 1, 0, 1, 0),
-('arch.find', 'object', 'arch.find.class', 'Entity', 'Find', NULL, 0, 1, 1, 0),
+('arch.find', 'structure', 'arch.find.class', 'Entity', 'Find', NULL, 0, 1, 1, 0),
 ('arch.group', 'group', 'arch.group.class', 'Entity', 'Group', 'Entity\\Group', 1, 1, 1, 0),
 ('arch.landuse', 'landuse', 'arch.landuse.class', 'Entity', 'Landuse', 'Entity\\Landuse', 1, 1, 1, 0),
 ('arch.photo', 'photo', 'arch.photo.class', 'Entity', 'Photo', 'Entity\\Photo', 1, 1, 1, 0),

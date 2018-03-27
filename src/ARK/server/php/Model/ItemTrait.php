@@ -37,7 +37,7 @@ use ARK\Model\Fragment\DecimalFragment;
 use ARK\Model\Fragment\FloatFragment;
 use ARK\Model\Fragment\IntegerFragment;
 use ARK\Model\Fragment\ItemFragment;
-use ARK\Model\Fragment\ObjectFragment;
+use ARK\Model\Fragment\StructureFragment;
 use ARK\Model\Fragment\SpatialFragment;
 use ARK\Model\Fragment\StringFragment;
 use ARK\Model\Fragment\TextFragment;
@@ -83,7 +83,7 @@ trait ItemTrait
     protected $floats;
     protected $integers;
     protected $items;
-    protected $objects;
+    protected $structures;
     protected $spatials;
     protected $strings;
     protected $texts;
@@ -376,8 +376,8 @@ trait ItemTrait
         if (isset($datatypes['item']) && $datatypes['item']['enabled']) {
             $builder->addFragmentField('items', ItemFragment::class);
         }
-        if (isset($datatypes['object']) && $datatypes['object']['enabled']) {
-            $builder->addFragmentField('objects', ObjectFragment::class);
+        if (isset($datatypes['structure']) && $datatypes['structure']['enabled']) {
+            $builder->addFragmentField('structures', StructureFragment::class);
         }
         if (isset($datatypes['spatial']) && $datatypes['spatial']['enabled']) {
             $builder->addFragmentField('spatials', SpatialFragment::class);

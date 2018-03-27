@@ -44,7 +44,7 @@ class Datatype
     protected $datatype = '';
     protected $numeric = false;
     protected $temporal = false;
-    protected $object = false;
+    protected $structure = false;
     protected $compound = false;
     protected $storageType = '';
     protected $storageSize = 0;
@@ -82,9 +82,9 @@ class Datatype
         return $this->temporal;
     }
 
-    public function isObject() : bool
+    public function isStructure() : bool
     {
-        return $this->object;
+        return $this->structure;
     }
 
     public function isCompound() : bool
@@ -103,7 +103,7 @@ class Datatype
         if ($this->temporal) {
             return DateTime($value);
         }
-        if ($this->compound || $this->object) {
+        if ($this->compound || $this->structure) {
             return $value;
         }
         if ($this->storageType === 'boolean') {
@@ -214,7 +214,7 @@ class Datatype
         // Attributes
         $builder->addMappedField('number', 'numeric', 'boolean');
         $builder->addField('temporal', 'boolean');
-        $builder->addField('object', 'boolean');
+        $builder->addField('structure', 'boolean');
         $builder->addField('compound', 'boolean');
         $builder->addMappedStringField('storage_type', 'storageType', 30);
         $builder->addMappedField('storage_size', 'storageSize', 'integer');
