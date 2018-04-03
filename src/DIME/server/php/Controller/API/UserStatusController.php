@@ -37,14 +37,13 @@ use ARK\Service;
 use DIME\DIME;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
-use Doctrine\Common\Collections\ArrayCollection;
 
 class UserStatusController extends FormController
 {
     public function buildData(Request $request)
     {
         $actor = $request->attributes->get('id');
-        $data['actor'] = Actor::find($actor);
+        $data['user_status'] = Actor::find($actor);
         return $data;
     }
 
@@ -53,7 +52,7 @@ class UserStatusController extends FormController
         $state = parent::buildState($request, $data);
         $query = $request->query->all();
 
-        $actor = $data['actor'];
+        $actor = $data['user_status'];
         $admin = Service::workflow()->actor();
         $actions = Service::workflow()->actionable($admin, $actor);
         if ($actions->count() > 0) {
@@ -76,7 +75,6 @@ class UserStatusController extends FormController
         $id = $request->attributes->get('id');
         $submitted = $form->getConfig()->getName();
         if ($submitted === 'user_status') {
-
             $action = $form['actions']->getData();
             $admin = Service::workflow()->actor();
             $actor = Actor::find($id);
