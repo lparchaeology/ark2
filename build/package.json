@@ -55,7 +55,7 @@
         "jsonlint": "^1.6.3",
         "merge-stream": "^1.0.1",
         "minimatch": "^3.0.4",
-        "moment": "^2.21.0",
+        "moment": "^2.22.0",
         "node-sass": "^4.8.3",
         "openlayers": "^4.6.5",
         "prettydiff": "^99.0.1",
@@ -87,8 +87,8 @@
         "jspdf-autotable": "^2.3.2",
         "marked": "^0.3.19",
         "npm-font-open-sans": "^1.1.0",
-        "react": "^16.2.0",
-        "react-dom": "^16.2.0",
+        "react": "^16.3.0",
+        "react-dom": "^16.3.0",
         "symfony-collection": "github:ninsuo/symfony-collection"
     }
 }
