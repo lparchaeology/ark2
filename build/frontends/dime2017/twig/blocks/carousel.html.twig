@@ -76,7 +76,7 @@
     <div class="carouselextratext_{{ item.key }}">
         {% for child in children %}
             {% set child = child | merge({'data' : item.find }) %}
-            <div class="homefield">{{ child.element.renderView(child) | raw }}</div>
+            <div class="homefield">{{ child.element.renderView(child) }}</div>
         {% endfor %}
     </div>
 {% endfor %}

@@ -14,13 +14,18 @@ var initTimeline = function () {
     var getYearsFromTarget = function getYearsFromTarget(target) {
         var target_years = { "start": null, "end": null };
 
+        console.log(target_years);
         if (target.parameters.hasOwnProperty("period")) {
+
+            console.log( window.periodvocabulary[target.parameters.period.value].parameters);
             try {
               target_years.start = window.periodvocabulary[target.parameters.period.value].parameters.year_start.value;
             } catch (TypeError){}
             try {
               target_years.end = window.periodvocabulary[target.parameters.period.value].parameters.year_end.value;
-            } catch (TypeError){}
+            } catch (TypeError){
+              target_years.end = maxYear;
+            }
             console.log(target_years);
         }
         // if there is no period there are no dates, so return the whole span of default time
@@ -177,6 +182,7 @@ var initTimeline = function () {
         if (typeof target !== 'undefined' && target !== null) {
             if (typeof target.parameters !== 'undefined') {
                 var target_years = getYearsFromTarget(target);
+                console.log(parseInt(target_years.end));
                 if ($.isNumeric(parseInt(target_years.start)) && $.isNumeric(parseInt(target_years.end))) {
                     var start = makeMoment(parseInt(target_years.start));
                     var end = makeMoment(parseInt(target_years.end));
