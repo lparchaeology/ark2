@@ -34,15 +34,19 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 class JsonFileDumper extends FileDumper
 {
-    public function formatCatalogue(MessageCatalogue $messages, $domain, array $options = [])
+    public function formatCatalogue(MessageCatalogue $catalogue, $domain, array $options = [])
     {
         if (isset($options['json_encoding'])) {
             $flags = $options['json_encoding'];
         } else {
             $flags = defined('JSON_PRETTY_PRINT') ? JSON_PRETTY_PRINT : 0;
         }
-        $locale = $messages->getLocale();
-        $json[$locale][$domain] = $messages->all($domain);
+        $locale = $catalogue->getLocale();
+        $messages = $catalogue->all($domain);
+        if (isset($options['fallback'])) {
+            $messages = array_merge($options['fallback'], $messages);
+        }
+        $json[$locale][$domain] = $messages;
         return json_encode($json, $flags);
     }
 

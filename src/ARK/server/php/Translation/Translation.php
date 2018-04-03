@@ -54,12 +54,13 @@ class Translation
     {
         $loader = new DatabaseLoader();
         $xliff = new XliffFileDumper();
+        $xliff->setBackup(false);
         $options = [
             'path' => $path,
             'xliff_version' => '2.0',
         ];
         $languages = Language::findAll();
-        // Dump php translations as xliff file per domain and language
+        // Dump php translations as xliff file per domain and language, no fallbacks
         $domains = Domain::findAll();
         foreach ($domains as $domain) {
             foreach ($languages as $language) {
@@ -67,10 +68,17 @@ class Translation
                 $xliff->dump($catalogue, $options);
             }
         }
-        // Dump javascript translations as single json file per language called messages.<lang>.json
+        // Dump javascript translations with fallbacks as single json file per language called messages.<lang>.json
         $json = new JsonFileDumper();
+        $json->setBackup(false);
+        $fallback = [];
+        foreach (array_reverse(Service::translation()->translator()->getFallbackLocales()) as $locale) {
+            $catalogue = Service::translation()->translator()->getCatalogue($locale);
+            $fallback = array_merge($fallback, $catalogue->all('messages'));
+        }
+        $options['fallback'] = $fallback;
         foreach ($languages as $language) {
-            $catalogue = $loader->load(Service::database(), $language->code());
+            $catalogue = Service::translation()->translator()->getCatalogue($language->code());
             $json->dump($catalogue, $options);
         }
     }
