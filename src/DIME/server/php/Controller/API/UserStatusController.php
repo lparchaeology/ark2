@@ -42,8 +42,10 @@ class UserStatusController extends FormController
 {
     public function buildData(Request $request)
     {
-        $actor = $request->attributes->get('id');
-        $data['user_status'] = Actor::find($actor);
+        $actor = Actor::find($request->attributes->get('id'));
+        $data['user_status']['actor'] = $actor;
+        $admin = Service::workflow()->actor();
+        $data['user_status']['actions'] = Service::workflow()->actionable($admin, $actor);
         return $data;
     }
 
@@ -52,9 +54,8 @@ class UserStatusController extends FormController
         $state = parent::buildState($request, $data);
         $query = $request->query->all();
 
-        $actor = $data['user_status'];
-        $admin = Service::workflow()->actor();
-        $actions = Service::workflow()->actionable($admin, $actor);
+        $actor = $data['user_status']['actor'];
+        $actions = $data['user_status']['actions'];
         if ($actions->count() > 0) {
             $state['workflow']['mode'] = 'edit';
             $state['actions'] = $actions;

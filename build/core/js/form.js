@@ -1,57 +1,103 @@
 var FormMapper = (function () {
 
+    var translate = function translate(value) {
+        var trans = Translator.trans(value);
+        if (trans === value) {
+            trans = Translator.trans(value + '.default');
+            if (trans === value + '.default') {
+                trans = value;
+            }
+        }
+        return trans;
+    };
+
     var mapDataToCheckboxField = function mapDataToCheckboxField(data, field) {
-        if (data === field.value) {
+        if (data.value === field.value) {
             field.checked = true;
         } else {
-            data = field.defaultChecked ? field.defaultChecked : false;
+            field.checked = field.defaultChecked;
         }
     };
 
     var mapDataToDateField = function mapDataToDateField(data, field) {
-        if ($.type(data) === 'undefined' || data === null) {
-            data = field.defaultValue ? field.defaultValue : '';
+        var value = data.value;
+        if ($.type(value) === 'undefined' || value === null) {
+            value = field.defaultValue ? field.defaultValue : '';
         }
-        field.value = new Date(data).toISOString().split('T')[0];
+        field.value = new Date(value).toISOString().split('T')[0];
     };
 
     var mapDataToRadioField = function mapDataToRadioField(data, field) {
         mapDataToCheckboxField(data, field);
     };
 
-    var mapDataToSelectMultipleField = function mapDataToSelectMultipleField(data, field) {
-        if ($.type(data) === 'undefined' || data === null) {
-            data = field.defaultValue ? field.defaultValue : '';
+    var clearSelectOptions = function clearSelectOptions(select) {
+        while (select.options.length > 0) {
+            select.remove(0);
         }
-        data = $.isArray(data) ? data : [data];
-        for (var i = 0; i < field.options.length; i++) {
-            field.options[i].selected |= data.indexOf(field.options[i].value) > -1;
-        }
-        $(field).trigger('change');
     };
 
-    var mapDataToSelectField = function mapDataToSelectField(data, field) {
-        if ($.type(data) === 'undefined' || data === null) {
-            data = 'core.placeholder';
+    var addSelectOption = function addSelectOption(select, value, text, selected) {
+        var option = document.createElement("option");
+        option.value = value;
+        if (selected) {
+            option.selected = true;
+            option.defaultSelected = true;
         }
-        field.value = data.toString() || data;
-        $(field).trigger('change');
+        option.text = translate(text);
+        select.add(option, null);
+    }
+
+    var setSelectOptions = function setSelectOptions(select, options) {
+        clearSelectOptions(select);
+        addSelectOption(select, '', 'core.placeholder', true);
+        Object.keys(options).forEach(function (key) {
+            addSelectOption(select, options[key].value, options[key].label, false);
+        });
     };
 
-    var mapDataToStaticField = function mapDataToStaticField(data, field) {
-        if ($.type(data) === 'undefined' || data === null || data === '') {
-            data = 'core.placeholder';
+    var mapDataToSelectMultipleField = function mapDataToSelectMultipleField(data, select) {
+        if (data.hasOwnProperty('options')) {
+            setSelectOptions(select, data.options);
         }
-        data = Translator.trans(data);
-        $('#' + field).html(data);
+        var value = data.value;
+        if ($.type(value) === 'undefined' || value === null) {
+            value = select.defaultValue ? select.defaultValue : '';
+        }
+        value = $.isArray(value) ? data : [value];
+        for (var i = 0; i < select.options.length; i++) {
+            select.options[i].selected |= value.indexOf(select.options[i].value) > -1;
+        }
+        $(select).trigger('change');
+    };
+
+    var mapDataToSelectField = function mapDataToSelectField(data, select) {
+        if (data.hasOwnProperty('options')) {
+            setSelectOptions(select, data.options);
+        }
+        var value = data.value;
+        if ($.type(value) === 'undefined' || value === null) {
+            select.value = '';
+        } else {
+            select.value = value.toString();
+        }
+        $(select).trigger('change');
+    };
+
+    var mapDataToStaticField = function mapDataToStaticField(data, id) {
+        var value = data.value;
+        if ($.type(value) === 'undefined' || value === null || value === '') {
+            value = 'core.placeholder';
+        }
+        $('#' + id).html(translate(value));
     };
 
     var mapDataToTextField = function mapDataToTextField(data, field) {
-        if ($.type(data) === 'undefined' || data === null) {
-            field.value = '';
-        } else {
-            field.value = data;
+        var value = data.value;
+        if ($.type(value) === 'undefined' || value === null) {
+            value = '';
         }
+        field.value = translate(value);
     };
 
     var mapDataToField = function mapDataToField(data, field) {
@@ -84,7 +130,7 @@ var FormMapper = (function () {
                 break;
         }
 
-    }
+    };
 
     var mapDataToForm = function mapDataToForm(data, form) {
 
@@ -94,15 +140,15 @@ var FormMapper = (function () {
                 continue;
             }
 
-            var value = data[id].value;
+            var element = data[id];
 
-            if ($.type(value) === "object") {
-                mapDataToForm(value, form);
-            } else if (data[id].name === 'static') {
-                mapDataToStaticField(value, id);
+            if ($.type(element.value) === "object") {
+                mapDataToForm(element.value, form);
+            } else if (element.name === 'static') {
+                mapDataToStaticField(element, id);
             } else if ($.type(form) !== 'undefined' && $.type(form.elements) !== 'undefined') {
                 var field = form.elements.namedItem(id);
-                mapDataToField(value, field);
+                mapDataToField(element, field);
             }
 
         }

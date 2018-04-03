@@ -44,7 +44,8 @@ function adminUserFormSubmit(data, $form, options) {
 
 // AJAX Form post-submit callback
 function adminUserFormSuccess(response) {
-    setPageAlert(response.status, response.message, 5000);
+    fetchAdminUserActor(adminUserId());
+    setPageAlert(response.status, Translator.trans(response.message + '.' + response.status), 5000);
 }
 
 var adminUserSelected = function (e) {

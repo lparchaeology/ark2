@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.9
+-- version 4.7.8
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 27, 2018 at 07:27 PM
--- Server version: 10.2.13-MariaDB
--- PHP Version: 7.2.3
+-- Generation Time: Apr 03, 2018 at 02:33 PM
+-- Server version: 10.2.14-MariaDB
+-- PHP Version: 7.1.14
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -6868,7 +6868,7 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `na
 ('dime_user_register_actor', '', 0, 0, 2, 'core_actor_address', NULL, NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 'active', NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_user_register_actor', '', 0, 0, 4, 'core_actor_telephone', NULL, NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 'active', NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_user_register_actor', '', 0, 0, 6, 'core_user_terms', NULL, NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_user_status', '', 0, 0, 0, 'core_actor_status', NULL, NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, 'static', NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_user_status', '', 0, 0, 0, 'core_actor_status', 'actor', NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, 'static', NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_user_status', '', 0, 0, 2, 'core_widget_choice', 'actions', 1, 0, 1, 0, 0, 1, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'edit', 'redact', 'active', NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_user_status', '', 0, 0, 4, 'core_widget_submit', 'apply', 0, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'edit', 'redact', 'active', NULL, NULL, 1, 0, 'core.button.apply', NULL, NULL, NULL, NULL);
 
