@@ -1,13 +1,13 @@
-{% block carousel -%}
+{# Custom Table layout to show finds in a image carousel with other fields below #}
 
 {% set items = [] %}
 
-{% for key, find in data %}
-    {% if find.value('image') is not empty %}
+{% for key, find in data.finds %}
+    {% if find.image is not empty %}
         {% set item = {
             'key': key,
             'server': 'file',
-            'image': find.value('image')[0].id,
+            'image': find.image[0].id,
             'path': path('dime.finds.view', {'id': find.id}),
             'find': find
             }
@@ -75,12 +75,17 @@
 {% for item in items %}
     <div class="carouselextratext_{{ item.key }}">
         {% for child in children %}
-            {% set child = child | merge({'data' : item.find }) %}
-            <div class="homefield">{{ child.element.renderView(child) }}</div>
+            {% if child.state.visible %}
+                {% if item.find.property is defined %}
+                    {% set val = item.find.property(child.state.name) %}
+                {% else %}
+                    {% set val = attribute(item.find, child.state.name) %}
+                {% endif %}
+                {% set child = child | merge({'data' : val }) %}
+                <div class="homefield">{{ child.element.renderView(child) | raw }}</div>
+            {% endif %}
         {% endfor %}
     </div>
 {% endfor %}
 
 </div>
-
-{%- endblock carousel %}
