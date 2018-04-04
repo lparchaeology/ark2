@@ -63,7 +63,7 @@ abstract class Fragment
         if ($this->span) {
             return '['.$this->value.' -> '.$this->extent.']';
         }
-        return $this->value;
+        return (string) $this->value;
     }
 
     public function id() : int

@@ -12,11 +12,15 @@ var FormMapper = (function () {
     };
 
     var mapDataToCheckboxField = function mapDataToCheckboxField(data, field) {
-        if (data.value === field.value) {
-            field.checked = true;
+        var checked = data.checked;
+        if ($.type(checked) === 'undefined' || checked === null) {
+            field.checked = false;
+            field.indeterminate = true;
         } else {
-            field.checked = field.defaultChecked;
+            field.indeterminate = false;
+            field.checked = checked;
         }
+        field.value = data.value;
     };
 
     var mapDataToDateField = function mapDataToDateField(data, field) {

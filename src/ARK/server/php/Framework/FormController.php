@@ -110,6 +110,9 @@ abstract class FormController extends Controller
             $data['name'] = $view->vars['name'];
             $data['full_name'] = $view->vars['full_name'];
             $data['value'] = $view->vars['value'];
+            if (isset($view->vars['checked'])) {
+                $data['checked'] = $view->vars['checked'];
+            }
             if (isset($view->vars['choices'])) {
                 $data['options'] = $view->vars['choices'];
             }

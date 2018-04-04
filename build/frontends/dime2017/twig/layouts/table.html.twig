@@ -75,7 +75,6 @@
                             {% set childId = child.state.name %}
                         {% endif %}
 
-                        {% dump(child.state) %}
                         {% set childTrans = child.state | translate %}
                         {% if child.state.sorter is same as('numeric') %}
                             {% set sorter = 'numericOnly' %}
