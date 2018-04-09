@@ -29,9 +29,9 @@
 
 namespace ARK\Framework\Controller;
 
-use ARK\Security\Actor;
 use ARK\Framework\PageController;
 use ARK\ORM\ORM;
+use ARK\Security\Actor;
 use Symfony\Component\HttpFoundation\Request;
 
 class UserProfileListPageController extends PageController

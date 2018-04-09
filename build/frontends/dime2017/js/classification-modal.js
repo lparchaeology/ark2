@@ -17,14 +17,14 @@ var initTimeline = function () {
         console.log(target_years);
         if (target.parameters.hasOwnProperty("period")) {
 
-            console.log( window.periodvocabulary[target.parameters.period.value].parameters);
+            console.log(window.periodvocabulary[target.parameters.period.value].parameters);
             try {
-              target_years.start = window.periodvocabulary[target.parameters.period.value].parameters.year_start.value;
-            } catch (TypeError){}
+                target_years.start = window.periodvocabulary[target.parameters.period.value].parameters.year_start.value;
+            } catch (TypeError) {}
             try {
-              target_years.end = window.periodvocabulary[target.parameters.period.value].parameters.year_end.value;
-            } catch (TypeError){
-              target_years.end = maxYear;
+                target_years.end = window.periodvocabulary[target.parameters.period.value].parameters.year_end.value;
+            } catch (TypeError) {
+                target_years.end = maxYear;
             }
             console.log(target_years);
         }
@@ -57,7 +57,7 @@ var initTimeline = function () {
     var select2Options = {
         sorter: classSorter,
     };
-    if(typeof container != 'undefined'){
+    if (typeof container != 'undefined') {
 
     }
     container.customTimeExists = function customTimeExists(timeid) {
@@ -88,22 +88,22 @@ var initTimeline = function () {
             });
             labelinput.on("blur", function () {
                 timeid = $(this).attr('id').split('-')[0];
-                if (timeid === 'start' ){
-                  var year = getCustomYear(timeline, 'end');
-                  if ($(this).val() > year){
-                    container.makeCustomTime($(this).val(), 'end', timeline);
-                    container.makeCustomTime(year, 'start', timeline);
-                  } else {
-                    container.makeCustomTime($(this).val(), timeid, timeline);
-                  }
+                if (timeid === 'start') {
+                    var year = getCustomYear(timeline, 'end');
+                    if ($(this).val() > year) {
+                        container.makeCustomTime($(this).val(), 'end', timeline);
+                        container.makeCustomTime(year, 'start', timeline);
+                    } else {
+                        container.makeCustomTime($(this).val(), timeid, timeline);
+                    }
                 } else {
-                  var year = getCustomYear(timeline, 'end');
-                  if ($(this).val() < year){
-                  container.makeCustomTime($(this).val(), 'start', timeline);
-                    container.makeCustomTime(year, 'end', timeline);
-                  } else {
-                    container.makeCustomTime($(this).val(), timeid, timeline);
-                  }
+                    var year = getCustomYear(timeline, 'end');
+                    if ($(this).val() < year) {
+                        container.makeCustomTime($(this).val(), 'start', timeline);
+                        container.makeCustomTime(year, 'end', timeline);
+                    } else {
+                        container.makeCustomTime($(this).val(), timeid, timeline);
+                    }
 
                 }
             });
@@ -151,8 +151,8 @@ var initTimeline = function () {
 
     container.makeCustomTime = function makeCustomTime(time, name, timeline) {
 
-        if(new Date(time)>new Date()){
-          time=new Date();
+        if (new Date(time) > new Date()) {
+            time = new Date();
         }
         try {
             timeline.setCustomTime(makeMoment(time), name);
@@ -415,7 +415,7 @@ var initTimeline = function () {
             if (target !== '') {
                 container.updateTimelineToPeriod(level1klassification, timeline);
             } else {
-              console.log("set Timeline to default");
+                console.log("set Timeline to default");
             }
 
             level2.val(level2Default);
@@ -587,7 +587,7 @@ var initTimeline = function () {
 
             var item_mid_point = (start.year() + end.year()) / 2;
 
-            timeline.moveTo(makeMoment(Math.max(-10000,item_mid_point)));
+            timeline.moveTo(makeMoment(Math.max(-10000, item_mid_point)));
 
         } else {
             if (existing_start === null) {

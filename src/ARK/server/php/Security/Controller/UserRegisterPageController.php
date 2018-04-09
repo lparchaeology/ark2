@@ -29,10 +29,10 @@
 
 namespace ARK\Security\Controller;
 
-use ARK\Security\Actor;
-use ARK\Security\Person;
 use ARK\Framework\PageController;
 use ARK\ORM\ORM;
+use ARK\Security\Actor;
+use ARK\Security\Person;
 use ARK\Security\User;
 use ARK\Service;
 use Symfony\Component\Form\Form;

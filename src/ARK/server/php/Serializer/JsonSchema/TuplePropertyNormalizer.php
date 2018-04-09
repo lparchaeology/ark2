@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK JSON Schema Tuple Property Normalizer
+ * ARK JSON Schema Tuple Property Normalizer.
  *
  * Copyright (C) 2018  L - P : Heritage LLP.
  *
@@ -31,16 +31,16 @@
 namespace ARK\Serializer\JsonSchema;
 
 use ARK\Model\Attribute;
-use ARK\Model\Dataclass\TextDataclass;
 use ARK\Model\Dataclass\ItemDataclass;
 use ARK\Model\Dataclass\SpatialDataclass;
+use ARK\Model\Dataclass\TextDataclass;
 
 class TuplePropertyNormalizer extends ObjectPropertyNormalizer
 {
     public function supportsNormalization($attribute, $format = null)
     {
         $class = get_class($attribute->dataclass());
-        return ($class === TextDataclass::class || $class === SpatialDataclass::class || $class === ItemDataclass::class);
+        return $class === TextDataclass::class || $class === SpatialDataclass::class || $class === ItemDataclass::class;
     }
 
     protected function definition(Attribute $attribute)

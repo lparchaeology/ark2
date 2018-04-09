@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK ORM Item Persister
+ * ARK ORM Item Persister.
  *
  * Copyright (C) 2018  L - P : Heritage LLP.
  *

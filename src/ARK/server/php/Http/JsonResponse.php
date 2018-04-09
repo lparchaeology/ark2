@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK JSON Response
+ * ARK JSON Response.
  *
  * Copyright (C) 2018  L - P : Heritage LLP.
  *

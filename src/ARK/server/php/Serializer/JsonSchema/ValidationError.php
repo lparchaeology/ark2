@@ -1,7 +1,7 @@
 <?php
 
 /**
- * JSON Schema Validation Error
+ * JSON Schema Validation Error.
  *
  * Copyright (C) 2018  L - P : Heritage LLP.
  *
@@ -83,7 +83,7 @@ class ValidationError extends Error
         $this->setVariable('constraints', $error->getConstraints());
         $this->setVariable('content', $json);
         $this->setVariable('pointer', $error->getPointer());
-        if ($error->getCode() == 43) {
+        if ($error->getCode() === 43) {
             $missing = array_values(array_diff($error->getConstraints()['required'], array_keys(get_object_vars($error->getValue()))));
             $this->setVariable('missing', $missing);
         }

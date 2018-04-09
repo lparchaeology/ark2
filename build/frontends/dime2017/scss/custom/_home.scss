@@ -36,8 +36,8 @@ Dime Home Stuff
 .dimehometoolbar {
     border-bottom: 1px solid #333;
     font-weight: 300;
-    font-size:1em;
-    padding-bottom:20px;
+    font-size: 1em;
+    padding-bottom: 20px;
 }
 
 .dimehometoolbar a {
@@ -46,13 +46,12 @@ Dime Home Stuff
 }
 
 .dimehometool-icon {
-    float:none;
-    margin: auto;
-    margin-bottom: 10px;
+    float: none;
+    margin: auto auto 10px;
 }
 
 .controlshead a {
-    position:relative;
+    position: relative;
 }
 
 .messages {
@@ -61,7 +60,7 @@ Dime Home Stuff
 }
 
 .messages .notification-dropdown-footer,
-.messages .notification-dropdown-header{
+.messages .notification-dropdown-header {
     background: #555;
     color: white;
     padding: 20px;
@@ -103,10 +102,10 @@ Dime Home Stuff
 }
 
 .messages .list-group {
-    margin-bottom:0;
+    margin-bottom: 0;
 }
 
-.messages .notification-dropdown-info{
+.messages .notification-dropdown-info {
     padding: 0 20px 10px;
     width: 100%;
     display: block;

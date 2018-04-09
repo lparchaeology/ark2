@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK ORM Item Entity Generator
+ * ARK ORM Item Entity Generator.
  *
  * Copyright (C) 2018  L - P : Heritage LLP.
  *
@@ -74,32 +74,12 @@ public function __construct($schema)
         $this->setRegenerateEntityIfExists(true);
     }
 
-    protected function implementsInterfaces()
-    {
-        return !empty($this->interfaces);
-    }
-
-    public function setInterfaces(array $interfaces)
+    public function setInterfaces(array $interfaces) : void
     {
         $this->interfaces = $interfaces;
     }
 
-    protected function getInterfaces()
-    {
-        return $this->interfaces;
-    }
-
-    protected function getInterfaceNames()
-    {
-        $names = [];
-        foreach ($this->interfaces as $interface) {
-            $refl = new \ReflectionClass($interface);
-            $names[] = '\\' . $refl->getName();
-        }
-        return $names;
-    }
-
-    public function writeEntityClass(ClassMetadataInfo $metadata, $outputDirectory, $project = 'ARK')
+    public function writeEntityClass(ClassMetadataInfo $metadata, $outputDirectory, $project = 'ARK') : void
     {
         $path = str_replace('\\', DIRECTORY_SEPARATOR, $metadata->name);
         $path = str_replace($project, $outputDirectory, $path).$this->extension;
@@ -113,6 +93,26 @@ public function __construct($schema)
 
         file_put_contents($path, $this->generateEntityClass($metadata));
         chmod($path, 0664);
+    }
+
+    protected function implementsInterfaces()
+    {
+        return !empty($this->interfaces);
+    }
+
+    protected function getInterfaces()
+    {
+        return $this->interfaces;
+    }
+
+    protected function getInterfaceNames()
+    {
+        $names = [];
+        foreach ($this->interfaces as $interface) {
+            $refl = new \ReflectionClass($interface);
+            $names[] = '\\'.$refl->getName();
+        }
+        return $names;
     }
 
     protected function generateEntityUse()
@@ -132,12 +132,12 @@ public function __construct($schema)
     protected function generateEntityClassName(ClassMetadataInfo $metadata)
     {
         $class = parent::generateEntityClassName($metadata);
-        $class .= ($this->implementsInterfaces() ? ' implements ' . implode(', ', $this->getInterfaceNames()) : null);
+        $class .= ($this->implementsInterfaces() ? ' implements '.implode(', ', $this->getInterfaceNames()) : null);
         return $class;
     }
 
     protected function generateEntityConstructor(ClassMetadataInfo $metadata)
     {
-        return (parent::generateEntityConstructor($metadata) ?: $this->prefixCodeWithSpaces(static::$constructorMethodTemplate));
+        return parent::generateEntityConstructor($metadata) ?: $this->prefixCodeWithSpaces(static::$constructorMethodTemplate);
     }
 }

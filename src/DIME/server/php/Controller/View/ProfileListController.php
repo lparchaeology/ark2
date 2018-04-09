@@ -29,8 +29,8 @@
 
 namespace DIME\Controller\View;
 
-use ARK\Security\Person;
 use ARK\ORM\ORM;
+use ARK\Security\Person;
 use Symfony\Component\HttpFoundation\Request;
 
 class ProfileListController extends DimePageController

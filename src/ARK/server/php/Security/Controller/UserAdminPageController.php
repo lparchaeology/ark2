@@ -26,9 +26,11 @@
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
  */
+
 namespace ARK\Security\Controller;
 
 use ARK\Framework\PageController;
 
-class UserAdminPageController extends PageController {
+class UserAdminPageController extends PageController
+{
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK ORM Extension Metadata Factory
+ * ARK ORM Extension Metadata Factory.
  *
  * Copyright (C) 2018  L - P : Heritage LLP.
  *
@@ -30,14 +30,14 @@
 
 namespace ARK\ORM\Extension;
 
-use Gedmo\Mapping\ExtensionMetadataFactory as GedmoExtensionMetadataFactory;
 use ARK\ORM\Driver\StaticPHPDriver;
+use Gedmo\Mapping\ExtensionMetadataFactory as GedmoExtensionMetadataFactory;
 
 class ExtensionMetadataFactory extends GedmoExtensionMetadataFactory
 {
     protected function getDriver($omDriver)
     {
-        if (get_class($omDriver) == StaticPHPDriver::class) {
+        if (get_class($omDriver) === StaticPHPDriver::class) {
             return $omDriver;
         }
         return parent::getDriver($omDriver);

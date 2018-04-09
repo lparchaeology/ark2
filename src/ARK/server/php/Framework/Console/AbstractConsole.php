@@ -30,8 +30,8 @@
 namespace ARK\Framework\Console;
 
 use ARK\ARK;
-use ARK\Console\ProcessTrait;
 use ARK\Console\Helper\FileChooserHelper;
+use ARK\Console\ProcessTrait;
 use Silex\Application;
 use Symfony\Component\Console\Application as SymfonyConsole;
 use Symfony\Component\Console\Input\InputInterface;
@@ -41,16 +41,16 @@ abstract class AbstractConsole extends SymfonyConsole
 {
     use ProcessTrait;
 
-    protected $app = null;
+    protected $app;
 
     public function __construct(string $name, Application $app)
     {
         parent::__construct($name, ARK::version());
         $this->app = $app;
-        foreach($app['console.commands'] as $command) {
+        foreach ($app['console.commands'] as $command) {
             $this->add(new $command());
         }
-        foreach($app['console.helpers'] as $helper) {
+        foreach ($app['console.helpers'] as $helper) {
             $this->getHelperSet()->set(new $helper());
         }
         $this->getHelperSet()->set(new FileChooserHelper());
@@ -65,7 +65,7 @@ abstract class AbstractConsole extends SymfonyConsole
         return $this->app;
     }
 
-    public function run(InputInterface $input = null, OutputInterface $output = null)
+    public function run(InputInterface $input = null, OutputInterface $output = null) : void
     {
         $this->app->boot();
         parent::run($input, $output);

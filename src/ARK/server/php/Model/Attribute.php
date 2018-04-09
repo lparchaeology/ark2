@@ -29,11 +29,11 @@
 
 namespace ARK\Model;
 
-use ARK\Security\Actor;
 use ARK\Model\Dataclass\Dataclass;
 use ARK\Model\Fragment\Fragment;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\Security\Actor;
 use ARK\Vocabulary\Concept;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;

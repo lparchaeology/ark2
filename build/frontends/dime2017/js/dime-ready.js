@@ -171,7 +171,7 @@ $(document).ready(function () {
     });
 
     $("#photo-modal").on('hidden.bs.modal', function () {
-      $("#find-registered-alert").alert("close");
+        $("#find-registered-alert").alert("close");
     });
 
     $('#modal_photobtn').on('click', function () {

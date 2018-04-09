@@ -34,7 +34,6 @@ use ARK\Database\Console\Command\DatabaseDropTablesCommand;
 use ARK\Database\Console\Command\DatabaseImportCommand;
 use ARK\Database\Console\Command\DatabaseServerAddCommand;
 use ARK\Database\Console\Command\DatabaseTruncateCommand;
-use ARK\Framework\Console\Command\CacheClearCommand;
 use ARK\Framework\Console\Command\SiteCreateCommand;
 use ARK\Framework\Console\Command\SiteFrontendCommand;
 use ARK\Framework\Console\Command\SiteMigrateInfoCommand;

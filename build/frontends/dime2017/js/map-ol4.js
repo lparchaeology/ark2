@@ -5,12 +5,12 @@ function getPointsFromTable() {
 
     var format = new ol.format.WKT();
 
-    data = $(".dime-table").bootstrapTable('getData', {useCurrentPage:'true'});
+    data = $(".dime-table").bootstrapTable('getData', { useCurrentPage: 'true' });
     console.log(data.length);
 
     findSource.clear();
 
-    for (row in data){
+    for (row in data) {
         id = data[row]._data['unique-id'];
         feature = format.readFeature(points[id], {
             dataProjection: 'EPSG:4326',
@@ -69,7 +69,7 @@ function initialiseMapView() {
                 stroke: new ol.style.Stroke({ color: '#000', width: 1 })
             })
         });
-        
+
         var layer = new ol.layer.Vector({
             source: findSource,
             style: style

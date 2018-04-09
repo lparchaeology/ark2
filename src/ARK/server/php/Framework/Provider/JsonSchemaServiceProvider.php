@@ -1,7 +1,7 @@
 <?php
 
 /**
- * JSON Schema Service Provider
+ * JSON Schema Service Provider.
  *
  * Copyright (C) 2018  L - P : Heritage LLP.
  *
@@ -30,10 +30,10 @@
 
 namespace ARK\Framework\Provider;
 
-use ARK\Serializer\JsonSchema\SchemaNormalizer;
 use ARK\Serializer\JsonSchema\BooleanPropertyNormalizer;
 use ARK\Serializer\JsonSchema\NumberPropertyNormalizer;
 use ARK\Serializer\JsonSchema\ObjectPropertyNormalizer;
+use ARK\Serializer\JsonSchema\SchemaNormalizer;
 use ARK\Serializer\JsonSchema\StringPropertyNormalizer;
 use ARK\Serializer\JsonSchema\TuplePropertyNormalizer;
 use League\JsonGuard\Dereferencer;
@@ -43,7 +43,7 @@ use Seld\JsonLint\JsonParser;
 
 class JsonSchemaServiceProvider implements ServiceProviderInterface
 {
-    public function register(Container $app)
+    public function register(Container $app) : void
     {
         // Add the JSON linter
         $app['json.linter'] = function () {

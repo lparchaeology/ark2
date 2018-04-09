@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK ORM Tree Listener
+ * ARK ORM Tree Listener.
  *
  * Copyright (C) 2018  L - P : Heritage LLP.
  *
@@ -30,7 +30,6 @@
 
 namespace ARK\ORM\Extension;
 
-use ARK\ORM\Extension\ExtensionMetadataFactory;
 use Doctrine\Common\Persistence\ObjectManager;
 use Gedmo\Tree\TreeListener as GedmoTreeListener;
 use ReflectionClass;
@@ -62,7 +61,7 @@ class TreeListener extends GedmoTreeListener
 
         $oid = spl_object_hash($objectManager);
         if (!isset($extensionMetadataFactory[$oid])) {
-            if (is_null($annotationReader)) {
+            if ($annotationReader === null) {
                 // create default annotation reader for extensions
                 $annotationReader = $getDefaultAnnotationReader->invoke($this);
                 $this->arRefl->setValue($this, $annotationReader);

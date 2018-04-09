@@ -29,10 +29,10 @@
 
 namespace DIME\Controller\API;
 
-use ARK\Security\Actor;
 use ARK\Framework\FormController;
 use ARK\Model\Item;
 use ARK\ORM\ORM;
+use ARK\Security\Actor;
 use ARK\Security\User;
 use DIME\DIME;
 use Symfony\Component\Form\Form;

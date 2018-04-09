@@ -2,7 +2,7 @@
 <?php
 
 /**
- * Ark Site Console
+ * Ark Site Console.
  *
  * Copyright (C) 2018  L - P : Heritage LLP.
  *
@@ -27,7 +27,6 @@
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
  */
-
 ini_set('display_errors', 1);
 
 require_once __DIR__.'/../../../vendor/autoload.php';

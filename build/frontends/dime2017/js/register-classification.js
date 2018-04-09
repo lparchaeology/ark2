@@ -68,8 +68,8 @@ var createRegisterOptions = function createRegisterOptions() {
 
         console.log(Object.keys(subtypevocabulary).length);
 
-        if(Object.keys(subtypevocabulary).length > 0){
-          level1.parent().show();
+        if (Object.keys(subtypevocabulary).length > 0) {
+            level1.parent().show();
         }
 
         // # init the level1 classification as unknowwn
@@ -104,8 +104,8 @@ var createRegisterOptions = function createRegisterOptions() {
         $('#' + window.subtype_id).select2(select2Options);
         $('#' + window.subtype_id).trigger('select2:select');
 
-        if( Object.keys(level1klassification.taxonomy).length > 0 ){
-          level2.parent().show();
+        if (Object.keys(level1klassification.taxonomy).length > 0) {
+            level2.parent().show();
         }
 
         level2.val(level2Default);
@@ -126,9 +126,9 @@ var createRegisterOptions = function createRegisterOptions() {
 
     var parentclass = $('#find_class_term').val();
 
-    if(parentclass != 'unassessed'){
-      // set the initial values and set it up
-      var subtypevocabulary = window.typevocabulary[parentclass].taxonomy;
+    if (parentclass != 'unassessed') {
+        // set the initial values and set it up
+        var subtypevocabulary = window.typevocabulary[parentclass].taxonomy;
     }
 
     for (var term in subtypevocabulary) {

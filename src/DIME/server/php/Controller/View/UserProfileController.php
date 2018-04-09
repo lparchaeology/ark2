@@ -29,8 +29,8 @@
 
 namespace DIME\Controller\View;
 
-use ARK\Security\Actor;
 use ARK\ORM\ORM;
+use ARK\Security\Actor;
 use ARK\Service;
 use DIME\DIME;
 use Symfony\Component\Form\Form;

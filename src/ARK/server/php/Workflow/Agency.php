@@ -29,11 +29,11 @@
 
 namespace ARK\Workflow;
 
-use ARK\Security\Actor;
 use ARK\Model\Item;
 use ARK\Model\Schema\SchemaAttribute;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\Security\Actor;
 
 class Agency
 {

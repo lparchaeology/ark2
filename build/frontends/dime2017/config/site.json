@@ -13,13 +13,11 @@
     "orm": {
         "connection": {
             "data": {
-                "mappings": [
-                    {
-                        "type": "php",
-                        "namespace": "DIME\\Entity",
-                        "path": "src/DIME/server/php/Entity"
-                    }
-                ]
+                "mappings": [{
+                    "type": "php",
+                    "namespace": "DIME\\Entity",
+                    "path": "src/DIME/server/php/Entity"
+                }]
             }
         }
     },

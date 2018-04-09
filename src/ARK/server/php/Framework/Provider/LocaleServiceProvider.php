@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Locale Service Provider
+ * ARK Locale Service Provider.
  *
  * Copyright (C) 2018  L - P : Heritage LLP.
  *
@@ -36,7 +36,7 @@ use Silex\Provider\LocaleServiceProvider as SilexLocaleServiceProvider;
 
 class LocaleServiceProvider implements ServiceProviderInterface
 {
-    public function register(Container $container)
+    public function register(Container $container) : void
     {
         $container->register(new SilexLocaleServiceProvider());
         $locale = $container['ark']['locale'];

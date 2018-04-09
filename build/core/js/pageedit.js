@@ -12,7 +12,7 @@ var NoteSaveButton = function (context) {
                 content: context.invoke('code')
             };
             var path = Router.generatePath('dime.api.page.content', {});
-            $.post(path, JSON.stringify(response), function(result) {});
+            $.post(path, JSON.stringify(response), function (result) {});
         }
     });
 

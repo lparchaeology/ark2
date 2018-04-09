@@ -179,22 +179,23 @@ input[type=radio]:checked ~ label::before {
     top: -5px;
     width: 9vw;
 }
+
 .register .select2-container--default .select2-selection--single {
-  line-height: 2.4em;
-  height: 2.4em;
+    line-height: 2.4em;
+    height: 2.4em;
 }
 
 .register .select2-container--default .select2-selection--multiple .select2-selection__rendered,
 .register .select2-container--default .select2-selection--single .select2-selection__rendered {
-  line-height: 2em;
-  height: 2.4em;
+    line-height: 2em;
+    height: 2.4em;
 
 }
 
 .register .form-group input[type="text"],
-.register .form-group input[type="number"]{
-  line-height: 2.4em;
-  height: 2.4em;
+.register .form-group input[type="number"] {
+    line-height: 2.4em;
+    height: 2.4em;
 }
 
 /* READONLY */

@@ -17,8 +17,8 @@ $break-tablet: 1199px;
 
 @media (max-width: 320px) {
     .tooltip-inner {
-         min-width: initial;
-         width: 320px;
+        min-width: initial;
+        width: 320px;
     }
 }
 
@@ -34,6 +34,7 @@ $break-tablet: 1199px;
     .form-horizontal .control-label {
         margin-top: 0;
     }
+
     .form-group input[type="email"],
     .form-group input[type="password"],
     .form-group input[type=text] {

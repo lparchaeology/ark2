@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Password Strength Validator
+ * ARK Password Strength Validator.
  *
  * Copyright (C) 2018  L - P : Heritage LLP.
  *
@@ -30,22 +30,21 @@
 
 namespace ARK\Security\Validator;
 
-use ARK\Security\Validator\PasswordStrength;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use ZxcvbnPhp\Zxcvbn;
 
 class PasswordStrengthValidator extends ConstraintValidator
 {
-    protected $zxcvbn = null;
+    protected $zxcvbn;
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint) : void
     {
         if (!$constraint instanceof PasswordStrength) {
             return;
         }
         if ($this->zxcvbn === null) {
-            $this->zxcvbn = new Zxcvbn;
+            $this->zxcvbn = new Zxcvbn();
         }
         $strength = $this->zxcvbn->passwordStrength($value);
         if (!isset($strength['score']) || $strength['score'] < $constraint->minimumScore) {

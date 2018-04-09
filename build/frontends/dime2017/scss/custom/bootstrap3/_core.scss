@@ -1,8 +1,6 @@
-
-body{
+body {
     //font-family:"gill-sans"
 }
-
 
 /*
 * Icons
@@ -110,27 +108,30 @@ body{
 //Responsive page stuff
 .dime-listhead.nav-mobile,
 .nav-mobile {
-      display:none;
+    display: none;
 }
 
 .register-alert.alert {
-  text-align: center;
+    text-align: center;
 }
 
-@media (max-width: 767px){
-  .navbar {
-      max-height: 12em;
-  }
-  .dime-listhead.nav-mobile,
-  .nav-mobile {
-        display:inline-flex;
-  }
-  .dimehometool.nav-mobile {
-        display:block;
-  }
-  .dime-listhead.nav-desk,
-  .nav-desk {
-        display:none;
-  }
+@media (max-width: 767px) {
+    .navbar {
+        max-height: 12em;
+    }
+
+    .dime-listhead.nav-mobile,
+    .nav-mobile {
+        display: inline-flex;
+    }
+
+    .dimehometool.nav-mobile {
+        display: block;
+    }
+
+    .dime-listhead.nav-desk,
+    .nav-desk {
+        display: none;
+    }
 
 }

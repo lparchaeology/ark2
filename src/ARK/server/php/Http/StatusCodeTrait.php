@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK HTTP Status Code Trait
+ * ARK HTTP Status Code Trait.
  *
  * Copyright (C) 2018  L - P : Heritage LLP.
  *
@@ -36,7 +36,7 @@ trait StatusCodeTrait
 {
     protected $statusCode;
 
-    public function setStatusCode($statusCode)
+    public function setStatusCode($statusCode) : void
     {
         $this->statusCode = $statusCode;
     }
@@ -53,6 +53,6 @@ trait StatusCodeTrait
 
     public function statusPhrase()
     {
-        return (array_key_exists($this->statusCode, Response::statusTexts) ? Response::statusTexts[$this->statusCode] : '');
+        return array_key_exists($this->statusCode, Response::statusTexts) ? Response::statusTexts[$this->statusCode] : '';
     }
 }

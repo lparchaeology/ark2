@@ -239,12 +239,12 @@ class SiteMigrateInfoCommand extends DatabaseCommand
             $mod = $frag['itemkey'];
             $xmi = $frag['xmi_itemkey'];
             if (isset($this->frags[$mod]['xmi'][$xmi])) {
-                $this->frags[$mod]['xmi'][$xmi] += 1;
+                ++$this->frags[$mod]['xmi'][$xmi];
             } else {
                 $this->frags[$mod]['xmi'][$xmi] = 1;
             }
             if (isset($this->frags[$xmi]['xmi'][$mod])) {
-                $this->frags[$xmi]['xmi'][$mod] += 1;
+                ++$this->frags[$xmi]['xmi'][$mod];
             } else {
                 $this->frags[$xmi]['xmi'][$mod] = 1;
             }
@@ -489,7 +489,7 @@ class SiteMigrateInfoCommand extends DatabaseCommand
             $module = $this->getItemkey($frag);
             $field = $frag[$typename];
             if (isset($this->frags[$module][$type][$field])) {
-                $this->frags[$module][$type][$field] += 1;
+                ++$this->frags[$module][$type][$field];
             } else {
                 $this->frags[$module][$type][$field] = 1;
             }

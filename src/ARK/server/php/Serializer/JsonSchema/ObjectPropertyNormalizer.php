@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK JSON Schema Object Property Normalizer
+ * ARK JSON Schema Object Property Normalizer.
  *
  * Copyright (C) 2018  L - P : Heritage LLP.
  *

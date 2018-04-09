@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Repeated Email Form Type
+ * ARK Repeated Email Form Type.
  *
  * Copyright (C) 2018  L - P : Heritage LLP.
  *
@@ -27,6 +27,7 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
+
 namespace ARK\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
@@ -36,13 +37,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RepeatedEmailType extends AbstractType
 {
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver) : void
     {
         $resolver->setDefaults([
             'type' => EmailType::class,
             'invalid_message' => 'core.user.email.match',
-            'first_options'  => array('label' => 'core.user.email'),
-            'second_options' => array('label' => 'core.user.email.repeat'),
+            'first_options' => ['label' => 'core.user.email'],
+            'second_options' => ['label' => 'core.user.email.repeat'],
         ]);
     }
 

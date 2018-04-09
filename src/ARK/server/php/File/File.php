@@ -29,11 +29,11 @@
 
 namespace ARK\File;
 
-use ARK\Security\Actor;
 use ARK\Model\Item;
 use ARK\Model\ItemTrait;
 use ARK\Model\LocalText;
 use ARK\ORM\ORM;
+use ARK\Security\Actor;
 use ARK\Service;
 use ARK\Vocabulary\Term;
 use DateTime;

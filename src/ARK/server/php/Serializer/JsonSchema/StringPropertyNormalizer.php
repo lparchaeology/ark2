@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK JSON Schema String Property Normalizer
+ * ARK JSON Schema String Property Normalizer.
  *
  * Copyright (C) 2018  L - P : Heritage LLP.
  *
@@ -37,7 +37,7 @@ class StringPropertyNormalizer extends AbstractPropertyNormalizer
 {
     public function supportsNormalization($attribute, $format = null)
     {
-        return ($attribute->dataclass() instanceof StringDataclass);
+        return $attribute->dataclass() instanceof StringDataclass;
     }
 
     protected function definition(Attribute $attribute)
@@ -53,7 +53,7 @@ class StringPropertyNormalizer extends AbstractPropertyNormalizer
         if ($dataclass->pattern()) {
             $definition['pattern'] = $dataclass->pattern();
         }
-        if ($dataclass->format() && $dataclass->format() != 'text') {
+        if ($dataclass->format() && $dataclass->format() !== 'text') {
             $definition['format'] = $dataclass->type();
         }
         return $definition;

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Password Strength Constraint
+ * ARK Password Strength Constraint.
  *
  * Copyright (C) 2018  L - P : Heritage LLP.
  *

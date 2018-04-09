@@ -8,7 +8,7 @@
 }
 
 .fixed-table-body {
-    max-height:80vh;
+    max-height: 80vh;
     overflow-y: auto;
 }
 
@@ -21,14 +21,14 @@
 }
 
 .dime-table.cardViewTable,
-.dime-table.thumbViewTable,
 .dime-table.cardViewTable tbody,
+.dime-table.thumbViewTable,
 .dime-table.thumbViewTable tbody {
     border: none;
 }
 
-.dime-table.thumbViewTable thead tr,
-.dime-table.cardViewTable thead tr{
+.dime-table.cardViewTable thead tr,
+.dime-table.thumbViewTable thead tr {
     display: none;
     padding: 0;
     margin: 0;
@@ -39,7 +39,7 @@
     border: 1px solid black;
     box-shadow: 0 1px 2px 2px rgba(0, 0, 0, 0.2);
     display: inline-block;
-    min-height:21em;
+    min-height: 21em;
     margin: 1%;
     padding: 10px;
     position: relative;
@@ -51,43 +51,43 @@
     position: relative;
 }
 
-
 @media screen and (max-width: 1400px) and (min-width: 1200px) {
     .dime-table.cardViewTable tr {
-        width:46%;
+        width: 46%;
         margin: 2%;
         min-height: 19em;
-   }
+    }
 }
 
 @media screen and(max-width: 1170px) and (min-width: 991px) {
     .dime-table.cardViewTable tr {
-        width:46%;
+        width: 46%;
         margin: 2%;
         min-height: 18em;
-   }
+    }
 }
 
 @media screen and(max-width: 586px) and (min-width: 443px) {
     .dime-table.cardViewTable tr {
-        width:46%;
+        width: 46%;
         margin: 2%;
         min-height: 19em;
-   }
+    }
 }
 
 @media screen and (max-width: 443px) {
     .dime-table.cardViewTable tr {
-        width:90%;
+        width: 90%;
         margin: 5%;
         min-height: 19em;
-   }
+    }
 }
 
 .dime-table.cardViewTable tr::before {
-    content: '';
+    content: "";
     position: absolute;
-    z-index: 0; /* hide shadow behind image */
+    z-index: 0;
+    /* hide shadow behind image */
     -webkit-box-shadow: 0 10px 20px rgba(255, 255, 255, 0.6);
     -moz-box-shadow: 0 10px 20px rgba(255, 255, 255, 0.6);
     box-shadow: 0 10px 20px rgba(255, 255, 255, 0.6);
@@ -98,17 +98,17 @@
 }
 
 .dime-table.cardViewTable tr:hover {
-    -webkit-box-shadow: 0px 2px 5px 5px rgba(0,0,0,0.3);
-    -moz-box-shadow: 0px 2px 5px 5px rgba(0,0,0,0.3);
-    box-shadow: 0px 2px 5px 5px rgba(0,0,0,0.3);
+    -webkit-box-shadow: 0 2px 5px 5px rgba(0,0,0,0.3);
+    -moz-box-shadow: 0 2px 5px 5px rgba(0,0,0,0.3);
+    box-shadow: 0 2px 5px 5px rgba(0,0,0,0.3);
     background: white;
     border: 1px solid black;
 }
 
 .dime-table.cardViewTable tr.selected {
-    -webkit-box-shadow: 0px 2px 5px 5px rgba(0,0,0,0.3);
-    -moz-box-shadow: 0px 2px 5px 5px rgba(0,0,0,0.3);
-    box-shadow: 0px 2px 5px 5px rgba(0,0,0,0.3);
+    -webkit-box-shadow: 0 2px 5px 5px rgba(0,0,0,0.3);
+    -moz-box-shadow: 0 2px 5px 5px rgba(0,0,0,0.3);
+    box-shadow: 0 2px 5px 5px rgba(0,0,0,0.3);
     background: white;
     border: 2px solid blue;
 }
@@ -117,9 +117,9 @@
     background: white;
 }
 
-.dime-table.thumbViewTable td.not-card-visible,
-.dime-table.cardViewTable td.not-card-visible {
-    display:none;
+.dime-table.cardViewTable td.not-card-visible,
+.dime-table.thumbViewTable td.not-card-visible {
+    display: none;
 }
 
 .dime-table.cardViewTable tr.selected td {
@@ -137,13 +137,12 @@
 }
 
 .dime-table.thumbViewTable tr td {
-    padding:5px 2%;
+    padding: 5px 2%;
 }
 
 .dime-table.thumbViewTable tr.selected td {
     background: white;
 }
-
 
 .thumbModal #modalWindow {
     background: rgba(0,0,0,0);
@@ -166,41 +165,40 @@
 
 .thumbmodal-container.dime button.close {
     position: relative;
-    z-index:1;
+    z-index: 1;
 }
 
 @media screen and (max-width: 991px) {
-
     .thumbmodal-container.dime {
         margin: 100px auto;
     }
 
 }
 
-.thumbmodal-container .cell-label,
-.bootstrap-table .table.dime-table.cardViewTable:not(.table-condensed) tbody td .cell-label {
-    display:inline;
+.bootstrap-table .table.dime-table.cardViewTable:not(.table-condensed) tbody td .cell-label,
+.thumbmodal-container .cell-label {
+    display: inline;
     text-transform: none;
     font-weight: 200;
     font-color: grey;
 }
 
-.thumbmodal-container .cell-label:after,
-.bootstrap-table .table.dime-table.cardViewTable:not(.table-condensed) tbody td .cell-label:after {
-    content:':';
+.bootstrap-table .table.dime-table.cardViewTable:not(.table-condensed) tbody td .cell-label:after,
+.thumbmodal-container .cell-label:after {
+    content: ":";
 }
+
 .bootstrap-table .table.dime-table.cardViewTable:not(.table-condensed) tbody td {
     text-align: center;
 }
 
-.dime-table.thumbViewTable td,
-.dime-table.cardViewTable td {
+.dime-table.cardViewTable td,
+.dime-table.thumbViewTable td {
     display: block;
 }
 
-
 .thumbmodal-container td.not-card-visible {
-    display:none;
+    display: none;
 }
 
 .thumbModal .field {
@@ -210,7 +208,8 @@
 .thumbModal .field .placeholder-img {
     text-align: center;
 }
-.thumbModal .field .form-group{
+
+.thumbModal .field .form-group {
     text-align: left;
     display: inline-block;
     width: 100%;
@@ -223,11 +222,11 @@
 }
 
 .bootstrap-table .table.dime-table.cardViewTable:not(.table-condensed) tbody td.thumbimage {
-    border:none;
+    border: none;
 }
 
-.bootstrap-table .table.dime-table.cardViewTable:not(.table-condensed) tbody td.thumbimage ~ td{
-    border-top:none;
+.bootstrap-table .table.dime-table.cardViewTable:not(.table-condensed) tbody td.thumbimage ~ td {
+    border-top: none;
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -248,20 +247,22 @@
 }
 
 .bootstrap-table .table:not(.table-condensed).dime-table.thumbViewTable tbody td img {
-    width:60px;
+    width: 60px;
 }
+
 .bootstrap-table .table:not(.table-condensed).dime-table.thumbViewTable tbody td .gotoitem,
 .cell-label {
-    display:none;
+    display: none;
 }
+
 .fixed-table-container {
     border: none;
 }
 
 .controls a {
     color: black;
-    padding-right:5px;
-    display:inline-block;
+    padding-right: 5px;
+    display: inline-block;
 }
 
 .fixed-table-container .dime-table thead th .both {
@@ -299,12 +300,13 @@ th.thumbimagehead {
     border: 1px solid black;
 }
 
-.dropdown-menu input[type="checkbox"]{
+.dropdown-menu input[type="checkbox"] {
     visibility: visible;
 }
-.fixed-table-toolbar .btn-group  .btn-group:last-child  .btn,
-.fixed-table-toolbar .btn-group  .btn-group:first-child  .btn {
-    border-radius:0;
+
+.fixed-table-toolbar .btn-group .btn-group:first-child .btn,
+.fixed-table-toolbar .btn-group .btn-group:last-child .btn {
+    border-radius: 0;
 }
 
 /* Edit Actions */
@@ -327,19 +329,20 @@ ul.action-select {
 
 .action-select li {
     list-style: none;
-    cursor:pointer;
+    cursor: pointer;
 }
+
 .action-select li.disabled {
-    color:lightgrey;
+    color: lightgrey;
 }
 
 #find_filter_core_widget_search {
-	// this number comes from the body lineheight, which is bootstrap I think? MJ 1/6/17
+    // this number comes from the body lineheight, which is bootstrap I think? MJ 1/6/17
     margin: 1.42857143em 0;
 }
 
-.control-label{
-    display:inline-table;
+.control-label {
+    display: inline-table;
 }
 
 .dime-table.cardViewTable .no-records-found {

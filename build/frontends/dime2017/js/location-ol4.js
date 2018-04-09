@@ -24,7 +24,7 @@ function initialisePickMap(target) {
         layer.set('name', config.name);
         mapPickLayers.push(layer);
     }
-    
+
     var mapPickSource = new ol.source.Vector({
         wrapX: false,
     });

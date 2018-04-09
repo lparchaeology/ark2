@@ -15,18 +15,18 @@
                     <ul class="nav nav-pills nav-stacked nav-pills-stacked-example">
                       {# make the options #}
                       {% for module in options.modules %}
-                      
+
                           <li role="presentation"><a href="#" data-module="{{ module.name|replace({'.': '-'}) }}" class="add-module-selector"><span class="label {{ module.colour }} circle  "></span> {{ module.name | translate }}</a></li>
                       {% endfor %}
                     </ul>
                   </div>
-                  
+
                   {% for module in options.modules %}
                       <div class="col-md-8 record-add-form {{ module.name|replace({'.': '-'}) }}">
                         <p>{{ module.forms }}</p>
                       </div>
                   {% endfor %}
-                  
+
                 </div>
                 <br>
               </div>

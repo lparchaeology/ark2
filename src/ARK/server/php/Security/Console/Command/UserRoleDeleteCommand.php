@@ -32,10 +32,10 @@ namespace ARK\Security\Console\Command;
 use ARK\ARK;
 use ARK\Console\Command\AbstractCommand;
 use ARK\ORM\ORM;
+use ARK\Security\ActorRole;
+use ARK\Security\Role;
 use ARK\Security\User;
 use ARK\Service;
-use ARK\Security\Role;
-use ARK\Security\ActorRole;
 
 class UserRoleDeleteCommand extends AbstractCommand
 {

@@ -29,11 +29,11 @@
 
 namespace DIME\Console\Command;
 
-use ARK\Security\Actor;
-use ARK\Security\Person;
 use ARK\ARK;
 use ARK\Console\Command\AbstractCommand;
 use ARK\ORM\ORM;
+use ARK\Security\Actor;
+use ARK\Security\Person;
 use ARK\Security\User;
 use ARK\Service;
 use ARK\Workflow\Role;

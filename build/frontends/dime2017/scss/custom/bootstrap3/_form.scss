@@ -113,46 +113,46 @@
 }
 
 #mapmodal {
-  max-height: 70vh;
+    max-height: 70vh;
 }
 
 .register-buttons {
-  margin: 10px;
+    margin: 10px;
 }
 
 .register-button {
-  text-align: center;
+    text-align: center;
 }
 
 .register-button .glyphicon {
-  font-size: 24px;
-  margin:10px;
+    font-size: 24px;
+    margin: 10px;
 }
 
-.glyphicon-mappick-button-required,
-.glyphicon-camera-button-required {
-  color:red;
+.glyphicon-camera-button-required,
+.glyphicon-mappick-button-required {
+    color: red;
 }
 
-.glyphicon-mappick-button-complete,
-.glyphicon-camera-button-complete {
-  color:green;
-  display: none;
+.glyphicon-camera-button-complete,
+.glyphicon-mappick-button-complete {
+    color: green;
+    display: none;
 }
 
 .register-button .glyphicon-button-status {
-  font-size: 10px;
-  margin:0px;
-  position: absolute;
+    font-size: 10px;
+    margin: 0;
+    position: absolute;
 }
 
-.previousitemclose,
-#photopickclose {
-  float:right;
+#photopickclose,
+.previousitemclose {
+    float: right;
 }
 
 .trigger-modal-container {
-  text-align: center;
+    text-align: center;
 }
 
 .btn-camera {
@@ -162,5 +162,5 @@
 }
 
 .btn-camera span {
-  vertical-align: middle;
+    vertical-align: middle;
 }

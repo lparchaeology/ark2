@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK JSON Schema Boolean Property Normalizer
+ * ARK JSON Schema Boolean Property Normalizer.
  *
  * Copyright (C) 2018  L - P : Heritage LLP.
  *
@@ -36,7 +36,7 @@ class BooleanPropertyNormalizer extends AbstractPropertyNormalizer
 {
     public function supportsNormalization($attribute, $format = null)
     {
-        return ($attribute->dataclass()->datatype()->storageType() === 'boolean');
+        return $attribute->dataclass()->datatype()->storageType() === 'boolean';
     }
 
     protected function definition(Attribute $attribute)

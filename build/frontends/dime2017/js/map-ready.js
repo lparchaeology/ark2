@@ -3,9 +3,9 @@ $(document).ready(function () {
         window.map = initialiseMapView();
         getPointsFromTable();
         $(".dime-table").on('post-body.bs.table', function (e) {
-          window.selected = [];
-          window.mapcollection.clear();
-          getPointsFromTable();
+            window.selected = [];
+            window.mapcollection.clear();
+            getPointsFromTable();
         });
     }
 

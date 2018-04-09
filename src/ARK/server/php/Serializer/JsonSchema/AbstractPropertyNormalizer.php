@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK JSON Schema Abstract Property Normalizer
+ * ARK JSON Schema Abstract Property Normalizer.
  *
  * Copyright (C) 2018  L - P : Heritage LLP.
  *
@@ -47,7 +47,7 @@ abstract class AbstractPropertyNormalizer extends SerializerAwareNormalizer impl
 
     protected function pointer(/*string*/ $definition)
     {
-        return "#/definitions/".$definition;
+        return '#/definitions/'.$definition;
     }
 
     protected function reference(/*string*/ $definition)

@@ -29,10 +29,10 @@
 
 namespace ARK\Message;
 
-use ARK\Security\Actor;
 use ARK\ARK;
-use ARK\Model\LocalText;
 use ARK\Entity\Event;
+use ARK\Model\LocalText;
+use ARK\Security\Actor;
 
 class Notification extends Message
 {

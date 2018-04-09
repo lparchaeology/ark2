@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Item Repository
+ * ARK Item Repository.
  *
  * Copyright (C) 2018  L - P : Heritage LLP.
  *

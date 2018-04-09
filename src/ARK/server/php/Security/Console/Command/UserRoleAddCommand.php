@@ -29,13 +29,13 @@
 
 namespace ARK\Security\Console\Command;
 
-use ARK\Security\Actor;
 use ARK\ARK;
 use ARK\Console\Command\AbstractCommand;
 use ARK\ORM\ORM;
+use ARK\Security\Actor;
+use ARK\Security\Role;
 use ARK\Security\User;
 use ARK\Service;
-use ARK\Security\Role;
 
 class UserRoleAddCommand extends AbstractCommand
 {

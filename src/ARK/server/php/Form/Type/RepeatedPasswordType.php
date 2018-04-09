@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Repeated Password Form Type
+ * ARK Repeated Password Form Type.
  *
  * Copyright (C) 2018  L - P : Heritage LLP.
  *
@@ -27,6 +27,7 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
+
 namespace ARK\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
@@ -36,14 +37,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RepeatedPasswordType extends AbstractType
 {
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver) : void
     {
         $resolver->setDefaults([
             'type' => PasswordType::class,
             'invalid_message' => 'core.user.password.match',
-            'options' => array('attr' => array('class' => 'password-field')),
-            'first_options'  => array('label' => 'core.user.password.set'),
-            'second_options' => array('label' => 'core.user.password.repeat'),
+            'options' => ['attr' => ['class' => 'password-field']],
+            'first_options' => ['label' => 'core.user.password.set'],
+            'second_options' => ['label' => 'core.user.password.repeat'],
         ]);
     }
 

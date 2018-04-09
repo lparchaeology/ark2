@@ -34,8 +34,8 @@ use ARK\ORM\ORM;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Constraints\Image;
+use Symfony\Component\Validator\Validation;
 
 class FilePostController
 {
