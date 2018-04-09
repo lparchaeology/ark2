@@ -48,6 +48,7 @@ function messageFormSuccess(response) {
 
 var messageSelected = function (e) {
     e.preventDefault();
+    $('#message').clearForm();
     $('tr').removeClass('selected');
     var target = $(e.target).is('tr') ? $(e.target) : $(e.target).closest('tr');
     target.addClass('selected');
