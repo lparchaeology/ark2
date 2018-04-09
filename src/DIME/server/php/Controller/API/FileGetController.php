@@ -30,7 +30,6 @@
 namespace DIME\Controller\API;
 
 use ARK\File\File;
-use ARK\Http\Exception\ItemNotFoundHttpException;
 use ARK\Model\Fragment\ItemFragment;
 use ARK\ORM\ORM;
 use ARK\Service;
@@ -38,6 +37,7 @@ use League\Glide\Responses\SymfonyResponseFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class FileGetController
@@ -47,7 +47,7 @@ class FileGetController
         // TODO Wrap in a nice neat class or Service call
         $file = File::find($id);
         if (!$file) {
-            throw new ItemNotFoundHttpException('File', $id);
+            throw new NotFoundHttpException("File $id not found");
         }
         // DIME File Security
         // In DIME files do not exisit in their own right, they are an arefact of their owner, i.e. a Find.

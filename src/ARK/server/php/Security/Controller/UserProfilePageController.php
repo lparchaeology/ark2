@@ -29,13 +29,13 @@
 
 namespace ARK\Framework\Controller;
 
-use ARK\Security\Actor;
 use ARK\Framework\PageController;
-use ARK\Http\Exception\ItemNotFoundHttpException;
 use ARK\ORM\ORM;
+use ARK\Security\Actor;
 use ARK\Service;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserProfilePageController extends PageController
 {
@@ -43,7 +43,7 @@ class UserProfilePageController extends PageController
     {
         $id = $request->attributes->get('user');
         if (!$actor = ORM::find(Actor::class, $id)) {
-            throw new ItemNotFoundHttpException('Actor', $id);
+            throw new NotFoundHttpException("Actor $id not found");
         }
 
         $user = Service::security()->user();

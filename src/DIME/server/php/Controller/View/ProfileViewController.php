@@ -29,12 +29,12 @@
 
 namespace DIME\Controller\View;
 
-use ARK\Security\Actor;
-use ARK\Http\Exception\ItemNotFoundHttpException;
 use ARK\ORM\ORM;
+use ARK\Security\Actor;
 use DIME\DIME;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProfileViewController extends DimePageController
 {
@@ -49,7 +49,7 @@ class ProfileViewController extends DimePageController
     {
         $id = $request->attributes->get('id');
         if (!$actor = ORM::find(Actor::class, $id)) {
-            throw new ItemNotFoundHttpException('Actor', $id);
+            throw new NotFoundHttpException("Actor $id not found");
         }
         $data['actor'] = $actor;
         $items = DIME::getActorFinds($actor->id());

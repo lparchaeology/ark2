@@ -30,7 +30,6 @@
 
 namespace ARK\Http\Exception;
 
-use ARK\Error\Error;
 use Exception;
 
 class InternalServerHttpException extends HttpException

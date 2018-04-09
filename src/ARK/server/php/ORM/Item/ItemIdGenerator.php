@@ -31,19 +31,19 @@
 
 namespace ARK\ORM\Item;
 
-use ARK\Http\Exception\InternalServerHttpException;
 use ARK\Model\Item;
 use ARK\Service;
 use Doctrine\ORM\EntityManager as DoctrineEntityManager;
 use Doctrine\ORM\Id\AbstractIdGenerator;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ItemIdGenerator extends AbstractIdGenerator
 {
     public function generate(DoctrineEntityManager $em, $entity)
     {
         if (!$entity instanceof Item) {
-            throw new InternalServerHttpException(
-                'ORM_INVALID_ENTITY',
+            throw new HttpException(
+                500,
                 'Only objects of class Item can use the ItemSequenceGenerator'
             );
         }

@@ -29,9 +29,9 @@
 
 namespace ARK\Database;
 
-use ARK\Http\Exception\InternalServerHttpException;
 use Doctrine\DBAL\Connection as DBALConnection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
 
 class Connection extends DBALConnection
@@ -166,15 +166,16 @@ class Connection extends DBALConnection
                 return 1;
             } catch (Throwable $e) {
                 $this->rollback();
-                throw new InternalServerHttpException(
-                    'DB_SEQUENCE_CREATE',
-                    "Creating the index sequence for Module $module Parent $parent Sequence $sequence failed"
+                throw new HttpException(
+                    500,
+                    "Creating the index sequence for Module $module Parent $parent Sequence $sequence failed",
+                    $e
                 );
             }
         }
         if ($seq['max'] && $seq['idx'] >= $seq['max']) {
-            throw new InternalServerHttpException(
-                'DB_SEQUENCE_EXHASTED',
+            throw new HttpException(
+                500,
                 "The index sequence for Module $module Parent $parent Sequence $sequence has reached maximum"
             );
         }
@@ -207,8 +208,8 @@ class Connection extends DBALConnection
             return $seq['idx'] + 1;
         } catch (Throwable $e) {
             $this->data()->rollback();
-            throw new InternalServerHttpException(
-                'DB_SEQUENCE_INCREMENT',
+            throw new HttpException(
+                500,
                 "Incrementing the index sequence failed for Module $module Parent $parent Sequence $sequence"
             );
         }

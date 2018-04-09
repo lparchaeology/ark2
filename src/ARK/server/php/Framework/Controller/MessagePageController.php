@@ -30,10 +30,10 @@
 namespace ARK\Framework\Controller;
 
 use ARK\Framework\PageController;
-use ARK\Http\Exception\ItemNotFoundHttpException;
 use ARK\Message\Message;
 use ARK\ORM\ORM;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class MessagePageController extends PageController
 {
@@ -42,7 +42,7 @@ class MessagePageController extends PageController
         $id = $request->attributes->get('message');
         $data['message'] = ORM::find(Message::class, $id);
         if (!$data['message']) {
-            throw new ItemNotFoundHttpException('Message', $id);
+            throw new NotFoundHttpException("Message $id not found");
         }
         return $data;
     }

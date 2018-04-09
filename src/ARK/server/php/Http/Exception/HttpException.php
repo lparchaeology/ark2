@@ -30,7 +30,6 @@
 
 namespace ARK\Http\Exception;
 
-use ARK\Error\Error;
 use Symfony\Component\HttpKernel\Exception\HttpException as HttpKernelException;
 
 abstract class HttpException extends HttpKernelException

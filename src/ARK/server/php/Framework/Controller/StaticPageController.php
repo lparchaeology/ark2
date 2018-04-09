@@ -32,9 +32,9 @@ namespace ARK\Framework\Controller;
 use ARK\Entity\Page;
 use ARK\Framework\Controller;
 use ARK\Framework\PageController;
-use ARK\Http\Exception\ItemNotFoundHttpException;
 use ARK\ORM\ORM;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class StaticPageController extends PageController
 {
@@ -43,7 +43,7 @@ class StaticPageController extends PageController
         $route = $request->attributes->get('_route');
         $page = ORM::find(Page::class, $route);
         if (!$page) {
-            throw new ItemNotFoundHttpException('Page', $route);
+            throw new NotFoundHttpException("Page $id not found");
         }
         return $page;
     }

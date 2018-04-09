@@ -30,7 +30,6 @@
 namespace DIME\Controller\View;
 
 use ARK\ARK;
-use ARK\Http\Exception\ItemNotFoundHttpException;
 use ARK\Model\Fragment\StringFragment;
 use ARK\Model\Item;
 use ARK\Model\LocalText;
@@ -42,6 +41,7 @@ use DIME\DIME;
 use DIME\Entity\Find;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class FindViewController extends DimePageController
 {
@@ -50,7 +50,7 @@ class FindViewController extends DimePageController
         $id = $request->attributes->get('id');
         $find = ORM::find(Find::class, $id);
         if (!$find) {
-            throw new ItemNotFoundHttpException('Find', $id);
+            throw new NotFoundHttpException("Find $id not found");
         }
         $data['find'] = $find;
         $data['status'] = $find;

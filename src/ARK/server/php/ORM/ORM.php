@@ -29,13 +29,12 @@
 
 namespace ARK\ORM;
 
-use ARK\Error\Error;
-use ARK\Http\Exception\InternalServerHttpException;
 use ARK\Model\Schema\Module;
 use ARK\Service;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ORM
 {
@@ -55,10 +54,7 @@ class ORM
         }
         // TODO Proper error strategy?
         $class = (is_object($class) ? get_class($class) : $class);
-        throw new InternalServerHttpException(
-            'ENTITY_NOT_MANAGED',
-            "Entity $class is not managed by the ORM"
-        );
+        throw new HttpException(500, "Entity $class is not managed by the ORM");
     }
 
     public static function repository($class)

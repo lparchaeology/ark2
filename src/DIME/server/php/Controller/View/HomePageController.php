@@ -29,13 +29,13 @@
 
 namespace DIME\Controller\View;
 
-use ARK\Http\Exception\InternalServerHttpException;
 use ARK\Model\Fragment\ItemFragment;
 use ARK\ORM\ORM;
 use ARK\Service;
 use DIME\DIME;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class HomePageController extends DimePageController
 {
@@ -43,10 +43,7 @@ class HomePageController extends DimePageController
     {
         $actor = Service::workflow()->actor();
         if ($actor === null) {
-            throw new InternalServerHttpException(
-                'ACTOR_NOT_FOUND',
-                'No Actor was found connected to the current user!'
-            );
+            throw new HttpException(500, 'No Actor was found connected to the current user!');
         }
         $finder = ['module' => 'find', 'attribute' => 'finder', 'value' => $actor->id()];
 

@@ -29,7 +29,6 @@
 
 namespace ARK\View;
 
-use ARK\Error\Error;
 use ARK\File\File;
 use ARK\Framework\Application;
 use ARK\ORM\ORM;

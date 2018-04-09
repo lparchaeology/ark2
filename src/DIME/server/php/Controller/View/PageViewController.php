@@ -30,9 +30,9 @@
 namespace DIME\Controller\View;
 
 use ARK\Entity\Page;
-use ARK\Http\Exception\ItemNotFoundHttpException;
 use ARK\ORM\ORM;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PageViewController extends DimePageController
 {
@@ -41,7 +41,7 @@ class PageViewController extends DimePageController
         $route = $request->attributes->get('_route');
         $page = ORM::find(Page::class, $route);
         if (!$page) {
-            throw new ItemNotFoundHttpException('Page', $id);
+            throw new NotFoundHttpException("Page $id not found");
         }
         return $page;
     }
