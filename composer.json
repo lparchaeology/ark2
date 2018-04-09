@@ -112,7 +112,8 @@
         "h4cc/wkhtmltoimage-amd64": "^0.12.3",
         "guzzlehttp/guzzle": "^6.3",
         "phpdocumentor/type-resolver": "^0.4.0",
-        "sensiolabs/security-checker": "^4.1"
+        "sensiolabs/security-checker": "^4.1",
+        "symfony-cmf/routing": "^2.0"
     },
     "autoload": {
         "psr-4": {
