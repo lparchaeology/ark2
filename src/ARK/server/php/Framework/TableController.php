@@ -33,7 +33,7 @@ use ARK\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-abstract class FormController extends Controller
+abstract class TableController extends Controller
 {
     public function handleRequest(Request $request) : Response
     {
