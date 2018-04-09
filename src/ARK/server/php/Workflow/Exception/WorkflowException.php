@@ -29,8 +29,6 @@
 
 namespace ARK\Workflow\Exception;
 
-use ARK\Notice\NoticeException;
-
-class WorkflowException extends NoticeException
+class WorkflowException extends \Exception
 {
 }

@@ -41,9 +41,7 @@ use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
 use ARK\Security\Actor;
 use ARK\Vocabulary\Term;
-use ARK\Workflow\Exception\ActionConditionNotMetException;
-use ARK\Workflow\Exception\ActionNoAgencyException;
-use ARK\Workflow\Exception\ActionNotAllowedException;
+use ARK\Workflow\Exception\WorkflowException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -210,7 +208,7 @@ class Action
         //dump('ACTION : '.$this->action);
         if ($this->isAllowed($actor) === Allow::DENY) {
             //dump('Allowed = DENIED');
-            throw new ActionNotAllowedException();
+            throw new WorkflowException('core.workflow.exception.action.notallowed');
         }
         $hasReadPermission = false;
         if ($attribute) {
@@ -224,11 +222,11 @@ class Action
 
         if ($this->hasAgency($actor, $item) === Allow::DENY && !$hasReadPermission) {
             //dump('Agency = DENIED');
-            throw new ActionNoAgencyException();
+            throw new WorkflowException('core.workflow.exception.action.noagency');
         }
         if (!$this->meetsConditions($item)) {
             //dump('Condition = FAILED');
-            throw new ActionConditionNotMetException();
+            throw new WorkflowException('core.workflow.exception.condition.notmet');
         }
         return true;
     }
