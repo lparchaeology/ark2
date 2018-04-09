@@ -1,8 +1,0 @@
-// Build the Theme CSS from Sass source
-
-// Import any custom Bootstrap variable overrides
-$FontPathOpenSans: "../fonts/opensans";
-@import 'open-sans.scss';
-
-// Import Bootstrap (vendor or custom)
-@import 'vendor/bootstrap3/bootstrap';
