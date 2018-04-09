@@ -122,8 +122,7 @@
     "autoload": {
         "psr-4": {
             "ARK\\": "src/ARK/server/php/",
-            "DIME\\": "src/DIME/server/php/",
-            "Entity\\": "src/Generated/php/Entity/"
+            "DIME\\": "src/DIME/server/php/"
         }
     },
     "extra": {
