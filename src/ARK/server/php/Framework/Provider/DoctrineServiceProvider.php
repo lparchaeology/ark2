@@ -336,11 +336,6 @@ class DoctrineServiceProvider implements ServiceProviderInterface
                     $srcDir.'/Security/System.php',
                 ],
             ],
-            [
-                'type' => 'php',
-                'namespace' => 'Entity',
-                'path' => $container['dir.install'].'/src/Generated/php/Entity',
-            ],
         ]);
 
         $this->setMappings($container, 'spatial', [
