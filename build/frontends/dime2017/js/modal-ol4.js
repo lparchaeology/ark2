@@ -9,9 +9,10 @@ function initialiseMapModal() {
 
     var geolocation = new ol.Geolocation({
         // take the projection to use from the map's view
-        projection: $('#mapmodal').data('map').getView().getProjection()
-    });
-    console.log(geolocation);
+        projection: $('#mapmodal').data('map').getView().getProjection(),
+        //trackingOptions : {timeout: 1000, maximumAge: 0, enableHighAccuracy:true}
+      });
+      console.log(geolocation);
 
     $('#mapmodal').data('mapPickSource').clear();
 
@@ -27,21 +28,24 @@ function initialiseMapModal() {
 
         mapPickSource.clear();
         var coordinates = geolocation.getPosition();
-        positionFeature.setGeometry(coordinates
-            ? new ol.geom.Point(coordinates) : null);
 
-        mapPickSource.addFeature(positionFeature);
-        mapView = $('#mapmodal').data('map').getView();
-        mapView.setCenter(coordinates);
-        mapView.setZoom(14);
-        $('#mapmodal').data('positionFeature', positionFeature);
+        if (geolocation.getAccuracy() < 151) {
+          positionFeature.setGeometry(coordinates ?
+          new ol.geom.Point(coordinates) : null);
 
-        confirmLocation = $('#mapmodal').data('confirmLocation');
+          mapPickSource.addFeature(positionFeature);
+          mapView = $('#mapmodal').data('map').getView();
+          mapView.setCenter(coordinates);
+          mapView.setZoom(14);
+          $('#mapmodal').data('positionFeature', positionFeature);
 
-        confirmLocation($('#mapmodal').data('positionFeature'));
+          confirmLocation = $('#mapmodal').data('confirmLocation');
 
-        geolocation.setTracking(false);
-    });
+          confirmLocation($('#mapmodal').data('positionFeature'));
+
+          geolocation.setTracking(false);
+        }
+      });
 
     $('#getuserlocation').on('click', function (e) {
         e.preventDefault();
@@ -49,8 +53,10 @@ function initialiseMapModal() {
         geolocation.changed();
     });
 
-    $('#mappickclose').on('click', function (e) { e.preventDefault();
-        $("#mapmodal").modal('hide'); });
+    $('#mappickclose').on('click', function (e) {
+        e.preventDefault();
+        $("#mapmodal").modal('hide');
+    });
 
     $("#map-modal").on("hidden.bs.modal", function () {
         // potentially remove the event listeners when the dialog is dismissed

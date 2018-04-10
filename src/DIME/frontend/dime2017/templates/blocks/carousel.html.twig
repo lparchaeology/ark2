@@ -1,0 +1,86 @@
+{% block carousel -%}
+
+{% set items = [] %}
+
+{% for key, find in data %}
+    {% if find.value('image') is not empty %}
+        {% set item = {
+            'key': key,
+            'server': 'file',
+            'image': find.value('image')[0].id,
+            'path': path('dime.finds.view', {'id': find.id}),
+            'find': find
+            }
+        %}
+        {% set items = items|merge([item]) %}
+    {% endif %}
+{% endfor %}
+
+{% if items is empty %}
+    {% for seq in [1, 2, 3] %}
+        {% set item = {
+            'key': seq - 1,
+            'server': 'brand',
+            'image': 'sample' ~ seq ~ '.jpg',
+            'path': '',
+            'find': null
+            }
+        %}
+        {% set items = items|merge([item]) %}
+    {% endfor %}
+{% endif %}
+
+<div id='carousel-custom' class='carousel slide' data-ride='carousel'>
+     <div class='carousel-outer'>
+        <!-- Wrapper for slides -->
+        <div class='carousel-inner'>
+        {% set itemClass = 'item active' %}
+        {% for item in items %}
+            <div class="{{ itemClass }}">
+                {% if item.find -%}
+                    <a href="{{ item.path }}">
+                {%- endif -%}
+                <img src="{{ imagePath(item.server, item.image, {'p': 'preview'}) }}" alt="" />
+                {%- if item.find -%}
+                    </a>
+                {%- endif %}
+            </div>
+            {% set itemClass = 'item' %}
+        {% endfor %}
+        </div>
+
+        <!-- Controls -->
+        <a class='left carousel-control' href='#carousel-custom' data-slide='prev'>
+            <span class='glyphicon glyphicon-chevron-left'></span>
+        </a>
+        <a class='right carousel-control' href='#carousel-custom' data-slide='next'>
+            <span class='glyphicon glyphicon-chevron-right'></span>
+        </a>
+    </div>
+
+    <!-- Indicators -->
+    <ol class='carousel-indicators mCustomScrollbar'>
+        {% set itemClass = 'active' %}
+        {% for item in items %}
+            <li data-target='#carousel-custom' data-slide-to='{{ item.key }}' class="{{ itemClass }}">
+                <img src="{{ imagePath(item.server, item.image, {'p': 'thumb'}) }}" alt='' />
+            </li>
+            {% set itemClass = '' %}
+        {% endfor %}
+    </ol>
+</div>
+
+<div class="carouselextratext">
+
+{% for item in items %}
+    <div class="carouselextratext_{{ item.key }}">
+        {% for child in children %}
+            {% set child = child | merge({'data' : item.find }) %}
+            <div class="homefield">{{ child.element.renderView(child) }}</div>
+        {% endfor %}
+    </div>
+{% endfor %}
+
+</div>
+
+{%- endblock carousel %}

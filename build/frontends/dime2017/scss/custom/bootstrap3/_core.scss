@@ -115,6 +115,12 @@ body {
     text-align: center;
 }
 
+@media (max-width: $break-large-tablet) {
+  .dime-banner a.loginbutton {
+    display: none;
+  }
+}
+
 @media (max-width: 767px) {
     .navbar {
         max-height: 12em;

@@ -249,6 +249,12 @@ function initialisePickMap(target) {
         $.post(path + 'api/geo/find', wkt, function (result) {
             if (result.municipality === null || result.museum === null || isNaN(result.x) || isNaN(result.y)) {
                 bootbox.alert(Translator.trans('dime.mappick.invalidpointlocation.default'));
+                try {
+                  mapPickSource.clear();
+                  console.log("try to removeFeature");
+                } catch (err) {
+                  throw err;
+                }
                 setMap(getDecimal());
                 toggleSubmit();
             } else {

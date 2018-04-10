@@ -88,19 +88,21 @@ var initTimeline = function () {
             });
             labelinput.on("blur", function () {
                 timeid = $(this).attr('id').split('-')[0];
-                if (timeid === 'start') {
-                    var year = getCustomYear(timeline, 'end');
-                    if ($(this).val() > year) {
-                        container.makeCustomTime($(this).val(), 'end', timeline);
-                        container.makeCustomTime(year, 'start', timeline);
-                    } else {
-                        container.makeCustomTime($(this).val(), timeid, timeline);
-                    }
+                var endyear = getCustomYear(timeline, 'end');
+                var startyear = getCustomYear(timeline, 'start');
+                // if we edited the start
+                if (timeid === 'start' ){
+                  // compare to current end
+                  if ($(this).val() > endyear){
+                    container.makeCustomTime($(this).val(), 'end', timeline);
+                    container.makeCustomTime(endyear, 'start', timeline);
+                  } else {
+                    container.makeCustomTime($(this).val(), timeid, timeline);
+                  }
                 } else {
-                    var year = getCustomYear(timeline, 'end');
-                    if ($(this).val() < year) {
+                    if ($(this).val() < startyear) {
                         container.makeCustomTime($(this).val(), 'start', timeline);
-                        container.makeCustomTime(year, 'end', timeline);
+                        container.makeCustomTime(startyear, 'end', timeline);
                     } else {
                         container.makeCustomTime($(this).val(), timeid, timeline);
                     }

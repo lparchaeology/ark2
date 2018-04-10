@@ -28,16 +28,16 @@
 }
 @media (max-width: $break-large-tablet) {
     .navbar {
-        height: 138px;
+        height: 88px;
+    }
+
+    .dime-nav {
+        top: 0;
     }
 }
 @media (max-width: $break-small) {
     .navbar {
         height: 250px;
-    }
-
-    .dime-nav {
-        top: 0;
     }
 }
 

@@ -79,7 +79,8 @@
                 {% if item.find.property is defined %}
                     {% set val = item.find.property(child.state.name) %}
                 {% else %}
-                    {% set val = attribute(item.find, child.state.name) %}
+                    {#% set val = attribute(item.find, child.state.name) %#}
+                    {% set val = "" %}
                 {% endif %}
                 {% set child = child | merge({'data' : val }) %}
                 <div class="homefield">{{ child.element.renderView(child) | raw }}</div>
