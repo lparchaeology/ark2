@@ -164,6 +164,18 @@ function initialisePickMap(target) {
         mapPickMap.getView().setZoom(12);
     }
 
+    function toggleSubmit() {
+        if ($('#find_municipality_term').val() === ''
+            || $('#find_museum_id').val() === ''
+            || $('#find_municipality_term').val() === Translator.trans('core.placeholder')
+            || $('#find_museum_id').val() === Translator.trans('core.placeholder')
+        ) {
+            $('#find_save').attr("disabled", true);
+        } else {
+            $('#find_save').attr("disabled", false);
+        }
+    }
+
     function setDecimal(decimal) {
         if (isNaN(decimal.easting) || isNaN(decimal.northing)) {
             return;
@@ -198,6 +210,7 @@ function initialisePickMap(target) {
         setUtm(decimal);
         setMunicipality(municipality);
         setMuseum(museum);
+        toggleSubmit();
     }
 
     function clearMap() {
@@ -228,6 +241,7 @@ function initialisePickMap(target) {
         clearUtm();
         clearMunicipality();
         clearMuseum();
+        toggleSubmit();
     }
 
     function updateLocation(decimal) {
@@ -236,6 +250,7 @@ function initialisePickMap(target) {
             if (result.municipality === null || result.museum === null || isNaN(result.x) || isNaN(result.y)) {
                 bootbox.alert(Translator.trans('dime.mappick.invalidpointlocation.default'));
                 setMap(getDecimal());
+                toggleSubmit();
             } else {
                 var decimal = makeDecimalPoint(result.x, result.y);
                 clearLocation();
@@ -257,6 +272,7 @@ function initialisePickMap(target) {
             } else {
                 setMap(getDecimal());
             }
+            toggleSubmit();
         });
     };
 
@@ -301,6 +317,7 @@ function initialisePickMap(target) {
     var decimal = getDecimal();
     setMap(decimal);
     setUtm(decimal);
+    toggleSubmit();
 
     return mapPickMap;
 }
