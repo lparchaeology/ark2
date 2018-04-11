@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 11, 2018 at 12:26 PM
+-- Generation Time: Apr 11, 2018 at 12:36 PM
 -- Server version: 10.2.14-MariaDB
 -- PHP Version: 7.1.16
 
@@ -7547,39 +7547,39 @@ CREATE TABLE `ark_view_page` (
 --
 
 INSERT INTO `ark_view_page` (`element`, `mode`, `header`, `sidebar`, `content`, `footer`, `visibility`, `view_permission`, `edit_permission`, `keyword`, `package`, `absolute_url`, `script`, `stylesheet`, `template`) VALUES
-('core_page_admin', 'edit', 'core_site_header', 'core_site_sidebar', 'core_admin_page', 'core_site_footer', 'restricted', 'core.admin', 'core.admin', NULL, NULL, NULL, 'ark_default', NULL, NULL),
-('core_page_admin_user', 'edit', 'core_site_header', 'core_site_sidebar', 'core_admin_user_page', 'core_site_footer', 'restricted', 'core.admin.user', 'core.admin.user', NULL, NULL, NULL, 'ark_default', NULL, NULL),
-('core_page_home', 'view', 'core_site_header', 'core_site_sidebar', 'core_home_page', 'core_site_footer', 'public', NULL, NULL, NULL, NULL, NULL, 'ark_default', NULL, NULL),
-('core_page_message', 'edit', 'core_site_header', 'core_site_sidebar', 'core_message_page', 'core_site_footer', 'restricted', 'core.message.read', 'core.message.update', NULL, NULL, NULL, 'ark_default', NULL, NULL),
-('core_page_profile', 'view', 'core_site_header', 'core_site_sidebar', 'core_profile_page', 'core_site_footer', 'public', NULL, NULL, NULL, NULL, NULL, 'ark_default', NULL, NULL),
-('core_page_profiles', 'view', 'core_site_header', 'core_site_sidebar', 'core_profiles_page', 'core_site_footer', 'public', NULL, NULL, NULL, NULL, NULL, 'ark_default', NULL, NULL),
-('core_page_user_confirm', 'edit', 'core_site_header', 'core_site_sidebar', NULL, 'core_site_footer', 'public', NULL, NULL, NULL, NULL, NULL, 'ark_default', NULL, NULL),
-('core_page_user_login', 'edit', 'core_site_header', 'core_site_sidebar', 'core_user_login', 'core_site_footer', 'public', NULL, NULL, NULL, NULL, NULL, 'ark_default', NULL, NULL),
-('core_page_user_profile', 'edit', 'core_site_header', 'core_site_sidebar', 'core_user_profile', 'core_site_footer', 'restricted', 'core.actor.read', 'core.actor.update', NULL, NULL, NULL, 'ark_default', NULL, NULL),
-('core_page_user_register', 'edit', 'core_site_header', 'core_site_sidebar', 'core_user_register', 'core_site_footer', 'public', NULL, NULL, NULL, NULL, NULL, 'ark_default', NULL, NULL),
-('core_page_user_reset', 'edit', 'core_site_header', 'core_site_sidebar', 'core_user_reset', 'core_site_footer', 'public', NULL, NULL, NULL, NULL, NULL, 'ark_default', NULL, NULL),
-('dime_page_admin', 'edit', 'dime_site_header', 'dime_site_sidebar', 'dime_admin_page', 'dime_site_footer', 'restricted', 'core.admin', 'core.admin', NULL, NULL, NULL, 'ark_default', NULL, NULL),
-('dime_page_admin_museum', 'edit', 'dime_site_header', 'dime_site_sidebar', 'dime_admin_museum_page', 'dime_site_footer', 'restricted', 'core.admin.user', 'core.admin.user', NULL, NULL, NULL, 'ark_default', NULL, NULL),
-('dime_page_admin_register', 'edit', 'dime_site_header', 'dime_site_sidebar', 'dime_admin_register_page', 'dime_site_footer', 'restricted', 'core.admin.user', 'core.admin.user', NULL, NULL, NULL, 'ark_default', NULL, NULL),
-('dime_page_admin_user', 'edit', 'dime_site_header', 'dime_site_sidebar', 'dime_admin_user_page', 'dime_site_footer', 'restricted', 'core.admin.user', 'core.admin.user', NULL, NULL, NULL, 'ark_default', NULL, NULL),
-('dime_page_claim', 'edit', 'dime_site_header', 'dime_site_sidebar', 'dime_treasure_header', 'dime_site_footer', 'restricted', 'dime.find.treasure.claim', 'dime.find.treasure.claim', NULL, NULL, NULL, 'ark_default', NULL, NULL),
-('dime_page_find', 'edit', 'dime_site_header', 'dime_site_sidebar', 'dime_find_view', 'dime_site_footer', 'restricted', 'dime.find.read', 'dime.find.update', NULL, NULL, NULL, 'ark_map', NULL, 'pages/map.html.twig'),
-('dime_page_find_add', 'edit', 'dime_site_header', 'dime_site_sidebar', 'dime_find_add', 'dime_site_footer', 'restricted', 'dime.find.create', 'dime.find.create', NULL, NULL, NULL, 'ark_map', NULL, 'pages/map.html.twig'),
-('dime_page_find_list', 'edit', 'dime_site_header', 'dime_site_sidebar', 'dime_find_search', 'dime_site_footer', 'public', 'dime.find.read', 'dime.find.update', NULL, NULL, NULL, 'ark_map', NULL, 'pages/map.html.twig'),
-('dime_page_find_register', 'edit', 'dime_site_header', 'dime_site_sidebar', 'dime_find_register_page', 'dime_site_footer', 'restricted', 'dime.find.create', 'dime.find.create', NULL, NULL, NULL, 'ark_map', NULL, 'pages/map.html.twig'),
-('dime_page_front', 'view', 'dime_site_header', 'dime_site_sidebar', 'dime_front_page', 'dime_site_footer', 'public', NULL, NULL, NULL, NULL, NULL, 'ark_default', NULL, NULL),
-('dime_page_home', 'view', 'dime_site_header', 'dime_site_sidebar', 'dime_home_page', 'dime_site_footer', 'restricted', 'dime.find.home', NULL, NULL, NULL, NULL, 'ark_default', NULL, NULL),
-('dime_page_home_find_list', 'edit', 'dime_site_header', 'dime_site_sidebar', 'dime_home_find_search', 'dime_site_footer', 'restricted', 'dime.find.home', 'dime.find.update', NULL, NULL, NULL, 'ark_map', NULL, 'pages/map.html.twig'),
-('dime_page_message', 'view', 'dime_site_header', 'dime_site_sidebar', 'dime_message_page', 'dime_site_footer', 'restricted', 'core.message.read', NULL, NULL, NULL, NULL, 'ark_default', NULL, NULL),
-('dime_page_news', 'view', 'dime_site_header', 'dime_site_sidebar', 'dime_find_news', 'dime_site_footer', 'public', NULL, NULL, NULL, NULL, NULL, 'ark_default', NULL, NULL),
-('dime_page_profile', 'view', 'dime_site_header', 'dime_site_sidebar', 'dime_profile_page', 'dime_site_footer', 'public', NULL, NULL, NULL, NULL, NULL, 'ark_default', NULL, NULL),
-('dime_page_profile_list', 'view', 'dime_site_header', 'dime_site_sidebar', 'dime_profile_list_page', 'dime_site_footer', 'public', NULL, NULL, NULL, NULL, NULL, 'ark_default', NULL, NULL),
-('dime_page_static', 'edit', 'dime_site_header', 'dime_site_sidebar', NULL, 'dime_site_footer', 'public', 'core.page.read', 'core.page.update', NULL, NULL, NULL, 'ark_static', 'ark_static', 'pages/static.html.twig'),
-('dime_page_user_confirm', 'edit', 'dime_site_header', 'dime_site_sidebar', NULL, 'dime_site_footer', 'public', NULL, NULL, NULL, NULL, NULL, 'ark_default', NULL, NULL),
-('dime_page_user_login', 'edit', 'dime_site_header', 'dime_site_sidebar', 'core_user_login', 'dime_site_footer', 'public', NULL, NULL, NULL, NULL, NULL, 'ark_default', NULL, NULL),
-('dime_page_user_profile', 'edit', 'dime_site_header', 'dime_site_sidebar', 'dime_user_profile', 'dime_site_footer', 'restricted', 'core.actor.read', 'core.actor.update', NULL, NULL, NULL, 'ark_default', NULL, NULL),
-('dime_page_user_register', 'edit', 'dime_site_header', 'dime_site_sidebar', 'dime_user_register', 'dime_site_footer', 'public', NULL, NULL, NULL, NULL, NULL, 'ark_default', NULL, NULL),
-('dime_page_user_reset', 'edit', 'dime_site_header', 'dime_site_sidebar', 'core_user_reset', 'dime_site_footer', 'public', NULL, NULL, NULL, NULL, NULL, 'ark_default', NULL, NULL);
+('core_page_admin', 'edit', 'core_site_header', 'core_site_sidebar', 'core_admin_page', 'core_site_footer', 'restricted', 'core.admin', 'core.admin', NULL, NULL, NULL, 'dime_default', 'dime_default', NULL),
+('core_page_admin_user', 'edit', 'core_site_header', 'core_site_sidebar', 'core_admin_user_page', 'core_site_footer', 'restricted', 'core.admin.user', 'core.admin.user', NULL, NULL, NULL, 'dime_default', 'dime_default', NULL),
+('core_page_home', 'view', 'core_site_header', 'core_site_sidebar', 'core_home_page', 'core_site_footer', 'public', NULL, NULL, NULL, NULL, NULL, 'dime_default', 'dime_default', NULL),
+('core_page_message', 'edit', 'core_site_header', 'core_site_sidebar', 'core_message_page', 'core_site_footer', 'restricted', 'core.message.read', 'core.message.update', NULL, NULL, NULL, 'dime_default', 'dime_default', NULL),
+('core_page_profile', 'view', 'core_site_header', 'core_site_sidebar', 'core_profile_page', 'core_site_footer', 'public', NULL, NULL, NULL, NULL, NULL, 'dime_default', 'dime_default', NULL),
+('core_page_profiles', 'view', 'core_site_header', 'core_site_sidebar', 'core_profiles_page', 'core_site_footer', 'public', NULL, NULL, NULL, NULL, NULL, 'dime_default', 'dime_default', NULL),
+('core_page_user_confirm', 'edit', 'core_site_header', 'core_site_sidebar', NULL, 'core_site_footer', 'public', NULL, NULL, NULL, NULL, NULL, 'dime_default', 'dime_default', NULL),
+('core_page_user_login', 'edit', 'core_site_header', 'core_site_sidebar', 'core_user_login', 'core_site_footer', 'public', NULL, NULL, NULL, NULL, NULL, 'dime_default', 'dime_default', NULL),
+('core_page_user_profile', 'edit', 'core_site_header', 'core_site_sidebar', 'core_user_profile', 'core_site_footer', 'restricted', 'core.actor.read', 'core.actor.update', NULL, NULL, NULL, 'dime_default', 'dime_default', NULL),
+('core_page_user_register', 'edit', 'core_site_header', 'core_site_sidebar', 'core_user_register', 'core_site_footer', 'public', NULL, NULL, NULL, NULL, NULL, 'dime_default', 'dime_default', NULL),
+('core_page_user_reset', 'edit', 'core_site_header', 'core_site_sidebar', 'core_user_reset', 'core_site_footer', 'public', NULL, NULL, NULL, NULL, NULL, 'dime_default', 'dime_default', NULL),
+('dime_page_admin', 'edit', 'dime_site_header', 'dime_site_sidebar', 'dime_admin_page', 'dime_site_footer', 'restricted', 'core.admin', 'core.admin', NULL, NULL, NULL, 'dime_default', 'dime_default', NULL),
+('dime_page_admin_museum', 'edit', 'dime_site_header', 'dime_site_sidebar', 'dime_admin_museum_page', 'dime_site_footer', 'restricted', 'core.admin.user', 'core.admin.user', NULL, NULL, NULL, 'dime_default', 'dime_default', NULL),
+('dime_page_admin_register', 'edit', 'dime_site_header', 'dime_site_sidebar', 'dime_admin_register_page', 'dime_site_footer', 'restricted', 'core.admin.user', 'core.admin.user', NULL, NULL, NULL, 'dime_default', 'dime_default', NULL),
+('dime_page_admin_user', 'edit', 'dime_site_header', 'dime_site_sidebar', 'dime_admin_user_page', 'dime_site_footer', 'restricted', 'core.admin.user', 'core.admin.user', NULL, NULL, NULL, 'dime_default', 'dime_default', NULL),
+('dime_page_claim', 'edit', 'dime_site_header', 'dime_site_sidebar', 'dime_treasure_header', 'dime_site_footer', 'restricted', 'dime.find.treasure.claim', 'dime.find.treasure.claim', NULL, NULL, NULL, 'dime_default', 'dime_default', NULL),
+('dime_page_find', 'edit', 'dime_site_header', 'dime_site_sidebar', 'dime_find_view', 'dime_site_footer', 'restricted', 'dime.find.read', 'dime.find.update', NULL, NULL, NULL, 'dime_map', 'dime_map', 'pages/map.html.twig'),
+('dime_page_find_add', 'edit', 'dime_site_header', 'dime_site_sidebar', 'dime_find_add', 'dime_site_footer', 'restricted', 'dime.find.create', 'dime.find.create', NULL, NULL, NULL, 'dime_map', 'dime_map', 'pages/map.html.twig'),
+('dime_page_find_list', 'edit', 'dime_site_header', 'dime_site_sidebar', 'dime_find_search', 'dime_site_footer', 'public', 'dime.find.read', 'dime.find.update', NULL, NULL, NULL, 'dime_map', 'dime_map', 'pages/map.html.twig'),
+('dime_page_find_register', 'edit', 'dime_site_header', 'dime_site_sidebar', 'dime_find_register_page', 'dime_site_footer', 'restricted', 'dime.find.create', 'dime.find.create', NULL, NULL, NULL, 'dime_map', 'dime_map', 'pages/map.html.twig'),
+('dime_page_front', 'view', 'dime_site_header', 'dime_site_sidebar', 'dime_front_page', 'dime_site_footer', 'public', NULL, NULL, NULL, NULL, NULL, 'dime_default', 'dime_default', NULL),
+('dime_page_home', 'view', 'dime_site_header', 'dime_site_sidebar', 'dime_home_page', 'dime_site_footer', 'restricted', 'dime.find.home', NULL, NULL, NULL, NULL, 'dime_default', 'dime_default', NULL),
+('dime_page_home_find_list', 'edit', 'dime_site_header', 'dime_site_sidebar', 'dime_home_find_search', 'dime_site_footer', 'restricted', 'dime.find.home', 'dime.find.update', NULL, NULL, NULL, 'dime_map', 'dime_map', 'pages/map.html.twig'),
+('dime_page_message', 'view', 'dime_site_header', 'dime_site_sidebar', 'dime_message_page', 'dime_site_footer', 'restricted', 'core.message.read', NULL, NULL, NULL, NULL, 'dime_default', 'dime_default', NULL),
+('dime_page_news', 'view', 'dime_site_header', 'dime_site_sidebar', 'dime_find_news', 'dime_site_footer', 'public', NULL, NULL, NULL, NULL, NULL, 'dime_default', 'dime_default', NULL),
+('dime_page_profile', 'view', 'dime_site_header', 'dime_site_sidebar', 'dime_profile_page', 'dime_site_footer', 'public', NULL, NULL, NULL, NULL, NULL, 'dime_default', 'dime_default', NULL),
+('dime_page_profile_list', 'view', 'dime_site_header', 'dime_site_sidebar', 'dime_profile_list_page', 'dime_site_footer', 'public', NULL, NULL, NULL, NULL, NULL, 'dime_default', 'dime_default', NULL),
+('dime_page_static', 'edit', 'dime_site_header', 'dime_site_sidebar', NULL, 'dime_site_footer', 'public', 'core.page.read', 'core.page.update', NULL, NULL, NULL, 'dime_static', 'dime_static', 'pages/static.html.twig'),
+('dime_page_user_confirm', 'edit', 'dime_site_header', 'dime_site_sidebar', NULL, 'dime_site_footer', 'public', NULL, NULL, NULL, NULL, NULL, 'dime_default', 'dime_default', NULL),
+('dime_page_user_login', 'edit', 'dime_site_header', 'dime_site_sidebar', 'core_user_login', 'dime_site_footer', 'public', NULL, NULL, NULL, NULL, NULL, 'dime_default', 'dime_default', NULL),
+('dime_page_user_profile', 'edit', 'dime_site_header', 'dime_site_sidebar', 'dime_user_profile', 'dime_site_footer', 'restricted', 'core.actor.read', 'core.actor.update', NULL, NULL, NULL, 'dime_default', 'dime_default', NULL),
+('dime_page_user_register', 'edit', 'dime_site_header', 'dime_site_sidebar', 'dime_user_register', 'dime_site_footer', 'public', NULL, NULL, NULL, NULL, NULL, 'dime_default', 'dime_default', NULL),
+('dime_page_user_reset', 'edit', 'dime_site_header', 'dime_site_sidebar', 'core_user_reset', 'dime_site_footer', 'public', NULL, NULL, NULL, NULL, NULL, 'dime_default', 'dime_default', NULL);
 
 -- --------------------------------------------------------
 
