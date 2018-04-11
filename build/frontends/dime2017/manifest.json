@@ -120,8 +120,7 @@
                     "js/admin-users-ready.js",
                     "js/classification-ready.js",
                     "js/messages-ready.js",
-                    "js/notifications-ready.js",
-                    "js/table-ready.js"
+                    "js/notifications-ready.js"
                 ]
             },
             "ark-map": {

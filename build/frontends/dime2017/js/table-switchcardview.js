@@ -272,8 +272,6 @@
 
         $(document).ready(function () {
 
-
-            console.log($('#map').length);
             if ($('#map').length) {
                 window.tableclick = mapclick;
             } else {
