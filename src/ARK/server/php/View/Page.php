@@ -47,6 +47,10 @@ class Page extends Element
     protected $sidebar;
     protected $content;
     protected $footer;
+    protected $package = 'frontend';
+    protected $absoluteUrl = false;
+    protected $script;
+    protected $stylesheet;
 
     public function visibility() : Term
     {
@@ -84,6 +88,26 @@ class Page extends Element
     public function footer() : ?Element
     {
         return $this->footer;
+    }
+
+    public function assetPackage() : string
+    {
+        return $this->package ?? 'frontend';
+    }
+
+    public function useAbsoluteAssetUrls() : string
+    {
+        return $this->absoluteUrl ?? false;
+    }
+
+    public function script() : string
+    {
+        return $this->script ?? $this->id();
+    }
+
+    public function stylesheet() : string
+    {
+        return $this->stylesheet ?? $this->id();
     }
 
     public function pageMode(Actor $actor) : string
@@ -142,6 +166,10 @@ class Page extends Element
         $builder->addStringField('mode', 10);
         $builder->addStringField('visibility', 30);
         KeywordTrait::buildKeywordMetadata($builder);
+        $builder->addStringField('package', 30);
+        $builder->addMappedField('absolute_url', 'absoluteUrl');
+        $builder->addStringField('script', 30);
+        $builder->addStringField('stylesheet', 30);
         $builder->addStringField('template', 100);
 
         // Associations
