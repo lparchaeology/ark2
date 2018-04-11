@@ -167,7 +167,7 @@ class Page extends Element
         $builder->addStringField('visibility', 30);
         KeywordTrait::buildKeywordMetadata($builder);
         $builder->addStringField('package', 30);
-        $builder->addMappedField('absolute_url', 'absoluteUrl');
+        $builder->addMappedField('absolute_url', 'absoluteUrl', 'boolean');
         $builder->addStringField('script', 30);
         $builder->addStringField('stylesheet', 30);
         $builder->addStringField('template', 100);
