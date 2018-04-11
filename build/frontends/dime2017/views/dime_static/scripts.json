@@ -1,0 +1,15 @@
+{
+    "vendor": [
+        "jquery/dist/jquery.js",
+        "bazinga-translator/js/translator.js",
+        "bootstrap-sass/assets/javascripts/bootstrap.js",
+        "bootbox/bootbox.js",
+        "summernote/dist/summernote.js",
+        "summernote/dist/lang/summernote-da-DK.js"
+    ],
+    "core": [
+        "js/pageedit.js",
+        "js/routing.js"
+    ],
+    "custom": []
+}

@@ -1,0 +1,21 @@
+{
+    "streams": [{
+            "stream": "bootstrap",
+            "vendor": [],
+            "core": [],
+            "custom": [
+                "scss/vendor.scss"
+            ]
+        },
+        {
+            "stream": "main",
+            "vendor": [
+                "summernote/dist/summernote.css"
+            ],
+            "core": [
+                "scss/vendor/summernote.scss"
+            ],
+            "custom": []
+        }
+    ]
+}
