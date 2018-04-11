@@ -67,7 +67,7 @@ class AdminUserController extends DimePageController
 
         $data['actor'] = null;
         $data['user'] = null;
-        $data['roles'] = null;
+        $data['actor_role'] = [];
         return $data;
     }
 
@@ -77,14 +77,6 @@ class AdminUserController extends DimePageController
         $query = $request->query->all();
 
         $state['image'] = 'avatar';
-
-        $select['choices'] = ORM::findAll(Museum::class);
-        $select['choice_value'] = 'id';
-        $select['choice_name'] = 'id';
-        $select['choice_label'] = 'fullname';
-        $select['multiple'] = false;
-        $select['placeholder'] = 'core.placeholder';
-        $state['select']['museum'] = $select;
 
         $status = $query['status'] ?? null;
         $actor = $data['actors']['items']->first();

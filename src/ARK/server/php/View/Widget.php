@@ -86,8 +86,9 @@ class Widget extends Element
         if (is_iterable($data)) {
             $data = $data[$name] ?? $data[$this->name] ?? $data[$this->id()] ?? null;
         }
-        if ($data === null && $state['vocabulary']) {
-            $data = $state['required'] ? $state['vocabulary']->defaultTerm() : null;
+        if ($data === null && $state['vocabulary'] && $state['required']) {
+            $default = $state['vocabulary']->defaultTerm();
+            $data = $state['multiple'] ? [$default] : $default;
         }
         if ($state['sanitise'] === 'static') {
             $data = $state['keyword'];

@@ -34,6 +34,7 @@ use ARK\Model\Item;
 use ARK\ORM\ORM;
 use ARK\Security\Actor;
 use ARK\Security\User;
+use ARK\Vocabulary\Vocabulary;
 use DIME\DIME;
 use DIME\Entity\Museum;
 use Symfony\Component\Form\Form;
@@ -43,22 +44,27 @@ class ActorRoleController extends FormController
 {
     public function buildData(Request $request)
     {
-        $actor = $request->attributes->get('id');
-        $actor = ORM::find(Actor::class, $actor);
-        $data['roles'] = $actor->roles();
+        $actor = Actor::find($request->attributes->get('id'));
+        $data['actor_role']['actor'] = $actor;
+        $role =  $actor->roles()->first();
+        if ($role) {
+            $role = Vocabulary::findTerm('dime.workflow.role', $role->role()->id());
+        }
+        $data['actor_role']['role'] = $role;
+        $data['actor_role']['actors'] = $actor->agencies();
         return $data;
     }
 
     public function buildState(Request $request, $data) : iterable
     {
         $state = parent::buildState($request, $data);
-        $select['choices'] = ORM::findAll(Museum::class);
+        $select['choices'] = Museum::findAll();
         $select['choice_value'] = 'id';
         $select['choice_name'] = 'id';
         $select['choice_label'] = 'fullname';
-        $select['multiple'] = false;
-        $select['placeholder'] = 'core.placeholder';
-        $state['select']['museum'] = $select;
+        $select['multiple'] = true;
+        $select['placeholder'] = 'core.placeholder.default';
+        $state['select']['actors'] = $select;
         return $state;
     }
 
@@ -66,10 +72,9 @@ class ActorRoleController extends FormController
     {
         $submitted = $form->getConfig()->getName();
         if ($submitted === 'actor_role') {
-            $actor = $request->attributes->get('id');
-            ORM::delete($actor);
-            $roles = $form->getData();
-            ORM::flush($roles);
+            $actor = $form['actor']->getData();
+            $actor = $form['role']->getData();
+            $actors = $form['actors']->getData();
             $request->attributes->set('_status', 'success');
             $request->attributes->set('_message', 'dime.admin.user.updated');
         }

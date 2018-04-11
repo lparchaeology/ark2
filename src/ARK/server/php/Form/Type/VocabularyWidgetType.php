@@ -76,16 +76,13 @@ class VocabularyWidgetType extends AbstractType implements DataMapperInterface
         $options = $forms->current()->getConfig()->getOptions();
         $forms = iterator_to_array($forms);
 
-        if (is_array($data) && isset($data['concept']) && isset($data['term'])) {
-            $data = ORM::find(Term::class, ['concept' => $data['concept'], 'term' => $data['term']]);
-        }
-
         if ($data instanceof Term) {
             $forms['concept']->setData($data->concept()->id());
-            $forms['term']->setData($data->name());
         } elseif ($options['choices'][0]) {
             $forms['concept']->setData($options['choices'][0]->concept()->id());
         }
+
+        $forms['term']->setData($data);
     }
 
     public function mapFormsToData($forms, &$data) : void
