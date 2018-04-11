@@ -8,15 +8,16 @@ function adminUserId() {
 // Set the current user ID
 var setAdminUserId = function setAdminUserId(id) {
     $('#actor').attr('action', Router.generatePath('dime.api.actor.item', { id: id }));
+    $('#actor_role').attr('action', Router.generatePath('dime.api.actor.role', { id: id }));
     $('#user_status').attr('action', Router.generatePath('dime.api.user.status', { id: id }));
     $('#password_set').attr('action', Router.generatePath('dime.api.user.password.set', { id: id }));
-    $('#role_add').attr('action', Router.generatePath('dime.api.actor.role.add', { id: id }));
 };
 
 // Call API to fetch user details
 var fetchAdminUserActor = function (id) {
     clearPageAlert();
     $('#actor').clearForm();
+    $('#actor_role').clearForm();
     $('#user_status').clearForm();
     var path = Router.generatePath('dime.api.actor.item', { id: id });
     if (path === undefined) {
@@ -26,10 +27,12 @@ var fetchAdminUserActor = function (id) {
         setPageAlert(response.status, response.message, 5000);
     }).done(function (response) {
         FormMapper.mapDataToForm(response, $('#actor')[0]);
-        path = Router.generatePath('dime.api.user.status', { id: id });
-        console.log(path);
+        path = Router.generatePath('dime.api.actor.role', { id: id });
         $.ajax(path).done(function (response) {
-            console.log(response);
+            FormMapper.mapDataToForm(response, $('#actor_role')[0]);
+        });
+        path = Router.generatePath('dime.api.user.status', { id: id });
+        $.ajax(path).done(function (response) {
             FormMapper.mapDataToForm(response, $('#user_status')[0]);
         });
         setAdminUserId(id);

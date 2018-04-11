@@ -8,6 +8,14 @@ $('document').ready(function () {
         dataType: 'json',
     });
 
+    $('#actor_role').ajaxForm({
+        beforeSubmit: adminUserFormSubmit,
+        success: adminUserFormSuccess,
+        type: 'post',
+        clearForm: true,
+        dataType: 'json',
+    });
+
     $('#user_status').ajaxForm({
         beforeSubmit: adminUserFormSubmit,
         success: adminUserFormSuccess,
@@ -17,14 +25,6 @@ $('document').ready(function () {
     });
 
     $('#password_set').ajaxForm({
-        beforeSubmit: adminUserFormSubmit,
-        success: adminUserFormSuccess,
-        type: 'post',
-        clearForm: true,
-        dataType: 'json',
-    });
-
-    $('#role_add').ajaxForm({
         beforeSubmit: adminUserFormSubmit,
         success: adminUserFormSuccess,
         type: 'post',
