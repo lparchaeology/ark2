@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.8
+-- version 4.7.9
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 12, 2018 at 04:13 PM
--- Server version: 10.2.14-MariaDB
--- PHP Version: 7.1.16
+-- Generation Time: Apr 12, 2018 at 09:40 PM
+-- Server version: 10.2.13-MariaDB
+-- PHP Version: 7.2.3
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -7226,7 +7226,7 @@ INSERT INTO `ark_view_field` (`element`, `schma`, `class`, `attribute`, `value_m
 ('dime_find_custody', 'dime.find', 'find', 'custody', 'static', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
 ('dime_find_dating', 'dime.find', 'find', 'dating', 'readonly', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'blocks/dating.html.twig', 'DIME\\Form\\Type\\DatingPropertyType', ''),
 ('dime_find_description', 'dime.find', 'find', 'description', 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'DIME\\Form\\Type\\DescriptionPropertyType', ''),
-('dime_find_finddate', 'dime.find', 'find', 'finddate', 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{\"widget\": \"picker\", \"attr\": {\"data-date-format\": \"yyyy-mm-dd\", \"class\": \"datepicker\"}}'),
+('dime_find_finddate', 'dime.find', 'find', 'finddate', 'active', NULL, NULL, NULL, 'dd-mm-yyyy', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_finder', 'dime.find', 'find', 'finder', 'active', NULL, NULL, 'fullname', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
 ('dime_find_finder_id', 'dime.find', 'find', 'finder_id', 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),
 ('dime_find_finder_place', 'dime.find', 'find', 'finder_place', 'active', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, ''),

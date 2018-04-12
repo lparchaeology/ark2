@@ -415,11 +415,12 @@ class Field extends Element
         $options = $this->baseOptions($state, $this->formOptionsArray);
         $options['compound'] = $this->attribute()->hasMultipleOccurrences();
         // TODO Nicer way to set js date pickers?
-        if ($state['value']['modus'] === 'active' && isset($options['widget']) && $options['widget'] === 'picker') {
+        if ($state['value']['modus'] === 'active' && $this->attribute()->dataclass()->datatype()->isTemporal()) {
             $options['widget'] = 'single_text';
             $options['html5'] = false;
             $type = $this->attribute()->dataclass()->datatype()->id();
-            $pattern = $state['pattern'] ?? null;
+            $options['attr']['class'] = $this->concatAttr($options, 'class', $type.'picker');
+            $pattern = $state['display']['pattern'] ?? null;
             $moment = null;
             switch ($pattern) {
                 case 'full':
@@ -475,12 +476,12 @@ class Field extends Element
                     switch ($type) {
                         case 'date':
                             $options['format'] = $pattern;
-                            //$intl = new IntlDateFormatter(Service::locale(), $pattern, IntlDateFormatter::NONE);
-                            //$pattern = $intl->getPattern();
+                            $intl = new IntlDateFormatter(Service::locale(), $pattern, IntlDateFormatter::NONE);
+                            $pattern = $intl->getPattern();
                             break;
                         case 'time':
-                            //$intl = new IntlDateFormatter(Service::locale(), IntlDateFormatter::NONE, $pattern);
-                            //$pattern = $intl->getPattern();
+                            $intl = new IntlDateFormatter(Service::locale(), IntlDateFormatter::NONE, $pattern);
+                            $pattern = $intl->getPattern();
                             break;
                         case 'datetime':
                         default:
@@ -491,10 +492,8 @@ class Field extends Element
                             break;
                     }
                 }
-                $options['attr']['data-date-format'] = $moment;
+                $options['attr']['data-date-format'] = $pattern;
             }
-        } else {
-            unset($options['widget']);
         }
         if ($state['choices']) {
             if ($this->attribute()->isItem()) {
