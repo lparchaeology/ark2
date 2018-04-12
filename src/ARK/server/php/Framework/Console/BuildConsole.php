@@ -38,8 +38,6 @@ use ARK\Framework\Console\Command\BuildFrontendCreateCommand;
 use ARK\Framework\Console\Command\BuildFrontendScriptsCommand;
 use ARK\Framework\Console\Command\BuildFrontendStylesCommand;
 use ARK\Framework\Console\Command\BuildFrontendTemplatesCommand;
-use ARK\Framework\Console\Command\BuildStatusCommand;
-use ARK\Framework\Console\Command\BuildUpdateCommand;
 use ARK\Framework\SystemApplication;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\GenerateCommand;
@@ -49,10 +47,6 @@ class BuildConsole extends AbstractConsole
     public function __construct()
     {
         parent::__construct('ARK Build Console', new SystemApplication());
-
-        // Build Environment Commands
-        $this->add(new BuildStatusCommand());
-        $this->add(new BuildUpdateCommand());
 
         // Build Commands
         $this->add(new BuildFrontendCommand());
