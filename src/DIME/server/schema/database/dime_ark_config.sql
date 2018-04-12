@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.9
+-- version 4.7.8
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 11, 2018 at 10:43 PM
--- Server version: 10.2.13-MariaDB
--- PHP Version: 7.2.3
+-- Generation Time: Apr 12, 2018 at 04:13 PM
+-- Server version: 10.2.14-MariaDB
+-- PHP Version: 7.1.16
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -6649,8 +6649,8 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `na
 ('dime_actor_form', '', 0, 0, 10, 'core_actor_email', NULL, NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_actor_form', '', 0, 0, 12, 'core_widget_submit', 'save', NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, 1, 0, 'core.button.save', NULL, NULL, NULL, NULL),
 ('dime_actor_form', '', 0, 1, 2, 'core_actor_avatar', NULL, 0, 0, 0, 0, 0, 1, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_actor_role_form', '', 0, 0, 0, 'core_widget_vocabulary', 'role', 0, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'dime.workflow.role', NULL, NULL, NULL, NULL, NULL, 'edit', NULL, 'readonly', NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_actor_role_form', '', 0, 0, 2, 'core_widget_choice', 'actors', 1, 0, 1, 0, 0, 1, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'edit', 'redact', 'active', NULL, NULL, 1, 0, NULL, NULL, '{\"multiple\":true}', NULL, NULL),
+('dime_actor_role_form', '', 0, 0, 0, 'core_widget_static', 'role', 0, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'edit', NULL, 'readonly', NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_actor_role_form', '', 0, 0, 2, 'core_widget_multiple', 'actors', 1, 0, 1, 0, 0, 1, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'edit', 'redact', 'active', NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_actor_role_form', '', 0, 0, 4, 'core_widget_submit', 'apply', 0, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'edit', 'redact', 'active', NULL, NULL, 1, 0, 'core.button.save', NULL, NULL, NULL, NULL),
 ('dime_admin_museum_page', '', 0, 0, 2, 'dime_museum_list', 'museums', NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_admin_museum_page', '', 0, 1, 0, 'dime_museum_form', NULL, NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
@@ -6847,9 +6847,9 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `na
 ('dime_museum_table', '', 0, 0, 2, 'core_actor_fullname', NULL, NULL, 0, 0, 0, 0, 1, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_profile_list', '', 0, 0, 2, 'dime_profile_table', 'items', NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_profile_list_action', '', 0, 0, 0, 'dime_profile_table', 'items', NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_profile_list_action', '', 0, 0, 2, 'dime_workflow_action_form', NULL, NULL, 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL);
+('dime_profile_list_action', '', 0, 0, 2, 'dime_workflow_action_form', NULL, NULL, 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_profile_list_page', '', 0, 0, 0, 'dime_profile_table', 'actors', NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `name`, `required`, `is_default`, `label`, `help`, `info`, `visible`, `width`, `placeholder`, `choices`, `exportable`, `sortable`, `sorter`, `sort_order`, `vocabulary`, `map`, `action_schema`, `action`, `view_permission`, `edit_permission`, `mode`, `sanitise`, `value_modus`, `parameter_modus`, `format_modus`, `enabled`, `deprecated`, `keyword`, `template`, `options`, `form_type`, `form_options`) VALUES
-('dime_profile_list_page', '', 0, 0, 0, 'dime_profile_table', 'actors', NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_profile_list_page', '', 0, 1, 0, 'dime_find_list', 'finds', NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_profile_page', '', 0, 0, 0, 'dime_profile_view', 'actor', NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_profile_page', '', 0, 1, 0, 'dime_find_list_public', 'finds', NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
@@ -7138,6 +7138,7 @@ INSERT INTO `ark_view_element` (`element`, `type`) VALUES
 ('core_widget_hr', 'widget'),
 ('core_widget_item', 'widget'),
 ('core_widget_monthday', 'widget'),
+('core_widget_multiple', 'widget'),
 ('core_widget_password', 'widget'),
 ('core_widget_password_confirm', 'widget'),
 ('core_widget_selected', 'widget'),
@@ -7595,6 +7596,7 @@ INSERT INTO `ark_view_widget` (`element`, `name`, `keyword`, `template`, `form_t
 ('core_widget_hr', 'hr', NULL, 'blocks/hr.html.twig', 'ARK\\Form\\Type\\EmptyType', ''),
 ('core_widget_item', 'item', NULL, NULL, 'ARK\\Form\\Type\\ItemWidgetType', ''),
 ('core_widget_monthday', 'monthday', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\BirthdayType', ''),
+('core_widget_multiple', 'multiple', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', '{\"multiple\": true, \"placeholder\": null}'),
 ('core_widget_password', '_password', 'core.user.password', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\PasswordType', ''),
 ('core_widget_password_confirm', 'password', 'core.user.password', NULL, 'ARK\\Form\\Type\\RepeatedPasswordType', ''),
 ('core_widget_selected', 'selected', NULL, NULL, 'ARK\\Form\\Type\\HiddenMultipleType', ''),

@@ -33,7 +33,7 @@
     },
     "devDependencies": {
         "bootlint": "^0.14.2",
-        "bootstrap-fileinput": "^4.4.7",
+        "bootstrap-fileinput": "^4.4.8",
         "bootstrap-sass": "^3.3.7",
         "bootstrap-table": "^1.12.1",
         "csscomb": "^4.2.0",

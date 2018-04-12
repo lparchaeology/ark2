@@ -31,10 +31,8 @@ namespace DIME\Controller\API;
 
 use ARK\Framework\FormController;
 use ARK\Model\Item;
-use ARK\ORM\ORM;
 use ARK\Security\Actor;
 use ARK\Security\User;
-use ARK\Vocabulary\Vocabulary;
 use DIME\DIME;
 use DIME\Entity\Museum;
 use Symfony\Component\Form\Form;
@@ -46,9 +44,9 @@ class ActorRoleController extends FormController
     {
         $actor = Actor::find($request->attributes->get('id'));
         $data['actor_role']['actor'] = $actor;
-        $role =  $actor->roles()->first();
+        $role = $actor->roles()->first();
         if ($role) {
-            $role = Vocabulary::findTerm('dime.workflow.role', $role->role()->id());
+            $role = $role->role()->id();
         }
         $data['actor_role']['role'] = $role;
         $data['actor_role']['actors'] = $actor->agencies();
