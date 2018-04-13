@@ -73,11 +73,11 @@ function initialisePickMap(target) {
     });
 
     function makeDecimal(value) {
-        return parseFloat(parseFloat(value).toFixed(6));
+        return parseFloat(parseFloat(value).toFixed(8));
     }
 
     function makeUtm(value) {
-        return parseInt(value);
+        return Math.round(parseFloat(value));
     }
 
     function makeNullPoint(srid) {
@@ -245,15 +245,17 @@ function initialisePickMap(target) {
     }
 
     function updateLocation(decimal) {
+        if (isNaN(decimal.easting) || isNaN(decimal.northing)) {
+            return;
+        }
         var wkt = 'POINT(' + decimal.easting + ' ' + decimal.northing + ')';
         $.post(path + 'api/geo/find', wkt, function (result) {
             if (result.municipality === null || result.museum === null || isNaN(result.x) || isNaN(result.y)) {
                 bootbox.alert(Translator.trans('dime.mappick.invalidpointlocation.default'));
                 try {
-                  mapPickSource.clear();
-                  console.log("try to removeFeature");
+                    mapPickSource.clear();
                 } catch (err) {
-                  throw err;
+                    throw err;
                 }
                 setMap(getDecimal());
                 toggleSubmit();
@@ -303,11 +305,19 @@ function initialisePickMap(target) {
     });
 
     $('.mappick-decimal-control').on('change', function () {
-        updateLocation(getDecimal());
+        var decimal = getDecimal();
+        if (isNaN(decimal.easting) || isNaN(decimal.northing)) {
+            return;
+        }
+        updateLocation(decimal);
     });
 
     $('.mappick-utm-control').on('change', function () {
-        var decimal = utmToDecimal(getUtm());
+        var utm = getUtm();
+        if (isNaN(utm.easting) || isNaN(utm.northing)) {
+            return;
+        }
+        var decimal = utmToDecimal(utm);
         updateLocation(decimal);
     });
 
