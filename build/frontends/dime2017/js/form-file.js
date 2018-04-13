@@ -14,7 +14,10 @@ $(document).ready(function () {
 
                 for (var i = 0; i < len; i++) {
                     initialPreview.push('<img class="profile-img" class="file-preview-image" src="/img/file/' + arr[i] + '?p=preview">');
-                    initialPreviewConfig.push({ key: arr[i] });
+                    initialPreviewConfig.push({
+                        key: arr[i],
+                        downloadUrl: "/img/file/" + arr[i],
+                    });
                 }
 
             }

@@ -16,7 +16,9 @@
                 {% if data %}
                     {% for key, image in data.value %}
                         <div class='item {% if key is same as(0) %} active {% endif %}'>
-                            <img src="{{ image.sourcePath('preview') }}" alt='' />
+                            <a href="{{ image.sourcePath() }}">
+                                <img src="{{ image.sourcePath('preview') }}" alt='' />
+                            </a>
                         </div>
                     {% endfor %}
                 {% endif %}
