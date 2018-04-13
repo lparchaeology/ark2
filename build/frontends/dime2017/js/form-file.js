@@ -3,13 +3,11 @@ $(document).ready(function () {
 
         $("input[type=file]").each(function () {
 
-            initialPreview = [];
-            initialPreviewConfig = [];
+            var initialPreview = [];
+            var initialPreviewConfig = [];
 
             if (typeof $(this).attr('data-existing') === 'string') {
-
-                var arr = $(this).attr('data-existing').split(',');
-
+                var arr = $(this).data('existing').split(',');
                 var len = arr.length;
 
                 for (var i = 0; i < len; i++) {
@@ -30,18 +28,12 @@ $(document).ready(function () {
                 'theme': 'gly',
                 'showUpload': false,
                 'showRemove': true,
-                //'autoReplace': true,
                 'overwriteInitial': false,
-                //'validateInitialCount': true,
-                'allowedFileTypes': ['image'],
-                'previewFileType': 'image',
-                'allowedFileExtensions': ["jpg", "png", "gif"],
+                'allowedFileTypes': $(this).data('allowedFileTypes') || ['image'],
+                'previewFileType': $(this).data('previewFileType') || 'image',
+                'allowedFileExtensions': $(this).data('allowedFileExtensions') || ["jpg", "png", "gif"],
                 'initialPreview': initialPreview,
                 'initialPreviewConfig': initialPreviewConfig,
-                //'initialPreviewAsData': true,
-                'minFileCount': 0,
-                'maxFileCount': 3,
-                'maxFileSize': 8192,
                 'deleteUrl': "/true.json",
                 'uploadUrl': "../api/internal/file",
                 'uploadAsync': false,
@@ -77,10 +69,7 @@ $(document).ready(function () {
                 }
             }).on('filebatchuploadcomplete', function (event, file, extra) {
                 var thumbnails = $('.file-preview-success');
-                console.log(thumbnails);
-                console.log(thumbnails.length);
                 var response = $("#find_image_existing").data('uploadResponse');
-                console.log(response);
                 var uploadPreview = $("#find_image_existing").data('uploadPreview');
                 for (index in response) {
                     var thumbnail = thumbnails.length - response.length + parseInt(index);

@@ -122,19 +122,26 @@ col-xs-12 col-sm-4
 
 {% block file_widget %}
     {% spaceless %}
-        {% set type = type|default('file') %}
-        {% if form.parent.vars.data %}
-            {% set value = form.parent.vars.data.value %}
-        {% else %}
-            {% set value = null %}
-        {% endif %}
+        {% set type = type | default('file') %}
+        {% set property = form.parent.vars.data %}
+        {% set value = property ? property.value : null %}
+        {% set dataAttributes = '' %}
+        {% set minFileCount = property ? property.attribute.minimumOccurrences : 0 %}
+        {% set dataAttributes = dataAttributes ~ ' data-min-file-count=' ~ minFileCount %}
+        {% set maxFileCount = property ? property.attribute.maximumOccurrences : 0 %}
+        {% set dataAttributes = dataAttributes ~ ' data-max-file-count=' ~ maxFileCount %}
+        {% set maxFileSize = app.ark.file.max_file_size ?? 0 %}
+        {% set dataAttributes = dataAttributes ~ ' data-max-file-size=' ~ maxFileSize %}
         {% if value is iterable and value | length > 0 %}
-            <input type="{{ type }}" {{ block('widget_attributes') }} data-existing = "{%- for image in value %}{{ image.id }}{{ loop.last ? '' : ',' }}{% endfor %}"/>
+            {% set images = [] %}
+            {% for image in value %}
+                {% set images = images | merge([image.id]) %}
+            {% endfor %}
+            {% set dataAttributes = dataAttributes ~ ' data-existing=' ~ images | join(',') %}
         {% elseif value.id is defined %}
-            <input type="{{ type }}" {{ block('widget_attributes') }} data-existing = "{{ value.id }}"/>
-        {% else %}
-            <input type="{{ type }}" {{ block('widget_attributes') }} />
+            {% set dataAttributes = dataAttributes ~ ' data-existing="' ~ value.id ~ '"' %}
         {% endif %}
+        <input type="{{ type }}" {{ block('widget_attributes') }} {{ dataAttributes }} />
     {% endspaceless %}
 {% endblock file_widget %}
 

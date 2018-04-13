@@ -29,6 +29,7 @@
         }
     },
     "file": {
+        "max_file_size": 5120,
         "root": "/files",
         "data": {
             "adapter": "Local",

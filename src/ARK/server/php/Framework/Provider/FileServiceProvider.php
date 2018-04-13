@@ -45,7 +45,7 @@ class FileServiceProvider implements ServiceProviderInterface
     {
         $fs = new Filesystem();
 
-        // Configure directories
+        // Configure various file paths depending on site and frontend
         $container['dir.install'] = ARK::installDir();
         $container['dir.var'] = ARK::siteVarDir($container['ark']['site']);
         $container['dir.cache'] = ARK::siteCacheDir($container['ark']['site']);
@@ -61,6 +61,13 @@ class FileServiceProvider implements ServiceProviderInterface
         }
         $container['dir.assets'] = $container['dir.webroot'].'/assets/'.$container['ark']['view']['frontend'];
 
+        // Configure Flysystem file systems as defined in the site.json config
+        // * 'assets' are the frontend assets, e.g. icons
+        // * 'tmp' is for temporary files
+        // * 'download' is where files made available for user download are temporarily stored
+        // * 'upload' is where files uploaded by users are temporarily stored
+        // * 'data' is where actual real data files are stored
+        // * 'cache' is the Glide image server caches files
         $container->register(new FlysystemServiceProvider());
         $data = $container['ark']['file']['data'];
         $data['path'] = ($data['adapter'] === 'Local' ? $container['dir.files'].$data['path'] : $data['path']);
@@ -77,6 +84,9 @@ class FileServiceProvider implements ServiceProviderInterface
             'cache' => ['adapter' => $cache['adapter'], 'args' => [$cache['path']]],
         ];
 
+        // Configure Glide image server as defined in the site.json config
+        // * 'file' is a server mounted at /img/data for the actual data files stored in the 'data' flysystem
+        // * 'assets' is a server mounted at /img for frontend assets stored in the 'assets' flysystem
         $container['image'] = function ($app) {
             $image = new Container();
             $config = $app['ark']['image'];
