@@ -13,6 +13,7 @@
     'use strict';
 
     var conditionCardView = function (that) {
+        that.$toolbar.find('button[name="thumbView"]').click();
         that.$toolbar.find('button[name="cardView"]').click();
     };
 
@@ -58,7 +59,7 @@
 
         var oldView = currentView(that);
 
-        if (oldView !== 'tableView') {
+        if (oldView === 'cardView') {
             $('#dime_find_table').removeClass("cardViewTable");
             $('#dime_find_home').removeClass("cardViewTable");
             $('#dime_find_table').removeClass("thumbViewTable");
@@ -195,8 +196,38 @@
             var height = $('.bootstrap-table').height(),
                 width = $('.bootstrap-table').width();
 
+            console.log('column-switching.bs.table');
             changeView(that, width, height);
             return true;
+        });
+
+
+        $('.dime-table').on('page-change.bs.table', function(){
+
+            var oldView = currentView(that);
+            console.log('hello');
+            console.log(oldView);
+            console.log(that.options.cardView);
+
+            setTimeout(function () {
+              console.log('timeout');
+              console.log(oldView);
+            }, 10);
+
+            // if thumbView
+            if (that.options.cardView){
+                if( oldView !== 'thumbView' ){
+                    that.toggleView();
+                }
+            } else {
+                if ( oldView === 'thumbView' ){
+                    that.toggleView();
+                }
+            }
+
+
+            //that.toggleView();
+
         });
 
     };

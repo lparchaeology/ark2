@@ -161,7 +161,9 @@ function initialisePickMap(target) {
         mapPickSource.clear();
         mapPickSource.addFeature(feature);
         mapPickMap.getView().setCenter(geometry.getCoordinates());
-        mapPickMap.getView().setZoom(12);
+        if(mapPickMap.getView().getZoom()<12){
+          mapPickMap.getView().setZoom(12);
+        }
     }
 
     function toggleSubmit() {

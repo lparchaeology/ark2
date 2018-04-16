@@ -10,7 +10,7 @@ $('document').ready(function () {
 
     $('#dime_museum_table .icon-user-focus').on("click", { "target": this }, museumSelected);
 
-    $('table.dime-table').on('post-body.bs.table', function () {
+    $('table#dime_museum_table').on('post-body.bs.table', function () {
         $('#dime_museum_table .icon-user-focus').on("click", { "target": this }, museumSelected);
     });
 
