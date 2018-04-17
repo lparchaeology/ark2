@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.9
+-- version 4.7.8
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 12, 2018 at 09:40 PM
--- Server version: 10.2.13-MariaDB
--- PHP Version: 7.2.3
+-- Generation Time: Apr 17, 2018 at 08:26 AM
+-- Server version: 10.2.14-MariaDB
+-- PHP Version: 7.1.16
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -1053,19 +1053,19 @@ INSERT INTO `ark_route_path` (`route`, `language`, `path`) VALUES
 ('core.api.image', 'da', '/img/{server}/{image}'),
 ('core.api.image', 'en', '/img/{server}/{image}'),
 ('core.user', 'da', '/brugere'),
-('core.user', 'en', '/en/users'),
+('core.user', 'en', '/users'),
 ('core.user.check', 'da', '/brugere/check'),
-('core.user.check', 'en', '/en/users/check'),
+('core.user.check', 'en', '/users/check'),
 ('core.user.confirm', 'da', '/brugere/confirm'),
-('core.user.confirm', 'en', '/en/users/confirm'),
+('core.user.confirm', 'en', '/users/confirm'),
 ('core.user.login', 'da', '/brugere/login'),
-('core.user.login', 'en', '/en/users/login'),
+('core.user.login', 'en', '/users/login'),
 ('core.user.logout', 'da', '/brugere/logout'),
-('core.user.logout', 'en', '/en/users/logout'),
+('core.user.logout', 'en', '/users/logout'),
 ('core.user.register', 'da', '/brugere/register'),
-('core.user.register', 'en', '/en/users/register'),
+('core.user.register', 'en', '/users/register'),
 ('core.user.reset', 'da', '/brugere/reset'),
-('core.user.reset', 'en', '/en/users/reset'),
+('core.user.reset', 'en', '/users/reset'),
 ('core.user.target', 'da', '/hjem'),
 ('core.user.target', 'en', '/home'),
 ('dime.about', 'da', '/om'),
@@ -1094,7 +1094,7 @@ INSERT INTO `ark_route_path` (`route`, `language`, `path`) VALUES
 ('dime.api.vocabulary', 'da', '/api/internal/vocabulary'),
 ('dime.detector', 'da', '/detektering'),
 ('dime.detector', 'en', '/detector'),
-('dime.finds.add', 'da', '/fund/add'),
+('dime.finds.add', 'da', '/fund/tilfoj'),
 ('dime.finds.add', 'en', '/finds/add'),
 ('dime.finds.list', 'da', '/fund'),
 ('dime.finds.list', 'en', '/finds'),
