@@ -194,6 +194,7 @@ var initTimeline = function () {
                     if (end) {
                         container.makeCustomTime(end, 'end', timeline);
                     }
+                    timeline.focus(target.parameters.period.value);
                 }
             }
         }
@@ -275,6 +276,7 @@ var initTimeline = function () {
         if ($(e).width() < 100 || $(e).width() > 500) {
             $(e).hide();
         } else {
+            var forceVisible = false;
             $(e).show();
         }
     });
@@ -382,7 +384,7 @@ var initTimeline = function () {
                 container.updateTimelineToPeriod(target, timeline);
             }
 
-            // # init the level1 classification as unknowwn
+            // # init the level1 classification as unknown
             level1.val(level1Default);
             level1.select2(select2Options);
             level1.trigger('select2:select');
@@ -510,14 +512,28 @@ var initTimeline = function () {
     });
     timeline.on('rangechanged', function () {
         console.log('rangechanged');
+
+        var forceVisible = true;
+
         $('.vis-range').each(function (i, e) {
-            if ($(e).width() < 100 || $(e).width() > 500) {
+            if ($(e).width() < 100 || $(e).width() > 800) {
                 $(e).hide();
             } else {
+                forceVisible = false;
                 $(e).show();
             }
-            timeline.redraw();
         });
+        if(forceVisible){
+          console.log('logic goes here');
+          var difference = timeline.getWindow().end.getTime() - timeline.getWindow().start.getTime();
+          var windowmidpoint = new Date(timeline.getWindow().start.getTime() + difference / 2);
+          midpointperiod = getPeriodFromYear(windowmidpoint.getFullYear());
+          title = items.get(midpointperiod.name).content;
+          $(".vis-item-content[title='"+title+"']").parents('.vis-item').show();
+
+        }
+        timeline.redraw();
+
         window.setTimeout(function () {
             $(timeline).attr('pannning', false);
         }, 100);
