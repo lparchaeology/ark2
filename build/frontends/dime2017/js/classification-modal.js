@@ -389,6 +389,10 @@ var initTimeline = function () {
             level1.select2(select2Options);
             level1.trigger('select2:select');
 
+            $('#' + window.subtype_id).val('');
+            $('#' + window.subtype_id).select2(select2Options);
+            $('#' + window.subtype_id).trigger('select2:select');
+
         });
 
         // Change the level2 Klassification if the Klassification1 changes
