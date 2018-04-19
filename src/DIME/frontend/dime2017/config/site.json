@@ -1,6 +1,6 @@
 {
     "site": "dime",
-    "debug": true,
+    "debug": false,
     "locale": {
         "default": "da",
         "active": ["da", "en"],
