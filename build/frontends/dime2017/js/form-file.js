@@ -6,8 +6,10 @@ $(document).ready(function () {
             var initialPreview = [];
             var initialPreviewConfig = [];
 
-            if (typeof $(this).attr('data-existing') === 'string') {
-                var arr = $(this).data('existing').split(',');
+              console.log({"typeofexisting": typeof $(this).attr('data-existing')});
+            if (typeof $(this).attr('data-existing') === 'string' && ($(this).data('data-existing'))) {
+              console.log({"typeofexisting": typeof $(this).data('data-existing')});
+                var arr = $(this).data('data-existing').split(',');
                 var len = arr.length;
 
                 for (var i = 0; i < len; i++) {
@@ -123,7 +125,7 @@ $(document).ready(function () {
 
             if (window.abortFileDelete === "unset") {
                 e.preventDefault();
-                window.currentDeleteTarget = $(event.target);
+                window.currentDeleteTarget = $(e.target);
 
                 bootbox.confirm(Translator.trans("dime.confirmfiledeletion.default"), function (result) {
                     if (result) {

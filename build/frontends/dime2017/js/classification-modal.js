@@ -519,17 +519,29 @@ var initTimeline = function () {
 
         var forceVisible = true;
 
+        var difference = timeline.getWindow().end.getTime() - timeline.getWindow().start.getTime();
+
+        console.log(difference);
+
+        var maxpill = 800;
+        
+        if ( difference > 200000000000000 ) {
+          maxpill = Infinity;
+        }
+
+        console.log(maxpill);
+
         $('.vis-range').each(function (i, e) {
-            if ($(e).width() < 100 || $(e).width() > 800) {
+            if ($(e).width() < 100 || $(e).width() > maxpill) {
                 $(e).hide();
             } else {
                 forceVisible = false;
                 $(e).show();
             }
         });
+
         if(forceVisible){
           console.log('logic goes here');
-          var difference = timeline.getWindow().end.getTime() - timeline.getWindow().start.getTime();
           var windowmidpoint = new Date(timeline.getWindow().start.getTime() + difference / 2);
           midpointperiod = getPeriodFromYear(windowmidpoint.getFullYear());
           title = items.get(midpointperiod.name).content;
