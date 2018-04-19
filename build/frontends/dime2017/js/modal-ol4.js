@@ -36,7 +36,9 @@ function initialiseMapModal() {
           mapPickSource.addFeature(positionFeature);
           mapView = $('#mapmodal').data('map').getView();
           mapView.setCenter(coordinates);
-          mapView.setZoom(14);
+          if(mapPickMap.getView().getZoom()<12){
+            mapPickMap.getView().setZoom(12);
+          }
           $('#mapmodal').data('positionFeature', positionFeature);
 
           confirmLocation = $('#mapmodal').data('confirmLocation');
