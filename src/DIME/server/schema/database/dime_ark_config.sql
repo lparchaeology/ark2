@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 17, 2018 at 08:26 AM
+-- Generation Time: Apr 24, 2018 at 08:28 AM
 -- Server version: 10.2.14-MariaDB
 -- PHP Version: 7.1.16
 
@@ -6704,8 +6704,8 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `na
 ('dime_find_filter', '', 2, 8, 0, 'core_widget_submit', 'clear', 0, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, 1, 0, 'core.button.clear', NULL, NULL, NULL, NULL),
 ('dime_find_filter', '', 4, 0, 0, 'core_widget_choice', 'visibility', 0, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'core.visibility', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"style\": \"width:95%\"}}', NULL, NULL),
 ('dime_find_filter', '', 4, 2, 0, 'core_widget_choice', 'custody', 0, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'dime.find.custody', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"style\": \"width:95%\"}}', NULL, NULL),
-('dime_find_filter', '', 4, 4, 0, 'core_widget_date', 'find_date', 0, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, 1, 0, 'dime.find.finddate', NULL, NULL, NULL, NULL),
-('dime_find_filter', '', 4, 6, 0, 'core_widget_date', 'find_date_span', 0, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, 1, 0, 'dime.find.finddate', NULL, NULL, NULL, NULL),
+('dime_find_filter', '', 4, 4, 0, 'core_widget_date', 'find_date', 0, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, 1, 0, 'dime.find.finddate', NULL, '{\"attr\": {\"data-date-format\": \"dd-mm-yyyy\"}}', NULL, NULL),
+('dime_find_filter', '', 4, 6, 0, 'core_widget_date', 'find_date_span', 0, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, 1, 0, 'dime.find.finddate', NULL, '{\"attr\": {\"data-date-format\": \"dd-mm-yyyy\"}}', NULL, NULL),
 ('dime_find_front_table', '', 0, 0, 0, 'dime_find_id', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 0, 1, 'alphanumeric', 'desc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_front_table', '', 0, 0, 2, 'dime_find_class', NULL, NULL, 0, NULL, 0, 0, 1, NULL, NULL, NULL, 0, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_front_table', '', 0, 0, 4, 'dime_find_classification', NULL, NULL, 0, NULL, 0, 0, 1, NULL, NULL, NULL, 0, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
@@ -6847,9 +6847,9 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `na
 ('dime_museum_table', '', 0, 0, 2, 'core_actor_fullname', NULL, NULL, 0, 0, 0, 0, 1, NULL, NULL, NULL, 1, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_profile_list', '', 0, 0, 2, 'dime_profile_table', 'items', NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_profile_list_action', '', 0, 0, 0, 'dime_profile_table', 'items', NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_profile_list_action', '', 0, 0, 2, 'dime_workflow_action_form', NULL, NULL, 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
-('dime_profile_list_page', '', 0, 0, 0, 'dime_profile_table', 'actors', NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL);
+('dime_profile_list_action', '', 0, 0, 2, 'dime_workflow_action_form', NULL, NULL, 0, 0, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `name`, `required`, `is_default`, `label`, `help`, `info`, `visible`, `width`, `placeholder`, `choices`, `exportable`, `sortable`, `sorter`, `sort_order`, `vocabulary`, `map`, `action_schema`, `action`, `view_permission`, `edit_permission`, `mode`, `sanitise`, `value_modus`, `parameter_modus`, `format_modus`, `enabled`, `deprecated`, `keyword`, `template`, `options`, `form_type`, `form_options`) VALUES
+('dime_profile_list_page', '', 0, 0, 0, 'dime_profile_table', 'actors', NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_profile_list_page', '', 0, 1, 0, 'dime_find_list', 'finds', NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_profile_page', '', 0, 0, 0, 'dime_profile_view', 'actor', NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_profile_page', '', 0, 1, 0, 'dime_find_list_public', 'finds', NULL, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),

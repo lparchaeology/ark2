@@ -98,6 +98,7 @@ class Widget extends Element
 
     protected function buildOptions($data, iterable $state, iterable $options = []) : iterable
     {
+        dump($state);
         if ($this->formOptionsArray === null) {
             $this->formOptionsArray = ($this->formOptions ? json_decode($this->formOptions, true) : []);
         }
@@ -145,6 +146,7 @@ class Widget extends Element
         if ($this->isButton($state['form']['type'])) {
             unset($options['required'], $options['mapped']);
         }
+        dump($options);
         return $options;
     }
 
@@ -156,6 +158,7 @@ class Widget extends Element
             $builder = $this->formBuilder($view['state']['name'], $view['state']['form']['type'], $view['data'], $view['options']);
             $view['form'] = $builder->getForm()->createView();
         }
+        dump($view);
         return $view;
     }
 
