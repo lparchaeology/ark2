@@ -29,14 +29,18 @@
 
 namespace ARK\Form\Type;
 
+use ARK\Model\Attribute;
 use ARK\Model\Item;
 use ARK\Model\LocalText;
 use ARK\Model\Property;
 use ARK\ORM\ORM;
+use ARK\Service;
 use ARK\Translation\Translation;
+use ARK\Utility\DateTimeConverter;
 use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
 use DateTime;
+use IntlDateFormatter;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class ScalarPropertyType extends AbstractPropertyType
@@ -79,11 +83,11 @@ class ScalarPropertyType extends AbstractPropertyType
                 $display = [];
                 if (is_iterable($value)) {
                     foreach ($value as $val) {
-                        $display[] = $this->mapDisplayValue($val, $valueName, $options['state']['display']);
+                        $display[] = $this->mapDisplayValue($val, $valueName, $options['state']['display'], $attribute);
                     }
                 }
             } else {
-                $display = $this->mapDisplayValue($value, $valueName, $options['state']['display']);
+                $display = $this->mapDisplayValue($value, $valueName, $options['state']['display'], $attribute);
             }
         }
 
@@ -113,9 +117,13 @@ class ScalarPropertyType extends AbstractPropertyType
                     $parameter = $value->concept()->id();
                     $value = $value->name();
                 } elseif ($value instanceof DateTime) {
-                    // TODO LOCALISE!!!
                     if ($options['state']['modus'] === 'static') {
-                        $value = $value->format('Y-m-d');
+                        $value = DateTimeConverter::format(
+                            $value,
+                            Service::locale(),
+                            $options['state']['display']['options']['format'] ?? IntlDateFormatter::SHORT,
+                            $dataclass->datatype()->id()
+                        );
                     }
                 }
             }
@@ -206,7 +214,7 @@ class ScalarPropertyType extends AbstractPropertyType
     }
 
     // TODO This probably needs to be done in a more generic way elsewhere.
-    protected function mapDisplayValue($display, ?string $valueName, iterable $options)
+    protected function mapDisplayValue($display, ?string $valueName, iterable $options, Attribute $attribute)
     {
         // If set, get the property to display
         $property = $options['property'];
@@ -235,7 +243,12 @@ class ScalarPropertyType extends AbstractPropertyType
             return $display->content();
         }
         if ($display instanceof DateTime) {
-            return $display->format($options['pattern'] ?? 'Y-m-d');
+            return DateTimeConverter::format(
+                $display,
+                Service::locale(),
+                $options['format'] ?? $options['pattern'] ?? IntlDateFormatter::SHORT,
+                $attribute->dataclass()->datatype()->id()
+            );
         }
         if (is_array($display) && isset($display[$valueName])) {
             return $display[$valueName];

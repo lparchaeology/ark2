@@ -67,6 +67,7 @@ class Cell implements ElementInterface
     protected $sortable;
     protected $sorter;
     protected $order;
+    protected $pattern;
     protected $vocabulary;
     protected $map;
     protected $action;
@@ -181,6 +182,11 @@ class Cell implements ElementInterface
     public function sortOrder() : ?string
     {
         return $this->order;
+    }
+
+    public function pattern() : ?string
+    {
+        return $this->pattern;
     }
 
     public function vocabulary() : ?Concept
@@ -307,6 +313,7 @@ class Cell implements ElementInterface
         $builder->addField('sortable', 'boolean');
         $builder->addStringField('sorter', 20);
         $builder->addMappedStringField('sort_order', 'order', 10);
+        $builder->addStringField('pattern', 30);
         $builder->addStringField('mode', 10);
         $builder->addStringField('sanitise', 10);
         $builder->addMappedStringField('value_modus', 'valueModus', 10);
@@ -352,6 +359,7 @@ class Cell implements ElementInterface
         $state['sortable'] = $this->sortable ?? false;
         $state['sorter'] = $this->sorter ?? 'alphanumeric';
         $state['order'] = $this->order ?? 'asc';
+        $state['pattern'] = $this->pattern;
         $state['choices'] = $this->choices;
         $state['vocabulary'] = $this->vocabulary;
         $state['map'] = $this->map;

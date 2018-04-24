@@ -40,7 +40,7 @@ use ARK\ORM\ORM;
 use ARK\Security\Actor;
 use ARK\Service;
 use ARK\Translation\Translation;
-use IntlDateFormatter;
+use ARK\Utility\DateTimeConverter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -414,87 +414,13 @@ class Field extends Element
         }
         $options = $this->baseOptions($state, $this->formOptionsArray);
         $options['compound'] = $this->attribute()->hasMultipleOccurrences();
-        // TODO Nicer way to set js date pickers?
+
         if ($state['value']['modus'] === 'active' && $this->attribute()->dataclass()->datatype()->isTemporal()) {
             $options['widget'] = 'single_text';
             $options['html5'] = false;
-            $type = $this->attribute()->dataclass()->datatype()->id();
-            $options['attr']['class'] = $this->concatAttr($options, 'class', $type.'picker');
-            $pattern = $state['display']['pattern'] ?? null;
-            $moment = null;
-            switch ($pattern) {
-                case 'full':
-                    $pattern = IntlDateFormatter::FULL;
-                    if ($type === 'date') {
-                        $moment = 'LL';
-                    } elseif ($type === 'time') {
-                        $moment = 'LT';
-                    } else {
-                        $moment = 'LLLL';
-                    }
-                    break;
-                case 'long':
-                    $pattern = IntlDateFormatter::LONG;
-                    if ($type === 'date') {
-                        $moment = 'LL';
-                    } elseif ($type === 'time') {
-                        $moment = 'LT';
-                    } else {
-                        $moment = 'LLL';
-                    }
-                    break;
-                case 'medium':
-                    $pattern = IntlDateFormatter::MEDIUM;
-                    if ($type === 'date') {
-                        $moment = 'LL';
-                    } elseif ($type === 'time') {
-                        $moment = 'LT';
-                    } else {
-                        $moment = 'LL LT';
-                    }
-                    break;
-                case 'short':
-                    $pattern = IntlDateFormatter::SHORT;
-                    if ($type === 'date') {
-                        $moment = 'L';
-                    } elseif ($type === 'time') {
-                        $moment = 'LT';
-                    } else {
-                        $moment = 'L LT';
-                    }
-                    break;
-                case null:
-                case '':
-                    $pattern = null;
-                    break;
-                default:
-                    $moment = $pattern;
-                    break;
-            }
-            if ($pattern !== null) {
-                if (is_numeric($pattern)) {
-                    switch ($type) {
-                        case 'date':
-                            $options['format'] = $pattern;
-                            $intl = new IntlDateFormatter(Service::locale(), $pattern, IntlDateFormatter::NONE);
-                            $pattern = $intl->getPattern();
-                            break;
-                        case 'time':
-                            $intl = new IntlDateFormatter(Service::locale(), IntlDateFormatter::NONE, $pattern);
-                            $pattern = $intl->getPattern();
-                            break;
-                        case 'datetime':
-                        default:
-                            $intl = new IntlDateFormatter(Service::locale(), $pattern, $pattern);
-                            $options['date_format'] = $pattern;
-                            $pattern = $intl->getPattern();
-                            $options['format'] = $pattern;
-                            break;
-                    }
-                }
-                $options['attr']['data-date-format'] = $pattern;
-            }
+            $options['format'] = DateTimeConverter::patternToFormat($state['display']['pattern'] ?? 'short');
         }
+
         if ($state['choices']) {
             if ($this->attribute()->isItem()) {
                 $select = $state['select'][$state['name']] ?? [];

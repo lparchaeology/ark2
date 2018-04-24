@@ -33,6 +33,7 @@ namespace ARK\Framework\Provider;
 use ARK\ARK;
 use ARK\Service;
 use ARK\Twig\Extension\TranslateExtension;
+use ARK\Utility\DateTimeConverter;
 use ARK\View\Console\Command\ViewPageDumpCommand;
 use ARK\View\ViewService;
 use Knp\Snappy\Image;
@@ -79,6 +80,7 @@ class ViewServiceProvider implements ServiceProviderInterface
             $twig->addExtension(new TranslateExtension($app['translator']));
             $twig->addFunction(new Twig_Function('imagePath', Service::class.'::imagePath'));
             $twig->addFunction(new Twig_Function('imageUrl', Service::class.'::imageUrl'));
+            $twig->addFunction(new Twig_Function('pickerFormat', DateTimeConverter::class.'::formatToPickerFormat'));
             $twig->addFunction(
                 new Twig_Function(
                     'form_help',

@@ -60,10 +60,49 @@ col-xs-12 col-sm-4
 
 {# Custom blocks #}
 
+{% block datetime_widget -%}
+    {# If using external js picker widget, set the required defaults #}
+    {%- if widget == 'single_text' -%}
+        {%- set attr = attr|merge({class: (attr.class|default('') ~ ' datetimepicker')|trim}) -%}
+        {%- set dateformat = pickerFormat(global.request.locale, format, 'datetime') -%}
+        {%- set attr = attr|merge({'data-date-format': dateformat}) -%}
+    {%- endif -%}
+    {{- parent() -}}
+{%- endblock datetime_widget %}
+
+{% block date_widget -%}
+    {# If using external js picker widget, set the required defaults #}
+    {%- if widget == 'single_text' -%}
+        {%- set attr = attr|merge({class: (attr.class|default('') ~ ' datepicker')|trim}) -%}
+        {%- set dateformat = pickerFormat(global.request.locale, format, 'date') -%}
+        {%- set attr = attr|merge({'data-date-format': dateformat}) -%}
+    {%- endif -%}
+    {{- parent() -}}
+{%- endblock date_widget %}
+
+{% block time_widget -%}
+    {# If using external js picker widget, set the required defaults #}
+    {%- if widget == 'single_text' -%}
+        {%- set attr = attr|merge({class: (attr.class|default('') ~ ' timepicker')|trim}) -%}
+        {%- set dateformat = pickerFormat(global.request.locale, format, 'time') -%}
+        {%- set attr = attr|merge({'data-date-format': dateformat}) -%}
+    {%- endif -%}
+    {{- parent() -}}
+{%- endblock time_widget %}
+
+{%- block dateinterval_widget -%}
+    {# If using external js picker widget, set the required defaults #}
+    {%- if widget == 'single_text' -%}
+        {%- set attr = attr|merge({class: (attr.class|default('') ~ ' datepicker')|trim}) -%}
+        {%- set dateformat = pickerFormat(global.request.locale, format, 'date') -%}
+        {%- set attr = attr|merge({'data-date-format': dateformat}) -%}
+    {%- endif -%}
+    {{- parent() -}}
+{%- endblock dateinterval_widget -%}
+
 {% block property_widget -%}
     {% for key, subform in form %}
         {{- form_widget(subform, {'state': state, 'help': help}) -}}
-        {{- form_errors(subform) -}}
         {% do subform.setRendered %}
     {% endfor %}
 {%- endblock property_widget %}
