@@ -243,7 +243,7 @@ class Field extends Element
         $this->setValue($state, 'multiple', $this->attribute()->hasMultipleOccurrences());
 
         $this->setGroupValue($state, 'display', 'property', $this->displayProperty());
-        $this->setGroupValue($state, 'display', 'pattern', $this->displayPattern());
+        $this->setGroupValue($state, 'display', 'pattern', $state['pattern'] ?? $this->displayPattern());
         $this->setGroupValue($state, 'display', 'parameter', $this->displayParameter());
         $this->setGroupValue($state, 'display', 'format', $this->displayFormat());
 

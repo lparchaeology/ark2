@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.8
+-- version 4.7.9
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 24, 2018 at 05:19 PM
--- Server version: 10.2.14-MariaDB
--- PHP Version: 7.1.16
+-- Generation Time: Apr 24, 2018 at 09:17 PM
+-- Server version: 10.2.13-MariaDB
+-- PHP Version: 7.2.4
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -6705,8 +6705,8 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `na
 ('dime_find_filter', '', 2, 8, 0, 'core_widget_submit', 'clear', 0, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, 1, 0, 'core.button.clear', NULL, NULL, NULL, NULL),
 ('dime_find_filter', '', 4, 0, 0, 'core_widget_choice', 'visibility', 0, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'core.visibility', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"style\": \"width:95%\"}}', NULL, NULL),
 ('dime_find_filter', '', 4, 2, 0, 'core_widget_choice', 'custody', 0, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'dime.find.custody', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"style\": \"width:95%\"}}', NULL, NULL),
-('dime_find_filter', '', 4, 4, 0, 'core_widget_date', 'find_date', 0, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'dd-MM-yyyy', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, 1, 0, 'dime.find.finddate', NULL, '{\"format\": \"dd-MM-yyyy\"}', NULL, NULL),
-('dime_find_filter', '', 4, 6, 0, 'core_widget_date', 'find_date_span', 0, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'dd-MM-yyyy', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, 1, 0, 'dime.find.finddate', NULL, '{\"format\": \"dd-MM-yyyy\"}', NULL, NULL),
+('dime_find_filter', '', 4, 4, 0, 'core_widget_date', 'find_date', 0, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'dd-MM-yyyy', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, 1, 0, 'dime.find.finddate', NULL, NULL, NULL, NULL),
+('dime_find_filter', '', 4, 6, 0, 'core_widget_date', 'find_date_span', 0, 0, 1, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'dd-MM-yyyy', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, 1, 0, 'dime.find.finddate', NULL, NULL, NULL, NULL),
 ('dime_find_front_table', '', 0, 0, 0, 'dime_find_id', NULL, NULL, 0, NULL, 0, 0, 0, NULL, NULL, NULL, 0, 1, 'alphanumeric', 'desc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_front_table', '', 0, 0, 2, 'dime_find_class', NULL, NULL, 0, NULL, 0, 0, 1, NULL, NULL, NULL, 0, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_front_table', '', 0, 0, 4, 'dime_find_classification', NULL, NULL, 0, NULL, 0, 0, 1, NULL, NULL, NULL, 0, 1, 'alphanumeric', 'asc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL),
@@ -7573,44 +7573,45 @@ INSERT INTO `ark_view_type` (`type`, `layout`, `class`, `form_type`, `template`,
 CREATE TABLE `ark_view_widget` (
   `element` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `datatype` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `template` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `form_options` varchar(4000) COLLATE utf8mb4_unicode_ci NOT NULL
+  `form_options` varchar(4000) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_view_widget`
 --
 
-INSERT INTO `ark_view_widget` (`element`, `name`, `keyword`, `template`, `form_type`, `form_options`) VALUES
-('core_widget_block', 'block', NULL, NULL, 'ARK\\Form\\Type\\EmptyType', ''),
-('core_widget_br', 'br', NULL, 'blocks/br.html.twig', 'ARK\\Form\\Type\\EmptyType', ''),
-('core_widget_button', 'button', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ButtonType', ''),
-('core_widget_checkbox', 'checkbox', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\CheckboxType', ''),
-('core_widget_choice', 'choice', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', ''),
-('core_widget_date', 'date', NULL, NULL, 'ARK\\Form\\Type\\DateType', '{\"widget\": \"single_text\",\"html5\": false}'),
-('core_widget_dateinterval', 'dateinterval', NULL, NULL, 'ARK\\Form\\Type\\DateIntervalType', '{\"widget\": \"single_text\",\"html5\": false}'),
-('core_widget_datetime', 'datetime', NULL, NULL, 'ARK\\Form\\Type\\DateTimeType', '{\"widget\": \"single_text\",\"html5\": false}'),
-('core_widget_email', 'email', 'core.user.email', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\EmailType', ''),
-('core_widget_email_confirm', 'email', 'core.user.email', NULL, 'ARK\\Form\\Type\\RepeatedEmailType', ''),
-('core_widget_hr', 'hr', NULL, 'blocks/hr.html.twig', 'ARK\\Form\\Type\\EmptyType', ''),
-('core_widget_item', 'item', NULL, NULL, 'ARK\\Form\\Type\\ItemWidgetType', ''),
-('core_widget_monthday', 'monthday', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\BirthdayType', ''),
-('core_widget_multiple', 'multiple', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', '{\"multiple\": true, \"placeholder\": null}'),
-('core_widget_password', '_password', 'core.user.password', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\PasswordType', ''),
-('core_widget_password_confirm', 'password', 'core.user.password', NULL, 'ARK\\Form\\Type\\RepeatedPasswordType', ''),
-('core_widget_selected', 'selected', NULL, NULL, 'ARK\\Form\\Type\\HiddenMultipleType', ''),
-('core_widget_static', 'static', NULL, NULL, 'ARK\\Form\\Type\\StaticType', ''),
-('core_widget_submit', 'submit', 'core.widget.submit', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\SubmitType', ''),
-('core_widget_submit_recaptcha', 'submit', 'core.widget.submit', NULL, 'ARK\\Form\\Type\\RecaptchaSubmitType', ''),
-('core_widget_terms', 'terms', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', ''),
-('core_widget_textarea', 'textarea', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextareaType', ''),
-('core_widget_time', 'time', NULL, NULL, 'ARK\\Form\\Type\\TimeType', '{\"widget\": \"single_text\",\"html5\": false}'),
-('core_widget_username', '_username', 'core.user.username', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', ''),
-('core_widget_vocabulary', 'vocabulary', NULL, NULL, 'ARK\\Form\\Type\\VocabularyWidgetType', ''),
-('dime_widget_classify', 'classify', 'dime.find.classify', 'blocks/classification.html.twig', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ButtonType', '{\"attr\":{\"class\":\"disabled\"}}'),
-('dime_widget_share', 'share', NULL, NULL, 'DIME\\Form\\Type\\ShareType', '');
+INSERT INTO `ark_view_widget` (`element`, `name`, `datatype`, `keyword`, `template`, `form_type`, `form_options`) VALUES
+('core_widget_block', 'block', NULL, NULL, NULL, 'ARK\\Form\\Type\\EmptyType', NULL),
+('core_widget_br', 'br', NULL, NULL, 'blocks/br.html.twig', 'ARK\\Form\\Type\\EmptyType', NULL),
+('core_widget_button', 'button', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ButtonType', NULL),
+('core_widget_checkbox', 'checkbox', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\CheckboxType', NULL),
+('core_widget_choice', 'choice', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL),
+('core_widget_date', 'date', 'date', NULL, NULL, NULL, NULL),
+('core_widget_dateinterval', 'dateinterval', 'date', NULL, NULL, 'ARK\\Form\\Type\\DateIntervalType', NULL),
+('core_widget_datetime', 'datetime', 'datetime', NULL, NULL, NULL, NULL),
+('core_widget_email', 'email', NULL, 'core.user.email', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\EmailType', NULL),
+('core_widget_email_confirm', 'email', NULL, 'core.user.email', NULL, 'ARK\\Form\\Type\\RepeatedEmailType', NULL),
+('core_widget_hr', 'hr', NULL, NULL, 'blocks/hr.html.twig', 'ARK\\Form\\Type\\EmptyType', NULL),
+('core_widget_item', 'item', NULL, NULL, NULL, 'ARK\\Form\\Type\\ItemWidgetType', NULL),
+('core_widget_monthday', 'monthday', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\BirthdayType', NULL),
+('core_widget_multiple', 'multiple', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', '{\"multiple\": true, \"placeholder\": null}'),
+('core_widget_password', '_password', NULL, 'core.user.password', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\PasswordType', NULL),
+('core_widget_password_confirm', 'password', NULL, 'core.user.password', NULL, 'ARK\\Form\\Type\\RepeatedPasswordType', NULL),
+('core_widget_selected', 'selected', NULL, NULL, NULL, 'ARK\\Form\\Type\\HiddenMultipleType', NULL),
+('core_widget_static', 'static', NULL, NULL, NULL, 'ARK\\Form\\Type\\StaticType', NULL),
+('core_widget_submit', 'submit', NULL, 'core.widget.submit', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\SubmitType', NULL),
+('core_widget_submit_recaptcha', 'submit', NULL, 'core.widget.submit', NULL, 'ARK\\Form\\Type\\RecaptchaSubmitType', NULL),
+('core_widget_terms', 'terms', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL),
+('core_widget_textarea', 'textarea', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextareaType', NULL),
+('core_widget_time', 'time', 'time', NULL, NULL, NULL, NULL),
+('core_widget_username', '_username', NULL, 'core.user.username', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL),
+('core_widget_vocabulary', 'vocabulary', NULL, NULL, NULL, 'ARK\\Form\\Type\\VocabularyWidgetType', NULL),
+('dime_widget_classify', 'classify', NULL, 'dime.find.classify', 'blocks/classification.html.twig', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ButtonType', '{\"attr\":{\"class\":\"disabled\"}}'),
+('dime_widget_share', 'share', NULL, NULL, NULL, 'DIME\\Form\\Type\\ShareType', NULL);
 
 -- --------------------------------------------------------
 
@@ -10723,7 +10724,8 @@ ALTER TABLE `ark_view_type`
 --
 ALTER TABLE `ark_view_widget`
   ADD PRIMARY KEY (`element`),
-  ADD KEY `keyword_foreign` (`keyword`) USING BTREE;
+  ADD KEY `keyword_foreign` (`keyword`) USING BTREE,
+  ADD KEY `datatype_foreign` (`datatype`) USING BTREE;
 
 --
 -- Indexes for table `ark_vocabulary_concept`
@@ -11211,6 +11213,7 @@ ALTER TABLE `ark_view_type`
 -- Constraints for table `ark_view_widget`
 --
 ALTER TABLE `ark_view_widget`
+  ADD CONSTRAINT `view_widget_datatype_constraint` FOREIGN KEY (`datatype`) REFERENCES `ark_dataclass_type` (`datatype`) ON UPDATE CASCADE,
   ADD CONSTRAINT `view_widget_element_constraint` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `view_widget_keyword_contraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation_keyword` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
 

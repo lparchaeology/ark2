@@ -30,16 +30,30 @@
 namespace ARK\View;
 
 use ARK\Model\KeywordTrait;
+use ARK\Model\Dataclass\Datatype;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use Symfony\Component\Form\ButtonTypeInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\SubmitButtonTypeInterface;
+use ARK\Utility\DateTimeConverter;
 
 class Widget extends Element
 {
+    protected $datatype;
     protected $formOptions = '';
     protected $formOptionsArray;
+
+    public function formType() : ?string
+    {
+        if ($this->formType) {
+            return $this->formType;
+        }
+        if ($this->datatype) {
+            return $this->datatype->activeFormType();
+        }
+        return $this->type()->formType();
+    }
 
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
@@ -52,6 +66,9 @@ class Widget extends Element
         $builder->addStringField('template', 100);
         $builder->addMappedStringField('form_type', 'formType', 100);
         $builder->addMappedStringField('form_options', 'formOptions', 4000);
+
+        // Associations
+        $builder->addManyToOneField('datatype', Datatype::class);
     }
 
     protected function buildState($data, iterable $state) : iterable
@@ -113,6 +130,12 @@ class Widget extends Element
             $options['required'] = false;
         } else {
             $options['required'] = $state['required'];
+        }
+
+        if ($this->datatype && $this->datatype->isTemporal()) {
+            $options['widget'] = 'single_text';
+            $options['html5'] = false;
+            $options['format'] = DateTimeConverter::patternToFormat($state['pattern'] ?? 'short');
         }
 
         if ($state['vocabulary']) {
