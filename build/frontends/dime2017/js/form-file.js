@@ -5,21 +5,21 @@ $(document).ready(function () {
 
             var initialPreview = [];
             var initialPreviewConfig = [];
+            var existing = [];
 
-              console.log({"typeofexisting": typeof $(this).attr('data-existing')});
-            if (typeof $(this).attr('data-existing') === 'string' && ($(this).data('data-existing'))) {
-              console.log({"typeofexisting": typeof $(this).data('data-existing')});
-                var arr = $(this).data('data-existing').split(',');
-                var len = arr.length;
+            if (typeof $(this).data('existing') === 'number') {
+                existing.push($(this).data('existing'));
+            } else if (typeof $(this).data('existing') === 'string') {
+                existing = $(this).data('existing').split(',');
+            }
 
-                for (var i = 0; i < len; i++) {
-                    initialPreview.push('<img class="profile-img" class="file-preview-image" src="/img/file/' + arr[i] + '?p=preview">');
-                    initialPreviewConfig.push({
-                        key: arr[i],
-                        downloadUrl: "/img/file/" + arr[i],
-                    });
-                }
-
+            for (var i = 0; i < existing.length; i++) {
+                url = Router.generatePath('core.api.image', { server: 'file', image: existing[i] });
+                initialPreview.push('<img class="profile-img" class="file-preview-image" src="' + url + '?p=preview">');
+                initialPreviewConfig.push({
+                    key: existing[i],
+                    downloadUrl: url,
+                });
             }
 
             $("#find_image_existing").data('uploadUploaded', {});

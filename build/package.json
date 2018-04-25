@@ -55,7 +55,7 @@
         "jsonlint": "^1.6.3",
         "merge-stream": "^1.0.1",
         "minimatch": "^3.0.4",
-        "moment": "^2.22.0",
+        "moment": "^2.22.1",
         "node-sass": "^4.8.3",
         "openlayers": "^4.6.5",
         "prettydiff": "^99.0.1",
